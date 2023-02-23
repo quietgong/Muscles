@@ -14,7 +14,9 @@
 <%@ include file="nav.jsp" %>
 
 <!-- 본문 -->
-
+<a href="<c:url value='/'/>">
+<h3>준비중...</h3>
+</a>
 
 <!-- footer -->
 <%@ include file="footer.jsp" %>

@@ -13,7 +13,7 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -22,7 +22,36 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.kinaboot.muscles" />
-	
-	
-	
+	<view-controller path="/" view-name="index"/>
+	<!-- jsp파일 테스트 -->
+	<view-controller path="/cart" view-name="cart"/>
+	<view-controller path="/login" view-name="login"/>
+	<view-controller path="/register" view-name="register"/>
+	<view-controller path="/chatting" view-name="chatting"/>
+	<view-controller path="/community" view-name="community"/>
+	<view-controller path="/notice" view-name="notice"/>
+
+	<view-controller path="/admin/order" view-name="admin/order"/>
+	<view-controller path="/admin/product" view-name="admin/product"/>
+	<view-controller path="/admin/user" view-name="admin/user"/>
+
+	<view-controller path="/product/list" view-name="product/list"/>
+	<view-controller path="/product/detail" view-name="product/detail"/>
+
+	<view-controller path="/order/detail" view-name="order/detail"/>
+	<view-controller path="/order/page" view-name="order/page"/>
+	<view-controller path="/order/list" view-name="order/list"/>
+	<view-controller path="/order/complete" view-name="order/complete"/>
+
+	<view-controller path="/mypage/modinfo" view-name="mypage/modinfo"/>
+	<view-controller path="/mypage/modpw" view-name="mypage/modpw"/>
+	<view-controller path="/mypage/mycoupon" view-name="mypage/mycoupon"/>
+	<view-controller path="/mypage/mypost" view-name="mypage/mypost"/>
+	<view-controller path="/mypage/myreview" view-name="mypage/myreview"/>
+	<view-controller path="/mypage/leave" view-name="mypage/leave"/>
+
+	<view-controller path="/board/page" view-name="board/page"/>
+	<view-controller path="/board/list" view-name="board/list"/>
+	<view-controller path="/board/form" view-name="board/form"/>
+	<!-- jsp파일 테스트 -->
 </beans:beans>

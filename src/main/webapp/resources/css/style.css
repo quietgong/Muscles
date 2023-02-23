@@ -1,0 +1,354 @@
+/* button, input */
+input[type="text"],
+input[type="date"] {
+    width: auto;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"],
+input[type="button"] {
+    width: auto;
+    background-color: #3f3ce3;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"],
+button[type="button"] {
+    width: auto;
+    background-color: #3f3ce3;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/* button, input */
+/* nav */
+ul.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li.nav {
+    display: inline-flex;
+}
+
+li.nav a, .dropbtn {
+    display: flex;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li.nav a:hover, .dropdown:hover .dropbtn {
+    background-color: #3f3ce3;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.nav-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.nav-item {
+    flex-direction: row;
+}
+i {
+    font-size: 2.5rem;
+}
+
+/* paging */
+ul.paging {
+    list-style:none;
+    float:left;
+    display:inline;
+}
+li.paging {
+    float:left;
+}
+li.paging a {
+    float:left;
+    padding:4px;
+    margin-right:3px;
+    width:15px;
+    color:#000;
+    border:1px solid #eee;
+    text-align:center;
+    text-decoration:none;
+}
+li.paging a:hover, li.paging a:focus {
+    color:#fff;
+    border:1px solid #3f3ce3;
+    background-color:#3f3ce3;
+}
+/* paging */
+
+/* sidebar */
+#side_bar_title {
+    background-color: rgb(178, 184, 182);
+    border: none;
+    text-align: center;
+    font-size: 20px;
+}
+#side_bar_content {
+    border: black 2px solid;
+    text-align: left;
+    font-size: 15px;
+}
+/* sidebar */
+
+/* table */
+#myTable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+}
+
+#myTable td,
+#myTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#myTable tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+#myTable th {
+    text-align: center;
+    background-color: #04aa6d;
+    color: white;
+}
+#myTable td {
+    text-align: center;
+}
+/* table */
+
+/* index */
+.index-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+}
+.index-item {
+    flex: 1 1 33%;
+}
+.index-item-description{
+    margin: auto;
+    width: 300px;
+}
+.index-item-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+/* footer */
+.footer-container {
+    margin-top: 300px;
+    background-color: rgb(35, 88, 134);
+    opacity: 0.8;
+    color: aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* admin */
+.admin-container {
+    flex-direction: row;
+    display: flex;
+
+}
+
+.admin-item:nth-child(1) {
+    flex-shrink: 0;
+    width: 130px;
+}
+.admin-item:nth-child(2) {
+    flex-grow: 1;
+}
+
+.admin-item-detail{
+    margin: auto;
+    margin-left: 120px;
+    width: 60%;
+    border: 2px dotted black;
+    display: flex;
+    flex-direction: column;
+}
+.admin-detail-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap:20%;
+}
+.admin-condition{
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+}
+
+/* login */
+.login-container {
+    margin: auto;
+    width: 800px;
+    height: 350px;
+    border-radius: 5px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.login-btn{
+    margin-top: 30px;
+    display: inline-block;
+    width:300px;
+}
+
+/* cart */
+.cart-container {
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+}
+.cart-item-head {
+    text-align: center;
+    flex: 1 1 20%;
+}
+.cart-item {
+    text-align: center;
+    flex: 1 1 20%;
+}
+
+/* product_detail */
+.product-detail-container {
+    display: flex;
+}
+.product-detail-item {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+.product-detail-item-detail {
+    justify-content: center;
+}
+.product-detail-review-container {
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+}
+.product-detail-review-item {
+    text-align: center;
+    flex: 1 1 20%;
+}
+.product-detail-faq-container {
+    flex-direction: row;
+    display: flex;
+    flex: 1 1 20%;
+    justify-content: space-between;
+}
+.product-detail-faq-item{
+    align-items: center;
+}
+.product-detail-modal-container {
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+}
+.product-detail-modal-item:nth-child(odd) {
+    flex-grow: 1;
+}
+.product-detail-modal-item:nth-child(even) {
+    flex-grow: 2;
+}
+
+/* product_list */
+.product-list-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.product-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* order, order_complete */
+.order-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.order-item-head {
+    text-align: center;
+    flex: 1 1 20%;
+}
+.order-item {
+    text-align: center;
+    flex: 1 1 20%;
+}
+
+/* mypage */
+.mypage-container {
+    justify-content: space-between;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+}
