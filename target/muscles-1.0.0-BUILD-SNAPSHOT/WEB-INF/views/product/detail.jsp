@@ -23,10 +23,12 @@
             <span style="font-size: small">리뷰 : 2,145개</span>
             <hr />
             <span style="font-size:25px; font-weight:bold;">수량</span>
-            <a href="#"><span style="font-size:25px; font-weight:bold;">-</span></a>
-            <span style="font-size:25px; font-weight:bold;">1</span>
-            <a href="#"><span style="font-size:25px; font-weight:bold;">+</span></a>
-            <span style="float: right">124,000원</span>
+
+            <a href="#" onclick='count("minus")'><span style="font-size: 25px; font-weight: bold">-</span></a>
+            <span id="qty" style="font-size: 25px; font-weight: bold">1</span>
+            <a href="#" onclick='count("plus")'><span style="font-size: 25px; font-weight: bold">+</span></a>
+            <span id="price" style="float: right">124,000원</span>
+
         </div>
         <div class="product-detail-item-detail" style="margin: auto">
             <input type="button" value="장바구니 담기" />
@@ -129,6 +131,30 @@
     </form>
 </dialog>
 <script>
+    // 수량변경
+    function count(type){
+        const price = document.getElementById("price")
+        const qty = document.getElementById("qty")
+        let number = qty.innerHTML
+        let amount = priceToInt(price)/parseInt(number)
+        if(type=="minus"){
+            if(number>1)
+                number = parseInt(number)-1
+        }
+        else{
+            number = parseInt(number)+1
+        }
+        qty.innerHTML=number
+
+        amount = parseInt(amount)*number
+        amount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원"; //10,000
+        price.innerHTML=amount
+    }
+    function priceToInt(price){
+        price = price.innerHTML.replace(/[^0-9]/g,"")
+        return price
+    }
+    // 모달창
     const button = document.querySelector("#modalBtn");
     const dialog = document.querySelector("dialog");
     button.addEventListener("click", () => {

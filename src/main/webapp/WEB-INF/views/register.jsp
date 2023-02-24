@@ -81,6 +81,13 @@
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+    /* 유효성 체크 */
+
+    // 비밀번호
+    let regPass = /^(?=.*[a-zA-Z])(?=.*[0-9]).{5,20}$/;
+    if (!regPass.test(password)) alert("영문, 숫자 조합으로 5-20자리 입력해주세요.")
+
+    /* 우편번호 API */
     function sample6_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {

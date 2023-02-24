@@ -20,16 +20,18 @@
 <div id="Wrapper" style="margin: auto; width: 70%;">
     <h3 style="text-align: left">쿠폰 등록</h3>
     <hr />
-    <label for="country">이벤트 선택</label>
-    <select id="country" name="country">
-        <option value="" selected>목록</option>
+    <label for="selectEvent">이벤트 선택</label>
+    <select id="selectEvent" onchange="changeEventSelect()">
+        <option value="" selected disabled>이벤트를 선택하세요</option>
         <option value="">추천인 입력 이벤트</option>
         <option value="">준비중...</option>
     </select>
     <br>
-    <input type="text" id="lname" name="lastname" placeholder="추천인 아이디를 입력하세요" />
+    <div id="inputRecommend" style="display: none">
+    <input type="text" placeholder="추천인 아이디를 입력하세요" />
     <br>
     <input type="button" value="등록" />
+    </div>
 
     <h3 style="text-align: left">사용가능 쿠폰</h3>
     <hr />
@@ -47,7 +49,12 @@
     <hr />
 
 </div>
+<script>
+    function changeEventSelect(){
+        document.getElementById("inputRecommend").style.display='block';
 
+    }
+</script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
 </body>
