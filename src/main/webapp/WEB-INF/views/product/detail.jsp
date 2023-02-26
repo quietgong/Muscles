@@ -135,8 +135,11 @@
     </form>
 </dialog>
 <script>
+<<<<<<< HEAD
     // 별점
     document.querySelector(`.star span`).style.width = `20%`;
+=======
+>>>>>>> e454462e76ba8ad6c3f73e09ba903d90f42effdd
     // 수량변경
     function count(type){
         const price = document.getElementById("price")
