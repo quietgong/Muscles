@@ -352,3 +352,27 @@ li.paging a:hover, li.paging a:focus {
     align-content: flex-start;
     flex-wrap: wrap;
 }
+
+/* star */
+.star, .modal-star {
+    position: relative;
+    font-size: 32px;
+    color: #ddd;
+}
+
+.star input, .modal-star input{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+}
+
+.star span, .modal-star span{
+    width: 0;
+    position: absolute;
+    left: 0;
+    color: red;
+    overflow: hidden;
+    pointer-events: none;
+}

@@ -84,8 +84,10 @@
           <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff" />
           <span style="font-weight: bold;">[카테고리 > 소분류]</span>
           <span>상품명</span>
-          <input style="margin: 20px 10px; float: right;" type="button" value="상세 내역" />
-          <input style="margin: 20px -5px; float: right;" type="button" value="주문 취소" />
+          <a href="<c:url value='/order/detail'/>">
+            <input style="margin: 20px 10px; float: right;" type="button" value="상세 내역" />
+          </a>
+          <input class="modalBtn" style="margin: 20px -5px; float: right;" type="button" value="리뷰 작성" />
           <table style="width: 30%; justify-self:flex-end;" id="myTable">
             <tr>
               <th>결제 상태</th>
@@ -100,8 +102,68 @@
       </div>
     </div>
   </div>
-
+</div>
+<!-- 모달 -->
+<dialog>
+  <h3 style="background-color: rgb(227, 217, 204)">리뷰 작성</h3>
+  <div class="modal-container">
+    <div class="modal-item">
+      <h3>상품명</h3>
+    </div>
+    <div class="modal-item">
+      <h3>상품명 123</h3>
+    </div>
+  </div>
+  <hr/>
+  <div class="modal-container">
+    <div class="modal-item">
+      <h3>별점</h3>
+    </div>
+    <div class="modal-item">
+      <div>
+                <span class="modal-star">★★★★★
+                    <span>★★★★★</span>
+                <input
+                        type="range"
+                        oninput="drawStar(this)"
+                        value="1"
+                        step="0.5"
+                        min="0"
+                        max="5"
+                />
+                </span>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <div class="modal-container">
+    <div class="modal-item">
+      <h3>후기</h3>
+    </div>
+    <div class="modal-item">
+      <textarea rows="4" cols="20"></textarea>
+    </div>
+  </div>
+  <form method="dialog">
+    <button type="submit">등록</button>
+    <button type="button">닫기</button>
+  </form>
+</dialog>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
+<script>
+  const drawStar = (target) => {
+    document.querySelector(`.star span`).style.width = "${"${target.value*20}%"}";
+  };
+  // 별점
+  const button = document.querySelector(".modalBtn");
+  const dialog = document.querySelector("dialog");
+  button.addEventListener("click", () => {
+    dialog.showModal();
+  });
+  dialog.addEventListener("close", () => {
+    alert("cancel");
+  });
+</script>
 </body>
 </html>

@@ -33,6 +33,9 @@
             <img src="http://via.placeholder.com/250?text=mypage">
         </a>
         <span style="font-weight: bold;">상품명</span>
+        <div>
+            <span class="star">★★★★★<span>★★★★★</span></span>
+        </div>
         <span style="font-weight: bold;">상품가격</span>
         <span style="font-weight: bold;">리뷰개수</span>
     </div>
@@ -91,5 +94,9 @@
 
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
+<script>
+    // 별점
+    document.querySelector(`.star span`).style.width = `20%`;
+</script>
 </body>
 </html>

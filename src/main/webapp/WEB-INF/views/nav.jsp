@@ -1,5 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<c:set var="welcomeUser" value="${pageContext.request.getSession(false)==null ? '' : '반갑습니다! '+=pageContext.request.session.getAttribute('id')}"/>
+<c:set var="loginOutLink" value="${welcomeUser=='' ? '/login' : '/logout'}"/>
+<c:set var="loginOut" value="${welcomeUser=='' ? '로그인' : '로그아웃'}"/>
+<c:set var="chatting" value="${welcomeUser=='' ? '' : '채팅상담'}"/>
+<c:set var="register" value="${pageContext.request.getSession(false)==null ? '회원가입' : ''}"/>
 <script src="https://kit.fontawesome.com/b663b9db7c.js" crossorigin="anonymous"></script>
 <div class="nav-container">
   <div class="nav-item" style="width: 150px; display: flex; justify-content: space-between">
@@ -36,13 +41,13 @@
   </div>
   <div class="nav-item" style="align-self: baseline">
     <div>
-          <span
-          ><a href="<c:url value='/login'/>">로그인</a> |
-            <a href="<c:url value='/register'/>">회원가입</a></span
-          >
-      <br/>
-      <span><a href="<c:url value='/logout'/>">로그아웃</a> | <a href="<c:url value='/chatting'/>">채팅상담</a></span>
+          <span>
+            <a href="<c:url value='${loginOutLink}'/>">${loginOut}</a> |
+            <a href="<c:url value='/register'/>">${register}</a>
+            <a href="<c:url value='/chatting'/>">${chatting}</a>
+          </span>
     </div>
+    <div><h2>${welcomeUser}</h2></div>
   </div>
 </div>
 <!-- Dropdown -->

@@ -35,7 +35,7 @@
         background-color: #f2f2f2;
         padding: 20px;
     }
-    #required{
+    .required{
         font-weight: bold;
         color: red;
     }
@@ -46,42 +46,49 @@
 
 <!-- 본문 -->
 <div>
-    <form action="/action_page.php">
-        <p><span id="required">*</span> 표시는 필수입력 항목입니다.</p>
-        <label for="id">아이디 <span id="required">*</span></label><br>
-        <input type="text" id="fname" name="firstname" placeholder="5자 이상 20자 이하">
-        <br>
-        <label for="pw1">비밀번호 <span id="required">*</span></label><br>
-        <input type="text" id="lname" name="lastname" placeholder="영문+숫자 조합의 5자 이상 20자 이하">
-        <br>
-        <label for="pw2">비밀번호 확인 <span id="required">*</span></label><br>
-        <input type="text" id="lname" name="lastname">
-        <br>
-        <label for="pw2">휴대폰 번호 <span id="required">*</span></label><br>
-        <input type="text" id="lname" name="lastname" placeholder="-를 제외하고 입력해주세요">
-        <br>
-        <label for="pw2">주소 <span id="required">*</span></label>
-        <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
-        <br>
-        <input type="text" id="sample6_postcode" placeholder="우편번호">
-        <input type="text" id="sample6_address" placeholder="주소"><br>
-        <input type="text" id="sample6_detailAddress" placeholder="상세주소">
-        <br>
-        <label for="pw2">생일</label><br>
-        <input type="date" name="birth" min="1900-01-01" max="2022-12-31" />
-        <br>
-        <label for="pw2">이메일</label><br>
-        <input type="text" id="lname" name="lastname">
-        <br>
-        <label for="pw2">추천인 ID</label><br>
-        <input type="text" id="lname" name="lastname" placeholder="10% 할인쿠폰을 드립니다">
-        <br>
+    <form action="<c:url value="/register"/>" name="registerForm" method="post">
+        <p><span class="required">*</span> 표시는 필수입력 항목입니다.</p>
+
+        <label>아이디 <span class="required">*</span></label><br>
+        <input type="text" name="id" placeholder="5자 이상 20자 이하"><br>
+
+        <label>비밀번호 <span class="required">*</span></label><br>
+        <input type="text" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
+
+        <label>비밀번호 확인 <span class="required">*</span></label><br>
+        <input type="text" id="password_check"><br>
+
+        <label>휴대폰 번호 <span class="required">*</span></label><br>
+        <input type="text" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
+
+        <label>주소 <span class="required">*</span></label>
+        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+        <input type="text" id="postcode" placeholder="우편번호">
+        <input type="text" name="address" id="address" placeholder="주소"><br>
+        <input type="text" name="address" id="detailAddress" placeholder="상세주소"><br>
+
+        <label>이메일</label><br>
+        <input type="text" name="email"><br>
+
+        <label>추천인 ID</label><br>
+        <input type="text" placeholder="10% 할인쿠폰을 드립니다"><br>
+
         <input type="submit" value="회원 가입">
     </form>
 </div>
+
+<!-- footer -->
+<%@ include file="footer.jsp" %>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-    function sample6_execDaumPostcode() {
+    /* 유효성 체크 */
+
+    // 비밀번호
+    let regPass = /^(?=.*[a-zA-Z])(?=.*[0-9]).{5,20}$/;
+    if (!regPass.test(password)) alert("영문, 숫자 조합으로 5-20자리 입력해주세요.")
+
+    /* 우편번호 API */
+    function execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -115,16 +122,13 @@
                     }
                 }
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('sample6_postcode').value = data.zonecode;
-                document.getElementById("sample6_address").value = addr+extraAddr;
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("address").value = addr+extraAddr;
                 // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("sample6_detailAddress").focus();
+                document.getElementById("detailAddress").focus();
             }
         }).open();
     }
 </script>
-
-<!-- footer -->
-<%@ include file="footer.jsp" %>
 </body>
 </html>

@@ -17,21 +17,20 @@
 <div class="login-container">
     <h2>Muscles</h2>
     <div id="msg">
-        <i class="fa fa-exclamation-circle"> 에러 메세지 출력</i>
+        <i class="fa fa-exclamation-circle">${param.msg}</i>
     </div>
     <div class="login-btn">
-        <input type="text" id="fname" name="firstname" placeholder="아이디" />
-        <br>
-        <input type="text" id="lname" name="lastname" placeholder="비밀번호" />
-        <br>
-        <a href="#">
-            <input type="submit" value="로그인"></a>
+        <form action="<c:url value="/login"/>" name="loginForm" method="post">
+        <input type="text" name="id" placeholder="아이디" /><br>
+        <input type="text" name="password" placeholder="비밀번호" /><br>
+        <input type="submit" value="로그인">
         <a href="register.html"><input type="submit" value="회원가입"></a>
-        <br>
-        <div class="login-btn">
+        <div>
             <input type="checkbox"name="rememberId" value="on">
             <span>아이디 기억</span>
         </div>
+        </form>
+        <br>
     </div>
 
 <!-- footer -->
