@@ -88,11 +88,7 @@
     if (!regPass.test(password)) alert("영문, 숫자 조합으로 5-20자리 입력해주세요.")
 
     /* 우편번호 API */
-<<<<<<< HEAD
     function execDaumPostcode() {
-=======
-    function sample6_execDaumPostcode() {
->>>>>>> e454462e76ba8ad6c3f73e09ba903d90f42effdd
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
