@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class PostDaoImpl implements PostDao {
 
 
     @Override
-    public int count() throws Exception {
-        return session.selectOne(namespace + "count");
+    public int count(String type) throws Exception {
+        return session.selectOne(namespace + "count", type);
     }
 
     @Override
@@ -49,18 +50,14 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public List<PostDto> selectAll(Integer offset, Integer pageSize) throws Exception {
-        return null;
-    }
-
-    @Override
     public PostDto select(Integer postNo) throws Exception {
         return session.selectOne(namespace + "select", postNo);
     }
 
     @Override
-    public List<PostDto> selectPage(Map map) throws Exception {
-        return null;
+    public List<PostDto> selectPage(PageHandler ph){
+        int limit = (ph.getPage()-1)*ph.getPageSize();
+        return session.selectList(namespace+"selectPage",limit);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.controller;
 
+import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.service.PostSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,18 @@ public class CommunityController {
     PostSerivce postSerivce;
 
     @GetMapping("/list")
-    public String list(HttpSession session, HttpServletRequest request, Model m) throws Exception {
+    public String list(Integer page, HttpSession session, HttpServletRequest request, Model m) throws Exception {
         if (session.getAttribute("id") == null)
             return "redirect:/login?toURL=" + request.getRequestURL();
 
-        List<PostDto> list = postSerivce.getList("community");
-        m.addAttribute("list", list);
+        int totalCnt = postSerivce.getCount("community");
+        PageHandler ph = new PageHandler(totalCnt, page);
+        List<PostDto> list = postSerivce.getListByPage(ph);
+        m.addAttribute("totalCnt",totalCnt);
+        m.addAttribute("ph",ph);
+        m.addAttribute("list",list);
+        System.out.println("totalCnt = " + totalCnt);
+        System.out.println("ph = " + ph);
         return "boardList";
     }
 

@@ -46,20 +46,25 @@
     <a href="<c:url value='/community/write'/>">
         <input type="button" class="search-button" value="글쓰기">
     </a>
-    <ul class="paging">
-        <li><a href="#"><</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">6</a></li>
-        <li><a href="#">7</a></li>
-        <li><a href="#">8</a></li>
-        <li><a href="#">9</a></li>
-        <li><a href="#">10</a></li>
-        <li><a href="#">></a></li>
-    </ul>
+    <div class="paging-container">
+        <c:if test="${totalCnt==null||totalCnt==0}">
+            <h1>게시물이 없습니다.</h1>
+        </c:if>
+
+        <c:if test="${totalCnt!=null&&totalCnt!=0}">
+        <ul class="paging">
+            <c:if test="${ph.showPrev}">
+            <li><a href="<c:url value='/community/list?page=${ph.beginPage-1}'/>">&lt</a></li>
+            </c:if>
+            <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
+            <li><a href="<c:url value='/community/list?page=${i}'/>">${i}</a></li>
+            </c:forEach>
+            <c:if test="${ph.showNext}">
+                <li><a href="<c:url value='/community/list?page=${ph.endPage+1}'/>">&gt</a></li>
+            </c:if>
+        </ul>
+        </c:if>
+    </div>
 </div>
 
 <!-- footer -->

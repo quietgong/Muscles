@@ -29,10 +29,11 @@ public class LoginController {
     @PostMapping("/login")
     public String login(String toURL, UserDto userDto, HttpServletResponse response, HttpServletRequest request, boolean rememberId) throws Exception {
         String msg = URLEncoder.encode("id 또는 pwd가 일치하지 않습니다.", "utf-8");
-        if (!loginCheck(userDto.getId(), userDto.getPassword())) { // 로그인이 안되면
-            return "redirect:/login?msg=" + msg;
+        if (!loginCheck(userDto.getId(), userDto.getPassword())) {
+            // 로그인에 실패 : 가고자 했던 경로를 URL에 저장한다.
+            return "redirect:/login?msg=" + msg +"&toURL=" + toURL;
         }
-        // 로그인 성공이 하면 세션과 쿠키를 생성한다.
+        // 로그인 성공 : 세션, 쿠키 생성
         HttpSession session = request.getSession();
         session.setAttribute("id", userDto.getId());
         Cookie cookie = new Cookie("id", userDto.getId());
@@ -41,7 +42,6 @@ public class LoginController {
         response.addCookie(cookie);
         // toURL이 빈 문자열이거나 홈으로, 그렇지 않으면 가고자했던 URL로 대입
         toURL = toURL == null || toURL.equals("") ? "/" : toURL;
-
         return "redirect:" + toURL;
     }
     private boolean loginCheck(String id, String pw) {

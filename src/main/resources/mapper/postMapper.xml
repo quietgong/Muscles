@@ -3,8 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kinaboot.muscles.dao.postMapper">
-    <select id="count" resultType="int">
-        SELECT count(*) FROM post
+    <select id="count" parameterType="String" resultType="int">
+        SELECT count(*) FROM post where type='${type}'
     </select>
     <delete id="deleteAll">
         DELETE from post
@@ -24,6 +24,12 @@
         SELECT * from post
         where postNo=#{postNo}
         order by createdDate desc, postNo desc
+    </select>
+
+    <select id="selectPage" parameterType="int" resultType="PostDto">
+        SELECT * from post
+        where type='community'
+        LIMIT #{limit}, 10;
     </select>
 
     <select id="selectAll" parameterType="String" resultType="PostDto">

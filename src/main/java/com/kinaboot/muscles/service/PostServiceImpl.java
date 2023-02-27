@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.PostDao;
+import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ public class PostServiceImpl implements PostSerivce{
     PostDao postDao;
 
     @Override
-    public int getCount() throws Exception {
-        return postDao.count();
+    public int getCount(String type) throws Exception {
+        return postDao.count(type);
     }
 
     @Override
@@ -46,4 +47,8 @@ public class PostServiceImpl implements PostSerivce{
         return postDao.delete(postNo, userId);
     }
 
+    @Override
+    public List<PostDto> getListByPage(PageHandler ph) throws Exception {
+        return postDao.selectPage(ph);
+    }
 }

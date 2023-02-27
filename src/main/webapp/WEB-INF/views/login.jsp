@@ -21,14 +21,15 @@
     </div>
     <div class="login-btn">
         <form action="<c:url value="/login"/>" name="loginForm" method="post">
-        <input type="text" name="id" placeholder="아이디" /><br>
+        <input type="text" name="id" value="${cookie.id.value}" placeholder="아이디" /><br>
         <input type="text" name="password" placeholder="비밀번호" /><br>
         <input type="submit" value="로그인">
         <a href="register.html"><input type="submit" value="회원가입"></a>
         <div>
-            <input type="checkbox"name="rememberId" value="on">
+            <input type="checkbox"name="rememberId" value="on" ${empty cookie.id.value?"":"checked"}>
             <span>아이디 기억</span>
         </div>
+            <input type="hidden" name="toURL" value="${param.toURL}">
         </form>
         <br>
     </div>

@@ -1,12 +1,13 @@
 package com.kinaboot.muscles.service;
 
+import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public interface PostSerivce {
-    int getCount() throws Exception;
+    int getCount(String type) throws Exception;
 
     List<PostDto> getList(String type) throws Exception;
 
@@ -18,4 +19,5 @@ public interface PostSerivce {
 
     int remove(Integer postNo, String userId) throws Exception;
 
+    List<PostDto> getListByPage(PageHandler ph) throws Exception;
 }

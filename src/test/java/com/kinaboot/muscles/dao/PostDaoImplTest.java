@@ -23,7 +23,7 @@ public class PostDaoImplTest {
             PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
             postDao.insert(postDto, option[i%2]);
         }
-        assert (postDao.count() == insertCnt);
+        assert (postDao.count(option[1]) == insertCnt);
     }
     @Test
     public void selectPostTest() throws Exception{
@@ -34,7 +34,7 @@ public class PostDaoImplTest {
             PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
             postDao.insert(postDto, option[i%2]);
         }
-        assert (postDao.count() == insertCnt);
+        assert (postDao.count("community") == insertCnt);
     }
     @Test
     public void updatePostTest() throws Exception{
@@ -45,7 +45,7 @@ public class PostDaoImplTest {
             PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
             postDao.insert(postDto, option[i%2]);
         }
-        assert (postDao.count() == insertCnt);
+        assert (postDao.count("community") == insertCnt);
     }
     @Test
     public void deletePostTest() throws Exception{
@@ -56,7 +56,7 @@ public class PostDaoImplTest {
             PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
             postDao.insert(postDto, option[i%2]);
         }
-        assert (postDao.count() == insertCnt);
+        assert (postDao.count("community") == insertCnt);
     }
 
 }
