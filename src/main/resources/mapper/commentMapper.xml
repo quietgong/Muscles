@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kinaboot.muscles.dao.commentMapper">
+    <select id="count" resultType="int">
+        SELECT count(*) FROM comment
+    </select>
+
+    <select id="select" parameterType="int" resultType="CommentDto">
+        SELECT * from comment
+        where commentNo=#{commentNo}
+        order by createdDate desc, commentNo desc
+    </select>
+
+    <select id="selectAll" parameterType="int" resultType="CommentDto">
+        SELECT *
+        from comment
+        where postNo=#{postNo}
+    </select>
+
+    <insert id="insert" parameterType="commentDto">
+        insert into comment
+            (postNo, content,userId, createdDate)
+        values
+            (#{postNo},#{content}, #{userId}, now())
+    </insert>
+
+    <update id="update" parameterType="CommentDto">
+        update comment
+        set content = #{content}
+          , modDate = now()
+        where commentNo = #{commentNo}
+          and userId = #{userId}
+    </update>
+    <delete id="deleteAll">
+        DELETE from comment
+    </delete>
+    <delete id="delete" parameterType="map">
+        DELETE from comment
+        where commentNo=#{commentNo}
+          and postNo=#{postNo}
+          and userId=#{userId}
+    </delete>
+
+</mapper>

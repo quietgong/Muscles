@@ -7,20 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
 </head>
 <body>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
 
 <!-- 본문 -->
-<div id="Wrapper">
-    <div class="search-container">
-        <form action="" class="search-form" method="get">
-            <input type="text" name="keyword" class="search-input" type="text" value="" placeholder="제목을 입력해주세요">
-            <input type="submit" class="search-button" value="검색">
-        </form>
-    </div>
+<div class="search-container" style="text-align: center;">
+    <form action="" class="search-form" method="get">
+        <input type="text" name="keyword" class="search-input" type="text" value="" placeholder="제목을 입력해주세요">
+        <input type="submit" class="search-button" value="검색">
+    </form>
 
 
     <table id="myTable" style="margin: auto;">
@@ -28,27 +26,26 @@
             <th>번호</th>
             <th>제목</th>
             <th>작성자</th>
+            <th>조회수</th>
             <th>작성일자</th>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>TITLE</td>
-            <td>TEST1</td>
-            <td>15:30</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>TITLE</td>
-            <td>TEST2</td>
-            <td>2022-03-20</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>TITLE</td>
-            <td>TEST2</td>
-            <td>2022-02-20</td>
-        </tr>
+        <c:forEach var="postDto" items="${list}">
+            <tr>
+                <td class="no">${postDto.postNo}</td>
+                <td class="title">
+                    <a href="<c:url value="/community/read?postNo=${postDto.postNo}"/>">
+                            ${postDto.title}
+                    </a>
+                </td>
+                <td class="writer">${postDto.userId}</td>
+                <td class="viewCnt">${postDto.viewCnt}</td>
+                <td colspan="regdate">${postDto.createdDate}</td>
+            </tr>
+        </c:forEach>
     </table>
+    <a href="<c:url value='/community/write'/>">
+        <input type="button" class="search-button" value="글쓰기">
+    </a>
     <ul class="paging">
         <li><a href="#"><</a></li>
         <li><a href="#">1</a></li>

@@ -17,12 +17,22 @@ public class UserDaoImplTest  {
     @Autowired
     UserDao userDao;
     @Test
-    public void testSelectUser() {
+    public void insertUserTest() {
         int rowCnt = userDao.searchIdCnt("admin");
         System.out.println("rowCnt = " + rowCnt);
     }
     @Test
-    public void insertUserTest() {
+    public void selectUserTest() {
+        int rowCnt = userDao.searchIdCnt("admin");
+        System.out.println("rowCnt = " + rowCnt);
+    }@Test
+    public void updateUserTest() {
+        int rowCnt = userDao.searchIdCnt("admin");
+        System.out.println("rowCnt = " + rowCnt);
+    }
+
+    @Test
+    public void deleteUserTest() {
         deleteAll();
 
         for (int i = 1; i <= 20 ; i++) {

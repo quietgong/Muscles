@@ -22,18 +22,19 @@
 </style>
 <body>
 <!-- nav -->
-<%@ include file="../nav.jsp" %>
+<%@ include file="nav.jsp" %>
 
 <!-- 본문 -->
 <body>
+<form action="<c:url value='/community/write'/>" name="wrtForm" method="post">
 <div class="container">
     <div class="item">
             <span>제목
-                <input type="text" placeholder="제목을 입력해주세요">
+                <input name="title" type="text" placeholder="제목을 입력해주세요">
             </span>
     </div>
     <div class="item">
-        <textarea rows="7" cols="80" placeholder="내용을 입력해주세요"></textarea>
+        <textarea name="content" rows="7" cols="80" placeholder="내용을 입력해주세요"></textarea>
     </div>
     <div class="item">
         <input type="submit" value="완료">
@@ -41,8 +42,8 @@
         <input type="submit" value="취소">
     </div>
 </div>
-
+</form>
 <!-- footer -->
-<%@ include file="../footer.jsp" %>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

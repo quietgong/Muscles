@@ -9,6 +9,12 @@
     <title>Home</title>
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
 </head>
+<style>
+    img{
+        width: 400px;
+        height: 300px;
+    }
+</style>
 <body>
 <%@ include file="nav.jsp" %>
 <!-- 카테고리별 상품 시작 -->
@@ -17,14 +23,14 @@
 <div class="index-container">
     <div class="index-item">
         <a href="<c:url value='/product/list'/>">
-            <img src="http://via.placeholder.com/400X300/000000/ffffff"/>
+            <img src="<c:url value='/img/cardio.jpg'/>">
         </a>
     </div>
     <div class="index-item">
-        <img src="http://via.placeholder.com/400X300/000000/ffffff"/>
+            <img src="<c:url value='/img/strength.jpg'/>">
     </div>
     <div class="index-item">
-        <img src="http://via.placeholder.com/400X300/000000/ffffff"/>
+            <img src="<c:url value='/img/etc.jpg'/>">
     </div>
 </div>
 <div class="index-container">
@@ -44,6 +50,7 @@
 <h3>베스트 상품</h3>
 <hr/>
 <div class="index-container">
+    <!-- 반복부 -->
     <div class="index-item">
         <div class="index-item-detail">
             <div>
@@ -65,6 +72,7 @@
             <span>리뷰 개수 : {}개</span>
         </div>
     </div>
+    <!-- 반복부 -->
     <div class="index-item">
         <div class="index-item-detail">
             <div>

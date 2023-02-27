@@ -5,6 +5,8 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="UserDto" type="com.kinaboot.muscles.domain.UserDto"/>
+        <typeAlias alias="PostDto" type="com.kinaboot.muscles.domain.PostDto"/>
+        <typeAlias alias="CommentDto" type="com.kinaboot.muscles.domain.CommentDto"/>
     </typeAliases>
 </configuration>
 
