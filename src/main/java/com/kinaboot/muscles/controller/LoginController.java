@@ -45,7 +45,7 @@ public class LoginController {
         return "redirect:" + toURL;
     }
     private boolean loginCheck(String id, String pw) {
-        if (userDao.searchIdCnt(id) != 0) {
+        if (userDao.selectUser(id) != null) {
             UserDto userDto = userDao.selectUser(id);
             return userDto.getPassword().equals(pw);
         }

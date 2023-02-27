@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 public interface UserDao {
 
-    int searchIdCnt(String id);
     UserDto selectUser(String id);
 
     int insertUser(UserDto userDto);

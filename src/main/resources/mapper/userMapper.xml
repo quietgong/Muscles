@@ -6,15 +6,14 @@
     <select id="count" resultType="int">
         SELECT count(*) FROM user
     </select>
-    <select id="searchIdCnt" resultType="int">
-        SELECT count(*) FROM user where id=#{id}
-    </select>
+
 
     <select id="selectUser" resultType="UserDto">
         SELECT *
         FROM user
         where id = #{id}
     </select>
+
 
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user

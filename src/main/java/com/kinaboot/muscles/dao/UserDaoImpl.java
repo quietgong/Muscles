@@ -17,11 +17,6 @@ public class UserDaoImpl implements UserDao{
         return session.delete(namespace + "deleteAllUser");
     }
     @Override
-    public int searchIdCnt(String id) {
-        return session.selectOne(namespace+"searchIdCnt", id);
-    }
-
-    @Override
     public int count() {
         return session.selectOne(namespace + "count");
     }
