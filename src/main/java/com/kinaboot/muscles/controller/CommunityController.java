@@ -26,6 +26,7 @@ public class CommunityController {
             return "redirect:/login?toURL=" + request.getRequestURL();
 
         int totalCnt = postSerivce.getCount("community");
+        if(page==null) page=1;
         PageHandler ph = new PageHandler(totalCnt, page);
         List<PostDto> list = postSerivce.getListByPage(ph);
         m.addAttribute("totalCnt",totalCnt);

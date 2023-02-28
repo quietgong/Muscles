@@ -28,7 +28,7 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public int delete(Integer commentNo, Integer postNo, String userId) throws Exception {
         Map map = new HashMap<>();
-        map.put("commetNo", commentNo);
+        map.put("commentNo", commentNo);
         map.put("postNo", postNo);
         map.put("userId", userId);
         return session.delete(namespace + "delete", map);

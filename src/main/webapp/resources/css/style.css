@@ -101,23 +101,18 @@ i {
 /* paging */
 ul.paging {
     list-style:none;
-    float:left;
-    display:inline;
+    display: flex;
+    justify-content: center;
 }
-li.paging {
-    float:left;
-}
-li.paging a {
-    float:left;
+ul.paging li a {
     padding:4px;
     margin-right:3px;
-    width:15px;
     color:#000;
     border:1px solid #eee;
     text-align:center;
     text-decoration:none;
 }
-li.paging a:hover, li.paging a:focus {
+ul.paging li a:hover, ul.paging li a:focus {
     color:#fff;
     border:1px solid #3f3ce3;
     background-color:#3f3ce3;

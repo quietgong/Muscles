@@ -13,31 +13,16 @@
 <style>
     .container {
         margin: auto;
-        width: 30%;
         align-items: center;
-        justify-content: space-between;
-        display: flex;
-    }
-
-    .item {
         display: flex;
         flex-direction: column;
     }
 
-    .item-btn {
-        align-self: flex-end;
-        justify-content: flex-end;
-    }
-
-    .item-comment {
+    .item {
+        display: flex;
         flex-direction: row;
-        justify-content: center;
-        align-items: center;
     }
 
-    hr {
-        width: 50%;
-    }
 </style>
 <body>
 <!-- nav -->
@@ -45,60 +30,56 @@
 
 <!-- 본문 -->
 <h1 id="mode" style="display: none">수정 모드</h1>
-<hr/>
 <div class="container">
-    <form id="form">
-        <p style="display: none">${postDto.postNo}</p>
-        <input type="text" name="title" readonly value="${postDto.title}">
-        <p>${postDto.userId} | ${postDto.createdDate}</p>
-</div>
-<hr/>
-<div class="container">
-    <input type="text" name="content" readonly value="${postDto.content}">
-    </form>
-</div>
-<hr/>
-<div class="container">
-    <div class="item-btn">
-        <span>작성된 댓글 (1개)</span>
-        <input type="button" value="작성"/>
-        <input type="button" value="취소"/>
+    <div class="item">
+        <form id="form">
+            <p style="display: none">${postDto.postNo}</p>
+            <input type="text" name="title" readonly value="${postDto.title}">
+            <span>${postDto.userId} | ${postDto.createdDate}</span>
+            <hr/>
+            <div class="container">
+                <input type="text" name="content" readonly value="${postDto.content}">
+            </div>
+        </form>
     </div>
-</div>
-<hr/>
-<div class="container">
-    <div class="item-comment">
-        <textarea rows="4" cols="50"></textarea><br>
-        <input type="submit" value="등록">
-        <p>
-            └ {작성자 ID 표기} | {작성일 표기}
-            {내용표기}
-            안녕하세요! 고객님 본인인증(또는 상점인증)이 완료된 고객님만 이용할 수 있는 서비스입니다. 확인 결과 고객님은 아직 본인인증 절차가 진행되지 않습니다. 본인인증 후 진행해 주세요!
-        </p>
+    <div class="item">
+        <div>
+            <input id="inputComment" type="text" placeholder="입력">
+        </div>
+        <div>
+            <button id="createComment" type="button">댓글 등록</button>
+        </div>
+        <div>
+            <button id="modifyComment" type="button" style="display: none">댓글 수정</button>
+        </div>
     </div>
-</div>
-<hr/>
-<div class="container">
-    <div class="item-btn">
-        <a href="<c:url value='/community/list'/>">
-            <input type="button" value="목록"/>
-        </a>
-        <input id="modifyBtn" type="button" value="수정"/>
-        <input id="removeBtn" type="button" value="삭제"/>
+    <div id="item">
+        <div id="commentList">
+        </div>
+    </div>
+    <div class="item">
+        <div class="item-btn">
+            <a href="<c:url value='/community/list'/>">
+                <input type="button" value="목록"/>
+            </a>
+            <input id="modifyPost" type="button" value="수정"/>
+            <input id="removePost" type="button" value="삭제"/>
+        </div>
     </div>
 </div>
 
 <!-- footer -->
 <%@ include file="footer.jsp" %>
 <script>
+    // 글쓰기 수정, 삭제
     $(document).ready(function () {
-        $("#modifyBtn").on("click", function () {
+        $("#modifyPost").on("click", function () {
             $("#mode").show();
             let isReadOnly = $("input[name=content]").attr("readonly");
             // readonly가 체크되어있으면 (읽기 모드)
             if (isReadOnly == "readonly") {
                 // 1. 수정버튼을 등록버튼으로 바꾼다.
-                $("#modifyBtn").attr("value","등록");
+                $("#modifyPost").attr("value", "등록");
                 // 2. 제목, 내용의 readonly 태그를 해제한다.
                 $("input[name=content]").attr("readonly", false);
                 $("input[name=title]").attr("readonly", false);
@@ -112,7 +93,7 @@
                 form.submit();
             }
         });
-        $("#removeBtn").on("click", function () {
+        $("#removePost").on("click", function () {
             if (!confirm("정말로 삭제하시겠습니까?")) return;
             let form = $("#form");
             form.attr("action", "<c:url value="/community/remove?postNo=${postDto.postNo}"/>")
@@ -120,6 +101,131 @@
             form.submit();
         });
     });
+</script>
+<script>
+    // 댓글 기능
+    let postNo = ${postDto.postNo}
+        // 댓글 불러오기
+        loadComments()
+
+    function loadComments() {
+        $.ajax({
+            type: "GET",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/comments?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                $("#commentList").html(toHtml(res))
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    }
+
+    // 댓글 생성
+    $("#createComment").on("click", function () {
+        let content = $("#inputComment").val()
+        $.ajax({
+            type: "POST",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/comments?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            data: JSON.stringify({content: content}),
+            success: function () {
+                loadComments()
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+        $("#inputComment").val("")
+    })
+    // 댓글 삭제
+    $("#commentList").on("click", ".delBtn", function () {
+        let commentNo = $(this).parent().attr('data-commentno')
+        $.ajax({
+            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/comments/" + commentNo + "?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                loadComments()
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    })
+
+    // 댓글 수정
+    $("#commentList").on("click", ".modBtn", function () {
+        let commentNo = $(this).parent().attr('data-commentNo')
+        $("#createComment").hide()
+        $("#modifyComment").show()
+        let content = $(this).parent().children('.comment').text()
+        $("#inputComment").val(content)
+
+        $("#modifyComment").on("click", function () {
+            let content = $("#inputComment").val()
+            let data = {content: content}
+
+            $.ajax({
+                type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
+                url: "/muscles/comments/" + commentNo + "?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify(data),
+                success: function () {
+                    loadComments()
+                },
+                error: function () {
+                    console.log("통신 실패")
+                }
+            })
+            $("#createComment").show()
+            $("#modifyComment").hide()
+            $("#inputComment").val("")
+        })
+    })
+
+    let toHtml = function (comments) {
+        let tmp = "";
+        comments.forEach(function (comment) {
+            tmp += '<div data-commentNo=' + comment.commentNo
+            tmp += ' data-postNo=' + comment.postNo + '>'
+            tmp += ' <span style="font-weight: bold" class="commenter">' + "└ " + comment.userId + '</span>'
+            if (comment.createdDate === comment.modDate)
+                tmp += ' <span style="font-weight: bold" class="commentDate">' + JavaDateToJavaScriptDate(comment.createdDate)
+            else
+                tmp += ' |  <span class="commentDate">' + JavaDateToJavaScriptDate(comment.modDate) + "(수정됨)"
+            tmp += '</span>'
+            tmp += '<br>'
+            tmp += ' <span style="font-style: italic" class="comment">' + comment.content + '</span>'
+            tmp += '<button class="delBtn">삭제</button>'
+            tmp += '<button class="modBtn">수정</button>'
+            tmp += '</div>'
+        })
+        return tmp;
+    }
+
+    function JavaDateToJavaScriptDate(source) {
+        const date = new Date(source);
+        const year = date.getFullYear();
+        const month = leftPad(date.getMonth() + 1);
+        const day = leftPad(date.getDate());
+        return [year, month, day].join('-');
+    }
+
+    function leftPad(value) {
+        if (Number(value) >= 10)
+            return value;
+        return "0" + value;
+    }
 </script>
 </body>
 </html>

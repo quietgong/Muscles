@@ -19,8 +19,6 @@
         <input type="text" name="keyword" class="search-input" type="text" value="" placeholder="제목을 입력해주세요">
         <input type="submit" class="search-button" value="검색">
     </form>
-
-
     <table id="myTable" style="margin: auto;">
         <tr>
             <th>번호</th>
@@ -46,25 +44,23 @@
     <a href="<c:url value='/community/write'/>">
         <input type="button" class="search-button" value="글쓰기">
     </a>
-    <div class="paging-container">
-        <c:if test="${totalCnt==null||totalCnt==0}">
-            <h1>게시물이 없습니다.</h1>
+    <br>
+    <c:if test="${totalCnt==null||totalCnt==0}">
+        <h1>게시물이 없습니다.</h1>
+    </c:if>
+    <c:if test="${totalCnt!=null&&totalCnt!=0}">
+    <ul class="paging">
+        <c:if test="${ph.showPrev}">
+        <li><a href="<c:url value='/community/list?page=${ph.beginPage-1}'/>">&lt</a></li>
         </c:if>
-
-        <c:if test="${totalCnt!=null&&totalCnt!=0}">
-        <ul class="paging">
-            <c:if test="${ph.showPrev}">
-            <li><a href="<c:url value='/community/list?page=${ph.beginPage-1}'/>">&lt</a></li>
-            </c:if>
-            <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-            <li><a href="<c:url value='/community/list?page=${i}'/>">${i}</a></li>
-            </c:forEach>
-            <c:if test="${ph.showNext}">
-                <li><a href="<c:url value='/community/list?page=${ph.endPage+1}'/>">&gt</a></li>
-            </c:if>
-        </ul>
+        <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
+        <li><a href="<c:url value='/community/list?page=${i}'/>">${i}</a></li>
+        </c:forEach>
+        <c:if test="${ph.showNext}">
+            <li><a href="<c:url value='/community/list?page=${ph.endPage+1}'/>">&gt</a></li>
         </c:if>
-    </div>
+    </ul>
+    </c:if>
 </div>
 
 <!-- footer -->
