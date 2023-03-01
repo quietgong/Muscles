@@ -59,7 +59,7 @@
     </div>
     <div class="item">
         <div class="item-btn">
-            <a href="<c:url value='/community/list'/>">
+            <a href="<c:url value='/community/list?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>">
                 <input type="button" value="목록"/>
             </a>
             <input id="modifyPost" type="button" value="수정"/>

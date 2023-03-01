@@ -2,6 +2,7 @@ package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
+import com.kinaboot.muscles.domain.SearchCondition;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,10 +29,14 @@ public interface PostDao {
     List<PostDto> selectPage(PageHandler ph) throws Exception // List<E> selectList(String statement, Object parameter)
     ;
 
+    List<PostDto> searchResult(SearchCondition sc) throws Exception // List<E> selectList(String statement, Object parameter)
+    ;
+
+    int searchResultCnt(SearchCondition sc) throws Exception;
+
     int update(PostDto dto) throws Exception // int update(String statement, Object parameter)
     ;
 
     int increaseViewCnt(Integer postNo) throws Exception // int update(String statement, Object parameter)
     ;
-
 }

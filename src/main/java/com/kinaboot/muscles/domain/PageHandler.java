@@ -1,6 +1,16 @@
 package com.kinaboot.muscles.domain;
 
 public class PageHandler {
+    private SearchCondition sc;
+
+    public SearchCondition getSc() {
+        return sc;
+    }
+
+    public void setSc(SearchCondition sc) {
+        this.sc = sc;
+    }
+
     int totalPage;
     int totalCnt;
     int page;
@@ -14,22 +24,22 @@ public class PageHandler {
     public PageHandler() {
     }
 
-    public PageHandler(int totalCnt, int page) {
+    public PageHandler(int totalCnt, SearchCondition sc) {
         this.totalCnt = totalCnt;
-        this.page = page;
+        this.sc = sc;
 
-        doPaging(totalCnt, page);
+        doPaging(totalCnt, sc);
     }
 
     public PageHandler(int totalCnt) {
         this.totalCnt=totalCnt;
     }
 
-    void doPaging(int totalCnt, int page) {
+    void doPaging(int totalCnt, SearchCondition sc) {
         this.totalCnt = totalCnt;
-        this.page=page;
+        this.page=sc.getPage();
         totalPage = (int) Math.ceil((double) totalCnt / this.getPageSize());
-        beginPage = this.getPage() / (navSize + 1) * navSize + 1;
+        beginPage = sc.getPage() / (navSize + 1) * navSize + 1;
         endPage = Math.min(beginPage + this.getPageSize() - 1, totalPage);
         showPrev = beginPage != 1;
         showNext = endPage != totalPage;
@@ -60,14 +70,6 @@ public class PageHandler {
 
     public void setTotalCnt(int totalCnt) {
         this.totalCnt = totalCnt;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
     }
 
     public int getNavSize() {

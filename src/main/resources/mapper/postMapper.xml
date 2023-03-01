@@ -3,9 +3,56 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kinaboot.muscles.dao.postMapper">
+
     <select id="count" parameterType="String" resultType="int">
         SELECT count(*) FROM post where type='${type}'
     </select>
+    <select id="select" parameterType="int" resultType="PostDto">
+        SELECT * from post
+        where postNo=#{postNo}
+        order by createdDate desc, postNo desc
+    </select>
+
+    <select id="selectPage" parameterType="int" resultType="PostDto">
+        SELECT * from post
+        where type='community'
+            LIMIT #{limit}, 10;
+    </select>
+
+    <select id="selectAll" parameterType="String" resultType="PostDto">
+        SELECT *
+        from post
+        where type='${type}'
+    </select>
+    <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*)
+        FROM POST
+        WHERE type=#{type}
+        <include refid="optionCondition"/>
+    </select>
+
+    <select id="searchResult" parameterType="SearchCondition" resultType="PostDto">
+        SELECT *
+        FROM POST
+        WHERE type=#{type}
+        <include refid="optionCondition"/>
+        LIMIT #{offset}, 10;
+    </select>
+
+    <sql id="optionCondition">
+        <choose>
+            <when test='option=="T"'>
+                AND title like concat('%',#{keyword},'%')
+            </when>
+            <when test='option=="A"'>
+                AND userId like concat('%',#{keyword},'%')
+            </when>
+            <otherwise>
+                AND (title like concat('%',#{keyword},'%')
+                OR userId like concat('%',#{keyword},'%'))
+            </otherwise>
+        </choose>
+    </sql>
     <delete id="deleteAll">
         DELETE from post
     </delete>
@@ -19,25 +66,6 @@
         values
             ('${type}',#{postDto.title}, #{postDto.content}, #{postDto.userId}, now())
     </insert>
-
-    <select id="select" parameterType="int" resultType="PostDto">
-        SELECT * from post
-        where postNo=#{postNo}
-        order by createdDate desc, postNo desc
-    </select>
-
-    <select id="selectPage" parameterType="int" resultType="PostDto">
-        SELECT * from post
-        where type='community'
-        LIMIT #{limit}, 10;
-    </select>
-
-    <select id="selectAll" parameterType="String" resultType="PostDto">
-        SELECT *
-        from post
-        where type='${type}'
-    </select>
-
 
     <update id="update" parameterType="PostDto">
         update post

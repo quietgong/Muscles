@@ -16,7 +16,12 @@
 <!-- 본문 -->
 <div class="search-container" style="text-align: center;">
     <form action="" class="search-form" method="get">
-        <input type="text" name="keyword" class="search-input" type="text" value="" placeholder="제목을 입력해주세요">
+        <select name="option">
+            <option value="W" ${ph.sc.option=='W' || ph.sc.option=='' ? "selected" : ""}>제목+작성자</option>
+            <option value="T" ${ph.sc.option=='T' ? "selected" : ""}>제목</option>
+            <option value="A" ${ph.sc.option=='A' ? "selected" : ""}>작성자</option>
+        </select>
+        <input type="text" name="keyword" class="search-input" type="text" value="${ph.sc.keyword}" placeholder="내용을 입력해주세요">
         <input type="submit" class="search-button" value="검색">
     </form>
     <table id="myTable" style="margin: auto;">
@@ -31,9 +36,7 @@
             <tr>
                 <td class="no">${postDto.postNo}</td>
                 <td class="title">
-                    <a href="<c:url value="/community/read?postNo=${postDto.postNo}"/>">
-                            ${postDto.title}
-                    </a>
+                    <a href="<c:url value="/community/read${ph.sc.queryString}&postNo=${postDto.postNo}"/>">${postDto.title}</a>
                 </td>
                 <td class="writer">${postDto.userId}</td>
                 <td class="viewCnt">${postDto.viewCnt}</td>
@@ -51,13 +54,13 @@
     <c:if test="${totalCnt!=null&&totalCnt!=0}">
     <ul class="paging">
         <c:if test="${ph.showPrev}">
-        <li><a href="<c:url value='/community/list?page=${ph.beginPage-1}'/>">&lt</a></li>
+        <li><a href="<c:url value='/community/list${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt</a></li>
         </c:if>
         <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-        <li><a href="<c:url value='/community/list?page=${i}'/>">${i}</a></li>
+        <li><a href="<c:url value='/community/list${ph.sc.getQueryString(i)}'/>">${i}</a></li>
         </c:forEach>
         <c:if test="${ph.showNext}">
-            <li><a href="<c:url value='/community/list?page=${ph.endPage+1}'/>">&gt</a></li>
+            <li><a href="<c:url value='/community/list${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt</a></li>
         </c:if>
     </ul>
     </c:if>

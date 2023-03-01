@@ -2,6 +2,7 @@ package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
+import com.kinaboot.muscles.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,8 +41,17 @@ public class PostDaoImpl implements PostDao {
         Map map = new HashMap();
         map.put("postDto", postDto);
         map.put("type", type);
-        session.insert(namespace + "insert", map);
-        return 0;
+        return session.insert(namespace + "insert", map);
+    }
+
+    @Override
+    public List<PostDto> searchResult(SearchCondition sc) throws Exception {
+        return session.selectList(namespace+"searchResult", sc);
+    }
+
+    @Override
+    public int searchResultCnt(SearchCondition sc) throws Exception {
+        return session.selectOne(namespace + "searchResultCnt",sc);
     }
 
     @Override
@@ -56,7 +66,7 @@ public class PostDaoImpl implements PostDao {
 
     @Override
     public List<PostDto> selectPage(PageHandler ph){
-        int limit = (ph.getPage()-1)*ph.getPageSize();
+        int limit = (ph.getSc().getPage()-1)*ph.getPageSize();
         return session.selectList(namespace+"selectPage",limit);
     }
 

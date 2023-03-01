@@ -2,6 +2,7 @@ package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
+import com.kinaboot.muscles.domain.SearchCondition;
 import com.kinaboot.muscles.service.PostSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,19 +22,20 @@ public class CommunityController {
     PostSerivce postSerivce;
 
     @GetMapping("/list")
-    public String list(Integer page, HttpSession session, HttpServletRequest request, Model m) throws Exception {
+    public String list(SearchCondition sc, HttpSession session, HttpServletRequest request, Model m) throws Exception {
         if (session.getAttribute("id") == null)
             return "redirect:/login?toURL=" + request.getRequestURL();
+        sc.setType("community");
+        System.out.println("sc = " + sc);
+        System.out.println(sc.getQueryString(1));
 
-        int totalCnt = postSerivce.getCount("community");
-        if(page==null) page=1;
-        PageHandler ph = new PageHandler(totalCnt, page);
-        List<PostDto> list = postSerivce.getListByPage(ph);
+        int totalCnt = postSerivce.getCountBySearch(sc);
+        PageHandler ph = new PageHandler(totalCnt, sc);
+        List<PostDto> list = postSerivce.getListBySearch(sc);
+
         m.addAttribute("totalCnt",totalCnt);
         m.addAttribute("ph",ph);
         m.addAttribute("list",list);
-        System.out.println("totalCnt = " + totalCnt);
-        System.out.println("ph = " + ph);
         return "boardList";
     }
 
@@ -51,11 +53,12 @@ public class CommunityController {
     }
 
     @GetMapping("/read")
-    public String read(Integer postNo, Model m) throws Exception {
+    public String read(Integer page, Integer postNo, Model m) throws Exception {
         System.out.println("postNo = " + postNo);
         PostDto postDto = postSerivce.read(postNo);
         System.out.println("postDto = " + postDto);
         m.addAttribute(postDto);
+        m.addAttribute(page);
         return "board";
     }
 

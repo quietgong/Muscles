@@ -11,7 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class PageHandlerTest{
     @Test
     public void totalPageTest(){
-        PageHandler ph = new PageHandler(140, 11);
+        SearchCondition sc = new SearchCondition();
+        PageHandler ph = new PageHandler(140, sc);
         ph.print();
         System.out.println("ph = " + ph);
         assert (ph.getTotalPage()==14);
