@@ -7,13 +7,17 @@
         SELECT count(*) FROM user
     </select>
 
-
     <select id="selectUser" resultType="UserDto">
         SELECT *
         FROM user
         where id = #{id}
     </select>
-
+    <update id="updateUser" parameterType="map">
+        UPDATE USER
+        SET EMAIL = #{userEmail}
+          , PHONE = #{userPhone}
+        WHERE ID = #{userId}
+    </update>
 
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user
@@ -22,7 +26,22 @@
             (#{id},#{password},#{email},#{phone},now(),#{address},0,now())
     </insert>
 
+    <insert id="insertLeave" parameterType="map">
+        INSERT INTO quit
+            (userId,type1,type2,type3,opinion)
+        values
+            (#{userId},#{type1},#{type2},#{type3},#{opinion})
+    </insert>
+
     <delete id="deleteAllUser">
         DELETE FROM USER
     </delete>
+    <delete id="deleteUser" parameterType="String">
+        DELETE FROM USER
+        WHERE ID='${userId}';
+    </delete>
+    <update id="updateExpiredDate" parameterType="String">
+        UPDATE USER
+        SET expired_date = now();
+    </update>
 </mapper>

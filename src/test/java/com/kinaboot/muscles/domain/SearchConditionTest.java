@@ -19,7 +19,7 @@ public class SearchConditionTest {
     @Test
     public void searchResultCntTest() throws Exception {
         // title1 : 12
-        SearchCondition sc = new SearchCondition("T", "title1");
+        SearchCondition sc = new SearchCondition(1, "T", "title1");
         System.out.println("sc = " + sc);
         int rowCnt = postDao.searchResultCnt(sc);
         assert (rowCnt==12);
@@ -27,7 +27,7 @@ public class SearchConditionTest {
     @Test
     public void searchResultTest() throws Exception {
         // title1 : 12
-        SearchCondition sc = new SearchCondition("T", "title1");
+        SearchCondition sc = new SearchCondition(1,"T", "title1");
         List<PostDto> list = postDao.searchResult(sc);
         System.out.println("list = " + list);
     }

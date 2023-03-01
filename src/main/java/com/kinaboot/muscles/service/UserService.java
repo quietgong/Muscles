@@ -4,6 +4,7 @@ import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.UserDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     List<UserDto> getList(Integer offset, Integer pageSize) throws Exception;
@@ -15,4 +16,8 @@ public interface UserService {
     int modify(UserDto userDto) throws Exception;
 
     int remove(String id) throws Exception;
+
+    int modifyUserInfo(String[] userInfo);
+
+    int leaveUser(Map map);
 }

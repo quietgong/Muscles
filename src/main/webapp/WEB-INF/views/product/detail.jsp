@@ -18,13 +18,13 @@
     <div class="product-detail-item">
         <img src="http://via.placeholder.com/250?text=mypage" />
         <div class="product-detail-item-detail">
-            <span style="font-size:25px; font-weight:bold;">제품명</span>
+            <span style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
             <div>
                 <span class="star">★★★★★<span>★★★★★</span></span>
             </div>
             <span style="font-size: small">리뷰 : 2,145개</span>
             <hr />
-            <span style="font-size:25px; font-weight:bold;">수량</span>
+            <span style="font-size:25px; font-weight:bold;">${productDto.stock}</span>
 
             <a href="#" onclick='count("minus")'><span style="font-size: 25px; font-weight: bold">-</span></a>
             <span id="qty" style="font-size: 25px; font-weight: bold">1</span>

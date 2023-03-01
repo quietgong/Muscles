@@ -26,8 +26,6 @@ public class CommunityController {
         if (session.getAttribute("id") == null)
             return "redirect:/login?toURL=" + request.getRequestURL();
         sc.setType("community");
-        System.out.println("sc = " + sc);
-        System.out.println(sc.getQueryString(1));
 
         int totalCnt = postSerivce.getCountBySearch(sc);
         PageHandler ph = new PageHandler(totalCnt, sc);

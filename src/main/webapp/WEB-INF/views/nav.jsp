@@ -65,9 +65,9 @@
     <li class="dropdown">
       <a href="javascript:void(0)" class="dropbtn">카테고리</a>
       <div class="dropdown-content">
-        <a href="<c:url value='/products/cardio'/>">유산소</a>
-        <a href="<c:url value='/products/strength'/>">근력</a>
-        <a href="<c:url value='/products/etc'/>">기타용품</a>
+        <a href="<c:url value='/product/list?category=cardio'/>">유산소</a>
+        <a href="<c:url value='/product/list?category=strength'/>">근력</a>
+        <a href="<c:url value='/product/list?category=etc'/>">기타용품</a>
       </div>
     </li>
   </ul>

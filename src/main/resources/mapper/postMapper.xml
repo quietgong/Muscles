@@ -24,6 +24,11 @@
         from post
         where type='${type}'
     </select>
+    <select id="selectAllByUser" parameterType="String" resultType="PostDto">
+        SELECT *
+        from post
+        where userId='${userId}'
+    </select>
     <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
         SELECT count(*)
         FROM POST

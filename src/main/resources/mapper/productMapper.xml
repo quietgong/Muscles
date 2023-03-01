@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kinaboot.muscles.dao.productMapper">
+    <select id="count" resultType="int">
+        SELECT count(*) FROM product
+    </select>
+
+    <select id="select" parameterType="int" resultType="productDto">
+        select p.productNo, p.categoryName, p.productName, p.PRICE, p.STOCK
+        from product p
+        where productNo=#{productNo}
+    </select>
+    <select id="selectByCategory" parameterType="String" resultType="productDto">
+        select p.productNo, p.categoryName, p.productName, p.PRICE, p.STOCK
+        from product p, category c, category c1
+        where c.pcategory_no=c1.category_no
+          and p.categoryName=c.NAME
+          and c1.name = '${category}'
+    </select>
+
+    <select id="selectAll" parameterType="int" resultType="productDto">
+        SELECT *
+        from product
+    </select>
+
+    <insert id="insert" parameterType="productDto">
+        insert into product
+            (categoryName,productName,price,stock)
+        values
+            (#{categoryName},#{productName},#{price},#{stock})
+    </insert>
+
+    <delete id="deleteAll">
+        DELETE from product
+    </delete>
+    <delete id="delete" parameterType="map">
+        DELETE from product
+        where productNo=#{productNo}
+    </delete>
+
+</mapper>

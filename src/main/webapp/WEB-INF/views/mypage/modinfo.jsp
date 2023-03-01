@@ -20,27 +20,28 @@
         <%@include file="sidebar.jsp" %>
         <!-- 사이드바 끝 -->
     </div>
+    <div class="item">
     <table id="myTable" style="margin: auto">
         <tr>
             <td>아이디</td>
-            <td>(가입 아이디 표기)</td>
+            <td>${user.id}</td>
         </tr>
         <tr>
-            <td>이름</td>
-            <td>(가입 이름 표기)</td>
+            <form method="post">
+            <td>이메일</td>
+            <td><input name="newEmail" value="${user.email}"/></td>
         </tr>
         <tr>
             <td>휴대폰 번호</td>
-            <td><input placeholder="-를 제외하고 입력해주세요"/></td>
-        </tr>
-        <tr>
-            <td>이메일</td>
-            <td><input /></td>
+            <td><input name="newPhone" value="${user.phone}" placeholder="-를 제외하고 입력해주세요"/></td>
+
         </tr>
     </table>
+    </div>
     <div class="item">
         <input type="submit" value="변경" />
         <input type="submit" value="취소" />
+        </form>
     </div>
 </div>
 

@@ -34,22 +34,14 @@ public class SearchCondition {
     }
 
     SearchCondition() {
-
     }
 
     public SearchCondition(Integer page) {
-        this.page = page;
-        this.option = "";
-        this.keyword = "";
-    }
-
-    public SearchCondition(String option, String keyword) {
-        this.option = option;
-        this.keyword = keyword;
+        this(page, "", "");
     }
 
     public SearchCondition(Integer page, String option, String keyword) {
-        this.page = page;
+        this.page=page;
         this.option = option;
         this.keyword = keyword;
     }

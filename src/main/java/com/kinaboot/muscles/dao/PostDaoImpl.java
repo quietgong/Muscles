@@ -60,6 +60,11 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
+    public List<PostDto> selectAllByUser(String userId) throws Exception {
+        return session.selectList(namespace + "selectAllByUser", userId);
+    }
+
+    @Override
     public PostDto select(Integer postNo) throws Exception {
         return session.selectOne(namespace + "select", postNo);
     }

@@ -26,6 +26,9 @@ public interface PostDao {
     List<PostDto> selectAll(String type) throws Exception // List<E> selectList(String statement)
     ;
 
+    List<PostDto> selectAllByUser(String userId) throws Exception // List<E> selectList(String statement)
+    ;
+
     List<PostDto> selectPage(PageHandler ph) throws Exception // List<E> selectList(String statement, Object parameter)
     ;
 

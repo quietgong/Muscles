@@ -22,7 +22,7 @@
 <hr/>
 <div class="index-container">
     <div class="index-item">
-        <a href="<c:url value='/product/list'/>">
+        <a href="<c:url value='/product/list?category=cardio'/>">
             <img src="<c:url value='/img/cardio.jpg'/>">
         </a>
     </div>

@@ -1,35 +1,111 @@
 package com.kinaboot.muscles.controller;
 
+import com.kinaboot.muscles.dao.PostDao;
 import com.kinaboot.muscles.dao.UserDao;
+import com.kinaboot.muscles.domain.PostDto;
+import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
+@RequestMapping("/mypage")
 public class MypageController {
     private final UserDao userDao;
-    MypageController(UserDao userDao){
-        this.userDao=userDao;
+    @Autowired
+    UserService userService;
+    @Autowired
+    PostDao postDao;
+    MypageController(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    //    @GetMapping("/mypage")
-//    public String mypage(Model m, HttpSession session, HttpServletRequest request){
-//        // 1. 세션이 없다면 로그인 페이지로 이동
-//        UserDto userDto;
-//        String id = (String) session.getAttribute("id");
-//        if(id==null)
-//            return "redirect:/login?toURL="+request.getRequestURL();
-//        userDto = userDao.selectUser(id);
-//
-//        m.addAttribute(userDto);
-//        return "dashboard/mypageForm";
-//    }
+    // 내가 쓴 글
+    @GetMapping("/mypost")
+    public String myPost(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        if (userId == null)
+            return "redirect:/login?toURL=" + request.getRequestURL();
+        List<PostDto> myPost = postDao.selectAllByUser(userId);
+        m.addAttribute("list", myPost);
+        return "mypage/mypost";
+    }
+    // 사용자 정보 변경
+    @PostMapping("/modinfo")
+    public String modInfoPost(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        String userNewEmail = request.getParameter("newEmail");
+        String userNewPhone = request.getParameter("newPhone");
+        String[] userInfo = {userId, userNewEmail, userNewPhone};
+        userService.modifyUserInfo(userInfo);
+        session.invalidate();
+        return "redirect:/";
+    }
 
-//
-//    @PostMapping("/register/idcheck")
-//    @ResponseBody
-//    public int idDupCheck(@RequestBody String jsonStr) throws ParseException {
-//        JSONParser jsonParser = new JSONParser();
-//        JSONObject jsonObj = (JSONObject) jsonParser.parse(jsonStr);
-//        String id = (String) jsonObj.get("id");
-//        return userDao.searchIdCnt(id);
-//    }
+    @GetMapping("/modinfo")
+    public String modinfoGet(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        UserDto userDto = userDao.selectUser(userId);
+        m.addAttribute("user", userDto);
+        return "mypage/modinfo";
+    }
+
+    // 내가 쓴 리뷰
+    @GetMapping("/myreview")
+    public String myreview(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+
+        return "mypage/myreview";
+    }
+
+    // 비밀번호 변경
+    @GetMapping("/modpw")
+    public String modpw(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        if (userId == null)
+            return "redirect:/login?toURL=" + request.getRequestURL();
+        List<PostDto> myPost = postDao.selectAllByUser(userId);
+        m.addAttribute("list", myPost);
+        return "mypage/modpw";
+    }
+
+    // 회워탈퇴
+    @PostMapping("/leave")
+    public String leavePost(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        int[] typeValue = new int[]{0,0,0};
+        String[] type = request.getParameterValues("type");
+        String opinion = request.getParameter("opinion");
+        for(String s : type)
+            typeValue[Integer.parseInt(s)-1]++;
+        Map map = new HashMap();
+        map.put("userId", userId);
+        map.put("type1", String.valueOf(typeValue[0]));
+        map.put("type2", String.valueOf(typeValue[1]));
+        map.put("type3", String.valueOf(typeValue[2]));
+        map.put("opinion", opinion);
+        userService.leaveUser(map);
+        session.invalidate();
+        return "redirect:/";
+    }
+    @GetMapping("/leave")
+    public String leaveGet(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        if (userId == null)
+            return "redirect:/login?toURL=" + request.getRequestURL();
+        List<PostDto> myPost = postDao.selectAllByUser(userId);
+        m.addAttribute("list", myPost);
+        return "mypage/leave";
+    }
+
 }

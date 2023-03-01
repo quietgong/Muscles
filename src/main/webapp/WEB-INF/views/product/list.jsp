@@ -15,8 +15,8 @@
 
 <!-- 본문 -->
 <div>
-    <p>런닝머신</p>
-    <p>총 {}개의 상품이 있습니다.</p>
+    <p>${param.category}</p>
+    <p>총 ${list.size()}개의 상품이 있습니다.</p>
 </div>
 <div class="product-list-container" style="justify-content: flex-end;">
     <p>
@@ -28,69 +28,36 @@
 </div>
 <!-- 반복부 -->
 <div class="product-list-container">
+    <c:forEach var="productDto" items="${list}">
     <div class="product-list-item">
-        <a href="<c:url value='/product/detail'/>">
+        <a href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>">
             <img src="http://via.placeholder.com/250?text=mypage">
         </a>
-        <span style="font-weight: bold;">상품명</span>
+        <span style="font-weight: bold;">${productDto.productName}</span>
         <div>
             <span class="star">★★★★★<span>★★★★★</span></span>
         </div>
-        <span style="font-weight: bold;">상품가격</span>
+        <span style="font-weight: bold;">${productDto.price}</span>
         <span style="font-weight: bold;">리뷰개수</span>
     </div>
-    <div class="product-list-item">
-        <img src="http://via.placeholder.com/250?text=mypage">
-        <span style="font-weight: bold;">상품명</span>
-        <span style="font-weight: bold;">상품가격</span>
-        <span style="font-weight: bold;">리뷰개수</span>
-    </div>
-    <div class="product-list-item">
-        <img src="http://via.placeholder.com/250?text=mypage">
-        <span style="font-weight: bold;">상품명</span>
-        <span style="font-weight: bold;">상품가격</span>
-        <span style="font-weight: bold;">리뷰개수</span>
-    </div>
-    <div class="product-list-item">
-        <img src="http://via.placeholder.com/250?text=mypage">
-        <span style="font-weight: bold;">상품명</span>
-        <span style="font-weight: bold;">상품가격</span>
-        <span style="font-weight: bold;">리뷰개수</span>
-    </div>
+    </c:forEach>
 </div>
+<c:if test="${totalCnt!=null&&totalCnt!=0}">
+    <ul class="paging">
+        <c:if test="${ph.showPrev}">
+            <li><a href="<c:url value='/community/list${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt</a></li>
+        </c:if>
+        <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
+            <li><a href="<c:url value='/community/list${ph.sc.getQueryString(i)}'/>">${i}</a></li>
+        </c:forEach>
+        <c:if test="${ph.showNext}">
+            <li><a href="<c:url value='/community/list${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt</a></li>
+        </c:if>
+    </ul>
+</c:if>
 <hr>
 <!-- 반복부 -->
-<!-- 반복부 -->
-<div class="product-list-container">
-    <div class="product-list-item">
-        <a href="<c:url value='/product/detail'/>">
-            <img src="http://via.placeholder.com/250?text=mypage">
-        </a>
-        <span style="font-weight: bold;">상품명</span>
-        <span style="font-weight: bold;">상품가격</span>
-        <span style="font-weight: bold;">리뷰개수</span>
-    </div>
-    <div class="product-list-item">
-        <img src="http://via.placeholder.com/250?text=mypage">
-        <span style="font-weight: bold;">상품명</span>
-        <span style="font-weight: bold;">상품가격</span>
-        <span style="font-weight: bold;">리뷰개수</span>
-    </div>
-    <div class="product-list-item">
-        <img src="http://via.placeholder.com/250?text=mypage">
-        <span style="font-weight: bold;">상품명</span>
-        <span style="font-weight: bold;">상품가격</span>
-        <span style="font-weight: bold;">리뷰개수</span>
-    </div>
-    <div class="product-list-item">
-        <img src="http://via.placeholder.com/250?text=mypage">
-        <span style="font-weight: bold;">상품명</span>
-        <span style="font-weight: bold;">상품가격</span>
-        <span style="font-weight: bold;">리뷰개수</span>
-    </div>
-</div>
-<hr>
-<!-- 반복부 -->
+
 
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

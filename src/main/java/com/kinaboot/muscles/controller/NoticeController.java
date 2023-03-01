@@ -20,10 +20,7 @@ public class NoticeController {
     PostSerivce postSerivce;
 
     @GetMapping("/list")
-    public String list(HttpSession session, HttpServletRequest request, Model m) throws Exception {
-        if (session.getAttribute("id") == null)
-            return "redirect:/login?toURL=" + request.getRequestURL();
-
+    public String list(Model m) throws Exception {
         List<PostDto> list = postSerivce.getList("notice");
         System.out.println("list = " + list);
         m.addAttribute("list", list);

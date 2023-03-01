@@ -310,10 +310,12 @@ ul.paging li a:hover, ul.paging li a:focus {
 /* product_list */
 .product-list-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
 }
 .product-list-item {
+    flex: 1 1 25%;
     display: flex;
     align-items: center;
     justify-content: center;

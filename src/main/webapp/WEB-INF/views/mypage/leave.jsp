@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <html>
@@ -14,6 +14,7 @@
         flex-shrink: 0;
         width: 130px;
     }
+
     .item:nth-child(2) {
         padding-left: 100px;
         margin: auto;
@@ -41,44 +42,44 @@
         <p style="font-weight: bold">| 회원 탈퇴 시 꼭 확인해 주세요!</p>
         <span>
           1. 사용하고 계신 아이디({이용자ID})는 탈퇴할 경우 3개월 간 재사용이
-          불가능 합니다. <br />2. 탈퇴 이후 등록한 게시물, 보유 포인트 등
+          불가능 합니다. <br/>2. 탈퇴 이후 등록한 게시물, 보유 포인트 등
           이용기록이 모두 삭제 됩니다.
         </span>
         <p style="font-weight: bold">| 탈퇴 사유를 선택해 주세요!</p>
+        <form method="post">
         <span>
           <input
                   type="checkbox"
                   style="float: left"
-                  name="rememberId"
-                  value="on"
+                  name="type"
+                  value="1"
           />
           <span style="float: left">이용률 감소</span>
           <input
                   type="checkbox"
                   style="float: left"
-                  name="rememberId"
-                  value="on"
+                  name="type"
+                  value="2"
           />
           <span style="float: left">상품 저품질</span>
           <input
                   type="checkbox"
                   style="float: left"
-                  name="rememberId"
-                  value="on"
+                  name="type"
+                  value="3"
           />
           <span style="float: left">상품 가격불만</span>
+
         </span>
-        <br />
+        <br/>
         <p style="font-weight: bold">
             | 쇼핑몰 이용에 개선 사항 있다면 의견을 남겨 주세요!
         </p>
-        <textarea style="width: 500px; height: 100px"></textarea>
-
-        <p style="font-weight: bold">| 비밀번호 입력</p>
-        <input type="password" id="lname" name="lastname" />
-        <br />
-        <input type="submit" value="확인" />
-        <input type="submit" value="취소" />
+        <textarea name="opinion" style="width: 500px; height: 100px"></textarea>
+        <br/>
+        <input type="submit" value="확인"/>
+        </form>
+        <input type="submit" value="취소"/>
     </div>
 </div>
 
