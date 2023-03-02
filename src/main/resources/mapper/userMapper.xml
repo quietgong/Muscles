@@ -19,6 +19,12 @@
         WHERE ID = #{userId}
     </update>
 
+    <update id="updateUserPassword" parameterType="map">
+        UPDATE USER
+        SET PASSWORD = #{newPassword}
+        WHERE ID = #{userId}
+    </update>
+
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user
             (id,password,email,phone,birth,address,point,created_date)

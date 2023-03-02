@@ -19,4 +19,6 @@ public interface UserDao {
     int deleteUser(String userId);
 
     int insertLeave(Map map);
+
+    int updateUserPassword(String userId, String newPassword);
 }

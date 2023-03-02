@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
     <link rel="stylesheet" href="css/style.css"/>
-    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"/>
 </head>
 <style>
     input[type=text], input[type=date] {

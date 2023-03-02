@@ -26,13 +26,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public int modifyUserPassword(String userId, String newPassword) {
+        return userDao.updateUserPassword(userId, newPassword);
+    }
+
+    @Override
     public List<UserDto> getList(Integer offset, Integer pageSize) throws Exception {
         return null;
     }
 
     @Override
-    public UserDto read(Integer u) throws Exception {
-        return null;
+    public UserDto read(String userId) throws Exception {
+        return userDao.selectUser(userId);
     }
 
     @Override

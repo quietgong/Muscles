@@ -16,6 +16,14 @@ public class UserDaoImpl implements UserDao{
     private static String namespace ="com.kinaboot.muscles.dao.userMapper.";
 
     @Override
+    public int updateUserPassword(String userId, String newPassword) {
+        Map map = new HashMap();
+        map.put("userId", userId);
+        map.put("newPassword", newPassword);
+        return session.update(namespace + "updateUserPassword", map);
+    }
+
+    @Override
     public int insertLeave(Map map) {
         for(Object key : map.keySet()) {
             String value = (String) map.get(key);

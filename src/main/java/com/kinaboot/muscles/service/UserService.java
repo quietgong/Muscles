@@ -9,7 +9,7 @@ import java.util.Map;
 public interface UserService {
     List<UserDto> getList(Integer offset, Integer pageSize) throws Exception;
 
-    UserDto read(Integer u) throws Exception;
+    UserDto read(String userId) throws Exception;
 
     int create(UserDto userDto) throws Exception;
 
@@ -18,6 +18,6 @@ public interface UserService {
     int remove(String id) throws Exception;
 
     int modifyUserInfo(String[] userInfo);
-
+    int modifyUserPassword(String userId, String newPassword);
     int leaveUser(Map map);
 }

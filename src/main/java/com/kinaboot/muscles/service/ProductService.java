@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductDto> productList(String category);
-
     ProductDto getProductByNo(Integer productNo);
 }

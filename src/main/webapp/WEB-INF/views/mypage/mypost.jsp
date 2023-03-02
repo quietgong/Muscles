@@ -34,7 +34,7 @@
             <tr>
                 <td class="no">${postDto.postNo}</td>
                 <td class="title">
-                    <a href="<c:url value="/community/read${ph.sc.queryString}&postNo=${postDto.postNo}"/>">${postDto.title}</a>
+                    <a href="<c:url value="/community/read?page=1&postNo=${postDto.postNo}"/>">${postDto.title}</a>
                 </td>
                 <td class="writer">${postDto.userId}</td>
                 <td class="viewCnt">${postDto.viewCnt}</td>

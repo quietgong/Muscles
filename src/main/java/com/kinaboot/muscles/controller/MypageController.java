@@ -11,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class MypageController {
     UserService userService;
     @Autowired
     PostDao postDao;
+
     MypageController(UserDao userDao) {
         this.userDao = userDao;
     }
@@ -41,6 +44,7 @@ public class MypageController {
         m.addAttribute("list", myPost);
         return "mypage/mypost";
     }
+
     // 사용자 정보 변경
     @PostMapping("/modinfo")
     public String modInfoPost(Model m, HttpSession session, HttpServletRequest request) throws Exception {
@@ -69,25 +73,38 @@ public class MypageController {
     }
 
     // 비밀번호 변경
+    @PostMapping("/modpw")
+    public String modpwPost(HttpSession session, HttpServletRequest request) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        UserDto userDto = userService.read(userId);
+        String nowPassword = request.getParameter("nowPassword");
+        String newPassword = request.getParameter("newPassword1");
+
+        String msg = URLEncoder.encode("Password가 일치하지 않습니다.", "utf-8");
+        if (!userDto.getPassword().equals(nowPassword))
+            return "redirect:/mypage/modpw?msg=" + msg;
+        // 새로운 비밀번호로 변경
+        userService.modifyUserPassword(userId, newPassword);
+        session.invalidate();
+        return "redirect:/";
+    }
     @GetMapping("/modpw")
-    public String modpw(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+    public String modpwGet(Model m, HttpSession session, HttpServletRequest request) throws Exception {
         String userId = (String) session.getAttribute("id");
         if (userId == null)
             return "redirect:/login?toURL=" + request.getRequestURL();
-        List<PostDto> myPost = postDao.selectAllByUser(userId);
-        m.addAttribute("list", myPost);
         return "mypage/modpw";
     }
 
-    // 회워탈퇴
+    // 회원 탈퇴
     @PostMapping("/leave")
     public String leavePost(Model m, HttpSession session, HttpServletRequest request) throws Exception {
         String userId = (String) session.getAttribute("id");
-        int[] typeValue = new int[]{0,0,0};
+        int[] typeValue = new int[]{0, 0, 0};
         String[] type = request.getParameterValues("type");
         String opinion = request.getParameter("opinion");
-        for(String s : type)
-            typeValue[Integer.parseInt(s)-1]++;
+        for (String s : type)
+            typeValue[Integer.parseInt(s) - 1]++;
         Map map = new HashMap();
         map.put("userId", userId);
         map.put("type1", String.valueOf(typeValue[0]));
@@ -98,6 +115,7 @@ public class MypageController {
         session.invalidate();
         return "redirect:/";
     }
+
     @GetMapping("/leave")
     public String leaveGet(Model m, HttpSession session, HttpServletRequest request) throws Exception {
         String userId = (String) session.getAttribute("id");
