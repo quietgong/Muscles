@@ -14,46 +14,87 @@
 <body>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
-
 <!-- 본문 -->
 <hr/>
 <div class="cart-container">
     <div class="cart-item-head">
-        <label>
-            <input id="allCheck" type="checkbox" onclick="allCheck(event)"/>
-            <span>전체선택</span></label
-        >
+        <label><input id="allCheck" type="checkbox" onclick="allCheck(event)"/>
+            <span>전체선택</span>
+        </label>
     </div>
-    <div class="cart-item-head"><h2>상품정보</h2></div>
     <div class="cart-item-head"><h2>수량</h2></div>
+    <div class="cart-item-head"><h2>상품정보</h2></div>
     <div class="cart-item-head"><h2>상품금액</h2></div>
 </div>
 <hr/>
-<!-- 반복부 -->
-<div id="cartItemList"></div>
-<!-- 반복부 끝 -->
-<div class="cart-container">
-    <input id="delete" onclick="deleteItem()" type="button" value="선택삭제"/>
-    <select id="country" name="country">
-        <option value="" selected>할인쿠폰 선택</option>
-        <option value="">추천인 입력 이벤트</option>
-        <option value="">준비중...</option>
-    </select>
-</div>
-
-<div class="cart-container">
-    <div class="cart-item">
-        <p style="font-weight: bold;">총 주문 금액은 13,500원입니다.</p>
-        <input type="button" value="주문하기"/>
-        <input type="button" value="홈 이동"/>
+<!-- 상품 정보 표시 시작 -->
+<form id="myForm">
+    <div id="cartItemList">
     </div>
-</div>
+    <!-- 상품 정보 표시 시작 -->
+    <div class="cart-container">
+        <input id="delete" onclick="deleteItem()" type="button" value="선택삭제"/>
+        <select>
+            <option value="" selected>할인쿠폰 선택</option>
+            <option value="">추천인 입력 이벤트</option>
+            <option value="">준비중...</option>
+        </select>
+    </div>
 
+    <div class="cart-container">
+        <div class="cart-item">
+            <p style="font-weight: bold;">총 주문 금액은 13,500원입니다.</p>
+            <input id="order" type="submit" value="주문하기"/>
+            <a href="<c:url value="/"/>"><input type="button" value="홈 이동"/></a>
+        </div>
+    </div>
+</form>
 <!-- footer -->
 <%@ include file="footer.jsp" %>
 <script>
+    $("#cartItemList").on("click", ".qtyChange", function () {
+        if ($(this).html() == '-') {
+            const nowQty = $(this).next()
+            let number = parseInt(nowQty.html())
+            if (number > 1) {
+                nowQty.text(number - 1)
+            }
+        } else {
+            const nowQty = $(this).prev()
+            let number = parseInt(nowQty.html()) + 1
+            nowQty.text(number)
+        }
+        return false
+    });
+
+    $("#order").on("click", function () {
+        const form = $('#myForm');
+        let checkedItems = $('input[type=checkbox].check_all_list:checked');
+        const productNo = [];
+        const productQty = [];
+        $(checkedItems).each(function () {
+            productNo.push($(this).next().val())
+            productQty.push($(this).parent().next().children("h1").text())
+        });
+        console.log(productQty)
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: 'productNo',
+            value: productNo.join(",")
+        }))
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: 'productQty',
+            value: productQty.join(",")
+        }))
+        form.attr("action", "<c:url value='/cart/order'/>");
+        form.attr("method", "post");
+        form.submit();
+    });
+
     loadCartItem()
-    function loadCartItem(){
+
+    function loadCartItem() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/cart/get", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -62,30 +103,41 @@
             },
             success: function (res) {
                 $("#cartItemList").html(toHtml(res))
-                console.log(res)
+                console.log("item read")
             },
             error: function () {
                 console.log("통신 실패")
             }
         })
     }
+
     let toHtml = function (items) {
         let tmp = "";
         items.forEach(function (item) {
             tmp += '<div class="cart-container">'
+
             tmp += '<div class="cart-item" style="flex-basis: 150px">'
-            tmp += '<input type="checkbox" class="check_all_list" onclick="checkAllList(event)"/>'
-            tmp += '<input id="productNo" type="hidden" value="' + item.productNo + '">'
+            tmp += '<input type="checkbox" class="check_all_list" />'
+            tmp += '<input type="hidden" value="' + item.productNo + '"/>'
             tmp += '</div>'
-            tmp += '<img src="http://via.placeholder.com/100X100/000000/ffffff"/>'
-            tmp += '<div class="cart-item"><h3>' + item.productName + '</h3></div>'
-            tmp += '<div class="cart-item"><h3>' + item.productQty + '</h3></div>'
+
+            tmp += '<div class="cart-item">'
+            tmp += '<a class="qtyChange" href="#">-</a>'
+            tmp += '<h1>' + item.productQty + '</h1>'
+            tmp += '<a class="qtyChange" href="#">+</a>'
+            tmp += '</div>'
+
+            tmp += '<div class="cart-item">'
+            tmp += '<img src="http://via.placeholder.com/300X200/000000/ffffff"/>'
+            tmp += '<h3>' + item.productName + '</h3>'
+            tmp += '</div>'
             tmp += '<div class="cart-item"><h3 class="price">' + item.productPrice + '</h3></div>'
             tmp += '</div>'
-            tmp += '<hr/>'
+            tmp += '<hr>'
         })
         return tmp;
     }
+
     function deleteItem() {
         var deleteItemList = []
         let checkedItems = $('input[type=checkbox].check_all_list:checked');

@@ -27,6 +27,11 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
+    public CartDto getItem(Integer productNo) {
+        return cartDao.selectItem(productNo);
+    }
+
+    @Override
     public int removeCartItem(String userId, List<String> deleteList) {
         return cartDao.deleteCartItem(userId, deleteList);
     }

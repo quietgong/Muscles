@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"/>
+
 </head>
 <body>
 <!-- nav -->
@@ -26,25 +28,19 @@
 </div>
 <hr/>
 <!-- 반복부 -->
-<div class="order-container">
-    <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
-    <div class="order-item"><h3>상품명</h3></div>
-    <div class="order-item"><h3>2</h3></div>
-    <div class="order-item"><h3>30,000원</h3></div>
-</div>
-<hr/>
-<!-- 반복부 끝 -->
-<!-- 반복부 -->
-<div class="order-container">
-    <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
-    <div class="order-item"><h3>상품명</h3></div>
-    <div class="order-item"><h3>2</h3></div>
-    <div class="order-item"><h3>30,000원</h3></div>
-</div>
-<hr/>
+<c:forEach var="cartDto" items="${list}">
+    <div class="order-container">
+        <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
+        <div class="order-item"><h3>${cartDto.productName}</h3></div>
+        <div class="order-item"><h3>${cartDto.productQty}</h3></div>
+        <div class="order-item"><h3 class="order-item-price">${cartDto.productPrice}</h3></div>
+    </div>
+    <hr/>
+</c:forEach>
+
 <!-- 반복부 끝 -->
 <div class="order-container" style="justify-content: flex-end; margin-right: 10%">
-    <h3>합계 : 60,000원</h3>
+    <h3>합계 : </h3><h3 id="totalPrice"></h3>
 </div>
 <!-- 배송지정보 -->
 <div class="order-container">
@@ -95,7 +91,7 @@
     </tr>
     <tr>
         <td>포인트 사용</td>
-        <td><input/>
+        <td><input/><span>보유 포인트 : ${userDto.point}</span>
             <button type="button">모두 사용</button>
         </td>
     </tr>
@@ -122,26 +118,32 @@
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
 <script>
+    let sum=0
+    $(".order-item-price").each(function (){
+        sum+=Number($(this).html())
+    })
+    console.log(sum)
+    $("#totalPrice").html(sum)
+
+    // 배송지 기본 정보로 설정 체크 여부
     const checkbox = document.getElementById('checkbox');
     const inputs = document.getElementsByClassName('address');
 
-    let savedAddressInfo = ['asdf','010-1234-5678','test','test','test','test'];
-
-    if (checkbox.checked) { // 체크되어있을 떄
-        for (let i = 0; i < inputs.length; i++) {
+    let savedAddressInfo = [
+        '${userDto.id}','${userDto.phone}','test','test','${userDto.address}','배송 메세지'
+    ];
+    // Checked
+    if (checkbox.checked)
+        for (let i = 0; i < inputs.length; i++)
             inputs[i].value = savedAddressInfo[i];
-        }
-    }
 
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) { // 체크되어있을 떄
-            for (let i = 0; i < inputs.length; i++) {
+            for (let i = 0; i < inputs.length; i++)
                 inputs[i].value = savedAddressInfo[i];
-            }
         } else {
-            for (let i = 0; i < inputs.length; i++) {
+            for (let i = 0; i < inputs.length; i++)
                 inputs[i].value = '';
-            }
         }
     })
 

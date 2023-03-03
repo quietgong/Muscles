@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 @Controller
 public class OrderController {
-    @GetMapping("/order/list")
+    @GetMapping("/order/complete")
     public String orderList(Model m, HttpSession session, HttpServletRequest request) {
-
-        return "order/list";
+        return "order/complete";
     }
+
 }

@@ -23,6 +23,12 @@
         where p.productNo = c.productNo
           and c.userId = '${userId}';
     </select>
+    <select id="selectItem" resultType="CartDto" parameterType="int">
+        select p.productName as productName,
+               p.PRICE       as productPrice
+        from product p
+        where p.productNo = '${productNo}';
+    </select>
     <insert id="insert" parameterType="map">
         insert into cart (userId, productNo, productQty)
         values (#{userId}, #{productNo}, #{productQty});

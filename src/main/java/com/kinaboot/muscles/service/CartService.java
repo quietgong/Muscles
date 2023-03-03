@@ -13,4 +13,6 @@ public interface CartService {
     int checkCartProduct(String userId, String productNo);
 
     int removeCartItem(String userId, List<String> deleteList);
+
+    CartDto getItem(Integer productNo);
 }

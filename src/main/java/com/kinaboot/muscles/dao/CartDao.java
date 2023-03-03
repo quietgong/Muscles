@@ -13,4 +13,6 @@ public interface CartDao {
     int select(String userId, String productNo);
 
     int deleteCartItem(String userId, List<String> deleteList);
+
+    CartDto selectItem(Integer productNo);
 }

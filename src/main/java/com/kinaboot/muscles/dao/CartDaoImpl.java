@@ -43,6 +43,11 @@ public class CartDaoImpl implements CartDao{
     }
 
     @Override
+    public CartDto selectItem(Integer productNo) {
+        return session.selectOne(namespace + "selectItem", productNo);
+    }
+
+    @Override
     public int add(String userId, String productNo, String productQty) {
         Map map = new HashMap();
         map.put("userId", userId);

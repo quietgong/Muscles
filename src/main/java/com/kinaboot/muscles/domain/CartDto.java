@@ -5,6 +5,8 @@ public class CartDto {
     private String userId;
     private String productName;
     private int productNo;
+    private int productPrice;
+    private int productQty;
 
     public int getProductNo() {
         return productNo;
@@ -14,8 +16,6 @@ public class CartDto {
         this.productNo = productNo;
     }
 
-    private int productPrice;
-    private int productQty;
 
     public CartDto(int cartNo, String userId, String productName, int productPrice, int productQty) {
         this.cartNo = cartNo;
@@ -40,6 +40,7 @@ public class CartDto {
                 "cartNo=" + cartNo +
                 ", userId='" + userId + '\'' +
                 ", productName='" + productName + '\'' +
+                ", productNo=" + productNo +
                 ", productPrice=" + productPrice +
                 ", productQty=" + productQty +
                 '}';
