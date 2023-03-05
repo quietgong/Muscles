@@ -30,35 +30,29 @@
     <div class="order-item-head"><h2>상품금액</h2></div>
 </div>
 <hr />
-<!-- 반복부 -->
+<c:forEach var="orderDto" items="${productList}">
+<!-- 주문 상품 정보 -->
 <div class="order-container">
     <img src="http://via.placeholder.com/100X100/000000/ffffff" />
-    <div class="order-item"><h3>상품명</h3></div>
-    <div class="order-item"><h3>2</h3></div>
-    <div class="order-item"><h3>30,000원</h3></div>
+    <div class="order-item"><h3>${orderDto.productName}</h3></div>
+    <div class="order-item"><h3>${orderDto.productQty}</h3></div>
+    <div class="order-item"><h3>${orderDto.productPrice * orderDto.productQty}</h3></div>
 </div>
 <hr />
-<!-- 반복부 끝 -->
-<!-- 반복부 -->
-<div class="order-container">
-    <img src="http://via.placeholder.com/100X100/000000/ffffff" />
-    <div class="order-item"><h3>상품명</h3></div>
-    <div class="order-item"><h3>2</h3></div>
-    <div class="order-item"><h3>30,000원</h3></div>
-</div>
-<hr />
-<!-- 반복부 끝 -->
+<!-- 주문자 정보 -->
+</c:forEach>
 <p style="font-weight: bold">| 주문자 정보</p>
 <table id="myTable">
     <tr>
         <td>이름</td>
-        <td>홍길동</td>
+        <td>${userDto.id}</td>
     </tr>
     <tr>
         <td>연락처</td>
-        <td>010-1234-5678</td>
+        <td>${userDto.phone}</td>
     </tr>
 </table>
+<!-- 배송 정보 -->
 <p style="font-weight: bold">| 배송 정보</p>
 <table id="myTable">
     <tr>
@@ -68,12 +62,13 @@
         <td>요청사항</td>
     </tr>
     <tr>
-        <td>홍길동</td>
-        <td>청주시</td>
-        <td>010-1234-5678</td>
-        <td>요청 사항</td>
+        <td>${deliveryDto.receiver}</td>
+        <td>${deliveryDto.address}</td>
+        <td>${deliveryDto.phone}</td>
+        <td>${deliveryDto.message}</td>
     </tr>
 </table>
+<!-- 결제 정보 -->
 <p style="font-weight: bold">| 결제</p>
 <table id="myTable">
     <tr>
@@ -81,8 +76,8 @@
         <td>결제 금액</td>
     </tr>
     <tr>
-        <td>무통장 입금</td>
-        <td>21,500원</td>
+        <td>${paymentDto.type}</td>
+        <td>${paymentDto.price}</td>
     </tr>
 </table>
 <div class="order-container">

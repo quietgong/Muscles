@@ -18,10 +18,7 @@
 <!-- 본문 -->
 <hr/>
 <div class="order-container">
-    <img
-            style="visibility: hidden"
-            src="http://via.placeholder.com/100X100/000000/ffffff"
-    />
+    <img style="visibility: hidden" src="http://via.placeholder.com/100X100/000000/ffffff"/>
     <div class="order-item-head"><h2>상품정보</h2></div>
     <div class="order-item-head"><h2>수량</h2></div>
     <div class="order-item-head"><h2>상품금액</h2></div>
