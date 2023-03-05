@@ -1,12 +1,14 @@
 package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.dao.ProductDao;
+import com.kinaboot.muscles.domain.CartDto;
 import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -26,5 +28,10 @@ public class ProductController {
         System.out.println("productDto = " + productDto);
         m.addAttribute(productDto);
         return "product/detail";
+    }
+    @PostMapping("/product/order")
+    public String productOrder(CartDto cartDto, Model m){
+        m.addAttribute(cartDto);
+        return "order/page";
     }
 }

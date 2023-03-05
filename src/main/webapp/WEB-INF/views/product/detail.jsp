@@ -19,6 +19,9 @@
     <div class="product-detail-item">
         <img src="http://via.placeholder.com/250?text=mypage"/>
         <div class="product-detail-item-detail">
+            <form method="post" action="<c:url value='/product/order'/>">
+                <input type="hidden" name="productName" value="${productDto.productName}">
+                <input id="productQty" type="hidden" name="productQty" value="1">
             <span style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
             <div>
                 <span class="star">★★★★★<span>★★★★★</span></span>
@@ -37,8 +40,9 @@
         <div class="product-detail-item-detail" style="margin: auto">
             <input id="addCart" onclick="addCart()" type="button" value="장바구니 담기"/>
             <a href="<c:url value='/order/page'/>">
-                <input type="button" value="바로구매"/>
+                <input type="submit" value="바로구매"/>
             </a>
+            </form>
         </div>
     </div>
 </div>
@@ -183,6 +187,7 @@
         }
         qty.innerHTML = number
         productQty = qty.innerHTML
+        $("#productQty").val(qty.innerHTML)
         amount = parseInt(amount) * number
         amount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원"; //10,000
         price.innerHTML = amount
