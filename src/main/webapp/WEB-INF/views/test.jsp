@@ -14,10 +14,10 @@
 <%@ include file="nav.jsp" %>
 <!-- 본문 -->
 <form id="myForm">
-<input type="checkbox" value="1"/><span>A</span>
-<input type="checkbox" value="2"/><span>B</span>
-<input type="checkbox" value="3"/><span>C</span>
-<input type="checkbox" value="4"/><span>D</span>
+<input type="checkbox" value="1"/><span>10</span>
+<input type="checkbox" value="2"/><span>20</span>
+<input type="checkbox" value="3"/><span>30</span>
+<input type="checkbox" value="4"/><span>40</span>
 
     <input id="submit" type="submit" value="전송">
 </form>
@@ -28,18 +28,17 @@
         let json = new Array();
         $(checkedItems).each(function () {
             var data = new Object() ;
-            data.key = $(this).val()
-            data.value = $(this).next().html()
+            data.productNo = parseInt($(this).val())
+            data.productQty = parseInt($(this).next().html())
             json.push(data) ;
         });
-        // form.append($('<input>').attr({
-        //     type: 'hidden',
-        //     name: 'chk',
-        //     value: arr.join(",")
-        // }))
         var jsonData = JSON.stringify(json)
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: 'data',
+            value: jsonData
+        }))
         console.log(jsonData)
-        form.val(jsonData)
         form.attr("action", "<c:url value='/test/checkbox'/>");
         form.attr("method", "post");
         form.submit();
