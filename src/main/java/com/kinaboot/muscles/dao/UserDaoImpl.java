@@ -6,12 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
 public class UserDaoImpl implements UserDao{
     @Autowired
     private SqlSession session;
+
+    @Override
+    public List<UserDto> selectAllUser() {
+        return session.selectList(namespace + "selectAllUser");
+    }
 
     private static String namespace ="com.kinaboot.muscles.dao.userMapper.";
 

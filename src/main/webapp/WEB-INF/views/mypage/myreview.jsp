@@ -44,17 +44,20 @@
 <!-- 사이드바 끝 -->
 
 <!-- 작성한 리뷰 -->
-<h1>리뷰작성 목록 (2)</h1>
+<h1>리뷰작성 목록 (${list.size()})</h1>
+<c:forEach var="reviewDto" items="${list}">
 <div class="mypage-container">
     <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
-    <div class="item"><h3>상품명</h3></div>
-    <div class="item"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero voluptates aliquam quo possimus ab consectetur expedita minus illo. Aut, quo? Rerum numquam nobis esse necessitatibus vitae tempora asperiores, libero porro.</span>
+    <div class="item"><h3>${reviewDto.productName}</h3></div>
+    <div class="item"><span>${reviewDto.content}</span>
     </div>
     <div class="item">
         <div>
-            <span class="star">★★★★★<span>★★★★★</span></span>
+            <span class="star">★★★★★
+                <span style="width: ${reviewDto.score * 20}%">★★★★★</span>
+            </span>
         </div>
-        <span>주문일자 : 2022-03-20</span>
+        <span>작성일자 : ${reviewDto.createdDate}</span>
     </div>
     <div class="item">
         <span>
@@ -65,17 +68,8 @@
 </div>
 <hr/>
 <!-- 작성한 리뷰 끝 -->
-<!-- 작성한 리뷰 -->
-<div class="mypage-container">
-    <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
-    <div class="item"><h3>상품명</h3></div>
-    <div class="item"><span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero voluptates aliquam quo possimus ab consectetur expedita minus illo. Aut, quo? Rerum numquam nobis esse necessitatibus vitae tempora asperiores, libero porro.</span>
-    </div>
-    <div class="item"><h3>★★★★☆</h3><span>주문일자 : 2022-03-20</span></div>
-    <div class="item"><span><a href="login.html">수정</a> | <a href="register.html">삭제</a></span><br></div>
-</div>
-<hr/>
-<!-- 작성한 리뷰 끝 -->
+</c:forEach>
+
 <!-- 모달 -->
 <dialog>
     <h3 style="background-color: rgb(227, 217, 204)">리뷰 작성</h3>
@@ -126,12 +120,13 @@
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
 <script>
+    // 작성한 리뷰 별점
     const drawStar = (target) => {
         document.querySelector(`.star span`).style.width = `${target.value * 20}%`;
     };
-    // 별점
-    document.querySelector(`.star span`).style.width = `20%`;
+
     // 리뷰 별점 JS CODE
+    document.querySelector(`.star span`).style.width = `20%`;
 
     const button = document.querySelector(".modalBtn");
     const dialog = document.querySelector("dialog");

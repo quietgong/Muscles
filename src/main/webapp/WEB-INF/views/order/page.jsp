@@ -26,17 +26,18 @@
 </div>
 <hr/>
 <!-- 반복부 -->
-<c:forEach var="cartDto" items="${list}">
+<c:forEach var="orderItemDto" items="${list}">
     <div class="order-container">
         <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
-        <input type="hidden" class="order-item" value="${cartDto.productNo}">
-        <input type="hidden" value="${cartDto.productName}">
-        <input type="hidden" value="${cartDto.productQty}">
-        <input type="hidden" value="${cartDto.productPrice}">
+        <input type="hidden" class="order-item" value="${orderItemDto.productNo}">
+        <input type="hidden" value="${orderItemDto.productName}">
+        <input type="hidden" value="${orderItemDto.productQty}">
+        <input type="hidden" value="${orderItemDto.productPrice}">
+        <input type="hidden" value="${orderItemDto.productCategory}">
 
-        <div class="order-item"><h3>${cartDto.productName}</h3></div>
-        <div class="order-item"><h3>${cartDto.productQty}</h3></div>
-        <div class="order-item"><h3 class="order-item-price">${cartDto.productPrice}</h3></div>
+        <div class="order-item"><h3>${orderItemDto.productName}</h3></div>
+        <div class="order-item"><h3>${orderItemDto.productQty}</h3></div>
+        <div class="order-item"><h3 class="order-item-price">${orderItemDto.productPrice}</h3></div>
     </div>
     <hr/>
 </c:forEach>
@@ -118,10 +119,11 @@
         let orderItemInfo = $("input[type='hidden'].order-item");
         $(orderItemInfo).each(function () {
             let data = {} ;
-            data.productNo = parseInt($(this).val())
+            data.productNo = $(this).val()
             data.productName = $(this).next().val()
-            data.productQty = parseInt($(this).next().next().val())
-            data.productPrice = parseInt($(this).next().next().next().val())
+            data.productQty = $(this).next().next().val()
+            data.productPrice = $(this).next().next().next().val()
+            data.productCategory = $(this).next().next().next().val()
             orderJsonData.push(data);
         });
 

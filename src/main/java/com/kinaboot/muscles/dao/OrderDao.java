@@ -1,14 +1,21 @@
 package com.kinaboot.muscles.dao;
 
-import com.kinaboot.muscles.domain.CartDto;
-import com.kinaboot.muscles.domain.DeliveryDto;
-import com.kinaboot.muscles.domain.OrderDto;
-import com.kinaboot.muscles.domain.PaymentDto;
+import com.kinaboot.muscles.domain.*;
 
 import java.util.List;
 
 public interface OrderDao {
-    int updateStock(List<OrderDto> orderDtoList);
+    int updateStock(List<OrderItemDto> orderItemDtoList);
 
-    int insertOrder(String userId, List<OrderDto> orderDtoList, DeliveryDto deliveryDto, PaymentDto paymentDto);
+    int insertOrder(String userId, OrderDto orderDto);
+
+    List<OrderDto> selectOrderAllByUser();
+
+    OrderDto selectOrder(String userId, int bundleNo);
+
+    int updateOrderStatus(Integer bundleNo);
+
+    List<OrderDto> selectOrderAll();
+
+    List<OrderDto> selectAll();
 }

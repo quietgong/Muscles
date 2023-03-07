@@ -2,6 +2,38 @@ package com.kinaboot.muscles.domain;
 
 public class ProductDto {
     private String productNo;
+    private String productCategory;
+    private String productName;
+    private int productPrice;
+    private int productStock;
+    private int productReviewCnt;
+    private Double productReviewScore;
+
+    public int getProductReviewCnt() {
+        return productReviewCnt;
+    }
+
+    public void setProductReviewCnt(int productReviewCnt) {
+        this.productReviewCnt = productReviewCnt;
+    }
+
+    public Double getProductReviewScore() {
+        return productReviewScore;
+    }
+
+    public void setProductReviewScore(Double productReviewScore) {
+        this.productReviewScore = productReviewScore;
+    }
+
+    public ProductDto() {
+    }
+
+    public ProductDto(String productCategory, String productName, int productPrice, int productStock) {
+        this.productCategory = productCategory;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productStock = productStock;
+    }
 
     public String getProductNo() {
         return productNo;
@@ -11,37 +43,12 @@ public class ProductDto {
         this.productNo = productNo;
     }
 
-    private String categoryName;
-    private String productName;
-    private int price;
-    private int stock;
-
-    public ProductDto() {
+    public String getProductCategory() {
+        return productCategory;
     }
 
-    public ProductDto(String categoryName, String productName, int price, int stock) {
-        this.categoryName = categoryName;
-        this.productName = productName;
-        this.price = price;
-        this.stock = stock;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductDto{" +
-                "categoryName='" + categoryName + '\'' +
-                ", productName='" + productName + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
-                '}';
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 
     public String getProductName() {
@@ -52,19 +59,30 @@ public class ProductDto {
         this.productName = productName;
     }
 
-    public int getPrice() {
-        return price;
+    public int getProductPrice() {
+        return productPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public int getStock() {
-        return stock;
+    public int getProductStock() {
+        return productStock;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setProductStock(int productStock) {
+        this.productStock = productStock;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "productNo='" + productNo + '\'' +
+                ", productCategory='" + productCategory + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productStock=" + productStock +
+                '}';
     }
 }

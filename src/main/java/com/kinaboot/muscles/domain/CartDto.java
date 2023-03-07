@@ -4,9 +4,18 @@ public class CartDto {
     private int cartNo;
     private String userId;
     private String productName;
+    private String productCategory;
     private int productNo;
     private int productPrice;
     private int productQty;
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
 
     public int getProductNo() {
         return productNo;

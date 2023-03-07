@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kinaboot.muscles.dao.reviewMapper">
+    <select id="selectReviewById" parameterType="String" resultType="reviewDto">
+        select r.SCORE, r.CONTENT, r.createdDate, r.modDate, p.categoryName as productCategory, p.productName
+        from review r,
+             product p
+        where r.userId = '${userId}'
+          and p.productNo = r.productNo;
+    </select>
+</mapper>

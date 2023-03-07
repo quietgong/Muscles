@@ -15,6 +15,11 @@ public class UserServiceImpl implements UserService{
     UserDao userDao;
 
     @Override
+    public List<UserDto> getAllUser() {
+        return userDao.selectAllUser();
+    }
+
+    @Override
     public int modifyUserInfo(String[] userInfo) {
         return userDao.updateUser(userInfo);
     }

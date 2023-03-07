@@ -3,6 +3,7 @@ package com.kinaboot.muscles.dao;
 import com.kinaboot.muscles.domain.DeliveryDto;
 import com.kinaboot.muscles.domain.OrderDto;
 import com.kinaboot.muscles.domain.PaymentDto;
+import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.service.OrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,18 +19,28 @@ import java.util.List;
 public class OrderDaoImplTest {
     @Autowired
     OrderService orderService;
+
+//    @Test
+//    public void orderInsertTest() {
+//        String userId = "testId";
+//        List<OrderDto> orderDtoList = new ArrayList<>();
+//        orderDtoList.add(new OrderDto("오준호", 1, 10));
+//        orderDtoList.add(new OrderDto("오준호", 2, 20));
+//        orderDtoList.add(new OrderDto("오준호", 3, 30));
+//
+//        DeliveryDto deliveryDto = new DeliveryDto("오준호", "01012345678", "청주시", "메세지 테스트");
+//        PaymentDto paymentDto = new PaymentDto(25000, "네이버페이");
+//
+//        orderService.saveOrder(userId, orderDtoList, deliveryDto, paymentDto);
+//
+//    }
+
     @Test
-    public void orderInsertTest(){
-        String userId = "testId";
-        List<OrderDto> orderDtoList = new ArrayList<>();
-        orderDtoList.add(new OrderDto("오준호",1,10));
-        orderDtoList.add(new OrderDto("오준호",2,20));
-        orderDtoList.add(new OrderDto("오준호",3,30));
+    public void getOrderTest() {
+        String userId = "test8";
+        List<OrderDto> orderDtoList = orderService.getOrderList(userId);
 
-        DeliveryDto deliveryDto = new DeliveryDto("오준호","01012345678","청주시","메세지 테스트");
-        PaymentDto paymentDto = new PaymentDto(25000,"네이버페이");
-
-        orderService.saveOrder(userId, orderDtoList, deliveryDto, paymentDto);
+        System.out.println("orderDtoList = " + orderDtoList);
 
     }
 }

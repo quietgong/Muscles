@@ -18,6 +18,11 @@ public class ProductDaoImpl implements ProductDao {
     private static String namespace = "com.kinaboot.muscles.dao.productMapper.";
 
     @Override
+    public List<ProductDto> selectAll() {
+        return session.selectList(namespace + "selectAll");
+    }
+
+    @Override
     public List<ProductDto> selectByCategory(String category) {
         return session.selectList(namespace + "selectByCategory", category);
     }

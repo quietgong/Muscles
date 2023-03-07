@@ -13,8 +13,8 @@ public class CartServiceImpl implements CartService{
     @Autowired
     CartDao cartDao;
     @Override
-    public int addCartItem(String userId, String productNo, String productQty) {
-        return cartDao.add(userId, productNo,productQty);
+    public int addCartItem(String userId, CartDto cartDto) {
+        return cartDao.add(userId, cartDto);
     }
 
     @Override

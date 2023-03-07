@@ -37,7 +37,7 @@
         <div>
             <span class="star">★★★★★<span>★★★★★</span></span>
         </div>
-        <span style="font-weight: bold;">${productDto.price}</span>
+        <span style="font-weight: bold;">${productDto.productPrice}</span>
         <span style="font-weight: bold;">리뷰개수</span>
     </div>
     </c:forEach>

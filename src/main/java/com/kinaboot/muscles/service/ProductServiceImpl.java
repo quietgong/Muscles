@@ -13,6 +13,11 @@ public class ProductServiceImpl implements ProductService{
     ProductDao productDao;
 
     @Override
+    public List<ProductDto> getAllProduct() {
+        return productDao.selectAll();
+    }
+
+    @Override
     public ProductDto getProductByNo(Integer productNo) {
         return productDao.select(productNo);
     }

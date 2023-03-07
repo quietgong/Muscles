@@ -1,9 +1,12 @@
 package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.dao.PostDao;
+import com.kinaboot.muscles.dao.ReviewDao;
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.PostDto;
+import com.kinaboot.muscles.domain.ReviewDto;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.service.ReviewService;
 import com.kinaboot.muscles.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,17 @@ public class MypageController {
     UserService userService;
     @Autowired
     PostDao postDao;
+    @Autowired
+    ReviewService reviewService;
+
+    // 내가 쓴 리뷰
+    @GetMapping("/myreview")
+    public String myreview(Model m, HttpSession session) {
+        String userId = (String) session.getAttribute("id");
+        List<ReviewDto> reviewDtoList = reviewService.getReviewListById(userId);
+        m.addAttribute("list", reviewDtoList);
+        return "mypage/myreview";
+    }
 
     MypageController(UserDao userDao) {
         this.userDao = userDao;
@@ -65,12 +79,6 @@ public class MypageController {
         return "mypage/modinfo";
     }
 
-    // 내가 쓴 리뷰
-    @GetMapping("/myreview")
-    public String myreview(Model m, HttpSession session, HttpServletRequest request) throws Exception {
-
-        return "mypage/myreview";
-    }
 
     // 비밀번호 변경
     @PostMapping("/modpw")
@@ -88,6 +96,7 @@ public class MypageController {
         session.invalidate();
         return "redirect:/";
     }
+
     @GetMapping("/modpw")
     public String modpwGet(Model m, HttpSession session, HttpServletRequest request) throws Exception {
         String userId = (String) session.getAttribute("id");

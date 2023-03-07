@@ -3,6 +3,32 @@ package com.kinaboot.muscles.domain;
 import java.util.Date;
 
 public class UserDto {
+    private Integer userNo;
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userNo=" + userNo +
+                ", id='" + id + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", point=" + point +
+                ", birth=" + birth +
+                ", created_date=" + created_date +
+                ", expired_date=" + expired_date +
+                '}';
+    }
+
+    public Integer getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(Integer userNo) {
+        this.userNo = userNo;
+    }
+
     private String id;
     private String password;
     private String email;
@@ -108,18 +134,4 @@ public class UserDto {
         this.expired_date = expired_date;
     }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", point=" + point +
-                ", birth=" + birth +
-                ", created_date=" + created_date +
-                ", expired_date=" + expired_date +
-                '}';
-    }
 }

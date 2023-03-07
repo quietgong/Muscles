@@ -31,13 +31,13 @@
     <div class="order-item-head"><h2>상품금액</h2></div>
 </div>
 <hr />
-<c:forEach var="orderDto" items="${orderDtoList}">
+<c:forEach var="productDto" items="${productDtoList}">
 <!-- 주문 상품 정보 -->
 <div class="order-container">
     <img src="http://via.placeholder.com/100X100/000000/ffffff" />
-    <div class="order-item"><h3>${orderDto.productName}</h3></div>
-    <div class="order-item"><h3>${orderDto.productQty}</h3></div>
-    <div class="order-item"><h3>${orderDto.productPrice}</h3></div>
+    <div class="order-item"><h3>${productDto.productName}</h3></div>
+    <div class="order-item"><h3>${productDto.stock}</h3></div>
+    <div class="order-item"><h3>${productDto.price}</h3></div>
 </div>
 <hr />
 <!-- 주문자 정보 -->

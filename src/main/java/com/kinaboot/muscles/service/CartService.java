@@ -6,7 +6,7 @@ import com.kinaboot.muscles.domain.ProductDto;
 import java.util.List;
 
 public interface CartService {
-    int addCartItem(String userId, String productNo, String productQty);
+    int addCartItem(String userId, CartDto cartDto);
 
     List<CartDto> getCartItems(String userId);
 

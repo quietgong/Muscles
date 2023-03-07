@@ -28,7 +28,7 @@
 </div>
 <hr/>
 <!-- 상품 정보 표시 시작 -->
-<form id="myForm">
+<form id="myForm" action="<c:url value='/cart/order'/>" method="post">
     <div id="cartItemList">
     </div>
     <!-- 상품 정보 표시 시작 -->
@@ -70,30 +70,27 @@
     $("#order").on("click", function () {
         const form = $('#myForm');
         let checkedItems = $('input[type=checkbox].check_all_list:checked');
-        const productNo = [];
-        const productQty = [];
+        let data = []
+
         $(checkedItems).each(function () {
-            productNo.push($(this).next().val())
-            productQty.push($(this).parent().next().children("h1").text())
+            let tmp = {}
+            tmp.productNo = $(this).next().val()
+            tmp.productName = $(this).next().next().val()
+            tmp.productCategory = $(this).next().next().next().val()
+            tmp.productQty = $(this).parent().next().children("h1").text()
+            tmp.productPrice = $(this).next().next().next().next().val()
+            data.push(tmp)
         });
-        console.log(productQty)
+        console.log(JSON.stringify(data))
         form.append($('<input>').attr({
             type: 'hidden',
-            name: 'productNo',
-            value: productNo.join(",")
+            name: 'jsonData',
+            value: JSON.stringify(data)
         }))
-        form.append($('<input>').attr({
-            type: 'hidden',
-            name: 'productQty',
-            value: productQty.join(",")
-        }))
-        form.attr("action", "<c:url value='/cart/order'/>");
-        form.attr("method", "post");
         form.submit();
     });
 
     loadCartItem()
-
     function loadCartItem() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
@@ -103,7 +100,7 @@
             },
             success: function (res) {
                 $("#cartItemList").html(toHtml(res))
-                console.log("item read")
+                console.log("Get All Cart Item!")
             },
             error: function () {
                 console.log("통신 실패")
@@ -119,6 +116,10 @@
             tmp += '<div class="cart-item" style="flex-basis: 150px">'
             tmp += '<input type="checkbox" checked class="check_all_list" />'
             tmp += '<input type="hidden" value="' + item.productNo + '"/>'
+            tmp += '<input type="hidden" value="' + item.productName + '"/>'
+            tmp += '<input type="hidden" value="' + item.productCategory + '"/>'
+            tmp += '<input type="hidden" value="' + item.productPrice + '"/>'
+
             tmp += '</div>'
 
             tmp += '<div class="cart-item">'

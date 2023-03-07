@@ -23,27 +23,37 @@ public class OrderController {
     OrderService orderService;
     @Autowired
     UserService userService;
+    @GetMapping("/order/detail")
+    public String getOrderDetail() {
+        return "order/detail";
+    }
 
     @GetMapping("/order/list")
-    public String getOrderList(){
+    public String getOrderList(HttpSession session, Model m) {
+        String userId = (String) session.getAttribute("id");
+        List<OrderDto> orderDtoList = orderService.getOrderList(userId);
+        m.addAttribute(orderDtoList);
         return "order/list";
     }
+
     @PostMapping("/order/complete")
     public String orderList(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto, HttpSession session, Model m) throws Exception {
         String userId = (String) session.getAttribute("id");
-        List<OrderDto> orderDtoList = JsonToJava(orderJsonData);
+        List<OrderItemDto> orderItemDtoList = JsonToJava(orderJsonData);
+        OrderDto orderDto = new OrderDto(orderItemDtoList, deliveryDto, paymentDto, userId, "대기중");
+        System.out.println("orderDto = " + orderDto);
 
-        orderService.saveOrder(userId, orderDtoList, deliveryDto, paymentDto);
-
+        orderService.createOrder(userId, orderDto);
         UserDto userDto = userService.read(userId);
+
         m.addAttribute(userDto);
-        m.addAttribute(orderDtoList);
-        m.addAttribute(deliveryDto);
-        m.addAttribute(paymentDto);
+        m.addAttribute(orderItemDtoList);
         return "order/complete";
     }
-    public List<OrderDto> JsonToJava(String rowData) throws JsonProcessingException {
+
+    public List<OrderItemDto> JsonToJava(String rowData) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(rowData, new TypeReference<List<OrderDto>>() {});
+        return objectMapper.readValue(rowData, new TypeReference<List<OrderItemDto>>() {
+        });
     }
 }

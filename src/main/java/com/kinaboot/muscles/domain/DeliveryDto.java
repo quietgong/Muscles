@@ -1,8 +1,29 @@
 package com.kinaboot.muscles.domain;
 
 public class DeliveryDto {
+    private int orderNo;
     private int deliveryNo;
-    private int bundleNo;
+
+    @Override
+    public String toString() {
+        return "DeliveryDto{" +
+                "orderNo=" + orderNo +
+                ", deliveryNo=" + deliveryNo +
+                ", receiver='" + receiver + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
     private String receiver;
     private String phone;
     private String address;
@@ -18,32 +39,12 @@ public class DeliveryDto {
     public DeliveryDto() {
     }
 
-    @Override
-    public String toString() {
-        return "DeliveryDto{" +
-                "deliveryNo=" + deliveryNo +
-                ", bundleNo=" + bundleNo +
-                ", receiver='" + receiver + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", message='" + message + '\'' +
-                '}';
-    }
-
     public int getDeliveryNo() {
         return deliveryNo;
     }
 
     public void setDeliveryNo(int deliveryNo) {
         this.deliveryNo = deliveryNo;
-    }
-
-    public int getBundleNo() {
-        return bundleNo;
-    }
-
-    public void setBundleNo(int bundleNo) {
-        this.bundleNo = bundleNo;
     }
 
     public String getReceiver() {

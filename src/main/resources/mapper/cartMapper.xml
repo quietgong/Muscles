@@ -30,8 +30,8 @@
         where p.productNo = '${productNo}';
     </select>
     <insert id="insert" parameterType="map">
-        insert into cart (userId, productNo, productQty)
-        values (#{userId}, #{productNo}, #{productQty});
+        insert into cart (userId, productNo, productName, productCategory, productPrice, productQty)
+        values (#{userId}, #{productNo}, #{productName}, #{productCategory}, #{productPrice}, #{productQty});
     </insert>
     <delete id="deleteItem" parameterType="map">
         delete

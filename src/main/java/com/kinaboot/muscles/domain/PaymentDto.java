@@ -1,13 +1,27 @@
 package com.kinaboot.muscles.domain;
-/*
-* PAYMENT_NO int PK
-BUNDLE_NO int
-PRICE int
-TYPE varchar(100)
-* */
+
 public class PaymentDto {
+    private int orderNo;
     private int paymentNo;
-    private int bundleNo;
+
+    @Override
+    public String toString() {
+        return "PaymentDto{" +
+                "orderNo=" + orderNo +
+                ", paymentNo=" + paymentNo +
+                ", price=" + price +
+                ", type='" + type + '\'' +
+                '}';
+    }
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
     private int price;
     private String type;
 
@@ -27,14 +41,6 @@ public class PaymentDto {
         this.paymentNo = paymentNo;
     }
 
-    public int getBundleNo() {
-        return bundleNo;
-    }
-
-    public void setBundleNo(int bundleNo) {
-        this.bundleNo = bundleNo;
-    }
-
     public int getPrice() {
         return price;
     }
@@ -51,13 +57,4 @@ public class PaymentDto {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "PaymentDto{" +
-                "paymentNo=" + paymentNo +
-                ", bundleNo=" + bundleNo +
-                ", price=" + price +
-                ", type='" + type + '\'' +
-                '}';
-    }
 }

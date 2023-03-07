@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"/>
 </head>
 <body>
 <!-- nav -->
@@ -32,82 +33,49 @@
     <%@include file="sidebar.jsp" %>
     <!-- 사이드바 -->
     <!-- 내용 -->
-    <div class="admin-item">
-        <!-- 반복부 -->
-        <div class="admin-item-detail">
-            <div class="admin-detail-section">
-                <div>
-                    <!-- 주문번호, 주문일자 -->
-                    <span>주문번호 : 123124</span><br>
-                    <span>주문일자 : 2023.02.22</span>
+    <!-- 본문 -->
+    <div class="order-list-container">
+        <!-- 주문 조회 -->
+        <c:forEach var="orderDto" items="${orderDtoList}">
+            <div style="border: 2px solid darkorange; border-radius: 2px;" class="order-list-item">
+                <div class="order-list-item-detail">
+                    <div>
+                        <!-- 좌측:주문일자, 우측:주문번호 -->
+                        <span>${orderDto.createdDate} 주문</span>
+                        <span>주문번호 : ${orderDto.bundleNo}</span>
+                    </div>
+                    <div>
+                        <h3>주문자 : ${orderDto.userId}</h3>
+                    </div>
+                    <div>
+                        <!-- 버튼 2개 -->
+                        <input type="button" value="상세 내역"/>
+                        <c:set var="accept" value="${orderDto.status=='pending' ? '주문 승인' : ''}"/>
+                        <input class="acceptBtn" type="button" value="${accept}"/>
+                        <input type="hidden" value="${orderDto.bundleNo}">
+                    </div>
+                    <!-- 주문 내 주문상품 조회 -->
+                    <c:forEach var="productDto" items="${orderDto.productDtoList}">
+                        <div>
+                            <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
+                            <p>[${productDto.categoryName}]</p>
+                            <p>${productDto.productName}</p>
+                            <span>${productDto.price}원</span>
+                            <span> ${productDto.stock}개</span>
+                        </div>
+                        <!-- 주문 내 주문상품 조회 -->
+                    </c:forEach>
                 </div>
                 <div>
-                    <!-- 주문승인, 주문취소 버튼 -->
-                    <input type="button" value="주문 승인">
-                    <input type="button" value="주문 취소">
-                </div>
-            </div>
-            <div class="admin-detail-section">
-                <div>
-                    <!-- 상품사진 -->
-                    <img src="http://via.placeholder.com/200X100/000000/ffffff"/>
-                </div>
-                <div>
-                    <!-- 결제상태 테이블 -->
-                    <table id="myTable">
-                        <tr>
-                            <td>결제 상태</td>
-                            <td>주문 금액</td>
-                        </tr>
-                        <tr>
-                            <td>[배송 전]</td>
-                            <td>21,500원</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- 반복부 -->
-        <!-- 반복부 -->
-        <div class="admin-item-detail">
-            <div class="admin-detail-section">
-                <div>
-                    <!-- 주문번호, 주문일자 -->
-                    <span>주문번호 : 123124</span><br>
-                    <span>주문일자 : 2023.02.22</span>
-                </div>
-                <div>
-                    <!-- 주문승인, 주문취소 버튼 -->
-                    <input type="button" value="주문 승인">
-                    <input type="button" value="주문 취소">
+                    <h2>주문상태 : ${orderDto.status}</h2>
                 </div>
             </div>
-            <div class="admin-detail-section">
-                <div>
-                    <!-- 상품사진 -->
-                    <img src="http://via.placeholder.com/200X100/000000/ffffff"/>
-                </div>
-                <div>
-                    <!-- 결제상태 테이블 -->
-                    <table id="myTable">
-                        <tr>
-                            <td>결제 상태</td>
-                            <td>주문 금액</td>
-                        </tr>
-                        <tr>
-                            <td>[배송 전]</td>
-                            <td>21,500원</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- 반복부 -->
+        </c:forEach>
+        <!-- 주문 조회 -->
     </div>
-    <!-- 내용 -->
 </div>
+<!-- 내용 -->
 <!-- 컨테이너 -->
-
 <ul class="paging">
     <li class="paging"><a href="#"><</a></li>
     <li class="paging"><a href="#">1</a></li>
@@ -125,5 +93,29 @@
 
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
+<script>
+    $(".acceptBtn").on("click", function (){
+        if($(this).val()!==''){
+            let bundleNo = $(this).next().val();
+            let now = $(this)
+            $.ajax({
+                type: "POST",            // HTTP method type(GET, POST) 형식이다.
+                url: "/muscles/admin/order/accept/" + bundleNo , // 컨트롤러에서 대기중인 URL 주소이다.
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                },
+                success: function (res) {
+                    if(res==='ACCEPT_OK')
+                        alert("주문을 승인하였습니다.")
+                    now.val('')
+                },
+                error: function () {
+                    console.log("통신 실패")
+                }
+            })
+        }
+
+    })
+</script>
 </body>
 </html>

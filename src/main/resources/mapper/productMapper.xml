@@ -6,23 +6,30 @@
     <select id="count" resultType="int">
         SELECT count(*) FROM product
     </select>
-
+<select id="selectAll" resultType="productDto">
+    select productNo, categoryName, productName, PRICE, STOCK from product
+</select>
     <select id="select" parameterType="int" resultType="productDto">
-        select p.productNo, p.categoryName, p.productName, p.PRICE, p.STOCK
+        select p.productNo    as productNo,
+               p.categoryName as productCategory,
+               p.productName  as productName,
+               p.PRICE        as productPrice,
+               p.STOCK        as productStock
         from product p
         where productNo=#{productNo}
     </select>
     <select id="selectByCategory" parameterType="String" resultType="productDto">
-        select p.productNo, p.categoryName, p.productName, p.PRICE, p.STOCK
-        from product p, category c, category c1
-        where c.pcategory_no=c1.category_no
-          and p.categoryName=c.NAME
+        select p.productNo    as productNo,
+               p.categoryName as productCategory,
+               p.productName  as productName,
+               p.PRICE        as productPrice,
+               p.STOCK        as productStock
+        from product p,
+             category c,
+             category c1
+        where c.pcategory_no = c1.category_no
+          and p.categoryName = c.NAME
           and c1.name = '${category}'
-    </select>
-
-    <select id="selectAll" parameterType="int" resultType="productDto">
-        SELECT *
-        from product
     </select>
 
     <insert id="insert" parameterType="productDto">

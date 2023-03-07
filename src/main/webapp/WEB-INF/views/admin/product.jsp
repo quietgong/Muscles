@@ -32,6 +32,7 @@
     <!-- 내용 -->
     <div class="admin-item">
         <!-- 반복부 -->
+        <c:forEach var="productDto" items="${list}">
         <div class="admin-item-detail">
             <div class="admin-detail-section">
             </div>
@@ -42,10 +43,10 @@
                 </div>
                 <div>
                     <!-- 상품정보 -->
-                    <span style="font-weight: bold;">[카테고리]</span><br>
-                    <span>상품명 : </span><br>
-                    <span>가격 : </span><br>
-                    <span>재고수량 : </span><br>
+                    <span style="font-weight: bold;">[${productDto.categoryName}]</span><br>
+                    <span>상품명 : ${productDto.productName}</span><br>
+                    <span>가격 : ${productDto.price}</span><br>
+                    <span>재고수량 : ${productDto.stock}</span><br>
                 </div>
 
                 <div>
@@ -54,31 +55,8 @@
                 </div>
             </div>
         </div>
+        </c:forEach>
         <!-- 반복부 -->
-        <!-- 반복부 -->
-        <div class="admin-item-detail">
-            <div class="admin-detail-section">
-            </div>
-            <div class="admin-detail-section">
-                <div>
-                    <!-- 상품사진 -->
-                    <img src="http://via.placeholder.com/200X100/000000/ffffff" />
-                </div>
-                <div>
-                    <!-- 상품정보 -->
-                    <span style="font-weight: bold;">[카테고리]</span><br>
-                    <span>상품명 : </span><br>
-                    <span>가격 : </span><br>
-                    <span>재고수량 : </span><br>
-                </div>
-                <div>
-                    <!-- 상품정보 변경 버튼 -->
-                    <button id="modalBtn" type="button">상품정보 변경</button>
-                </div>
-            </div>
-        </div>
-        <!-- 반복부 -->
-
     </div>
     <!-- 내용 -->
 </div>

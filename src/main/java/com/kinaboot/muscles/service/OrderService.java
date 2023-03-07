@@ -1,12 +1,15 @@
 package com.kinaboot.muscles.service;
 
-import com.kinaboot.muscles.domain.CartDto;
-import com.kinaboot.muscles.domain.DeliveryDto;
-import com.kinaboot.muscles.domain.OrderDto;
-import com.kinaboot.muscles.domain.PaymentDto;
+import com.kinaboot.muscles.domain.*;
 
 import java.util.List;
 
 public interface OrderService {
-    int saveOrder(String userId, List<OrderDto> orderDtoList, DeliveryDto deliveryDto, PaymentDto paymentDto);
+    List<OrderDto> getOrderList(String userId);
+
+    int createOrder(String userId, OrderDto orderDto);
+
+    int acceptOrder(Integer orderNo);
+
+    List<OrderDto> getAdminOrderList();
 }

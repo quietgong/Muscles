@@ -7,28 +7,111 @@
         SELECT count(*)
         FROM orders
     </select>
-    <select id="getBundleNo" resultType="int">
-        select IFNULL(max(bundleNo),0) bundleNo
-        from orders
+    <select id="selectAll" resultType="orderDto">
+        SELECT
+
+            O.* as userId
+            ,u.userId as userId
+             ,O.createdDate AS createdDate
+             ,O.STATUS AS status
+             ,CONCAT((SELECT NAME
+                      FROM CATEGORY
+                      WHERE CATEGORY_NO=(
+                          (SELECT PCATEGORY_NO
+                           FROM CATEGORY
+                           WHERE NAME=C.NAME)
+                      )), "-" ,C.NAME) AS productCategory
+             ,P.productName AS productName
+             ,O.productQty AS productQty
+             ,P.PRICE*O.productQty AS productPrice
+        FROM ORDERS O, USER U, PRODUCT P, CATEGORY C
+        WHERE O.productNo=P.productNo
+          AND O.userId=U.ID
+          AND C.NAME=P.categoryName
+        order by createdDate
     </select>
-    <insert id="insertProduct" parameterType="orderDto">
-        insert into orders (userId, bundleNo, productNo, productQty, createdDate)
-        values (#{userId},#{bundleNo},#{productNo},#{productQty},now());
+    <select id="selectOrder" parameterType="String" resultType="OrderDto">
+        SELECT O.userId      as userId
+             , O.bundleNo    AS bundleNo
+             , O.createdDate AS createdDate
+             , O.STATUS      AS status
+        FROM ORDERS O,
+             USER U,
+             PRODUCT P,
+             CATEGORY C
+        WHERE U.ID = '${userId}'
+          AND O.userId = U.ID
+          AND C.NAME = P.categoryName
+        group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
+    </select>
+    <select id="selectOrderAll" parameterType="String" resultType="OrderDto">
+        SELECT
+            O.userId as userId
+             ,O.bundleNo AS bundleNo
+             ,O.createdDate AS createdDate
+             ,O.STATUS AS status
+        FROM ORDERS O, USER U, PRODUCT P, CATEGORY C
+        WHERE O.userId=U.ID
+          AND C.NAME=P.categoryName
+        group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
+    </select>
+    <select id="selectOrderOne" parameterType="map" resultType="OrderDto">
+        SELECT
+            O.userId as userId
+             ,O.bundleNo AS bundleNo
+             ,O.createdDate AS createdDate
+             ,O.STATUS AS status
+        FROM ORDERS O, USER U, PRODUCT P, CATEGORY C
+        WHERE U.ID= #{userId}
+          AND O.bundleNo = #{bundleNo}
+          AND O.userId=U.ID
+          AND C.NAME=P.categoryName
+        group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
+    </select>
+    <select id="selectOrderProduct" parameterType="map" resultType="ProductDto">
+        SELECT CONCAT((SELECT NAME
+                       FROM CATEGORY
+                       WHERE CATEGORY_NO = (
+                           (SELECT PCATEGORY_NO
+                            FROM CATEGORY
+                            WHERE NAME = C.NAME))), "-", C.NAME) AS categoryName
+             , P.productName                                     AS productName
+             , O.productQty                                      AS stock
+             , P.PRICE * O.productQty                            AS price
+        FROM ORDERS O,
+             USER U,
+             PRODUCT P,
+             CATEGORY C
+        WHERE U.ID = #{userId}
+          AND o.bundleNo = #{bundleNo}
+          AND O.userId = U.ID
+          AND O.productNo = P.productNo
+          AND C.NAME = P.categoryName
+    </select>
+
+    <insert id="insertOrder" parameterType="orderDto">
+        insert into orders (userId, status, createdDate)
+        values (#{userId},#{status},now());
     </insert>
+
     <insert id="insertDelivery" parameterType="deliveryDto">
-        insert into delivery (bundleNo, receiver, PHONE, ADDRESS, MESSAGE)
-        values (#{bundleNo}, #{receiver},#{phone},#{address},#{message});
+        insert into delivery (orderNo, receiver, PHONE, ADDRESS, MESSAGE)
+        values ((select count(*) from orders), #{receiver},#{phone},#{address},#{message});
     </insert>
+
     <insert id="insertPayment" parameterType="paymentDto">
-        insert into payment (bundleNo, PRICE, TYPE)
-        values (#{bundleNo}, #{price},#{type});
+        insert into payment (orderNo, PRICE, TYPE)
+        values ((select count(*) from orders), #{price},#{type});
     </insert>
+
     <update id="updateStock" parameterType="map">
         update product
         set STOCK = STOCK - #{productQty}
         where productNo = #{productNo};
     </update>
-
-
-
+    <update id="updateOrderStatus" parameterType="int">
+        update orders
+        set status = '승인됨'
+        where orderNo = '${orderNo}'
+    </update>
 </mapper>

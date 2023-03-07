@@ -12,4 +12,6 @@ public interface ProductDao {
     int count();
 
     ProductDto select(Integer productNo);
+
+    List<ProductDto> selectAll();
 }

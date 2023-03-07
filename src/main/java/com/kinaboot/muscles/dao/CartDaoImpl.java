@@ -48,11 +48,14 @@ public class CartDaoImpl implements CartDao{
     }
 
     @Override
-    public int add(String userId, String productNo, String productQty) {
+    public int add(String userId, CartDto cartDto) {
         Map map = new HashMap();
         map.put("userId", userId);
-        map.put("productNo", productNo);
-        map.put("productQty", productQty);
+        map.put("productNo", cartDto.getProductNo());
+        map.put("productName", cartDto.getProductName());
+        map.put("productCategory", cartDto.getProductCategory());
+        map.put("productPrice", cartDto.getProductPrice());
+        map.put("productQty", cartDto.getProductQty());
         return session.insert(namespace+"insert", map);
     }
 }

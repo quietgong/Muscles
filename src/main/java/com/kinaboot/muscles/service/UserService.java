@@ -20,4 +20,6 @@ public interface UserService {
     int modifyUserInfo(String[] userInfo);
     int modifyUserPassword(String userId, String newPassword);
     int leaveUser(Map map);
+    List<UserDto> getAllUser();
+
 }

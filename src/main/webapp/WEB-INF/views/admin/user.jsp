@@ -43,20 +43,14 @@
                     <th>가입일자</th>
                     <th>설정</th>
                 </tr>
+                <c:forEach var="userDto" items="${list}">
                 <tr>
-                    <td>1</td>
-                    <td>TEST1</td>
-                    <td>15:30</td>
+                    <td>${userDto.userNo}</td>
+                    <td>${userDto.id}</td>
+                    <td>${userDto.created_date}</td>
                     <td><input type="button" value="탈퇴처리"></td>
                 </tr>
-                <!--반복부-->
-                <tr>
-                    <td>1</td>
-                    <td>TEST1</td>
-                    <td>15:30</td>
-                    <td><input type="button" value="탈퇴처리"></td>
-                </tr>
-                <!--반복부-->
+                </c:forEach>
             </table>
         </div>
     </div>

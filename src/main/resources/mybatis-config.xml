@@ -13,6 +13,7 @@
         <typeAlias alias="DeliveryDto" type="com.kinaboot.muscles.domain.DeliveryDto"/>
         <typeAlias alias="PaymentDto" type="com.kinaboot.muscles.domain.PaymentDto"/>
         <typeAlias alias="OrderDto" type="com.kinaboot.muscles.domain.OrderDto"/>
+        <typeAlias alias="ReviewDto" type="com.kinaboot.muscles.domain.ReviewDto"/>
     </typeAliases>
 </configuration>
 

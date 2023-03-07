@@ -3,6 +3,7 @@ package com.kinaboot.muscles.dao;
 import com.kinaboot.muscles.domain.UserDto;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserDao {
@@ -21,4 +22,6 @@ public interface UserDao {
     int insertLeave(Map map);
 
     int updateUserPassword(String userId, String newPassword);
+
+    List<UserDto> selectAllUser();
 }

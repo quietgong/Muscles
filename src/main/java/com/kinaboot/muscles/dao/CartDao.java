@@ -6,7 +6,7 @@ import com.kinaboot.muscles.domain.ProductDto;
 import java.util.List;
 
 public interface CartDao {
-    int add(String userId, String productNo, String productQty);
+    int add(String userId, CartDto cartDto);
 
     List<CartDto> selectAll(String userId);
 
