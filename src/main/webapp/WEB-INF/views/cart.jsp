@@ -18,7 +18,7 @@
 <hr/>
 <div class="cart-container">
     <div class="cart-item-head">
-        <label><input id="allCheck" type="checkbox" onclick="allCheck(event)"/>
+        <label><input id="allCheck" type="checkbox" checked onclick="allCheck(event)"/>
             <span>전체선택</span>
         </label>
     </div>
@@ -117,7 +117,7 @@
             tmp += '<div class="cart-container">'
 
             tmp += '<div class="cart-item" style="flex-basis: 150px">'
-            tmp += '<input type="checkbox" class="check_all_list" />'
+            tmp += '<input type="checkbox" checked class="check_all_list" />'
             tmp += '<input type="hidden" value="' + item.productNo + '"/>'
             tmp += '</div>'
 

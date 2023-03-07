@@ -3,40 +3,55 @@ package com.kinaboot.muscles.domain;
 import java.util.Date;
 
 public class OrderDto {
-    private DeliveryDto deliveryDto;
-    private PaymentDto paymentDto;
     private int orderNo;
     private int bundleNo;
     private String userId;
     private int productNo;
     private int productQty;
+    private String productName;
+    private int productPrice;
+
+    @Override
+    public String toString() {
+        return "OrderDto{" +
+                "orderNo=" + orderNo +
+                ", bundleNo=" + bundleNo +
+                ", userId='" + userId + '\'' +
+                ", productNo=" + productNo +
+                ", productQty=" + productQty +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", status='" + status + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+    }
+
     private String status;
     private Date createdDate;
 
     public OrderDto() {
     }
 
-    public DeliveryDto getDeliveryDto() {
-        return deliveryDto;
-    }
-
-    public void setDeliveryDto(DeliveryDto deliveryDto) {
-        this.deliveryDto = deliveryDto;
-    }
-
-    public PaymentDto getPaymentDto() {
-        return paymentDto;
-    }
-
-    public void setPaymentDto(PaymentDto paymentDto) {
-        this.paymentDto = paymentDto;
-    }
-
-    public OrderDto(String userId, int productNo, int productQty, String status) {
+    public OrderDto(String userId, int productNo, int productQty) {
         this.userId = userId;
         this.productNo = productNo;
         this.productQty = productQty;
-        this.status = status;
     }
 
     public int getOrderNo() {
@@ -95,16 +110,4 @@ public class OrderDto {
         this.createdDate = createdDate;
     }
 
-    @Override
-    public String toString() {
-        return "OrderDto{" +
-                "orderNo=" + orderNo +
-                ", bundleNo=" + bundleNo +
-                ", userId='" + userId + '\'' +
-                ", productNo=" + productNo +
-                ", productQty=" + productQty +
-                ", status='" + status + '\'' +
-                ", createdDate=" + createdDate +
-                '}';
-    }
 }

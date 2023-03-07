@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kinaboot.muscles.dao.orderMapper">
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM orders
+    </select>
+    <select id="getBundleNo" resultType="int">
+        select IFNULL(max(bundleNo),0) bundleNo
+        from orders
+    </select>
+    <insert id="insertProduct" parameterType="orderDto">
+        insert into orders (userId, bundleNo, productNo, productQty, createdDate)
+        values (#{userId},#{bundleNo},#{productNo},#{productQty},now());
+    </insert>
+    <insert id="insertDelivery" parameterType="deliveryDto">
+        insert into delivery (bundleNo, receiver, PHONE, ADDRESS, MESSAGE)
+        values (#{bundleNo}, #{receiver},#{phone},#{address},#{message});
+    </insert>
+    <insert id="insertPayment" parameterType="paymentDto">
+        insert into payment (bundleNo, PRICE, TYPE)
+        values (#{bundleNo}, #{price},#{type});
+    </insert>
+    <update id="updateStock" parameterType="map">
+        update product
+        set STOCK = STOCK - #{productQty}
+        where productNo = #{productNo};
+    </update>
+
+
+
+</mapper>

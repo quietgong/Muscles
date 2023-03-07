@@ -10,6 +10,9 @@
         <typeAlias alias="SearchCondition" type="com.kinaboot.muscles.domain.SearchCondition"/>
         <typeAlias alias="ProductDto" type="com.kinaboot.muscles.domain.ProductDto"/>
         <typeAlias alias="CartDto" type="com.kinaboot.muscles.domain.CartDto"/>
+        <typeAlias alias="DeliveryDto" type="com.kinaboot.muscles.domain.DeliveryDto"/>
+        <typeAlias alias="PaymentDto" type="com.kinaboot.muscles.domain.PaymentDto"/>
+        <typeAlias alias="OrderDto" type="com.kinaboot.muscles.domain.OrderDto"/>
     </typeAliases>
 </configuration>
 

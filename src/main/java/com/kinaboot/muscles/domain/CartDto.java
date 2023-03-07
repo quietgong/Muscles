@@ -11,7 +11,6 @@ public class CartDto {
     public int getProductNo() {
         return productNo;
     }
-
     public void setProductNo(int productNo) {
         this.productNo = productNo;
     }

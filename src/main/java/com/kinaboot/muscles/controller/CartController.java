@@ -38,8 +38,10 @@ public class CartController {
     }
     @PostMapping("/cart/add")
     @ResponseBody
-    public ResponseEntity<String> addCart(String productNo, String productQty, HttpSession session){
+    public ResponseEntity<String> addCart(CartDto cartDto, HttpSession session){
         String userId = (String) session.getAttribute("id");
+        String productNo = String.valueOf(cartDto.getProductNo());
+        String productQty = String.valueOf(cartDto.getProductQty());
         // 추가하고자 하는 아이템이 이미 장바구니에 있을 때
         int rowCnt = cartService.checkCartProduct(userId, productNo);
         if(rowCnt!=0){

@@ -15,38 +15,38 @@
 <%@ include file="../nav.jsp" %>
 
 <!-- 본문 -->
-<div class="product-detail-container">
-    <div class="product-detail-item">
-        <img src="http://via.placeholder.com/250?text=mypage"/>
-        <div class="product-detail-item-detail">
-            <form method="post" action="<c:url value='/product/order'/>">
+<form method="post" action="<c:url value='/product/order'/>">
+    <div class="product-detail-container">
+        <div class="product-detail-item">
+            <img src="http://via.placeholder.com/250?text=mypage"/>
+            <div class="product-detail-item-detail">
                 <input type="hidden" name="productName" value="${productDto.productName}">
                 <input id="productQty" type="hidden" name="productQty" value="1">
-            <span style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
-            <div>
-                <span class="star">★★★★★<span>★★★★★</span></span>
+                <input type="hidden" name="productPrice" value="${productDto.price}">
+
+                <span style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
+                <div>
+                    <span class="star">★★★★★<span>★★★★★</span></span>
+                </div>
+                <span style="font-size: small">리뷰 : 2,145개</span>
+                <hr/>
+                <span style="font-size:25px; font-weight:bold;">${productDto.stock}</span>
+
+                <a href="#" onclick='count("minus"); return false;'><span
+                        style="font-size: 25px; font-weight: bold">-</span></a>
+                <span id="qty" style="font-size: 25px; font-weight: bold">1</span>
+                <a href="#" onclick='count("plus"); return false;'><span style="font-size: 25px; font-weight: bold">+</span></a>
+                <span id="price" style="float: right">124,000원</span>
             </div>
-            <span style="font-size: small">리뷰 : 2,145개</span>
-            <hr/>
-            <span style="font-size:25px; font-weight:bold;">${productDto.stock}</span>
-
-            <a href="#" onclick='count("minus"); return false;'><span
-                    style="font-size: 25px; font-weight: bold">-</span></a>
-            <span id="qty" style="font-size: 25px; font-weight: bold">1</span>
-            <a href="#" onclick='count("plus"); return false;'><span style="font-size: 25px; font-weight: bold">+</span></a>
-            <span id="price" style="float: right">124,000원</span>
-
-        </div>
-        <div class="product-detail-item-detail" style="margin: auto">
-            <input id="addCart" onclick="addCart()" type="button" value="장바구니 담기"/>
-            <a href="<c:url value='/order/page'/>">
-                <input type="submit" value="바로구매"/>
-            </a>
-            </form>
+            <div class="product-detail-item-detail" style="margin: auto">
+                <input onclick="addCart()" type="button" value="장바구니 담기"/>
+                <a href="<c:url value='/order/page'/>">
+                    <input type="submit" value="바로구매"/>
+                </a>
+            </div>
         </div>
     </div>
-</div>
-<hr/>
+</form>
 <!-- 상품 상세 -->
 <h1>제품 상세</h1>
 <div class="product-detail-container">
@@ -142,7 +142,8 @@
 </dialog>
 <script>
     let productNo = ${productDto.productNo};
-    let productQty = $("#qty").html()
+    let productQty = $("#productQty").val()
+
     function addCart() {
         console.log(productNo)
         console.log(productQty)
@@ -189,6 +190,7 @@
         productQty = qty.innerHTML
         $("#productQty").val(qty.innerHTML)
         amount = parseInt(amount) * number
+        $("#productPrice").val(amount)
         amount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원"; //10,000
         price.innerHTML = amount
     }

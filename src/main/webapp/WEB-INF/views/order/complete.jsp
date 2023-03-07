@@ -22,7 +22,8 @@
 <div class="order-container">
 </div>
 <hr />
-<p style="font-weight: bold">| 주문번호 : 20230192</p>
+<p style="font-weight: bold">| 주문번호 : ${orderDtoList.get(0).bundleNo}</p>
+
 <div class="order-container">
     <img style="visibility: hidden;" src="http://via.placeholder.com/100X100/000000/ffffff" />
     <div class="order-item-head"><h2>상품정보</h2></div>
@@ -30,13 +31,13 @@
     <div class="order-item-head"><h2>상품금액</h2></div>
 </div>
 <hr />
-<c:forEach var="orderDto" items="${productList}">
+<c:forEach var="orderDto" items="${orderDtoList}">
 <!-- 주문 상품 정보 -->
 <div class="order-container">
     <img src="http://via.placeholder.com/100X100/000000/ffffff" />
     <div class="order-item"><h3>${orderDto.productName}</h3></div>
     <div class="order-item"><h3>${orderDto.productQty}</h3></div>
-    <div class="order-item"><h3>${orderDto.productPrice * orderDto.productQty}</h3></div>
+    <div class="order-item"><h3>${orderDto.productPrice}</h3></div>
 </div>
 <hr />
 <!-- 주문자 정보 -->

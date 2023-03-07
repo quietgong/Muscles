@@ -26,15 +26,14 @@ public class ProductController {
     @GetMapping("product/detail")
     public String productDetail(Integer productNo, Model m){
         ProductDto productDto = productService.getProductByNo(productNo);
-        System.out.println("productDto = " + productDto);
         m.addAttribute(productDto);
         return "product/detail";
     }
     @PostMapping("/product/order")
     public String productOrder(CartDto cartDto, Model m){
-        List<CartDto> cartDtos = new ArrayList<>();
-        cartDtos.add(cartDto);
-        m.addAttribute(cartDtos);
+        List<CartDto> orderItemList = new ArrayList<>();
+        orderItemList.add(cartDto);
+        m.addAttribute("list", orderItemList);
         return "order/page";
     }
 }
