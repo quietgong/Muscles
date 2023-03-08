@@ -8,24 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='/css/modal.css'/>"/>
+    <style>
+        .order-list-container {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+
+        .order-list-item {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+
+        .order-list-item-detail {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"/>
+
 </head>
-<style>
-    .order-list-container{
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
-    .order-list-item{
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
-    .order-list-item-detail{
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
-</style>
 <body>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
@@ -40,113 +45,150 @@
             <input type="text" id="lname" name="lastname"/>
         </div>
         <div>
-        <label>기간</label>
-        <input type="date" id="lname" name="lastname"/>
+            <label>기간</label>
+            <input type="date" id="lname" name="lastname"/>
         </div>
         <div>
-        <label>~</label>
-        <input type="date" id="lname" name="lastname"/>
-        <input type="button" value="검색"/>
+            <label>~</label>
+            <input type="date" id="lname" name="lastname"/>
+            <input type="button" value="검색"/>
         </div>
     </div>
     <!-- 주문 조회 -->
     <c:forEach var="orderDto" items="${orderDtoList}">
-    <div style="border: 2px solid darkorange; border-radius: 2px;" class="order-list-item">
-        <div class="order-list-item-detail">
-            <div>
-                <!-- 좌측:주문일자, 우측:주문번호 -->
-                <span>${orderDto.createdDate} 주문</span>
-                <span>주문번호 : ${orderDto.orderNo}</span>
+        <div style="border: 2px solid darkorange; border-radius: 2px;" class="order-list-item">
+            <div class="order-list-item-detail">
+                <div>
+                    <!-- 좌측:주문일자, 우측:주문번호 -->
+                    <span>${orderDto.createdDate} 주문</span>
+                    <span>주문번호 : ${orderDto.orderNo}</span>
+                </div>
+                <div>
+                    <!-- 버튼 2개 -->
+                    <input type="button" value="상세 내역"/>
+                    <c:set var="accept" value="${orderDto.status=='대기중' ? '주문 취소' : '리뷰 작성'}"/>
+                    <input id="${orderDto.orderNo}" onclick="loadOrderItem(${orderDto.orderNo})" type="button"
+                           value="${accept}"/>
+                </div>
+                <!-- 주문 내 주문상품 조회 -->
+                <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
+                    <div>
+                        <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
+                        <p>[${orderItemDto.productCategory}]</p>
+                        <p>${orderItemDto.productName}</p>
+                        <span>${orderItemDto.productPrice}원</span>
+                        <span> ${orderItemDto.productQty}개</span>
+                    </div>
+                    <!-- 주문 내 주문상품 조회 -->
+                </c:forEach>
             </div>
             <div>
-                <!-- 버튼 2개 -->
-                <input type="button" value="상세 내역"/>
-                <c:set var="accept" value="${orderDto.status=='pending' ? '주문 취소' : '리뷰 작성'}"/>
-                <input type="button" value="${accept}"/>
+                <h2>주문상태 : ${orderDto.status}</h2>
             </div>
-            <!-- 주문 내 주문상품 조회 -->
-            <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
-            <div>
-                <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
-                <p>[${orderItemDto.productCategory}]</p>
-                <p>${orderItemDto.productName}</p>
-                <span>${orderItemDto.productPrice}원</span>
-                <span> ${orderItemDto.productQty}개</span>
-            </div>
-            <!-- 주문 내 주문상품 조회 -->
-            </c:forEach>
-            </div>
-        <div>
-            <h2>주문상태 : ${orderDto.status}</h2>
         </div>
-        </div>
-        </c:forEach>
-        <!-- 주문 조회 -->
-    </div>
+    </c:forEach>
+    <!-- 주문 조회 -->
 </div>
 <!-- 본문 -->
+
 <!-- 모달 -->
-<dialog>
-    <h3 style="background-color: rgb(227, 217, 204)">리뷰 작성</h3>
-    <div class="modal-container">
-        <div class="modal-item">
-            <h3 id="modal-item-name"></h3>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <h3 style="text-align: center; font-style: italic;">리뷰 작성</h3>
+        <div id="modalList">
+            <!-- 동적 추가 -->
         </div>
-        <div class="modal-item">
-            <h3>상품명 123</h3>
-        </div>
-    </div>
-    <hr/>
-    <div class="modal-container">
-        <div class="modal-item">
-            <h3>별점</h3>
-        </div>
-        <div class="modal-item">
-            <div>
-                <span class="modal-star">★★★★★
-                    <span>★★★★★</span>
-                <input
-                        type="range"
-                        oninput="drawStar(this)"
-                        value="1"
-                        step="0.5"
-                        min="0"
-                        max="5"
-                />
-                </span>
-            </div>
+        <div style="text-align: center;">
+            <button id="registerBtn">등록</button>
+            <button id="closeBtn">닫기</button>
         </div>
     </div>
-    <hr/>
-    <div class="modal-container">
-        <div class="modal-item">
-            <h3>후기</h3>
-        </div>
-        <div class="modal-item">
-            <textarea rows="4" cols="20"></textarea>
-        </div>
-    </div>
-    <form method="dialog">
-        <button type="submit">등록</button>
-        <button type="button">닫기</button>
-    </form>
-</dialog>
+</div>
+<!-- 모달 -->
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
+
 <script>
-    const drawStar = (target) => {
-        document.querySelector(`.star span`).style.width = "${"${target.value*20}%"}";
-    };
-    // 별점
-    const button = document.querySelector(".modalBtn")
-    const dialog = document.querySelector("dialog");
-    button.addEventListener("click", () => {
-        dialog.showModal();
-        $("#modal-item-name").html("TEST")
-    });
-    dialog.addEventListener("close", () => {
-        alert("cancel");
-    });
+    // 모달 내용 등록
+    $("#registerBtn").on("click", function () {
+        // userId, productNo, productName, reviewScore, reviewContent를 json 형태로 서버에 보낸다.
+        let data = [];
+        $('.productName').each(function (index) {
+            let tmp = {}
+            tmp.userId = $("#userId").html()
+            tmp.productNo = $('.productNo').eq(index).html()
+            tmp.productName = $(this).html()
+            tmp.score = $('.starRange').eq(index).val()
+            tmp.content = $('.reviewContent').eq(index).val()
+            data.push(tmp)
+        });
+        console.log(JSON.stringify(data)) // OK
+        $.ajax({
+            type: "POST",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/review/", // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            data: JSON.stringify(data),
+            success: function (res) {
+                alert("등록이 완료되었습니다.")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+        $("#myModal").css("display", "none")
+    })
+
+    // 모달 닫기
+    $("#closeBtn").on("click", function () {
+        $("#myModal").css("display", "none")
+    })
+
+    // 주문 정보를 서버에서 받아온 다음 모달 내용을 추가한다.
+    function loadOrderItem(orderNo) {
+        console.log(orderNo);
+        $.ajax({
+            type: "GET",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/order/" + orderNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                $("#modalList").html(toHtml(res))
+                console.log("Get Order Item")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+        // 모달창 띄우기
+        $("#myModal").css("display", "block")
+    }
+
+    let toHtml = function (items) {
+        let tmp = "";
+        items.forEach(function (item) {
+            tmp += '<div class="modal-container">'
+            tmp += '<div><h3 class="productName">' + item.productName + '</h3></div>'
+            tmp += '<h3 style="display: none" class="productNo">' + item.productNo + '</h3>'
+            tmp += '<div><span class="modal-star">★★★★★<span>★★★★★</span>'
+            tmp += '<input class="starRange" type="range" value="0" step="10" min="0" max="100"/>'
+            tmp += '</span>'
+            tmp += '</div>'
+            tmp += '</div>'
+            tmp += '<div class="modal-container">'
+            tmp += '<div><textarea class="reviewContent" placeholder="상품 후기를 작성해주세요." rows="5" cols="50"/></div>'
+            tmp += '</div>'
+            tmp += '<hr>'
+        })
+        return tmp;
+    }
+</script>
+<script>
+    $(document).on('mousemove', '.starRange',function (){
+        $(this).prev().css("width",$(this).val()+'%')
+    })
 </script>
 </body>
 </html>

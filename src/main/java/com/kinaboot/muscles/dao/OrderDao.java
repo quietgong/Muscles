@@ -18,4 +18,6 @@ public interface OrderDao {
     List<OrderDto> selectOrderAll();
 
     List<OrderDto> selectAll(String userId);
+
+    List<OrderItemDto> selectOrderItemList(Integer orderNo);
 }

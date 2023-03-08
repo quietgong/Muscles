@@ -4,37 +4,39 @@ import java.util.Date;
 
 public class ReviewDto {
     private Integer reviewNo;
-
     private Integer score;
+    private String content;
+    private String userId;
+    private Integer productNo;
+    private String productName;
+    private Date createdDate;
+    private Date modDate;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Integer getProductNo() {
+        return productNo;
+    }
+
+    public void setProductNo(Integer productNo) {
+        this.productNo = productNo;
+    }
+
+
+    public ReviewDto() {
+    }
     public Integer getScore() {
         return score;
     }
 
     public void setScore(Integer score) {
         this.score = score;
-    }
-
-    private String content;
-    private String productCategory;
-    private String productName;
-    private Date createdDate;
-    private Date modDate;
-
-    public ReviewDto() {
-    }
-
-    @Override
-    public String toString() {
-        return "ReviewDto{" +
-                "reviewNo=" + reviewNo +
-                ", score=" + score +
-                ", content='" + content + '\'' +
-                ", productCategory='" + productCategory + '\'' +
-                ", productName='" + productName + '\'' +
-                ", createdDate=" + createdDate +
-                ", modDate=" + modDate +
-                '}';
     }
 
     public ReviewDto(Integer score, String content, String productName) {
@@ -57,14 +59,6 @@ public class ReviewDto {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
     }
 
     public String getProductName() {
@@ -91,4 +85,17 @@ public class ReviewDto {
         this.modDate = modDate;
     }
 
+    @Override
+    public String toString() {
+        return "ReviewDto{" +
+                "reviewNo=" + reviewNo +
+                ", score=" + score +
+                ", content='" + content + '\'' +
+                ", userId='" + userId + '\'' +
+                ", productNo=" + productNo +
+                ", productName='" + productName + '\'' +
+                ", createdDate=" + createdDate +
+                ", modDate=" + modDate +
+                '}';
+    }
 }

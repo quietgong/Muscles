@@ -7,10 +7,14 @@ import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,9 +27,17 @@ public class OrderController {
     OrderService orderService;
     @Autowired
     UserService userService;
+
     @GetMapping("/order/detail")
-    public String getOrderDetail() {
+    public String getOrderDetail(String userId, Integer orderNo) {
         return "order/detail";
+    }
+
+    @GetMapping("/order/{orderNo}")
+    @ResponseBody
+    public ResponseEntity<List<OrderItemDto>> getOrder(@PathVariable Integer orderNo) {
+        List<OrderItemDto> orderItemDtoList = orderService.getOrderItemList(orderNo);
+        return new ResponseEntity<>(orderItemDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/order/list")

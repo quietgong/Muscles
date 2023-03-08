@@ -67,7 +67,11 @@
           AND C.NAME=P.categoryName
         group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
     </select>
-
+    <!-- 전체 주문목록 가져오는 쿼리 -->
+    <select id="selectOrderAllList" resultType="orderDto">
+        select orderNo, userId, status, createdDate
+        from orders
+    </select>
     <!-- userId로 주문목록 가져오는 쿼리 -->
     <select id="selectOrderList" resultType="orderDto" parameterType="String">
         select orderNo, userId, status, createdDate
@@ -121,7 +125,7 @@
     </update>
     <update id="updateOrderStatus" parameterType="int">
         update orders
-        set status = '승인됨'
+        set status = '배송완료'
         where orderNo = '${orderNo}'
     </update>
 </mapper>

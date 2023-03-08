@@ -47,7 +47,7 @@ public class AdminController {
         m.addAttribute(orderDtoList);
         return "admin/order";
     }
-    @PostMapping("/admin/order/accept/{bundleNo}")
+    @PostMapping("/admin/order/accept/{orderNo}")
     @ResponseBody
     public ResponseEntity<String> acceptOrder(@PathVariable Integer orderNo) {
         orderService.acceptOrder(orderNo);

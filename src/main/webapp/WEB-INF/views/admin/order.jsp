@@ -42,7 +42,7 @@
                     <div>
                         <!-- 좌측:주문일자, 우측:주문번호 -->
                         <span>${orderDto.createdDate} 주문</span>
-                        <span>주문번호 : ${orderDto.bundleNo}</span>
+                        <span>주문번호 : ${orderDto.orderNo}</span>
                     </div>
                     <div>
                         <h3>주문자 : ${orderDto.userId}</h3>
@@ -50,18 +50,18 @@
                     <div>
                         <!-- 버튼 2개 -->
                         <input type="button" value="상세 내역"/>
-                        <c:set var="accept" value="${orderDto.status=='pending' ? '주문 승인' : ''}"/>
-                        <input class="acceptBtn" type="button" value="${accept}"/>
-                        <input type="hidden" value="${orderDto.bundleNo}">
+                        <c:set var="acceptBtn" value="${orderDto.status == '대기중' ? 'button' : 'hidden'}"/>
+                        <input type="${acceptBtn}" class="acceptBtn" value="주문 승인"/>
+                        <input type="hidden" value="${orderDto.orderNo}">
                     </div>
                     <!-- 주문 내 주문상품 조회 -->
-                    <c:forEach var="productDto" items="${orderDto.productDtoList}">
+                    <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
                         <div>
                             <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
-                            <p>[${productDto.categoryName}]</p>
-                            <p>${productDto.productName}</p>
-                            <span>${productDto.price}원</span>
-                            <span> ${productDto.stock}개</span>
+                            <p>[${orderItemDto.productCategory}]</p>
+                            <p>${orderItemDto.productName}</p>
+                            <span>${orderItemDto.productPrice}원</span>
+                            <span> ${orderItemDto.productQty}개</span>
                         </div>
                         <!-- 주문 내 주문상품 조회 -->
                     </c:forEach>
@@ -96,18 +96,19 @@
 <script>
     $(".acceptBtn").on("click", function (){
         if($(this).val()!==''){
-            let bundleNo = $(this).next().val();
+            let orderNo = $(this).next().val();
             let now = $(this)
+            console.log(orderNo)
             $.ajax({
                 type: "POST",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/admin/order/accept/" + bundleNo , // 컨트롤러에서 대기중인 URL 주소이다.
+                url: "/muscles/admin/order/accept/" + orderNo , // 컨트롤러에서 대기중인 URL 주소이다.
                 headers: {              // Http header
                     "Content-Type": "application/json",
                 },
                 success: function (res) {
                     if(res==='ACCEPT_OK')
                         alert("주문을 승인하였습니다.")
-                    now.val('')
+                    now.hide()
                 },
                 error: function () {
                     console.log("통신 실패")

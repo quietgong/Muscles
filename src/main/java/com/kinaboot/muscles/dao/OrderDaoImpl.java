@@ -46,14 +46,20 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<OrderDto> selectOrderAll() {
-        List<OrderDto> orderDtoList = session.selectList(namespace+"selectAllOrder");
-        for(OrderDto orderDto : orderDtoList){
-            DeliveryDto deliveryDto = session.selectOne(namespace + "selectDelivery", orderDto.getOrderNo());
-            PaymentDto paymentDto = session.selectOne(namespace + "selectPayment", orderDto.getOrderNo());
-            orderDto.setDeliveryDto(deliveryDto);
-            orderDto.setPaymentDto(paymentDto);
+        List<OrderDto> orderDtoList = session.selectList(namespace + "selectOrderAllList");
+        for(OrderDto orderDto: orderDtoList) {
+            // 해당 주문정보의 orderNo를 통해 주문상품 정보, 배송정보, 결제정보를 가져온다.
+            int orderNo = orderDto.getOrderNo();
+            orderDto.setOrderItemDtoList(session.selectList(namespace + "selectOrderItemList", orderNo));
+            orderDto.setDeliveryDto(session.selectOne(namespace + "selectDelivery", orderNo));
+            orderDto.setPaymentDto(session.selectOne(namespace + "selectPayment", orderNo));
         }
         return orderDtoList;
+    }
+
+    @Override
+    public List<OrderItemDto> selectOrderItemList(Integer orderNo) {
+        return session.selectList(namespace + "selectOrderItemList", orderNo);
     }
 
     @Override
