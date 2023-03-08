@@ -1,8 +1,12 @@
 package com.kinaboot.muscles.domain;
 
 public class DeliveryDto {
-    private int orderNo;
     private int deliveryNo;
+    private int orderNo;
+    private String receiver;
+    private String phone;
+    private String address;
+    private String message;
 
     @Override
     public String toString() {
@@ -24,10 +28,6 @@ public class DeliveryDto {
         this.orderNo = orderNo;
     }
 
-    private String receiver;
-    private String phone;
-    private String address;
-    private String message;
 
     public DeliveryDto(String receiver, String phone, String address, String message) {
         this.receiver = receiver;

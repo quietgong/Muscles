@@ -5,6 +5,7 @@ import com.kinaboot.muscles.domain.OrderDto;
 import com.kinaboot.muscles.domain.PaymentDto;
 import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.service.OrderService;
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +20,24 @@ import java.util.List;
 public class OrderDaoImplTest {
     @Autowired
     OrderService orderService;
-
-//    @Test
-//    public void orderInsertTest() {
-//        String userId = "testId";
-//        List<OrderDto> orderDtoList = new ArrayList<>();
-//        orderDtoList.add(new OrderDto("오준호", 1, 10));
-//        orderDtoList.add(new OrderDto("오준호", 2, 20));
-//        orderDtoList.add(new OrderDto("오준호", 3, 30));
-//
-//        DeliveryDto deliveryDto = new DeliveryDto("오준호", "01012345678", "청주시", "메세지 테스트");
-//        PaymentDto paymentDto = new PaymentDto(25000, "네이버페이");
-//
-//        orderService.saveOrder(userId, orderDtoList, deliveryDto, paymentDto);
-//
-//    }
-
+    @Autowired
+    private SqlSession session;
+    @Test
+    public void selectAll() {
+        String namespace = "com.kinaboot.muscles.dao.orderMapper.";
+        // userId별 주문목록 가져오기
+        String userId = "test7";
+        List<OrderDto> orderDtoList = session.selectList(namespace + "selectOrderList", userId);
+        System.out.println("orderDtoList = " + orderDtoList);
+        for(OrderDto orderDto: orderDtoList) {
+            // 해당 주문정보의 orderNo를 통해 주문상품 정보, 배송정보, 결제정보를 가져온다.
+            int orderNo = orderDto.getOrderNo();
+            orderDto.setOrderItemDtoList(session.selectList(namespace + "selectOrderItemList", orderNo));
+            orderDto.setDeliveryDto(session.selectOne(namespace + "selectDelivery", orderNo));
+            orderDto.setPaymentDto(session.selectOne(namespace + "selectPayment", orderNo));
+        }
+        System.out.println("orderDtoList = " + orderDtoList);
+    }
     @Test
     public void getOrderTest() {
         String userId = "test8";

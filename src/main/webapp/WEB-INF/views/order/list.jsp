@@ -56,7 +56,7 @@
             <div>
                 <!-- 좌측:주문일자, 우측:주문번호 -->
                 <span>${orderDto.createdDate} 주문</span>
-                <span>주문번호 : ${orderDto.bundleNo}</span>
+                <span>주문번호 : ${orderDto.orderNo}</span>
             </div>
             <div>
                 <!-- 버튼 2개 -->
@@ -65,13 +65,13 @@
                 <input type="button" value="${accept}"/>
             </div>
             <!-- 주문 내 주문상품 조회 -->
-            <c:forEach var="productDto" items="${orderDto.productDtoList}">
+            <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
             <div>
                 <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
-                <p>[${productDto.categoryName}]</p>
-                <p>${productDto.productName}</p>
-                <span>${productDto.price}원</span>
-                <span> ${productDto.stock}개</span>
+                <p>[${orderItemDto.productCategory}]</p>
+                <p>${orderItemDto.productName}</p>
+                <span>${orderItemDto.productPrice}원</span>
+                <span> ${orderItemDto.productQty}개</span>
             </div>
             <!-- 주문 내 주문상품 조회 -->
             </c:forEach>

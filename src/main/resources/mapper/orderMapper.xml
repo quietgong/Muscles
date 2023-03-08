@@ -9,7 +9,6 @@
     </select>
     <select id="selectAll" resultType="orderDto">
         SELECT
-
             O.* as userId
             ,u.userId as userId
              ,O.createdDate AS createdDate
@@ -68,30 +67,41 @@
           AND C.NAME=P.categoryName
         group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
     </select>
-    <select id="selectOrderProduct" parameterType="map" resultType="ProductDto">
-        SELECT CONCAT((SELECT NAME
-                       FROM CATEGORY
-                       WHERE CATEGORY_NO = (
-                           (SELECT PCATEGORY_NO
-                            FROM CATEGORY
-                            WHERE NAME = C.NAME))), "-", C.NAME) AS categoryName
-             , P.productName                                     AS productName
-             , O.productQty                                      AS stock
-             , P.PRICE * O.productQty                            AS price
-        FROM ORDERS O,
-             USER U,
-             PRODUCT P,
-             CATEGORY C
-        WHERE U.ID = #{userId}
-          AND o.bundleNo = #{bundleNo}
-          AND O.userId = U.ID
-          AND O.productNo = P.productNo
-          AND C.NAME = P.categoryName
+
+    <!-- userId로 주문목록 가져오는 쿼리 -->
+    <select id="selectOrderList" resultType="orderDto" parameterType="String">
+        select orderNo, userId, status, createdDate
+        from orders
+        WHERE userId='${userId}'
+    </select>
+    <!-- orderNo로 주문상품목록 가져오는 쿼리 -->
+    <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
+        select orderNo, productNo, productName, productCategory, productQty, productPrice
+        from orderitem
+        WHERE orderNo='${orderNo}'
+    </select>
+    <!-- orderNo로 배송정보 가져오는 쿼리 -->
+    <select id="selectDelivery" resultType="deliveryDto" parameterType="int">
+        select orderNo, receiver, PHONE, ADDRESS, MESSAGE
+        from delivery
+        WHERE orderNo='${orderNo}'
+    </select>
+    <!-- orderNo로 결제정보 가져오는 쿼리 -->
+    <select id="selectPayment" resultType="paymentDto" parameterType="int">
+        select orderNo, PRICE, TYPE
+        from payment
+        WHERE orderNo='${orderNo}'
     </select>
 
     <insert id="insertOrder" parameterType="orderDto">
         insert into orders (userId, status, createdDate)
         values (#{userId},#{status},now());
+    </insert>
+
+    <insert id="insertOrderItem" parameterType="orderItemDto">
+        insert into orderitem (orderNo, productNo, productName, productCategory, productQty, productPrice)
+        values ((select count(*) from orders), #{productNo}, #{productName}, #{productCategory}, #{productQty},
+                #{productPrice});
     </insert>
 
     <insert id="insertDelivery" parameterType="deliveryDto">

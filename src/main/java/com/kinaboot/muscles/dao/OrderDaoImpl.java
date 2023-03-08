@@ -14,6 +14,19 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
+    @Override
+    public List<OrderDto> selectAll(String userId) {
+        // userId별 주문목록 가져오기
+        List<OrderDto> orderDtoList = session.selectList(namespace + "selectOrderList", userId);
+        for(OrderDto orderDto: orderDtoList) {
+            // 해당 주문정보의 orderNo를 통해 주문상품 정보, 배송정보, 결제정보를 가져온다.
+            int orderNo = orderDto.getOrderNo();
+            orderDto.setOrderItemDtoList(session.selectList(namespace + "selectOrderItemList", orderNo));
+            orderDto.setDeliveryDto(session.selectOne(namespace + "selectDelivery", orderNo));
+            orderDto.setPaymentDto(session.selectOne(namespace + "selectPayment", orderNo));
+        }
+        return orderDtoList;
+    }
 
     @Override
     public int updateStock(List<OrderItemDto> orderItemDtoList) {
@@ -58,9 +71,18 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public int insertOrder(String userId, OrderDto orderDto) {
         int row=0;
-        row+=session.insert(namespace + "insertOrder", orderDto);
-        row+=session.insert(namespace + "insertDelivery", orderDto.getDeliveryDto());
-        row+=session.insert(namespace + "insertPayment", orderDto.getPaymentDto());
+        // 주문 정보 생성
+        session.insert(namespace + "insertOrder", orderDto);
+
+        // 주문상품 정보 생성
+        for(OrderItemDto orderItemDto : orderDto.getOrderItemDtoList())
+            session.insert(namespace + "insertOrderItem", orderItemDto);
+
+        // 배송 정보 생성
+        session.insert(namespace + "insertDelivery", orderDto.getDeliveryDto());
+
+        // 결제 정보 생성
+        session.insert(namespace + "insertPayment", orderDto.getPaymentDto());
         return row;
     }
 }

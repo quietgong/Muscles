@@ -1,8 +1,10 @@
 package com.kinaboot.muscles.domain;
 
 public class PaymentDto {
-    private int orderNo;
     private int paymentNo;
+    private int orderNo;
+    private int price;
+    private String type;
 
     @Override
     public String toString() {
@@ -22,8 +24,6 @@ public class PaymentDto {
         this.orderNo = orderNo;
     }
 
-    private int price;
-    private String type;
 
     public PaymentDto() {
     }

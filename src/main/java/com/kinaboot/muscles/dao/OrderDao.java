@@ -17,5 +17,5 @@ public interface OrderDao {
 
     List<OrderDto> selectOrderAll();
 
-    List<OrderDto> selectAll();
+    List<OrderDto> selectAll(String userId);
 }

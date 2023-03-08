@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<OrderDto> getOrderList(String userId) {
-        return orderDao.selectAll();
+        return orderDao.selectAll(userId);
     }
 
 //    @Override

@@ -5,6 +5,8 @@ public class OrderItemDto {
     private int productNo;
     private String productName;
     private String productCategory;
+    private int productQty;
+    private int productPrice;
 
     public String getProductCategory() {
         return productCategory;
@@ -14,8 +16,6 @@ public class OrderItemDto {
         this.productCategory = productCategory;
     }
 
-    private int productQty;
-    private int productPrice;
 
     public OrderItemDto() {
     }
