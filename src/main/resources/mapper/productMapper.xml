@@ -7,28 +7,29 @@
         SELECT count(*) FROM product
     </select>
 <select id="selectAll" resultType="productDto">
-    select productNo, categoryName, productName, PRICE, STOCK from product
+    select productNo, productCategory, productName, productPrice, productStock
+    from product
 </select>
     <select id="select" parameterType="int" resultType="productDto">
-        select p.productNo    as productNo,
-               p.categoryName as productCategory,
-               p.productName  as productName,
-               p.PRICE        as productPrice,
-               p.STOCK        as productStock
-        from product p
+        select productNo,
+               productCategory,
+               productName,
+               productPrice,
+               productStock
+        from product
         where productNo=#{productNo}
     </select>
     <select id="selectByCategory" parameterType="String" resultType="productDto">
-        select p.productNo    as productNo,
-               p.categoryName as productCategory,
-               p.productName  as productName,
-               p.PRICE        as productPrice,
-               p.STOCK        as productStock
+        select p.productNo,
+               p.productCategory,
+               p.productName,
+               p.productPrice,
+               p.productStock
         from product p,
              category c,
              category c1
         where c.pcategory_no = c1.category_no
-          and p.categoryName = c.NAME
+          and p.productCategory = c.NAME
           and c1.name = '${category}'
     </select>
 

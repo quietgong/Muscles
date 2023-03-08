@@ -30,15 +30,13 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public int updateStock(List<OrderItemDto> orderItemDtoList) {
-        int rowCnt = 0;
         Map map = new HashMap();
-        for (OrderItemDto orderItemDto :
-                orderItemDtoList) {
+        for (OrderItemDto orderItemDto : orderItemDtoList) {
             map.put("productNo", orderItemDto.getProductNo());
+            map.put("productQty", orderItemDto.getProductQty());
             session.update(namespace + "updateStock", map);
-            rowCnt++;
         }
-        return rowCnt;
+        return 0;
     }
 
     @Override

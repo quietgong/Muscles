@@ -14,19 +14,20 @@
           and productNo = #{productNo}
     </select>
     <select id="selectAll" resultType="CartDto" parameterType="String">
-        select p.productNo   as productNo,
-               p.productName as productName,
-               c.productQty  as productQty,
-               p.PRICE       as productPrice
+        select p.productNo       as productNo,
+               p.productName     as productName,
+               c.productQty      as productQty,
+               p.productPrice    as productPrice,
+               p.productCategory as productCategory
         from cart c,
              product p
         where p.productNo = c.productNo
           and c.userId = '${userId}';
     </select>
     <select id="selectItem" resultType="CartDto" parameterType="int">
-        select p.productName as productName,
-               p.PRICE       as productPrice
-        from product p
+        select productName,
+               productPrice
+        from product
         where p.productNo = '${productNo}';
     </select>
     <insert id="insert" parameterType="map">

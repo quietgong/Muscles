@@ -116,7 +116,7 @@
 
     <update id="updateStock" parameterType="map">
         update product
-        set STOCK = STOCK - #{productQty}
+        set productStock = productStock - #{productQty}
         where productNo = #{productNo};
     </update>
     <update id="updateOrderStatus" parameterType="int">
