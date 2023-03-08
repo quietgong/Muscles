@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ReviewService {
     List<ReviewDto> getReviewListById(String userId);
+
+    int createReview(List<ReviewDto> reviewDtoList);
 }

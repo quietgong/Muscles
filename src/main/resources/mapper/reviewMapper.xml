@@ -4,10 +4,13 @@
 
 <mapper namespace="com.kinaboot.muscles.dao.reviewMapper">
     <select id="selectReviewById" parameterType="String" resultType="reviewDto">
-        select r.SCORE, r.CONTENT, r.createdDate, r.modDate, p.categoryName as productCategory, p.productName
-        from review r,
-             product p
-        where r.userId = '${userId}'
-          and p.productNo = r.productNo;
+        select *
+        from review
+        where userId = '${userId}'
     </select>
+
+    <insert id="insertReview" parameterType="reviewDto">
+        insert into review (score, content, userId, productNo, productName, createdDate, orderNo)
+        values (#{score}, #{content}, #{userId}, #{productNo}, #{productName}, now(), #{orderNo});
+    </insert>
 </mapper>

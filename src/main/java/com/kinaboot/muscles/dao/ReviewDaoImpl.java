@@ -9,6 +9,13 @@ import java.util.List;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao{
+    @Override
+    public int insertReview(List<ReviewDto> reviewDtoList) {
+        for(ReviewDto reviewDto : reviewDtoList)
+            session.insert(namespace+"insertReview",reviewDto);
+        return 0;
+    }
+
     @Autowired
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.reviewMapper.";

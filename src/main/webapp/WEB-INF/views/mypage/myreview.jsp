@@ -54,7 +54,7 @@
     <div class="item">
         <div>
             <span class="star">★★★★★
-                <span style="width: ${reviewDto.score * 20}%">★★★★★</span>
+                <span style="width: ${reviewDto.score}%">★★★★★</span>
             </span>
         </div>
         <span>작성일자 : ${reviewDto.createdDate}</span>
@@ -120,13 +120,8 @@
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
 <script>
-    // 작성한 리뷰 별점
-    const drawStar = (target) => {
-        document.querySelector(`.star span`).style.width = `${target.value * 20}%`;
-    };
 
     // 리뷰 별점 JS CODE
-    document.querySelector(`.star span`).style.width = `20%`;
 
     const button = document.querySelector(".modalBtn");
     const dialog = document.querySelector("dialog");

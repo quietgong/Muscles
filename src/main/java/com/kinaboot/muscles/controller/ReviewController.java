@@ -5,9 +5,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kinaboot.muscles.domain.OrderItemDto;
 import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.service.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,11 +20,15 @@ import java.util.List;
 
 @Controller
 public class ReviewController {
-    @ResponseBody
+    @Autowired
+    ReviewService reviewService;
+
     @PostMapping("/review")
-    public ResponseEntity<String> createReview(@RequestBody String jsonData, HttpSession session) throws JsonProcessingException {
-        String userId = (String) session.getAttribute("id");
+    @ResponseBody
+    // 리뷰 등록
+    public ResponseEntity<String> createReview(@RequestBody String jsonData) throws JsonProcessingException {
         List<ReviewDto> reviewDtoList = JsonToJava(jsonData);
+        reviewService.createReview(reviewDtoList);
         System.out.println("reviewDtoList = " + reviewDtoList);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }

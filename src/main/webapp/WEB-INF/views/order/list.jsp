@@ -67,7 +67,7 @@
                     <!-- 버튼 2개 -->
                     <input type="button" value="상세 내역"/>
                     <c:set var="accept" value="${orderDto.status=='대기중' ? '주문 취소' : '리뷰 작성'}"/>
-                    <input id="${orderDto.orderNo}" onclick="loadOrderItem(${orderDto.orderNo})" type="button"
+                    <input onclick="loadOrderItem(${orderDto.orderNo})" type="button"
                            value="${accept}"/>
                 </div>
                 <!-- 주문 내 주문상품 조회 -->
@@ -112,24 +112,25 @@
     // 모달 내용 등록
     $("#registerBtn").on("click", function () {
         // userId, productNo, productName, reviewScore, reviewContent를 json 형태로 서버에 보낸다.
-        let data = [];
+        let jsonData = [];
         $('.productName').each(function (index) {
             let tmp = {}
             tmp.userId = $("#userId").html()
             tmp.productNo = $('.productNo').eq(index).html()
             tmp.productName = $(this).html()
+            tmp.orderNo = $('.orderNo').eq(index).html()
             tmp.score = $('.starRange').eq(index).val()
             tmp.content = $('.reviewContent').eq(index).val()
-            data.push(tmp)
+            jsonData.push(tmp)
         });
-        console.log(JSON.stringify(data)) // OK
+        console.log(JSON.stringify(jsonData)) // OK
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/review/", // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/review", // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
-            data: JSON.stringify(data),
+            data: JSON.stringify(jsonData),
             success: function (res) {
                 alert("등록이 완료되었습니다.")
             },
@@ -155,6 +156,7 @@
                 "Content-Type": "application/json",
             },
             success: function (res) {
+                console.log(res)
                 $("#modalList").html(toHtml(res))
                 console.log("Get Order Item")
             },
@@ -171,6 +173,7 @@
         items.forEach(function (item) {
             tmp += '<div class="modal-container">'
             tmp += '<div><h3 class="productName">' + item.productName + '</h3></div>'
+            tmp += '<h3 style="display: none" class="orderNo">' + item.orderNo + '</h3>'
             tmp += '<h3 style="display: none" class="productNo">' + item.productNo + '</h3>'
             tmp += '<div><span class="modal-star">★★★★★<span>★★★★★</span>'
             tmp += '<input class="starRange" type="range" value="0" step="10" min="0" max="100"/>'

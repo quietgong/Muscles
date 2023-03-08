@@ -3,14 +3,55 @@ package com.kinaboot.muscles.domain;
 import java.util.Date;
 
 public class ReviewDto {
-    private Integer reviewNo;
-    private Integer score;
+    private int reviewNo;
+    private int orderNo;
+    private int score;
     private String content;
     private String userId;
-    private Integer productNo;
+    private int productNo;
     private String productName;
     private Date createdDate;
     private Date modDate;
+
+    public ReviewDto() {
+    }
+    public ReviewDto(int score, String content, String productName) {
+        this.score=score;
+        this.content = content;
+        this.productName = productName;
+    }
+
+    public int getReviewNo() {
+        return reviewNo;
+    }
+
+    public void setReviewNo(int reviewNo) {
+        this.reviewNo = reviewNo;
+    }
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getUserId() {
         return userId;
@@ -20,45 +61,12 @@ public class ReviewDto {
         this.userId = userId;
     }
 
-    public Integer getProductNo() {
+    public int getProductNo() {
         return productNo;
     }
 
-    public void setProductNo(Integer productNo) {
+    public void setProductNo(int productNo) {
         this.productNo = productNo;
-    }
-
-
-    public ReviewDto() {
-    }
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public ReviewDto(Integer score, String content, String productName) {
-        this.score=score;
-        this.content = content;
-        this.productName = productName;
-    }
-
-    public Integer getReviewNo() {
-        return reviewNo;
-    }
-
-    public void setReviewNo(Integer reviewNo) {
-        this.reviewNo = reviewNo;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getProductName() {
@@ -89,6 +97,7 @@ public class ReviewDto {
     public String toString() {
         return "ReviewDto{" +
                 "reviewNo=" + reviewNo +
+                ", orderNo=" + orderNo +
                 ", score=" + score +
                 ", content='" + content + '\'' +
                 ", userId='" + userId + '\'' +

@@ -11,6 +11,12 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService{
     @Autowired
     ReviewDao reviewDao;
+
+    @Override
+    public int createReview(List<ReviewDto> reviewDtoList) {
+        return reviewDao.insertReview(reviewDtoList);
+    }
+
     @Override
     public List<ReviewDto> getReviewListById(String userId) {
         return reviewDao.selectReviewListById(userId);
