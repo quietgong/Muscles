@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.OrderService;
+import com.kinaboot.muscles.service.ReviewService;
 import com.kinaboot.muscles.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,25 +28,38 @@ public class OrderController {
     OrderService orderService;
     @Autowired
     UserService userService;
+    @Autowired
+    ReviewService reviewService;
 
     @GetMapping("/order/detail")
     public String getOrderDetail(String userId, Integer orderNo) {
         return "order/detail";
     }
 
-    @GetMapping("/order/{orderNo}")
+    @GetMapping("/order")
     @ResponseBody
-    public ResponseEntity<List<OrderItemDto>> getOrder(@PathVariable Integer orderNo) {
-        List<OrderItemDto> orderItemDtoList = orderService.getOrderItemList(orderNo);
-        return new ResponseEntity<>(orderItemDtoList, HttpStatus.OK);
+    public ResponseEntity<OrderItemDto> getOrder(Integer orderNo, Integer productNo) {
+        OrderItemDto orderItemDto = orderService.getOrderItem(orderNo, productNo);
+        return new ResponseEntity<>(orderItemDto, HttpStatus.OK);
     }
 
     @GetMapping("/order/list")
     public String getOrderList(HttpSession session, Model m) {
         String userId = (String) session.getAttribute("id");
-        List<OrderDto> orderDtoList = orderService.getOrderList(userId);
+        List<OrderDto> orderDtoList = verifyReviewExist(orderService.getOrderList(userId));
         m.addAttribute(orderDtoList);
         return "order/list";
+    }
+
+    private List<OrderDto> verifyReviewExist(List<OrderDto> orderDtoList) {
+        for (OrderDto orderDto : orderDtoList) {
+            List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
+            for (OrderItemDto orderItemDto : orderItemDtoList)
+                orderItemDto.setHasReview
+                        (reviewService.getReviewOne
+                                (orderItemDto.getOrderNo(), orderItemDto.getProductNo()) != null);
+        }
+        return orderDtoList;
     }
 
     @PostMapping("/order/complete")

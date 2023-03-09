@@ -78,7 +78,14 @@
         from orders
         WHERE userId='${userId}'
     </select>
-    <!-- orderNo로 주문상품목록 가져오는 쿼리 -->
+    <!-- orderNo, prodcutNo로 주문상품 가져오는 쿼리 -->
+    <select id="selectOrderItem" resultType="orderItemDto" parameterType="map">
+        select orderNo, productNo, productName, productCategory, productQty, productPrice
+        from orderitem
+        WHERE orderNo = #{orderNo}
+          AND productNo = #{productNo}
+    </select>
+    <!-- orderNo로 주문상품 목록 가져오는 쿼리 -->
     <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
         select orderNo, productNo, productName, productCategory, productQty, productPrice
         from orderitem

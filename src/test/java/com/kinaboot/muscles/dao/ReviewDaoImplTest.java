@@ -31,9 +31,8 @@ public class ReviewDaoImplTest {
 
     @Test
     public void insertReview() {
-        List<ReviewDto> reviewDtoList = new ArrayList<>();
-        reviewDtoList.add(new ReviewDto(10, "test1", "product3"));
-        reviewDtoList.add(new ReviewDto(20, "test2", "product5"));
-        reviewService.createReview(reviewDtoList);
+        reviewService.createReview(new ReviewDto(4,10, "test1", "product3"));
+        ReviewDto reviewDto = reviewService.getReviewListByProductNo(4).get(0);
+        System.out.println("reviewDto = " + reviewDto);
     }
 }

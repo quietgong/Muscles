@@ -1,20 +1,22 @@
 package com.kinaboot.muscles.domain;
 
+import java.util.List;
+
 public class ProductDto {
-    private String productNo;
+    private List<ReviewDto> reviewDtoList;
+    private Integer productNo;
     private String productCategory;
     private String productName;
     private int productPrice;
     private int productStock;
-    private int productReviewCnt;
     private Double productReviewScore;
 
-    public int getProductReviewCnt() {
-        return productReviewCnt;
+    public List<ReviewDto> getReviewDtoList() {
+        return reviewDtoList;
     }
 
-    public void setProductReviewCnt(int productReviewCnt) {
-        this.productReviewCnt = productReviewCnt;
+    public void setReviewDtoList(List<ReviewDto> reviewDtoList) {
+        this.reviewDtoList = reviewDtoList;
     }
 
     public Double getProductReviewScore() {
@@ -35,11 +37,11 @@ public class ProductDto {
         this.productStock = productStock;
     }
 
-    public String getProductNo() {
+    public Integer getProductNo() {
         return productNo;
     }
 
-    public void setProductNo(String productNo) {
+    public void setProductNo(Integer productNo) {
         this.productNo = productNo;
     }
 

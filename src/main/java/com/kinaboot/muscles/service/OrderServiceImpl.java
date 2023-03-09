@@ -27,6 +27,11 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    public OrderItemDto getOrderItem(Integer orderNo, Integer productNo) {
+        return orderDao.selectOrderItem(orderNo, productNo);
+    }
+
+    @Override
     public List<OrderDto> getAdminOrderList() {
         return orderDao.selectOrderAll();
     }

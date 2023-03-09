@@ -7,5 +7,11 @@ import java.util.List;
 public interface ReviewService {
     List<ReviewDto> getReviewListById(String userId);
 
-    int createReview(List<ReviewDto> reviewDtoList);
+    int createReview(ReviewDto reviewDto);
+
+    List<ReviewDto> getReviewListByProductNo(Integer productNo);
+
+    ReviewDto getReviewOne(int orderNo, int productNo);
+
+    int removeReview(Integer orderNo, Integer productNo, String userId);
 }

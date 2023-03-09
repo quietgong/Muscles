@@ -35,10 +35,10 @@
         </a>
         <span style="font-weight: bold;">${productDto.productName}</span>
         <div>
-            <span class="star">★★★★★<span>★★★★★</span></span>
+            <span class="star">★★★★★<span style="width: ${productDto.productReviewScore}%">★★★★★</span></span>
         </div>
         <span style="font-weight: bold;">${productDto.productPrice}</span>
-        <span style="font-weight: bold;">리뷰개수</span>
+        <span style="font-weight: bold;">리뷰개수 : ${productDto.reviewDtoList.size()}</span>
     </div>
     </c:forEach>
 </div>
@@ -61,9 +61,5 @@
 
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
-<script>
-    // 별점
-    document.querySelector(`.star span`).style.width = `20%`;
-</script>
 </body>
 </html>

@@ -15,8 +15,10 @@ public class ReviewDto {
 
     public ReviewDto() {
     }
-    public ReviewDto(int score, String content, String productName) {
-        this.score=score;
+
+    public ReviewDto(int productNo, int score, String content, String productName) {
+        this.productNo = productNo;
+        this.score = score;
         this.content = content;
         this.productName = productName;
     }

@@ -7,6 +7,7 @@ public class OrderItemDto {
     private String productCategory;
     private int productQty;
     private int productPrice;
+    private boolean hasReview;
 
     public String getProductCategory() {
         return productCategory;
@@ -16,6 +17,13 @@ public class OrderItemDto {
         this.productCategory = productCategory;
     }
 
+    public boolean isHasReview() {
+        return hasReview;
+    }
+
+    public void setHasReview(boolean hasReview) {
+        this.hasReview = hasReview;
+    }
 
     public OrderItemDto() {
     }

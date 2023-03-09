@@ -23,9 +23,9 @@
                 <span id="category" style="font-size:25px; font-weight:bold;">${productDto.productCategory}</span>
                 <span id="name" style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
                 <div>
-                    <span class="star">★★★★★<span>★★★★★</span></span>
+                    <span class="star">★★★★★<span style="width: ${productScore}%;">★★★★★</span></span>
                 </div>
-                <span style="font-size: small">리뷰 : 2,145개</span>
+                <span style="font-size: small">리뷰 : ${reviewDtoList.size()}개</span>
                 <hr/>
                 <span style="font-size:25px; font-weight:bold;">${productDto.productStock}</span>
 
@@ -57,28 +57,19 @@
 <h1>상품 리뷰</h1>
 <!-- 작성한 리뷰 -->
 <div class="product-detail-review-container">
+    <c:forEach var="reviewDto" items="${reviewDtoList}">
     <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
-    <div class="product-detail-review-item"><h3>상품명</h3></div>
+    <div class="product-detail-review-item"><h3>${reviewDto.productName}</h3></div>
     <div class="product-detail-review-item">
-        <span
-        >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
-          voluptates aliquam quo possimus ab consectetur expedita minus illo.
-          Aut, quo? Rerum numquam nobis esse necessitatibus vitae tempora
-          asperiores, libero porro.</span
-        >
+        <span>${reviewDto.content}</span>
     </div>
     <div class="product-detail-review-item">
         <div>
-            <span class="star">★★★★★<span>★★★★★</span></span>
+            <span class="star">★★★★★<span style="width: ${reviewDto.score}%">★★★★★</span></span>
         </div>
-        <span style="font-size:25px; font-weight:bold;">주문일자 : 2022-03-20</span>
+        <span style="font-size:25px; font-weight:bold;">작성일자 : ${reviewDto.createdDate}</span>
     </div>
-    <div class="product-detail-review-item">
-        <span
-        ><a href="login.html">수정</a> |
-          <a href="register.html">삭제</a></span
-        ><br/>
-    </div>
+    </c:forEach>
 </div>
 <hr/>
 <!-- 작성한 리뷰 끝 -->
@@ -202,8 +193,6 @@
     }
 
 
-    // 별점
-    document.querySelector(`.star span`).style.width = `20%`;
     // 모달창
     const button = document.querySelector("#modalBtn");
     const dialog = document.querySelector("dialog");

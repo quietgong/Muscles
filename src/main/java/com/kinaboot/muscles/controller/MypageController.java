@@ -9,12 +9,11 @@ import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.service.ReviewService;
 import com.kinaboot.muscles.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +27,9 @@ import java.util.Map;
 @RequestMapping("/mypage")
 public class MypageController {
     private final UserDao userDao;
+    MypageController(UserDao userDao) {
+        this.userDao = userDao;
+    }
     @Autowired
     UserService userService;
     @Autowired
@@ -35,18 +37,28 @@ public class MypageController {
     @Autowired
     ReviewService reviewService;
 
+    @DeleteMapping("/myreview/delete")
+    @ResponseBody
+    public ResponseEntity<String> deleteReview(Integer orderNo, Integer productNo, HttpSession session){
+        String userId = (String) session.getAttribute("id");
+        reviewService.removeReview(orderNo, productNo, userId);
+        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
+    }
     // 내가 쓴 리뷰
-    @GetMapping("/myreview")
-    public String myreview(Model m, HttpSession session) {
+    @GetMapping("/myreview/get")
+    @ResponseBody
+    public ResponseEntity<List<ReviewDto>> getReview(HttpSession session) {
         String userId = (String) session.getAttribute("id");
         List<ReviewDto> reviewDtoList = reviewService.getReviewListById(userId);
-        m.addAttribute("list", reviewDtoList);
+        return new ResponseEntity<>(reviewDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/myreview")
+    public String myreview(){
         return "mypage/myreview";
     }
 
-    MypageController(UserDao userDao) {
-        this.userDao = userDao;
-    }
+
 
     // 내가 쓴 글
     @GetMapping("/mypost")

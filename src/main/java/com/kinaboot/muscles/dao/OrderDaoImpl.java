@@ -63,6 +63,14 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public OrderItemDto selectOrderItem(Integer orderNo, Integer productNo) {
+        Map map = new HashMap();
+        map.put("orderNo", orderNo);
+        map.put("productNo", productNo);
+        return session.selectOne(namespace+"selectOrderItem",map);
+    }
+
+    @Override
     public List<OrderDto> selectOrderAllByUser() {
         return session.selectList(namespace + "selectAllByUser");
     }

@@ -13,8 +13,23 @@ public class ReviewServiceImpl implements ReviewService{
     ReviewDao reviewDao;
 
     @Override
-    public int createReview(List<ReviewDto> reviewDtoList) {
-        return reviewDao.insertReview(reviewDtoList);
+    public ReviewDto getReviewOne(int orderNo, int productNo) {
+        return reviewDao.selectReview(orderNo, productNo);
+    }
+
+    @Override
+    public int removeReview(Integer orderNo, Integer productNo, String userId) {
+        return reviewDao.deleteReview(orderNo, productNo, userId);
+    }
+
+    @Override
+    public int createReview(ReviewDto reviewDto) {
+        return reviewDao.insertReview(reviewDto);
+    }
+
+    @Override
+    public List<ReviewDto> getReviewListByProductNo(Integer productNo) {
+        return reviewDao.selectReviewListByProductId(productNo);
     }
 
     @Override

@@ -3,14 +3,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kinaboot.muscles.dao.reviewMapper">
+    <select id="selectReview" parameterType="map" resultType="reviewDto">
+        select *
+        from review
+        where orderNo = #{orderNo}
+          and productNo = #{productNo}
+    </select>
     <select id="selectReviewById" parameterType="String" resultType="reviewDto">
         select *
         from review
         where userId = '${userId}'
     </select>
 
+    <select id="selectReviewByProductNo" parameterType="int" resultType="reviewDto">
+        select *
+        from review
+        where productNo = '${productNo}'
+    </select>
+
     <insert id="insertReview" parameterType="reviewDto">
         insert into review (score, content, userId, productNo, productName, createdDate, orderNo)
         values (#{score}, #{content}, #{userId}, #{productNo}, #{productName}, now(), #{orderNo});
     </insert>
+
+    <delete id="deleteReview" parameterType="map">
+        delete
+        from review
+        where userId = #{userId}
+          and orderNo = ${orderNo}
+          and productNo = #{productNo}
+    </delete>
 </mapper>

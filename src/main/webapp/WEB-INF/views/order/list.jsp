@@ -65,13 +65,19 @@
                 </div>
                 <div>
                     <!-- 버튼 2개 -->
-                    <input type="button" value="상세 내역"/>
-                    <c:set var="accept" value="${orderDto.status=='대기중' ? '주문 취소' : '리뷰 작성'}"/>
-                    <input onclick="loadOrderItem(${orderDto.orderNo})" type="button"
-                           value="${accept}"/>
+                    <input style="float:right;" type="button" value="상세 내역"/>
+                    <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
+                    <input style="float: right" type="${accept}" value="주문 취소">
                 </div>
                 <!-- 주문 내 주문상품 조회 -->
                 <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
+                    <div>
+                        <c:set var="hasReview"
+                               value="${orderDto.status == '배송완료' && orderItemDto.hasReview == false ? 'button' : 'hidden'}"/>
+                        <input type="${hasReview}"
+                               onclick="createReview(${orderDto.orderNo}, ${orderItemDto.productNo})"
+                               value="리뷰 작성"/>
+                    </div>
                     <div>
                         <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
                         <p>[${orderItemDto.productCategory}]</p>
@@ -111,19 +117,14 @@
 <script>
     // 모달 내용 등록
     $("#registerBtn").on("click", function () {
-        // userId, productNo, productName, reviewScore, reviewContent를 json 형태로 서버에 보낸다.
-        let jsonData = [];
-        $('.productName').each(function (index) {
-            let tmp = {}
-            tmp.userId = $("#userId").html()
-            tmp.productNo = $('.productNo').eq(index).html()
-            tmp.productName = $(this).html()
-            tmp.orderNo = $('.orderNo').eq(index).html()
-            tmp.score = $('.starRange').eq(index).val()
-            tmp.content = $('.reviewContent').eq(index).val()
-            jsonData.push(tmp)
-        });
-        console.log(JSON.stringify(jsonData)) // OK
+        let jsonData = {};
+        jsonData.userId = $("#userId").html()
+        jsonData.orderNo = $('.orderNo').html()
+        jsonData.productNo = $('.productNo').html()
+        jsonData.productName = $('.productName').html()
+        jsonData.score = $('.starRange').val()
+        jsonData.content = $('.reviewContent').val()
+
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/review", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -131,8 +132,10 @@
                 "Content-Type": "application/json",
             },
             data: JSON.stringify(jsonData),
-            success: function (res) {
+            success: function () {
                 alert("등록이 완료되었습니다.")
+                // 리뷰 등록 버튼 숨기기
+                location.replace("")
             },
             error: function () {
                 console.log("통신 실패")
@@ -147,18 +150,18 @@
     })
 
     // 주문 정보를 서버에서 받아온 다음 모달 내용을 추가한다.
-    function loadOrderItem(orderNo) {
-        console.log(orderNo);
+    function createReview(orderNo, productNo) {
+        console.log(orderNo, productNo);
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/order/" + orderNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/order?orderNo=" + orderNo + "&productNo=" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
-            success: function (res) {
-                console.log(res)
-                $("#modalList").html(toHtml(res))
-                console.log("Get Order Item")
+            success: function (item) {
+                console.log(item)
+                $("#modalList").html(toHtml(item))
+                console.log("Get Item")
             },
             error: function () {
                 console.log("통신 실패")
@@ -168,29 +171,26 @@
         $("#myModal").css("display", "block")
     }
 
-    let toHtml = function (items) {
+    // 리뷰 작성을 선택한 상품의 정보에 따라 모달 내용을 동적으로 추가
+    let toHtml = function (item) {
         let tmp = "";
-        items.forEach(function (item) {
-            tmp += '<div class="modal-container">'
-            tmp += '<div><h3 class="productName">' + item.productName + '</h3></div>'
-            tmp += '<h3 style="display: none" class="orderNo">' + item.orderNo + '</h3>'
-            tmp += '<h3 style="display: none" class="productNo">' + item.productNo + '</h3>'
-            tmp += '<div><span class="modal-star">★★★★★<span>★★★★★</span>'
-            tmp += '<input class="starRange" type="range" value="0" step="10" min="0" max="100"/>'
-            tmp += '</span>'
-            tmp += '</div>'
-            tmp += '</div>'
-            tmp += '<div class="modal-container">'
-            tmp += '<div><textarea class="reviewContent" placeholder="상품 후기를 작성해주세요." rows="5" cols="50"/></div>'
-            tmp += '</div>'
-            tmp += '<hr>'
-        })
+        tmp += '<div class="modal-container">'
+        tmp += '<div><h3 class="productName">' + item.productName + '</h3></div>'
+        tmp += '<h3 style="display: none" class="orderNo">' + item.orderNo + '</h3>'
+        tmp += '<h3 style="display: none" class="productNo">' + item.productNo + '</h3>'
+        tmp += '<div><span class="modal-star">★★★★★<span>★★★★★</span>'
+        tmp += '<input class="starRange" type="range" value="0" step="10" min="0" max="100"/>'
+        tmp += '</span></div></div>'
+        tmp += '<div class="modal-container">'
+        tmp += '<div><textarea class="reviewContent" placeholder="상품 후기를 작성해주세요." rows="5" cols="50"/></div>'
+        tmp += '</div>'
+        tmp += '<hr>'
         return tmp;
     }
 </script>
 <script>
-    $(document).on('mousemove', '.starRange',function (){
-        $(this).prev().css("width",$(this).val()+'%')
+    $(document).on('mousemove', '.starRange', function () {
+        $(this).prev().css("width", $(this).val() + '%')
     })
 </script>
 </body>

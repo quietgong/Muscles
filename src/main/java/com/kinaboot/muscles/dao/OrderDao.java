@@ -20,4 +20,6 @@ public interface OrderDao {
     List<OrderDto> selectAll(String userId);
 
     List<OrderItemDto> selectOrderItemList(Integer orderNo);
+
+    OrderItemDto selectOrderItem(Integer orderNo, Integer productNo);
 }

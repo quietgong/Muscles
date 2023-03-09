@@ -14,4 +14,6 @@ public interface OrderService {
     List<OrderDto> getAdminOrderList();
 
     List<OrderItemDto> getOrderItemList(Integer orderNo);
+
+    OrderItemDto getOrderItem(Integer orderNo, Integer productNo);
 }
