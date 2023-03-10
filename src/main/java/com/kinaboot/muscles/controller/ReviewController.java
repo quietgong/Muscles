@@ -23,4 +23,11 @@ public class ReviewController {
         reviewService.createReview(reviewDto);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }
+    @PatchMapping("/review")
+    @ResponseBody
+    // 리뷰 등록
+    public ResponseEntity<String> modifyReview(@RequestBody ReviewDto reviewDto) {
+        reviewService.modifyReview(reviewDto);
+        return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
+    }
 }

@@ -14,4 +14,6 @@ public interface ReviewDao {
     ReviewDto selectReview(int orderNo, int productNo);
 
     int deleteReview(Integer orderNo, Integer productNo, String userId);
+
+    int updateReview(ReviewDto reviewDto);
 }

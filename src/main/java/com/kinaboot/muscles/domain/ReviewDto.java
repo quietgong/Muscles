@@ -11,6 +11,7 @@ public class ReviewDto {
     private int productNo;
     private String productName;
     private Date createdDate;
+    private Date expiredDate;
     private Date modDate;
 
     public ReviewDto() {
@@ -21,6 +22,14 @@ public class ReviewDto {
         this.score = score;
         this.content = content;
         this.productName = productName;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
     }
 
     public int getReviewNo() {
@@ -106,6 +115,7 @@ public class ReviewDto {
                 ", productNo=" + productNo +
                 ", productName='" + productName + '\'' +
                 ", createdDate=" + createdDate +
+                ", expiredDate=" + expiredDate +
                 ", modDate=" + modDate +
                 '}';
     }

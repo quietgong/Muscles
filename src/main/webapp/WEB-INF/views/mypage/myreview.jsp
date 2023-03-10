@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='/css/modal.css'/>"/>
     <script src="https://code.jquery.com/jquery-1.11.3.js"/>
 </head>
 <style>
@@ -65,25 +66,29 @@
 <script>
     //수정 기능
     // 1. 수정 버튼 클릭
-    $(document).on("click", ".modBtn", function (){
+    $(document).on("click", ".modBtn", function () {
         // 2-1. 기존 작성내용의 모달창 출력
-        let productName = "";
-        let score = "";
-        let content = "";
-        $("#modalList").html(toHtml(productName,score,content))
+        let productName = $(this).parent().parent().prev().prev().prev().val();
+        let score = $(this).parent().parent().prev().prev().val();
+        let content = $(this).parent().parent().prev().val();
+        let orderNo = $(this).next().next().val();
+        let productNo = $(this).next().next().next().val();
+
+        $("#modalList").html(append())
 
         // f : 리뷰 작성을 선택한 상품의 정보에 따라 모달 내용을 동적으로 추가
-        let toHtml = function (item) {
+        function append() {
             let tmp = "";
             tmp += '<div class="modal-container">'
-            tmp += '<div><h3 class="productName">' + item.productName + '</h3></div>'
-            tmp += '<h3 style="display: none" class="orderNo">' + item.orderNo + '</h3>'
-            tmp += '<h3 style="display: none" class="productNo">' + item.productNo + '</h3>'
-            tmp += '<div><span class="modal-star">★★★★★<span>★★★★★</span>'
+            tmp += '<div><h3 class="productName">' + productName + '</h3></div>'
+            tmp += '<h3 style="display: none" class="orderNo">' + orderNo + '</h3>'
+            tmp += '<h3 style="display: none" class="productNo">' + productNo + '</h3>'
+            tmp += '<div><span class="modal-star">★★★★★<span style=\"width:' + score + '%\">★★★★★</span>'
             tmp += '<input class="starRange" type="range" value="0" step="10" min="0" max="100"/>'
             tmp += '</span></div></div>'
             tmp += '<div class="modal-container">'
-            tmp += '<div><textarea class="reviewContent" placeholder="상품 후기를 작성해주세요." rows="5" cols="50"/></div>'
+            tmp += '<div><textarea class="reviewContent" placeholder="상품 후기를 작성해주세요." rows="5" cols="50">' + content
+            tmp += '</textarea></div>'
             tmp += '</div>'
             tmp += '<hr>'
             return tmp;
@@ -91,7 +96,6 @@
 
         // 2-2. 모달창 출력
         $("#myModal").css("display", "block")
-
         // 3. AJAX 수정내용 DB 반영
         $("#registerBtn").on("click", function () {
             let jsonData = {};
@@ -125,7 +129,7 @@
         $("#myModal").css("display", "none")
     })
     // 별점 드래그
-    $(document).on('mousemove', '.starRange', function () {
+    $(document).on('mouseup', '.starRange', function () {
         $(this).prev().css("width", $(this).val() + '%')
     })
 
@@ -176,6 +180,9 @@
             tmp += '</div>'
             tmp += '<span>작성일자 : ' + item.createdDate + '</span>'
             tmp += '</div>'
+            tmp += '<input type="hidden" value=\"' + item.productName + '">'
+            tmp += '<input type="hidden" value=\"' + item.score + '">'
+            tmp += '<input type="hidden" value=\"' + item.content + '">'
             tmp += '<div class="item"><span><button type="button" class="modBtn">수정</button><button type="button" class="delBtn">삭제</button>'
             tmp += '<input type="hidden" value=\"' + item.orderNo + '">'
             tmp += '<input type="hidden" value=\"' + item.productNo + '">'

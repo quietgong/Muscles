@@ -14,4 +14,6 @@ public interface ReviewService {
     ReviewDto getReviewOne(int orderNo, int productNo);
 
     int removeReview(Integer orderNo, Integer productNo, String userId);
+
+    int modifyReview(ReviewDto reviewDto);
 }

@@ -13,22 +13,32 @@
         select *
         from review
         where userId = '${userId}'
+            and expiredDate is null;
     </select>
 
     <select id="selectReviewByProductNo" parameterType="int" resultType="reviewDto">
         select *
         from review
         where productNo = '${productNo}'
+                    and expiredDate is null;
     </select>
 
     <insert id="insertReview" parameterType="reviewDto">
         insert into review (score, content, userId, productNo, productName, createdDate, orderNo)
         values (#{score}, #{content}, #{userId}, #{productNo}, #{productName}, now(), #{orderNo});
     </insert>
-
+<update id="updateReview" parameterType="reviewDto">
+    UPDATE review
+    SET modDate = now(),
+        score = #{score},
+        content = #{content}
+    where userId = #{userId}
+      and orderNo = #{orderNo}
+      and productNo = #{productNo}
+</update>
     <delete id="deleteReview" parameterType="map">
-        delete
-        from review
+        UPDATE review
+        SET expiredDate = now()
         where userId = #{userId}
           and orderNo = ${orderNo}
           and productNo = #{productNo}

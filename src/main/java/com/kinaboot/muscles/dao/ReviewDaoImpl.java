@@ -26,6 +26,11 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
+    public int updateReview(ReviewDto reviewDto) {
+        return session.update(namespace+"updateReview",reviewDto);
+    }
+
+    @Override
     public ReviewDto selectReview(int orderNo, int productNo) {
         Map map = new HashMap();
         map.put("orderNo", orderNo);
