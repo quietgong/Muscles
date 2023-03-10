@@ -12,6 +12,7 @@ public interface OrderDao {
     List<OrderDto> selectOrderAllByUser();
 
     OrderDto selectOrder(String userId, int bundleNo);
+    OrderDto selectOrder(Integer orderNo);
 
     int updateOrderStatus(Integer bundleNo);
 

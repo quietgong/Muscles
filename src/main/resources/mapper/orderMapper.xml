@@ -29,20 +29,6 @@
           AND C.NAME=P.categoryName
         order by createdDate
     </select>
-    <select id="selectOrder" parameterType="String" resultType="OrderDto">
-        SELECT O.userId      as userId
-             , O.bundleNo    AS bundleNo
-             , O.createdDate AS createdDate
-             , O.STATUS      AS status
-        FROM ORDERS O,
-             USER U,
-             PRODUCT P,
-             CATEGORY C
-        WHERE U.ID = '${userId}'
-          AND O.userId = U.ID
-          AND C.NAME = P.categoryName
-        group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
-    </select>
     <select id="selectOrderAll" parameterType="String" resultType="OrderDto">
         SELECT
             O.userId as userId
@@ -67,37 +53,43 @@
           AND C.NAME=P.categoryName
         group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
     </select>
-    <!-- 전체 주문목록 가져오는 쿼리 -->
+    <!-- 전체 주문목록 반환 -->
     <select id="selectOrderAllList" resultType="orderDto">
         select orderNo, userId, status, createdDate
         from orders
     </select>
-    <!-- userId로 주문목록 가져오는 쿼리 -->
+    <!-- userId로 주문정보 목록 반환 -->
     <select id="selectOrderList" resultType="orderDto" parameterType="String">
         select orderNo, userId, status, createdDate
         from orders
         WHERE userId='${userId}'
     </select>
-    <!-- orderNo, prodcutNo로 주문상품 가져오는 쿼리 -->
+    <!-- orderNo로 주문정보 반환 -->
+    <select id="selectOrder" parameterType="int" resultType="OrderDto">
+        select orderNo, userId, status, createdDate
+        FROM orders
+        WHERE orderNo = '${orderNo}'
+    </select>
+    <!-- orderNo, prodcutNo로 주문상품 반환 -->
     <select id="selectOrderItem" resultType="orderItemDto" parameterType="map">
         select orderNo, productNo, productName, productCategory, productQty, productPrice
         from orderitem
         WHERE orderNo = #{orderNo}
           AND productNo = #{productNo}
     </select>
-    <!-- orderNo로 주문상품 목록 가져오는 쿼리 -->
+    <!-- orderNo로 주문상품 목록 반환 -->
     <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
         select orderNo, productNo, productName, productCategory, productQty, productPrice
         from orderitem
         WHERE orderNo='${orderNo}'
     </select>
-    <!-- orderNo로 배송정보 가져오는 쿼리 -->
+    <!-- orderNo로 배송정보 반환 -->
     <select id="selectDelivery" resultType="deliveryDto" parameterType="int">
         select orderNo, receiver, PHONE, ADDRESS, MESSAGE
         from delivery
         WHERE orderNo='${orderNo}'
     </select>
-    <!-- orderNo로 결제정보 가져오는 쿼리 -->
+    <!-- orderNo로 결제정보 반환 -->
     <select id="selectPayment" resultType="paymentDto" parameterType="int">
         select orderNo, PRICE, TYPE
         from payment

@@ -32,7 +32,10 @@ public class OrderController {
     ReviewService reviewService;
 
     @GetMapping("/order/detail")
-    public String getOrderDetail(String userId, Integer orderNo) {
+    public String getOrderDetail(Integer orderNo, Model m) {
+        System.out.println(orderNo);
+        OrderDto orderDto = orderService.getOrderDetail(orderNo);
+        m.addAttribute(orderDto);
         return "order/detail";
     }
 

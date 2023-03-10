@@ -64,10 +64,12 @@
                     <span>주문번호 : ${orderDto.orderNo}</span>
                 </div>
                 <div>
-                    <!-- 버튼 2개 -->
-                    <input style="float:right;" type="button" value="상세 내역"/>
+                    <form action="<c:url value='/order/detail'/>">
+                        <input type="hidden" name="orderNo" value="${orderDto.orderNo}">
+                        <input type="submit" style="float:right;" value="상세 내역"/>
+                    </form>
                     <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
-                    <input style="float: right" type="${accept}" value="주문 취소">
+                    <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
                 </div>
                 <!-- 주문 내 주문상품 조회 -->
                 <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
