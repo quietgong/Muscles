@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <html>
@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='/css/modal.css'/>"/>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"/>
 </head>
 <body>
 <!-- nav -->
@@ -17,46 +19,18 @@
 <!-- 검색조건 -->
 <div class="admin-condition">
     <div>
-        <span for="pw1">상품명</span>
-        <input type="text" id="lname" name="lastname" />
-        <input type="button" value="검색" />
+        <label for="lname">상품명<input type="text" id="lname" name="lastname"/></label>
+        <input type="button" value="검색"/>
     </div>
 </div>
 <!-- 검색조건 끝 -->
 
 <!-- 컨테이너 -->
 <div class="admin-container">
-    <!-- 사이드바 -->
     <%@include file="sidebar.jsp" %>
-    <!-- 사이드바 -->
     <!-- 내용 -->
-    <div class="admin-item">
-        <!-- 반복부 -->
-        <c:forEach var="productDto" items="${list}">
-        <div class="admin-item-detail">
-            <div class="admin-detail-section">
-            </div>
-            <div class="admin-detail-section">
-                <div>
-                    <!-- 상품사진 -->
-                    <img src="http://via.placeholder.com/200X100/000000/ffffff" />
-                </div>
-                <div>
-                    <!-- 상품정보 -->
-                    <span style="font-weight: bold;">[${productDto.categoryName}]</span><br>
-                    <span>상품명 : ${productDto.productName}</span><br>
-                    <span>가격 : ${productDto.price}</span><br>
-                    <span>재고수량 : ${productDto.stock}</span><br>
-                </div>
-
-                <div>
-                    <!-- 상품정보 변경 버튼 -->
-                    <button id="modalBtn" type="button">상품정보 변경</button>
-                </div>
-            </div>
-        </div>
-        </c:forEach>
-        <!-- 반복부 -->
+    <div id="admin-item">
+        <!-- AJAX 동적추가 -->
     </div>
     <!-- 내용 -->
 </div>
@@ -77,69 +51,143 @@
     <li class="paging"><a href="#">></a></li>
 </ul>
 
-<!-- 상품정보 변경 모달-->
-<dialog>
-    <h3 style="background-color: rgb(227, 217, 204)">상품 정보 변경</h3>
-    <div class="admin-admin-condition">
-        <div class="admin-item">
-            <h3>상품명</h3>
+<!-- 모달-->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <h3 style="text-align: center; font-style: italic;">상품정보 변경</h3>
+        <div id="modalList">
+            <!-- 동적 추가 -->
         </div>
-        <div class="admin-item">
-            <input />
-        </div>
-    </div>
-    <hr />
-    <div class="admin-admin-condition">
-        <div class="admin-item">
-            <h3>가격</h3>
-        </div>
-        <div class="admin-item">
-            <input />
+        <div style="text-align: center;">
+            <button id="registerBtn">등록</button>
+            <button id="closeBtn">닫기</button>
         </div>
     </div>
-    <hr />
-    <div class="admin-admin-condition">
-        <div class="admin-item">
-            <h3>카테고리</h3>
-        </div>
-        <div class="admin-item">
-            <select id="country" name="country">
-                <option value="" selected>대분류</option>
-                <option value="">유산소</option>
-                <option value="">근력</option>
-            </select>
-            <select id="country" name="country">
-                <option value="" selected>소분류</option>
-                <option value="">사이클</option>
-                <option value="">러닝머신</option>
-            </select>
-        </div>
-    </div>
-    <hr />
-
-    <div class="admin-admin-condition">
-        <div class="admin-item">
-            <h3>재고</h3>
-        </div>
-        <div class="admin-item">
-            <input />
-        </div>
-    </div>
-    <form method="dialog">
-        <button type="submit">변경</button>
-        <button type="button">닫기</button>
-    </form>
-</dialog>
+</div>
+<!-- 모달-->
 <script>
+    // 1. 상품 정보 불러오기
+    function loadProductData() {
+        $.ajax({
+            type: "GET",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/admin/product/manage", // 컨트롤러에서 대기중인 URL 주소이다.
+            success: function (res) {
+                $("#admin-item").html(toHtml(res))
+                console.log("Get All Product Item!")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+        let toHtml = function (items) {
+            let tmp = "";
+            items.forEach(function (item) {
+                tmp += '<div class="admin-item-detail">'
+                tmp += '<div class="admin-detail-section">'
+                tmp += '<div>'
+                tmp += '<img src="http://via.placeholder.com/200X100/000000/ffffff" />'
+                tmp += '</div><div>'
+                tmp += '<span style=\"font-weight: bold\">[' + item.productCategory + ']</span><br>'
+                tmp += '<span>상품명 : ' + item.productName + '</span><br>'
+                tmp += '<span>가격 : ' + item.productPrice + '</span><br>'
+                tmp += '<span>재고수량 : ' + item.productStock + '</span><br>'
+                tmp += '</div>'
+                tmp += '<div data-productNo=' + item.productNo + ' data-productName=' +item.productName +
+                    ' data-productPrice=' + item.productPrice + ' data-productstock=' + item.productStock + '>'
+                tmp += '<button class="modBtn" type="button">상품정보 변경</button>'
+                tmp += '<button class="delBtn" type="button">상품 삭제</button>'
+                tmp += '<input type="hidden" value=\"' + item.productNo + '\">'
+                tmp += '</div>'
+                tmp += '</div>'
+                tmp += '</div>'
+            })
+            return tmp;
+        }
+    }
+    loadProductData()
 
-    const button = document.querySelector("#modalBtn")
-    const dialog = document.querySelector("dialog");
-    button.addEventListener("click", () => {
-        dialog.showModal();
-    });
-    dialog.addEventListener("close", () => {
-        alert("cancel");
-    });
+
+    // 2. 상품 정보 삭제
+    $(document).on("click", ".delBtn", function () {
+        let productNo = $(this).next().val();
+        $.ajax({
+            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/admin/product/manage/" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            success: function () {
+                console.log("Delete Product Item!")
+                alert("삭제되었습니다.")
+                loadProductData()
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    })
+
+    // 3. 상품 정보 수정
+    $(document).on("click", ".modBtn", function () {
+        // 2-1. 기존 작성내용의 모달창 출력
+        let productNo = $(this).parent().attr("data-productNo");
+        let productName = $(this).parent().attr("data-productName");
+        let productPrice = $(this).parent().attr("data-productPrice");
+        let productStock = $(this).parent().attr("data-productStock");
+
+        $("#modalList").html(append())
+
+        // f : 리뷰 작성을 선택한 상품의 정보에 따라 모달 내용을 동적으로 추가
+        function append() {
+            let tmp = "";
+            tmp += '<div class="admin-admin-condition">'
+            tmp += '<div class="admin-item">'
+            tmp += '<input type="hidden" id="productNo" value=\"' + productNo + '\">'
+            tmp += '<h3>상품명</h3></div><div class="admin-item">'
+            tmp += '<input type="text" id="productName" value=\"' + productName + '\">'
+            tmp += '</div></div><hr />'
+            tmp += '<div class="admin-admin-condition"><div class="admin-item"><h3>가격</h3></div>'
+            tmp += '<div class="admin-item">'
+            tmp += '<input type="text" id="productPrice" value=\"' + productPrice + '\">'
+            tmp += '</div></div><hr />'
+            tmp += '<div class="admin-admin-condition">'
+            tmp += '<div class="admin-item">'
+            tmp += '<h3>재고</h3></div><div class="admin-item">'
+            tmp += '<input type="text" id="productStock" value=\"' + productStock + '\">'
+            tmp += '</div></div>'
+            return tmp;
+        }
+
+        // 2-2. 모달창 출력
+        $("#myModal").css("display", "block")
+        // 3. AJAX 수정내용 DB 반영
+        $("#registerBtn").on("click", function () {
+            console.log(productNo)
+            let jsonData = {};
+            jsonData.productNo = $("#productNo").val();
+            jsonData.productName = $("#productName").val()
+            jsonData.productPrice = $("#productPrice").val()
+            jsonData.productStock = $("#productStock").val()
+
+            $.ajax({
+                type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
+                url: "/muscles/admin/product/manage/", // 컨트롤러에서 대기중인 URL 주소이다.
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify(jsonData),
+                success: function () {
+                    alert("수정이 완료되었습니다.")
+                    loadProductData()
+                },
+                error: function () {
+                    console.log("통신 실패")
+                }
+            })
+            $("#myModal").css("display", "none")
+        })
+    })
+    // 모달 닫기
+    $("#closeBtn").on("click", function () {
+        $("#myModal").css("display", "none")
+    })
 </script>
 
 <!-- footer -->

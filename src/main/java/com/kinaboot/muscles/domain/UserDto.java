@@ -4,21 +4,37 @@ import java.util.Date;
 
 public class UserDto {
     private Integer userNo;
+    private String userId;
+    private String password;
+    private String email;
+    private String phone;
+    private String address;
+    private int point;
+    private Date birth;
+    private Date createdDate;
+    private Date expiredDate;
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "userNo=" + userNo +
-                ", id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", point=" + point +
-                ", birth=" + birth +
-                ", created_date=" + created_date +
-                ", expired_date=" + expired_date +
-                '}';
+    public UserDto() {
+    }
+
+    public UserDto(String userId, String password, String address) {
+        this.userId = userId;
+        this.password = password;
+        this.address=address;
+    }
+
+    public UserDto(String userId, String password, String email, String phone, String address, int point) {
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.point = point;
+    }
+
+    public UserDto(String userId, String password) {
+        this.userId=userId;
+        this.password=password;
     }
 
     public Integer getUserNo() {
@@ -29,45 +45,12 @@ public class UserDto {
         this.userNo = userNo;
     }
 
-    private String id;
-    private String password;
-    private String email;
-    private String phone;
-    private String address;
-    private int point;
-    private Date birth;
-    private Date created_date;
-    private Date expired_date;
-
-    public UserDto() {
+    public String getUserId() {
+        return userId;
     }
 
-    public UserDto(String id, String password, Date birth, String address) {
-        this.id = id;
-        this.password = password;
-        this.address=address;
-    }
-
-    public UserDto(String id, String password, String email, String phone, String address, int point) {
-        this.id = id;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.point = point;
-    }
-
-    public UserDto(String id, String password) {
-        this.id=id;
-        this.password=password;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
@@ -118,20 +101,35 @@ public class UserDto {
         this.birth = birth;
     }
 
-    public Date getCreated_date() {
-        return created_date;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(Date created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public Date getExpired_date() {
-        return expired_date;
+    public Date getExpiredDate() {
+        return expiredDate;
     }
 
-    public void setExpired_date(Date expired_date) {
-        this.expired_date = expired_date;
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
     }
 
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userNo=" + userNo +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", point=" + point +
+                ", birth=" + birth +
+                ", createdDate=" + createdDate +
+                ", expiredDate=" + expiredDate +
+                '}';
+    }
 }

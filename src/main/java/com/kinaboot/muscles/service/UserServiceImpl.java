@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public int createQuit(String userId) {
+        return userDao.insertQuit(userId);
+    }
+
+    @Override
     public int leaveUser(Map map) {
         userDao.insertLeave(map);
         return userDao.deleteUser((String) map.get("userId"));
@@ -56,7 +61,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int remove(String id) throws Exception {
-        return 0;
+    public int removeUser(String userId) throws Exception {
+        return userDao.deleteUser(userId);
     }
+
 }

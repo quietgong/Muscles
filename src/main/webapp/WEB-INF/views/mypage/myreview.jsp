@@ -128,10 +128,6 @@
     $("#closeBtn").on("click", function () {
         $("#myModal").css("display", "none")
     })
-    // 별점 드래그
-    $(document).on('mouseup', '.starRange', function () {
-        $(this).prev().css("width", $(this).val() + '%')
-    })
 
     //삭제 기능
     $(document).on("click", ".delBtn", function () {
@@ -150,6 +146,8 @@
             }
         })
     })
+
+
 
     function loadReviewData() {
         $.ajax({
@@ -194,6 +192,10 @@
     }
     loadReviewData()
 
+    // 별점 드래그
+    $(document).on('mouseup', '.starRange', function () {
+        $(this).prev().css("width", $(this).val() + '%')
+    })
 </script>
 </body>
 </html>

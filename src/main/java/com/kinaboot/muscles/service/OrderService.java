@@ -18,4 +18,6 @@ public interface OrderService {
     OrderItemDto getOrderItem(Integer orderNo, Integer productNo);
 
     OrderDto getOrderDetail(Integer orderNo);
+
+    int removeOrder(Integer orderNo);
 }

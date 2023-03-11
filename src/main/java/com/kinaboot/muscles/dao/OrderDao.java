@@ -23,4 +23,6 @@ public interface OrderDao {
     List<OrderItemDto> selectOrderItemList(Integer orderNo);
 
     OrderItemDto selectOrderItem(Integer orderNo, Integer productNo);
+
+    int deleteOrder(Integer orderNo);
 }

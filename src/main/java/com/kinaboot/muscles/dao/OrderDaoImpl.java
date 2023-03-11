@@ -40,6 +40,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public int deleteOrder(Integer orderNo) {
+        return session.delete(namespace + "deleteOrder", orderNo);
+    }
+
+    @Override
     public int updateOrderStatus(Integer orderNo) {
         return session.update(namespace + "updateOrderStatus", orderNo);
     }

@@ -150,7 +150,7 @@
     const inputs = document.getElementsByClassName('address');
 
     let savedAddressInfo = [
-        '${userDto.id}','${userDto.phone}','test','test','${userDto.address}','배송 메세지'
+        '${userDto.userId}','${userDto.phone}','test','test','${userDto.address}','배송 메세지'
     ];
     // Checked
     if (checkbox.checked)

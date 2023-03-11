@@ -53,7 +53,7 @@
         <p><span class="required">*</span> 표시는 필수입력 항목입니다.</p>
 
         <label>아이디 <span class="required">*</span></label><br>
-        <input type="text" id="inputId" name="id" placeholder="5자 이상 20자 이하">
+        <input type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
         <div><font id="id_check"></font></div>
         <br>
 

@@ -30,17 +30,51 @@ public class AdminController {
     OrderService orderService;
 
     @GetMapping("/admin/user")
-    public String getUser(Model m){
-        List<UserDto> userDtoList = userService.getAllUser();
-        m.addAttribute("list", userDtoList);
+    public String adminUser(){
         return "admin/user";
     }
+    @GetMapping("/admin/user/manage")
+    @ResponseBody
+    public ResponseEntity<List<UserDto>> getUser(){
+        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
+    }
+    @DeleteMapping("/admin/user/manage/{userId}")
+    @ResponseBody
+    public ResponseEntity<String> removeUser(@PathVariable String userId) throws Exception {
+        System.out.println("userid = " + userId);
+        // 1. 유저 expiredDate 생성
+        userService.removeUser(userId);
+        // 2. 회원탈퇴 데이터에 운영자에 의한 탈퇴임을 기록
+        userService.createQuit(userId);
+        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
+    }
+
     @GetMapping("/admin/product")
     public String getProduct(Model m){
         List<ProductDto> productDtoList = productService.getAllProduct();
         m.addAttribute("list", productDtoList);
         return "admin/product";
     }
+    @GetMapping("/admin/product/manage")
+    @ResponseBody
+    public ResponseEntity<List<ProductDto>> getProductItems(){
+        return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
+    }
+    @DeleteMapping("/admin/product/manage/{productNo}")
+    @ResponseBody
+    public ResponseEntity<String> removeProduct(@PathVariable Integer productNo){
+        productService.removeProduct(productNo);
+        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
+    }
+    @PatchMapping("/admin/product/manage/")
+    @ResponseBody
+    public ResponseEntity<String> modifyProduct(@RequestBody ProductDto productDto){
+        System.out.println("productDto = " + productDto);
+        productService.modifyProduct(productDto);
+        return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
+    }
+
+
     @GetMapping("/admin/order")
     public String getOrder(Model m){
         List<OrderDto> orderDtoList = orderService.getAdminOrderList();

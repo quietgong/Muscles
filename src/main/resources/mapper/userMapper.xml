@@ -9,30 +9,31 @@
     <select id="selectAllUser" resultType="UserDto">
         SELECT *
         FROM user
+        where expiredDate is null
     </select>
     <select id="selectUser" resultType="UserDto">
         SELECT *
         FROM user
-        where id = #{id}
+        where userId = #{userId}
     </select>
     <update id="updateUser" parameterType="map">
         UPDATE USER
         SET EMAIL = #{userEmail}
           , PHONE = #{userPhone}
-        WHERE ID = #{userId}
+        WHERE userId = #{userId}
     </update>
 
     <update id="updateUserPassword" parameterType="map">
         UPDATE USER
         SET PASSWORD = #{newPassword}
-        WHERE ID = #{userId}
+        WHERE userId = #{userId}
     </update>
 
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user
-            (id,password,email,phone,birth,address,point,created_date)
+            (userId,password,email,phone,birth,address,point,createdDate)
         values
-            (#{id},#{password},#{email},#{phone},now(),#{address},0,now())
+            (#{userId},#{password},#{email},#{phone},now(),#{address},0,now())
     </insert>
 
     <insert id="insertLeave" parameterType="map">
@@ -41,16 +42,23 @@
         values
             (#{userId},#{type1},#{type2},#{type3},#{opinion})
     </insert>
+    <insert id="insertQuitByAdmin" parameterType="map">
+        INSERT INTO quit
+            (userId,opinion)
+        values
+            (#{userId},#{opinion})
+    </insert>
 
     <delete id="deleteAllUser">
         DELETE FROM USER
     </delete>
-    <delete id="deleteUser" parameterType="String">
-        DELETE FROM USER
-        WHERE ID='${userId}';
+    <delete id="deleteUser" parameterType="int">
+        UPDATE USER
+        SET expiredDate = now()
+        where userId = '${userId}';
     </delete>
     <update id="updateExpiredDate" parameterType="String">
         UPDATE USER
-        SET expired_date = now();
+        SET expiredDate = now();
     </update>
 </mapper>

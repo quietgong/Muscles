@@ -9,4 +9,8 @@ public interface ProductService {
     ProductDto getProductByNo(Integer productNo);
 
     List<ProductDto> getAllProduct();
+
+    int removeProduct(Integer productNo);
+
+    int modifyProduct(ProductDto productDto);
 }

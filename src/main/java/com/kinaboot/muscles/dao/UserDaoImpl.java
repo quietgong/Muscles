@@ -39,6 +39,14 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
+    public int insertQuit(String userId) {
+        Map map = new HashMap();
+        map.put("userId", userId);
+        map.put("opinion", "운영자에 의한 탈퇴처리");
+        return session.insert(namespace+"insertQuitByAdmin", map);
+    }
+
+    @Override
     public int updateUser(String[] userInfo) {
         Map map = new HashMap();
         map.put("userId", userInfo[0]);
@@ -49,7 +57,6 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public int deleteUser(String userId) {
-        session.update(namespace + "updateExpiredDate", userId);
         return session.delete(namespace + "deleteUser", userId);
     }
 

@@ -24,4 +24,6 @@ public interface UserDao {
     int updateUserPassword(String userId, String newPassword);
 
     List<UserDto> selectAllUser();
+
+    int insertQuit(String userId);
 }

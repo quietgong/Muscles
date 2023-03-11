@@ -17,6 +17,11 @@ public class OrderServiceImpl implements OrderService{
     CartDao cartDao;
 
     @Override
+    public int removeOrder(Integer orderNo) {
+        return orderDao.deleteOrder(orderNo);
+    }
+
+    @Override
     public int acceptOrder(Integer orderNo) {
         return orderDao.updateOrderStatus(orderNo);
     }

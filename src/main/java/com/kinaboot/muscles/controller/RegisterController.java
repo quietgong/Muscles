@@ -27,7 +27,7 @@ public class RegisterController {
         userDto.setAddress(String.join(" ", request.getParameterValues("address")));
         System.out.println("userDto = " + userDto);
         // 중복된 아이디가 있으면 오류 메세지 출력
-        String id = userDto.getId();
+        String id = userDto.getUserId();
         if (userDao.selectUser(id) != null) {
             String msg = "중복된 아이디입니다.";
             return "redirect:/?msg=" + URLEncoder.encode(msg, "UTF-8");

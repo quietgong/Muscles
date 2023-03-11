@@ -39,7 +39,13 @@
         values
             (#{categoryName},#{productName},#{price},#{stock})
     </insert>
-
+    <update id="updateProduct" parameterType="productDto">
+        update product
+        set productName  = #{productName},
+            productPrice = #{productPrice},
+            productStock = #{productStock}
+        where productNo = #{productNo};
+    </update>
     <delete id="deleteAll">
         DELETE from product
     </delete>
@@ -47,5 +53,8 @@
         DELETE from product
         where productNo=#{productNo}
     </delete>
-
+    <delete id="deleteProduct" parameterType="int">
+        DELETE from product
+        where productNo=#{productNo}
+    </delete>
 </mapper>

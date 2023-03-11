@@ -127,4 +127,10 @@
         set status = '배송완료'
         where orderNo = '${orderNo}'
     </update>
+
+    <delete id="deleteOrder" parameterType="int">
+        delete
+        from orders
+        where orderNo = ${orderNo}
+    </delete>
 </mapper>

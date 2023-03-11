@@ -40,7 +40,6 @@
             <div style="border: 2px solid darkorange; border-radius: 2px;" class="order-list-item">
                 <div class="order-list-item-detail">
                     <div>
-                        <!-- 좌측:주문일자, 우측:주문번호 -->
                         <span>${orderDto.createdDate} 주문</span>
                         <span>주문번호 : ${orderDto.orderNo}</span>
                     </div>
@@ -48,10 +47,13 @@
                         <h3>주문자 : ${orderDto.userId}</h3>
                     </div>
                     <div>
-                        <!-- 버튼 2개 -->
-                        <input type="button" value="상세 내역"/>
-                        <c:set var="acceptBtn" value="${orderDto.status == '대기중' ? 'button' : 'hidden'}"/>
-                        <input type="${acceptBtn}" class="acceptBtn" value="주문 승인"/>
+                        <form action="<c:url value='/order/detail'/>">
+                            <input type="hidden" name="orderNo" value="${orderDto.orderNo}">
+                            <input type="submit" style="float:right;" value="상세 내역"/>
+                        </form>
+                        <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
+                        <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
+                        <input class="orderAccept" style="float: right" type="${accept}" value="주문 승인">
                         <input type="hidden" value="${orderDto.orderNo}">
                     </div>
                     <!-- 주문 내 주문상품 조회 -->
@@ -94,10 +96,28 @@
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
 <script>
-    $(".acceptBtn").on("click", function (){
+    // 주문 취소
+    $(".orderCancel").on("click", function (){
+        let orderNo = $(this).prev().prev().val()
+        $.ajax({
+            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/order/" + orderNo,
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function () {
+                alert("주문이 취소되었습니다.")
+                location.replace("")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    })
+    // 주문 승인
+    $(".orderAccept").on("click", function (){
         if($(this).val()!==''){
             let orderNo = $(this).next().val();
-            let now = $(this)
             console.log(orderNo)
             $.ajax({
                 type: "POST",            // HTTP method type(GET, POST) 형식이다.
@@ -108,15 +128,16 @@
                 success: function (res) {
                     if(res==='ACCEPT_OK')
                         alert("주문을 승인하였습니다.")
-                    now.hide()
+                    location.replace("")
                 },
                 error: function () {
                     console.log("통신 실패")
                 }
             })
         }
-
     })
+
+
 </script>
 </body>
 </html>

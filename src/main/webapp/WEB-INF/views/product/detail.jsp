@@ -77,37 +77,28 @@
 <!-- 상품 문의 -->
 <h1>상품 문의</h1>
 <input id="modalBtn" type="button" value="문의하기"/>
+
 <div><input type="button" value="질문"/><br/></div>
 <div class="product-detail-faq-container">
-    <div class="product-detail-faq-item" style="width: 50%;">
-        <span
-        >Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-          at animi tempora possimus, libero distinctio atque, sunt error ratione
-          sint vitae illum esse! Repudiandae corrupti perferendis est sit! Ad,
-          nihil.</span
-        >
+    <div class="product-detail-faq-item">
+        <span>질의 내용</span>
     </div>
     <div class="product-detail-faq-item">
-        <span style="font-size: 15px;">2023-02-10</span>
-        <span style="font-size: 15px;">15:30:42</span>
+        <span>작성 시간</span>
     </div>
 </div>
 <hr>
+
 <div><input type="button" value="답변"/><br/></div>
 <div class="product-detail-faq-container">
-    <div class="product-detail-faq-item" style="width: 50%;">
-        <span
-        >Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-          at animi tempora possimus, libero distinctio atque, sunt error ratione
-          sint vitae illum esse! Repudiandae corrupti perferendis est sit! Ad,
-          nihil.</span
-        >
+    <div class="product-detail-faq-item">
+        <span>답변 내용</span>
     </div>
     <div class="product-detail-faq-item">
-        <span style="font-size: 15px;">2023-02-10</span>
-        <span style="font-size: 15px;">15:30:42</span>
+        <span>작성 시간</span>
     </div>
 </div>
+
 <!-- 모달 -->
 <dialog>
     <h3 style="background-color: rgb(227, 217, 204)">상품 문의</h3>
@@ -116,7 +107,7 @@
             <h3>문의내용</h3>
         </div>
         <div class="product-detail-modal-item">
-            <textarea rows="4" cols="20"></textarea>
+            <textarea rows="6" cols="40"></textarea>
         </div>
     </div>
     <div class="product-detail-modal-container">
@@ -191,7 +182,14 @@
         amount = parseInt(amount) * number
         $("#price").html(amount)
     }
+</script>
+<script>
+    function loadFaqData() {
 
+    }
+
+    // 문의
+    loadFaqData()
 
     // 모달창
     const button = document.querySelector("#modalBtn");
@@ -203,7 +201,6 @@
         alert("cancel");
     });
 </script>
-
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
 </body>

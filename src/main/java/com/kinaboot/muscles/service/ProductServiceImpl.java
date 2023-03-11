@@ -18,6 +18,16 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public int modifyProduct(ProductDto productDto) {
+        return productDao.updateProduct(productDto);
+    }
+
+    @Override
+    public int removeProduct(Integer productNo) {
+        return productDao.deleteProduct(productNo);
+    }
+
+    @Override
     public ProductDto getProductByNo(Integer productNo) {
         return productDao.select(productNo);
     }

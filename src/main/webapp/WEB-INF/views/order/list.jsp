@@ -67,9 +67,9 @@
                     <form action="<c:url value='/order/detail'/>">
                         <input type="hidden" name="orderNo" value="${orderDto.orderNo}">
                         <input type="submit" style="float:right;" value="상세 내역"/>
+                        <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
+                        <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
                     </form>
-                    <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
-                    <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
                 </div>
                 <!-- 주문 내 주문상품 조회 -->
                 <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
@@ -189,6 +189,24 @@
         tmp += '<hr>'
         return tmp;
     }
+    // 주문 취소
+    $(document).on("click", ".orderCancel", function (){
+        let orderNo = $(this).prev().prev().val()
+        $.ajax({
+            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/order/" + orderNo,
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function () {
+                alert("주문이 취소되었습니다.")
+                location.replace("")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    })
 </script>
 <script>
     $(document).on('mousemove', '.starRange', function () {

@@ -14,4 +14,8 @@ public interface ProductDao {
     ProductDto select(Integer productNo);
 
     List<ProductDto> selectAll();
+
+    int deleteProduct(Integer productNo);
+
+    int updateProduct(ProductDto productDto);
 }
