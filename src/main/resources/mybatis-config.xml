@@ -15,6 +15,7 @@
         <typeAlias alias="OrderDto" type="com.kinaboot.muscles.domain.OrderDto"/>
         <typeAlias alias="OrderItemDto" type="com.kinaboot.muscles.domain.OrderItemDto"/>
         <typeAlias alias="ReviewDto" type="com.kinaboot.muscles.domain.ReviewDto"/>
+        <typeAlias alias="FaqDto" type="com.kinaboot.muscles.domain.FaqDto"/>
     </typeAliases>
 </configuration>
 

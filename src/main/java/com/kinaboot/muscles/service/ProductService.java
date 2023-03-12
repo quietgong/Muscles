@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.service;
 
+import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
 
 import java.util.List;
@@ -13,4 +14,8 @@ public interface ProductService {
     int removeProduct(Integer productNo);
 
     int modifyProduct(ProductDto productDto);
+
+    List<FaqDto> getFaqList(Integer productNo);
+
+    int registerFaq(FaqDto faqDto);
 }

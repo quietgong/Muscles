@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.ibatis.session.SqlSession;
@@ -25,6 +26,17 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public int updateProduct(ProductDto productDto) {
         return session.update(namespace + "updateProduct", productDto);
+    }
+
+    @Override
+    public int insertFaq(FaqDto faqDto) {
+        // faqAnswer이 null이면 질문에 insert, null이 아니면 답변에 insert
+        return faqDto.getAnswer() == null ? session.insert(namespace + "insertFaqQuestion", faqDto) : session.insert(namespace + "insertFaqAnswer", faqDto);
+    }
+
+    @Override
+    public List<FaqDto> selectFaqList(Integer productNo) {
+        return session.selectList(namespace + "selectFaqList", productNo);
     }
 
     @Override

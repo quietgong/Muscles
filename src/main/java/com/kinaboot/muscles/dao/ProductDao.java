@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.domain.UserDto;
 
@@ -18,4 +19,8 @@ public interface ProductDao {
     int deleteProduct(Integer productNo);
 
     int updateProduct(ProductDto productDto);
+
+    List<FaqDto> selectFaqList(Integer productNo);
+
+    int insertFaq(FaqDto faqDto);
 }

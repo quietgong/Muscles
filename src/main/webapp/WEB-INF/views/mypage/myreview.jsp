@@ -146,9 +146,6 @@
             }
         })
     })
-
-
-
     function loadReviewData() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.

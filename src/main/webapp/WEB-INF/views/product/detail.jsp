@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Muscles</title>
     <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='/css/modal.css'/>"/>
     <script src="https://code.jquery.com/jquery-1.11.3.js"/>
 </head>
 <body>
@@ -58,68 +59,49 @@
 <!-- 작성한 리뷰 -->
 <div class="product-detail-review-container">
     <c:forEach var="reviewDto" items="${reviewDtoList}">
-    <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
-    <div class="product-detail-review-item"><h3>${reviewDto.productName}</h3></div>
-    <div class="product-detail-review-item">
-        <span>${reviewDto.content}</span>
-    </div>
-    <div class="product-detail-review-item">
-        <div>
-            <span class="star">★★★★★<span style="width: ${reviewDto.score}%">★★★★★</span></span>
+        <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
+        <div class="product-detail-review-item"><h3>${reviewDto.productName}</h3></div>
+        <div class="product-detail-review-item">
+            <span>${reviewDto.content}</span>
         </div>
-        <span style="font-size:25px; font-weight:bold;">작성일자 : ${reviewDto.createdDate}</span>
-    </div>
+        <div class="product-detail-review-item">
+            <div>
+                <span class="star">★★★★★<span style="width: ${reviewDto.score}%">★★★★★</span></span>
+            </div>
+            <span style="font-size:25px; font-weight:bold;">작성일자 : ${reviewDto.createdDate}</span>
+        </div>
     </c:forEach>
 </div>
 <hr/>
 <!-- 작성한 리뷰 끝 -->
 
-<!-- 상품 문의 -->
 <h1>상품 문의</h1>
-<input id="modalBtn" type="button" value="문의하기"/>
-
-<div><input type="button" value="질문"/><br/></div>
-<div class="product-detail-faq-container">
-    <div class="product-detail-faq-item">
-        <span>질의 내용</span>
-    </div>
-    <div class="product-detail-faq-item">
-        <span>작성 시간</span>
-    </div>
-</div>
-<hr>
-
-<div><input type="button" value="답변"/><br/></div>
-<div class="product-detail-faq-container">
-    <div class="product-detail-faq-item">
-        <span>답변 내용</span>
-    </div>
-    <div class="product-detail-faq-item">
-        <span>작성 시간</span>
-    </div>
+<!-- admin이 접속해있으면 type=hidden 그렇지 않으면 button -->
+<c:set var="isAdmin" value="${pageContext.request.session.getAttribute('id')=='admin' ? 'hidden' : 'button'}"/>
+<input type="${isAdmin}" onclick="registerContent('question')" value="문의하기"/>
+<div id="faqList">
+    <!-- AJAX 동적 추가 -->
 </div>
 
 <!-- 모달 -->
-<dialog>
-    <h3 style="background-color: rgb(227, 217, 204)">상품 문의</h3>
-    <div class="product-detail-modal-container">
-        <div class="product-detail-modal-item">
-            <h3>문의내용</h3>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <h3 style="text-align: center; font-style: italic;">상품 문의</h3>
+        <div id="modalList">
+            <div>
+                <textarea id="content" rows="6" cols="40"></textarea>
+            </div>
+            <div>
+                <span style="font-size: 15px;">개인정보가 포함되지 않도록 유의해주세요.</span>
+            </div>
         </div>
-        <div class="product-detail-modal-item">
-            <textarea rows="6" cols="40"></textarea>
+        <div style="text-align: center;">
+            <button id="registerBtn">등록</button>
+            <button id="closeBtn">닫기</button>
         </div>
     </div>
-    <div class="product-detail-modal-container">
-        <div class="product-detail-modal-item">
-            <span style="font-size: 15px;">개인정보가 포함되지 않도록 유의해주세요.</span>
-        </div>
-    </div>
-    <form method="dialog">
-        <button type="submit">확인</button>
-        <button type="button">취소</button>
-    </form>
-</dialog>
+</div>
+<!-- 모달 -->
 <script>
     $("#directOrder").on("click", function () {
         let data = {}
@@ -184,22 +166,99 @@
     }
 </script>
 <script>
-    function loadFaqData() {
+    let loginUser = '${pageContext.request.session.getAttribute('id')}'
 
+    $("#closeBtn").on("click", function (){
+        $("#myModal").css("display", "none")
+    })
+
+    // 문의하기, 답변등록 버튼 클릭
+    function registerContent(type, faqNo) {
+        // 모달창 출력
+        $("#myModal").css("display", "block")
+        console.log(faqNo)
+        $("#registerBtn").on("click", function () {
+            let jsonData = {};
+            jsonData.userId = loginUser
+            jsonData.productNo =${productDto.productNo};
+            if (type == 'question')
+                jsonData.question = $("#content").val()
+            else {
+                jsonData.answer = $("#content").val()
+                jsonData.faqNo = faqNo
+            }
+            console.log(JSON.stringify(jsonData))
+            $.ajax({
+                type: "POST",            // HTTP method type(GET, POST) 형식이다.
+                url: "/muscles/product/faq/", // 컨트롤러에서 대기중인 URL 주소이다.
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify(jsonData),
+                success: function () {
+                    alert("내용이 등록되었습니다.")
+                    $("#myModal").css("display", "none")
+                    // 2. 문의내용을 작성 -> 등록 -> faq 데이터가 생성되고 데이터를 다시 불러온다.
+                    loadFaqData()
+                },
+                error: function () {
+                    console.log("통신 실패")
+                }
+            })
+        })
     }
 
-    // 문의
     loadFaqData()
 
-    // 모달창
-    const button = document.querySelector("#modalBtn");
-    const dialog = document.querySelector("dialog");
-    button.addEventListener("click", () => {
-        dialog.showModal();
-    });
-    dialog.addEventListener("close", () => {
-        alert("cancel");
-    });
+    function loadFaqData() {
+        $.ajax({
+            type: "GET",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/product/faq/" + ${productDto.productNo},
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                console.log(res)
+                $("#faqList").html(toHtml(res))
+                console.log("GET FAQ DATA")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+        let toHtml = function (items) {
+            let tmp = "";
+            items.forEach(function (item) {
+                tmp += '<hr>'
+                tmp += '<div>'
+                tmp += '<input type="button" value="질문"/>'
+                if (item.answer == null && loginUser == 'admin')
+                    tmp += '<input onclick="registerContent(\'answer\'' +','+item.faqNo + ')" type="button" value="답변 등록하기"/><br/></div>'
+                tmp += '<div class="product-detail-faq-container">'
+                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<span>' + item.question + '</span>'
+                tmp += '</div>'
+                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<p>' + '작성자 : ' + item.userId + '</p>'
+                tmp += '<p>' + '작성일자 : ' + item.createdDate + '</p>'
+                tmp += '</div></div></div>'
+                if (item.answer == null)
+                    tmp += '<div style="display:none;">'
+                else
+                    tmp += '<div>'
+                tmp += '<input type="button" value="답변"/><br/>'
+                tmp += '<div class="product-detail-faq-container">'
+                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<span>' + item.answer + '</span>'
+                tmp += '</div>'
+                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<p>' + '작성자 : 관리자</p>'
+                tmp += '<p>' + '작성일자 : ' + item.replyDate + '</p>'
+                tmp += '</div></div></div>'
+            })
+            return tmp;
+        }
+    }
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

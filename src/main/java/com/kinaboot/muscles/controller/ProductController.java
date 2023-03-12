@@ -1,20 +1,19 @@
 package com.kinaboot.muscles.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kinaboot.muscles.dao.ProductDao;
-import com.kinaboot.muscles.domain.CartDto;
-import com.kinaboot.muscles.domain.OrderItemDto;
-import com.kinaboot.muscles.domain.ProductDto;
-import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.ProductService;
 import com.kinaboot.muscles.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,20 @@ public class ProductController {
 
     @Autowired
     ReviewService reviewService;
+
+    @GetMapping("product/faq/{productNo}")
+    @ResponseBody
+    public ResponseEntity<List<FaqDto>> getFaq(@PathVariable Integer productNo){
+        List<FaqDto> faqDtoList = productService.getFaqList(productNo);
+        return new ResponseEntity<>(faqDtoList, HttpStatus.OK);
+    }
+    @PostMapping("product/faq/")
+    @ResponseBody
+    public ResponseEntity<String> registerFaq(@RequestBody FaqDto faqDto){
+        productService.registerFaq(faqDto);
+        return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
+    }
+
 
     @GetMapping("product/list")
     public String productList(String category, Model m){

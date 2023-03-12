@@ -32,12 +32,26 @@
           and p.productCategory = c.NAME
           and c1.name = '${category}'
     </select>
-
+<select id="selectFaqList" parameterType="int" resultType="faqDto">
+    SELECT *
+    from faq
+    where productNo = ${productNo}
+</select>
     <insert id="insert" parameterType="productDto">
         insert into product
             (categoryName,productName,price,stock)
         values
             (#{categoryName},#{productName},#{price},#{stock})
+    </insert>
+    <insert id="insertFaqQuestion" parameterType="faqDto">
+        insert into faq (userId, productNo, question, createdDate)
+        values (#{userId},#{productNo},#{question},now());
+    </insert>
+    <insert id="insertFaqAnswer" parameterType="faqDto">
+        update faq
+        set answer    = #{answer},
+            replyDate = now()
+        where faqNo = #{faqNo};
     </insert>
     <update id="updateProduct" parameterType="productDto">
         update product

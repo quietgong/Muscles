@@ -4,7 +4,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class SearchCondition {
     private static final int MIN_PAGE = 1;
-
     private static final int MAX_PAGE = 50;
     private static final int DEFAULT_PAGE_SIZE = 10;
     private Integer page = 1;
@@ -35,11 +34,9 @@ public class SearchCondition {
 
     SearchCondition() {
     }
-
     public SearchCondition(Integer page) {
         this(page, "", "");
     }
-
     public SearchCondition(Integer page, String option, String keyword) {
         this.page=page;
         this.option = option;
