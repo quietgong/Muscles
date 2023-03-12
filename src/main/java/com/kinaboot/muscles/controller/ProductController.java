@@ -41,8 +41,17 @@ public class ProductController {
 
 
     @GetMapping("product/list")
-    public String productList(String category, Model m){
-        List<ProductDto> productDtoList = productService.productList(category);
+    public String productList(SearchCondition sc, String category, Model m){
+        int totalCnt = productService.getTotalCntByCategory(category);
+        List<ProductDto> productDtoList = calculateReviewScore(productService.productList(category, sc));
+        PageHandler ph = new PageHandler(totalCnt, sc);
+        m.addAttribute("list",productDtoList);
+        m.addAttribute("ph",ph);
+        m.addAttribute("totalCnt", totalCnt);
+        return "product/list";
+    }
+
+    public List<ProductDto> calculateReviewScore(List<ProductDto> productDtoList) {
         for(ProductDto productDto : productDtoList){
             List<ReviewDto> reviewDtoList = reviewService.getReviewListByProductNo(productDto.getProductNo());
             double productScore=0.0;
@@ -52,9 +61,9 @@ public class ProductController {
             productDto.setProductReviewScore(productScore);
             productDto.setReviewDtoList(reviewDtoList);
         }
-        m.addAttribute("list",productDtoList);
-        return "product/list";
+        return productDtoList;
     }
+
     @GetMapping("product/detail")
     public String productDetail(Integer productNo, Model m){
         ProductDto productDto = productService.getProductByNo(productNo);

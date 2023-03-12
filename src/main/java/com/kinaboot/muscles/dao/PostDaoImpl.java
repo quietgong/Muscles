@@ -16,8 +16,6 @@ public class PostDaoImpl implements PostDao {
     @Autowired
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.postMapper.";
-
-
     @Override
     public int count(String type) throws Exception {
         return session.selectOne(namespace + "count", type);

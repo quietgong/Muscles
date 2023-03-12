@@ -2,12 +2,15 @@ package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
+import com.kinaboot.muscles.domain.SearchCondition;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProductDaoImpl implements ProductDao {
@@ -45,8 +48,16 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<ProductDto> selectByCategory(String category) {
-        return session.selectList(namespace + "selectByCategory", category);
+    public int selectByCategoryCnt(String category) {
+        return session.selectOne(namespace + "selectByCategoryCnt", category);
+    }
+
+    @Override
+    public List<ProductDto> selectByCategory(String category, SearchCondition sc) {
+        Map map = new HashMap();
+        map.put("category", category);
+        map.put("sc", sc);
+        return session.selectList(namespace + "selectByCategory", map);
     }
 
     @Override

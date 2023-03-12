@@ -1,12 +1,24 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
 <c:set var="welcomeUser"
        value="${pageContext.request.getSession(false)==null ? '' : pageContext.request.session.getAttribute('id')}"/>
 <c:set var="loginOutLink" value="${welcomeUser=='' ? '/login' : '/logout'}"/>
 <c:set var="loginOut" value="${welcomeUser=='' ? '로그인' : '로그아웃'}"/>
 <c:set var="chatting" value="${welcomeUser=='' ? '' : '채팅상담'}"/>
 <c:set var="register" value="${pageContext.request.getSession(false)==null ? '회원가입' : ''}"/>
-<script src="https://kit.fontawesome.com/b663b9db7c.js" crossorigin="anonymous"></script>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Muscles</title>
+    <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='/css/modal.css'/>"/>
+    <script src="https://kit.fontawesome.com/b663b9db7c.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+</head>
+<body>
 <div class="nav-container">
     <div class="nav-item" style="width: 150px; display: flex; justify-content: space-between">
         <a href="<c:url value='/order/list'/>">
@@ -27,18 +39,17 @@
             <br/>
         </a>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" style="text-align: center">
         <a href="<c:url value='/'/>">
             <img src="http://via.placeholder.com/300X100/000000/ffffff"/>
         </a>
-        <div class="nav-item" style="text-align: center">
+        <span>
             <input
-                    style="text-align: center"
+                    style="text-align: center; width: 80%;"
                     type="text"
                     placeholder="상품 이름을 검색하세요"
             />
-            <button type="submit">검색</button>
-        </div>
+            <button type="submit">검색</button></span>
     </div>
     <div class="nav-item" style="align-self: baseline">
         <div>
@@ -48,8 +59,7 @@
             <a href="<c:url value='/chatting'/>">${chatting}</a>
           </span>
         </div>
-        <div><h2 id="userId">${welcomeUser}</h2>
-            <h2>님! 좋은 하루 되세요</h2></div>
+        <div><h2 id="userId">${welcomeUser}님! 좋은 하루 되세요</h2></div>
     </div>
 </div>
 <!-- Dropdown -->
@@ -73,5 +83,6 @@
             </div>
         </li>
     </ul>
-
 </div>
+</body>
+</html>

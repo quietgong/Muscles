@@ -7,6 +7,9 @@ public class SearchCondition {
     private static final int MAX_PAGE = 50;
     private static final int DEFAULT_PAGE_SIZE = 10;
     private Integer page = 1;
+    private String option = "";
+    private String keyword = "";
+    private String type = "";
 
     public Integer getOffset() {
         return (page - 1) * 10;
@@ -19,10 +22,6 @@ public class SearchCondition {
     public void setPage(Integer page) {
         this.page = page;
     }
-
-    private String option = "";
-    private String keyword = "";
-    private String type = "";
 
     public String getType() {
         return type;
@@ -62,6 +61,9 @@ public class SearchCondition {
     public String getQueryString() {
         return getQueryString(this.page);
     }
+    public String getProductQueryString() {
+        return getProductQueryString(this.page);
+    }
 
     public String getQueryString(int page) {
         //list?page=1&option=A&keyword=test
@@ -69,6 +71,13 @@ public class SearchCondition {
                 .queryParam("page", page)
                 .queryParam("option", option)
                 .queryParam("keyword", keyword)
+                .build().toString();
+    }
+    public String getProductQueryString(int page) {
+        //list?page=1&option=A
+        return UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("option", option)
                 .build().toString();
     }
 

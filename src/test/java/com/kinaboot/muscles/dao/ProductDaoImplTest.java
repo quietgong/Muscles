@@ -2,6 +2,7 @@ package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.domain.ProductDto;
+import com.kinaboot.muscles.domain.SearchCondition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import java.util.List;
 public class ProductDaoImplTest {
     @Autowired
     ProductDao productDao;
-
     @Test
     public void insertTest() throws Exception {
         deleteAll();
@@ -30,7 +30,7 @@ public class ProductDaoImplTest {
 
     @Test
     public void getProductByCategoryTest() throws Exception {
-        List<ProductDto> list = productDao.selectByCategory("cardio");
+        List<ProductDto> list = productDao.selectByCategory("cardio", null);
         System.out.println("list = " + list);
     }
 

@@ -315,7 +315,7 @@ ul.paging li a:hover, ul.paging li a:focus {
     align-items: center;
 }
 .product-list-item {
-    flex: 1 1 25%;
+    flex: 1 1 20%;
     display: flex;
     align-items: center;
     justify-content: center;

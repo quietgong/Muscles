@@ -4,12 +4,13 @@
 
 <mapper namespace="com.kinaboot.muscles.dao.productMapper">
     <select id="count" resultType="int">
-        SELECT count(*) FROM product
+        SELECT count(*)
+        FROM product
     </select>
-<select id="selectAll" resultType="productDto">
-    select productNo, productCategory, productName, productPrice, productStock
-    from product
-</select>
+    <select id="selectAll" resultType="productDto">
+        select productNo, productCategory, productName, productPrice, productStock
+        from product
+    </select>
     <select id="select" parameterType="int" resultType="productDto">
         select productNo,
                productCategory,
@@ -17,35 +18,69 @@
                productPrice,
                productStock
         from product
-        where productNo=#{productNo}
+        where productNo = #{productNo}
     </select>
-    <select id="selectByCategory" parameterType="String" resultType="productDto">
-        select p.productNo,
-               p.productCategory,
-               p.productName,
-               p.productPrice,
-               p.productStock
+    <select id="selectByCategoryCnt" parameterType="String" resultType="int">
+        select count(*)
         from product p,
              category c,
              category c1
         where c.pcategory_no = c1.category_no
           and p.productCategory = c.NAME
-          and c1.name = '${category}'
+          and c1.name = #{category}
     </select>
-<select id="selectFaqList" parameterType="int" resultType="faqDto">
-    SELECT *
-    from faq
-    where productNo = ${productNo}
-</select>
+    <select id="selectByCategory" parameterType="map" resultType="productDto">
+        select A.productNo
+        ,productCategory
+        ,productName
+        ,productPrice
+        ,productStock
+        from
+        (select p.productNo,
+        p.productCategory,
+        p.productName,
+        p.productPrice,
+        p.productStock
+        from product p,
+        category c,
+        category c1
+        where c.pcategory_no = c1.category_no
+        and p.productCategory = c.NAME
+        and c1.name = #{category}) A
+        LEFT JOIN
+        (select productNo, avg(score) score
+        from review
+        group by productNo) B
+        ON A.productNo=B.productNo
+        <include refid="optionCondition"/>
+        LIMIT #{sc.offset}, 10;
+    </select>
+    <sql id="optionCondition">
+        <choose>
+            <when test='sc.option=="lowPrice"'>
+                order by productPrice asc
+            </when>
+            <when test='sc.option=="highPrice"'>
+                order by productPrice desc
+            </when>
+            <when test='sc.option=="review"'>
+                order by score desc
+            </when>
+        </choose>
+    </sql>
+    <select id="selectFaqList" parameterType="int" resultType="faqDto">
+        SELECT *
+        from faq
+        where productNo = ${productNo}
+    </select>
     <insert id="insert" parameterType="productDto">
         insert into product
-            (categoryName,productName,price,stock)
-        values
-            (#{categoryName},#{productName},#{price},#{stock})
+            (categoryName, productName, price, stock)
+        values (#{categoryName}, #{productName}, #{price}, #{stock})
     </insert>
     <insert id="insertFaqQuestion" parameterType="faqDto">
         insert into faq (userId, productNo, question, createdDate)
-        values (#{userId},#{productNo},#{question},now());
+        values (#{userId}, #{productNo}, #{question}, now());
     </insert>
     <insert id="insertFaqAnswer" parameterType="faqDto">
         update faq
@@ -61,14 +96,17 @@
         where productNo = #{productNo};
     </update>
     <delete id="deleteAll">
-        DELETE from product
+        DELETE
+        from product
     </delete>
     <delete id="delete" parameterType="map">
-        DELETE from product
-        where productNo=#{productNo}
+        DELETE
+        from product
+        where productNo = #{productNo}
     </delete>
     <delete id="deleteProduct" parameterType="int">
-        DELETE from product
-        where productNo=#{productNo}
+        DELETE
+        from product
+        where productNo = #{productNo}
     </delete>
 </mapper>

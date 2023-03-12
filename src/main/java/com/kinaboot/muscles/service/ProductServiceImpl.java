@@ -3,6 +3,7 @@ package com.kinaboot.muscles.service;
 import com.kinaboot.muscles.dao.ProductDao;
 import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
+import com.kinaboot.muscles.domain.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductDto> productList(String category) {
-        return productDao.selectByCategory(category);
+    public int getTotalCntByCategory(String category) {
+        return productDao.selectByCategoryCnt(category);
+    }
+
+    @Override
+    public List<ProductDto> productList(String category, SearchCondition sc) {
+        return productDao.selectByCategory(category, sc);
     }
 }
