@@ -4,11 +4,13 @@
 <!-- 검색조건 -->
 <div class="admin-condition">
     <div>
-        <span for="pw1">주문 일자</span>
-        <input type="date" id="lname" name="lastname"/>
-        <span for="pw1"> ~ </span>
-        <input type="date" id="lname" name="lastname"/>
-        <input type="button" value="검색"/>
+        <form action="<c:url value='/admin/order'/>">
+            <label for="startDate">주문 일자</label>
+            <input type="date" id="startDate" name="startDate" value="${param.startDate}"/>
+            <span> ~ </span>
+            <input type="date" id="endDate" name="endDate" value="${param.endDate}"/>
+            <input type="submit" value="검색"/>
+        </form>
     </div>
 </div>
 <!-- 검색조건 끝 -->

@@ -16,7 +16,7 @@ public interface OrderDao {
 
     int updateOrderStatus(Integer bundleNo);
 
-    List<OrderDto> selectOrderAll();
+    List<OrderDto> selectOrderAll(SearchCondition sc);
 
     List<OrderDto> selectAll(String userId);
 

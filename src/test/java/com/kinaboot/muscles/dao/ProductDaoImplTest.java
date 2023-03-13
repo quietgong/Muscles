@@ -30,8 +30,6 @@ public class ProductDaoImplTest {
 
     @Test
     public void getProductByCategoryTest() throws Exception {
-        List<ProductDto> list = productDao.selectByCategory("cardio", null);
-        System.out.println("list = " + list);
     }
 
     @Test

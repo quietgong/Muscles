@@ -7,7 +7,7 @@ import com.kinaboot.muscles.domain.SearchCondition;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDto> productList(String category, SearchCondition sc);
+    List<ProductDto> productList(SearchCondition sc);
     ProductDto getProductByNo(Integer productNo);
 
     List<ProductDto> getAllProduct();
@@ -20,5 +20,5 @@ public interface ProductService {
 
     int registerFaq(FaqDto faqDto);
 
-    int getTotalCntByCategory(String category);
+    int getTotalCntByCategory(SearchCondition sc);
 }

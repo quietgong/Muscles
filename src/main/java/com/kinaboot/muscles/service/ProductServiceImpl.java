@@ -45,12 +45,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public int getTotalCntByCategory(String category) {
-        return productDao.selectByCategoryCnt(category);
+    public int getTotalCntByCategory(SearchCondition sc) {
+        return productDao.selectByCategoryCnt(sc);
     }
 
     @Override
-    public List<ProductDto> productList(String category, SearchCondition sc) {
-        return productDao.selectByCategory(category, sc);
+    public List<ProductDto> productList(SearchCondition sc) {
+        return productDao.selectByCategory(sc);
     }
 }

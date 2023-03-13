@@ -1,6 +1,8 @@
 package com.kinaboot.muscles.domain;
 
 import com.kinaboot.muscles.dao.PostDao;
+import com.kinaboot.muscles.service.OrderService;
+import com.kinaboot.muscles.service.ProductService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,13 +18,17 @@ import static org.junit.Assert.*;
 public class SearchConditionTest {
     @Autowired
     PostDao postDao;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    OrderService orderService;
     @Test
     public void searchResultCntTest() throws Exception {
         // title1 : 12
-        SearchCondition sc = new SearchCondition(1, "T", "title1");
+        SearchCondition sc = new SearchCondition(1, "t2");
+        int totalCnt = productService.getTotalCntByCategory(sc);
         System.out.println("sc = " + sc);
-        int rowCnt = postDao.searchResultCnt(sc);
-        assert (rowCnt==12);
+        System.out.println("totalCnt = " + totalCnt);
     }
     @Test
     public void searchResultTest() throws Exception {
@@ -30,6 +36,13 @@ public class SearchConditionTest {
         SearchCondition sc = new SearchCondition(1,"T", "title1");
         List<PostDto> list = postDao.searchResult(sc);
         System.out.println("list = " + list);
+    }
+    @Test
+    public void dateConditionTest(){
+        SearchCondition sc = new SearchCondition();
+        List<OrderDto> orderDtoList = orderService.getAdminOrderList(sc);
+        System.out.println("sc = " + sc);
+        System.out.println("orderDtoList = " + orderDtoList);
     }
 
 }

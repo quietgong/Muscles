@@ -48,16 +48,13 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public int selectByCategoryCnt(String category) {
-        return session.selectOne(namespace + "selectByCategoryCnt", category);
+    public int selectByCategoryCnt(SearchCondition sc) {
+        return session.selectOne(namespace + "selectByCategoryCnt", sc);
     }
 
     @Override
-    public List<ProductDto> selectByCategory(String category, SearchCondition sc) {
-        Map map = new HashMap();
-        map.put("category", category);
-        map.put("sc", sc);
-        return session.selectList(namespace + "selectByCategory", map);
+    public List<ProductDto> selectByCategory(SearchCondition sc) {
+        return session.selectList(namespace + "selectByCategory", sc);
     }
 
     @Override

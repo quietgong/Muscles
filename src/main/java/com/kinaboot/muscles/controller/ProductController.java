@@ -41,9 +41,9 @@ public class ProductController {
 
 
     @GetMapping("product/list")
-    public String productList(SearchCondition sc, String category, Model m){
-        int totalCnt = productService.getTotalCntByCategory(category);
-        List<ProductDto> productDtoList = calculateReviewScore(productService.productList(category, sc));
+    public String productList(SearchCondition sc, Model m){
+        int totalCnt = productService.getTotalCntByCategory(sc);
+        List<ProductDto> productDtoList = calculateReviewScore(productService.productList(sc));
         PageHandler ph = new PageHandler(totalCnt, sc);
         m.addAttribute("list",productDtoList);
         m.addAttribute("ph",ph);

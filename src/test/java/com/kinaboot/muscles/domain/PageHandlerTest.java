@@ -30,8 +30,8 @@ public class PageHandlerTest {
     public void productListPagingTest() {
         SearchCondition sc = new SearchCondition(1,"lowPrice","");
         String category = "cardio";
-        int totalCnt = productService.getTotalCntByCategory(category);
-        List<ProductDto> productDtoList = calculateReviewScore(productService.productList(category, sc));
+        int totalCnt = productService.getTotalCntByCategory(sc);
+        List<ProductDto> productDtoList = calculateReviewScore(productService.productList(sc));
         System.out.println("productDtoList = " + productDtoList);
 
     }

@@ -47,17 +47,17 @@
     <ul class="paging">
         <c:if test="${ph.showPrev}">
             <li>
-                <a href="<c:url value='/product/list${ph.sc.getProductQueryString(ph.beginPage-1)}&category=${param.category}'/>">&lt</a>
+                <a href="<c:url value='/product/list${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt</a>
             </li>
         </c:if>
         <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
             <li>
-                <a href="<c:url value='/product/list${ph.sc.getProductQueryString(i)}&category=${param.category}'/>">${i}</a>
+                <a href="<c:url value='/product/list${ph.sc.getQueryString(i)}'/>">${i}</a>
             </li>
         </c:forEach>
         <c:if test="${ph.showNext}">
             <li>
-                <a href="<c:url value='/product/list${ph.sc.getProductQueryString(ph.endPage+1)}&category=${param.category}'/>">&gt</a>
+                <a href="<c:url value='/product/list${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt</a>
             </li>
         </c:if>
     </ul>
@@ -85,12 +85,17 @@
         form.append($('<input>').attr({
             type: 'hidden',
             name: 'category',
-            value: '${param.category}'
+            value: '${ph.sc.category}'
         }))
         form.append($('<input>').attr({
             type: 'hidden',
             name: 'option',
             value: option
+        }))
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: 'keyword',
+            value: '${ph.sc.keyword}'
         }))
         form.submit()
     })

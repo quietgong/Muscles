@@ -42,8 +42,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<OrderDto> getAdminOrderList() {
-        return orderDao.selectOrderAll();
+    public List<OrderDto> getAdminOrderList(SearchCondition sc) {
+        return orderDao.selectOrderAll(sc);
     }
 
     @Override

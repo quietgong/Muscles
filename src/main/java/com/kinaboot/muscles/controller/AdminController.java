@@ -1,9 +1,6 @@
 package com.kinaboot.muscles.controller;
 
-import com.kinaboot.muscles.domain.CartDto;
-import com.kinaboot.muscles.domain.OrderDto;
-import com.kinaboot.muscles.domain.ProductDto;
-import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.ProductService;
 import com.kinaboot.muscles.service.UserService;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -76,8 +74,8 @@ public class AdminController {
 
 
     @GetMapping("/admin/order")
-    public String getOrder(Model m){
-        List<OrderDto> orderDtoList = orderService.getAdminOrderList();
+    public String getOrder(SearchCondition sc, Model m){
+        List<OrderDto> orderDtoList = orderService.getAdminOrderList(sc);
         m.addAttribute(orderDtoList);
         return "admin/order";
     }

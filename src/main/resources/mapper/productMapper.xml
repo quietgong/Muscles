@@ -20,16 +20,19 @@
         from product
         where productNo = #{productNo}
     </select>
-    <select id="selectByCategoryCnt" parameterType="String" resultType="int">
+    <select id="selectByCategoryCnt" parameterType="SearchCondition" resultType="int">
         select count(*)
         from product p,
              category c,
              category c1
         where c.pcategory_no = c1.category_no
           and p.productCategory = c.NAME
-          and c1.name = #{category}
+        <if test="category!=''">
+            and c1.name = #{category}
+        </if>
+          AND p.productName like concat('%',#{keyword},'%')
     </select>
-    <select id="selectByCategory" parameterType="map" resultType="productDto">
+    <select id="selectByCategory" parameterType="SearchCondition" resultType="productDto">
         select A.productNo
         ,productCategory
         ,productName
@@ -46,24 +49,28 @@
         category c1
         where c.pcategory_no = c1.category_no
         and p.productCategory = c.NAME
-        and c1.name = #{category}) A
+          <if test="category!=''">
+            and c1.name = #{category}
+          </if>
+        ) A
         LEFT JOIN
         (select productNo, avg(score) score
         from review
         group by productNo) B
         ON A.productNo=B.productNo
+        where productName like concat('%',#{keyword},'%')
         <include refid="optionCondition"/>
-        LIMIT #{sc.offset}, 10;
+        LIMIT #{offset}, 10;
     </select>
     <sql id="optionCondition">
         <choose>
-            <when test='sc.option=="lowPrice"'>
+            <when test='option=="lowPrice"'>
                 order by productPrice asc
             </when>
-            <when test='sc.option=="highPrice"'>
+            <when test='option=="highPrice"'>
                 order by productPrice desc
             </when>
-            <when test='sc.option=="review"'>
+            <when test='option=="review"'>
                 order by score desc
             </when>
         </choose>

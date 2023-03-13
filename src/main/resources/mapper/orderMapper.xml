@@ -54,10 +54,27 @@
         group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
     </select>
     <!-- 전체 주문목록 반환 -->
-    <select id="selectOrderAllList" resultType="orderDto">
+    <select id="selectOrderAllList" parameterType="SearchCondition" resultType="orderDto">
         select orderNo, userId, status, createdDate
         from orders
+        <include refid="dateCondition"/>
     </select>
+    <sql id="dateCondition">
+        <choose>
+            <when test='startDate == null and endDate == null'>
+                where 1=1
+            </when>
+            <when test='startDate==null'>
+                <![CDATA[where createdDate <= date(#{endDate})+1]]>
+            </when>
+            <when test='endDate==null'>
+                <![CDATA[where createdDate >= date(#{startDate})]]>
+            </when>
+            <otherwise>
+                where createdDate between date(#{startDate}) and date(#{endDate})+1
+            </otherwise>
+        </choose>
+    </sql>
     <!-- userId로 주문정보 목록 반환 -->
     <select id="selectOrderList" resultType="orderDto" parameterType="String">
         select orderNo, userId, status, createdDate

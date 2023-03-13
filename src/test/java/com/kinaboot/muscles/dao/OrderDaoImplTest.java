@@ -54,8 +54,8 @@ public class OrderDaoImplTest {
     public void getOrderTest() {
         String userId = "test8";
         List<OrderDto> orderDtoList = orderService.getOrderList(userId);
-
         System.out.println("orderDtoList = " + orderDtoList);
 
     }
+
 }

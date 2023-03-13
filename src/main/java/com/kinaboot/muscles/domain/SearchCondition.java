@@ -1,6 +1,9 @@
 package com.kinaboot.muscles.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Date;
 
 public class SearchCondition {
     private static final int MIN_PAGE = 1;
@@ -10,6 +13,54 @@ public class SearchCondition {
     private String option = "";
     private String keyword = "";
     private String type = "";
+    private String category = "";
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date startDate;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private Date endDate;
+
+    public SearchCondition(int page, String keyword) {
+        this.page = page;
+        this.keyword = keyword;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchCondition{" +
+                "page=" + page +
+                ", option='" + option + '\'' +
+                ", keyword='" + keyword + '\'' +
+                ", type='" + type + '\'' +
+                ", category='" + category + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
 
     public Integer getOffset() {
         return (page - 1) * 10;
@@ -61,9 +112,6 @@ public class SearchCondition {
     public String getQueryString() {
         return getQueryString(this.page);
     }
-    public String getProductQueryString() {
-        return getProductQueryString(this.page);
-    }
 
     public String getQueryString(int page) {
         //list?page=1&option=A&keyword=test
@@ -72,21 +120,5 @@ public class SearchCondition {
                 .queryParam("option", option)
                 .queryParam("keyword", keyword)
                 .build().toString();
-    }
-    public String getProductQueryString(int page) {
-        //list?page=1&option=A
-        return UriComponentsBuilder.newInstance()
-                .queryParam("page", page)
-                .queryParam("option", option)
-                .build().toString();
-    }
-
-    @Override
-    public String toString() {
-        return "SearchCondition{" +
-                "page=" + page +
-                ", option='" + option + '\'' +
-                ", keyword='" + keyword + '\'' +
-                '}';
     }
 }

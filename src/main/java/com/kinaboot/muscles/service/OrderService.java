@@ -11,7 +11,7 @@ public interface OrderService {
 
     int acceptOrder(Integer orderNo);
 
-    List<OrderDto> getAdminOrderList();
+    List<OrderDto> getAdminOrderList(SearchCondition sc);
 
     List<OrderItemDto> getOrderItemList(Integer orderNo);
 

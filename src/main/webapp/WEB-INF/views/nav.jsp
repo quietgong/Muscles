@@ -44,12 +44,11 @@
             <img src="http://via.placeholder.com/300X100/000000/ffffff"/>
         </a>
         <span>
-            <input
-                    style="text-align: center; width: 80%;"
-                    type="text"
-                    placeholder="상품 이름을 검색하세요"
-            />
-            <button type="submit">검색</button></span>
+            <form action="<c:url value='/product/list'/>">
+            <input style="text-align: center; width: 60%;" name="keyword" type="text" placeholder="상품 이름을 검색하세요"/>
+            <button type="submit">검색</button>
+            </form>
+        </span>
     </div>
     <div class="nav-item" style="align-self: baseline">
         <div>

@@ -8,7 +8,7 @@ import com.kinaboot.muscles.domain.UserDto;
 import java.util.List;
 
 public interface ProductDao {
-    List<ProductDto> selectByCategory(String category, SearchCondition sc);
+    List<ProductDto> selectByCategory(SearchCondition sc);
     int insert(ProductDto productDto);
     int deleteAll();
     int count();
@@ -25,5 +25,5 @@ public interface ProductDao {
 
     int insertFaq(FaqDto faqDto);
 
-    int selectByCategoryCnt(String category);
+    int selectByCategoryCnt(SearchCondition sc);
 }
