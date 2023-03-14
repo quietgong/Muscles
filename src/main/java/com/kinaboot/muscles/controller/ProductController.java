@@ -9,12 +9,17 @@ import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.ProductService;
 import com.kinaboot.muscles.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +30,15 @@ public class ProductController {
 
     @Autowired
     ReviewService reviewService;
+
+    @GetMapping("product/display")
+    public ResponseEntity<byte[]> getImage(String type, String fileName) throws IOException {
+        String path = "C:\\Muscles\\src\\main\\webapp\\resources\\uploadImg\\productImg\\" + type + "\\";
+        File file = new File(path + fileName);
+        HttpHeaders header = new HttpHeaders();
+        header.add("Content-type", Files.probeContentType(file.toPath()));
+        return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+    }
 
     @GetMapping("product/faq/{productNo}")
     @ResponseBody

@@ -9,7 +9,9 @@ input[type="date"] {
     border-radius: 4px;
     box-sizing: border-box;
 }
-
+input[type="file"]{
+    color: white;
+}
 input[type="submit"],
 input[type="button"] {
     width: auto;
