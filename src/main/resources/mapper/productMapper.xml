@@ -8,7 +8,7 @@
         FROM product
     </select>
     <select id="selectAll" resultType="productDto">
-        select productNo, productCategory, productName, productPrice, productStock
+        select productNo, productCategory, productName, productPrice, productStock, productImgPath
         from product
     </select>
     <select id="select" parameterType="int" resultType="productDto">
@@ -16,7 +16,8 @@
                productCategory,
                productName,
                productPrice,
-               productStock
+               productStock,
+               productImgPath
         from product
         where productNo = #{productNo}
     </select>
@@ -38,12 +39,14 @@
         ,productName
         ,productPrice
         ,productStock
+        ,productImgPath
         from
         (select p.productNo,
         p.productCategory,
         p.productName,
         p.productPrice,
-        p.productStock
+        p.productStock,
+        p.productImgPath
         from product p,
         category c,
         category c1
@@ -95,11 +98,23 @@
             replyDate = now()
         where faqNo = #{faqNo};
     </insert>
+    <select id="selectProductImg" parameterType="int" resultType="productImgDto">
+        select filePath as uploadPath
+        from productImg
+        where productNo = '${productNo}'
+        order by productImgNo
+    </select>
+    <!-- 상품상세 이미지 경로 입력 -->
+    <insert id="insertProductImg" parameterType="map">
+        insert into productImg (productNo, filePath)
+        values (#{productNo},#{filePath});
+    </insert>
     <update id="updateProduct" parameterType="productDto">
         update product
         set productName  = #{productName},
             productPrice = #{productPrice},
-            productStock = #{productStock}
+            productStock = #{productStock},
+            productImgPath = #{productImgPath}
         where productNo = #{productNo};
     </update>
     <delete id="deleteAll">

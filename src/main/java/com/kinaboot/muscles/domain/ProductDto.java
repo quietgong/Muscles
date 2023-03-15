@@ -1,15 +1,36 @@
 package com.kinaboot.muscles.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductDto {
     private List<ReviewDto> reviewDtoList;
+    private List<ProductImgDto> productImgDtoList;
     private Integer productNo;
     private String productCategory;
     private String productName;
+    private String productImgPath;
     private int productPrice;
     private int productStock;
     private Double productReviewScore;
+
+    public ProductDto() {
+    }
+
+    public ProductDto(String productCategory, String productName, int productPrice, int productStock, Double productReviewScore) {
+        this.productCategory = productCategory;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productStock = productStock;
+        this.productReviewScore = productReviewScore;
+    }
+
+    public ProductDto(String productCategory, String productName, int productPrice, int productStock) {
+        this.productCategory = productCategory;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productStock = productStock;
+    }
 
     public List<ReviewDto> getReviewDtoList() {
         return reviewDtoList;
@@ -19,22 +40,12 @@ public class ProductDto {
         this.reviewDtoList = reviewDtoList;
     }
 
-    public Double getProductReviewScore() {
-        return productReviewScore;
+    public List<ProductImgDto> getProductImgDtoList() {
+        return productImgDtoList;
     }
 
-    public void setProductReviewScore(Double productReviewScore) {
-        this.productReviewScore = productReviewScore;
-    }
-
-    public ProductDto() {
-    }
-
-    public ProductDto(String productCategory, String productName, int productPrice, int productStock) {
-        this.productCategory = productCategory;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productStock = productStock;
+    public void setProductImgDtoList(List<ProductImgDto> productImgDtoList) {
+        this.productImgDtoList = productImgDtoList;
     }
 
     public Integer getProductNo() {
@@ -61,6 +72,14 @@ public class ProductDto {
         this.productName = productName;
     }
 
+    public String getProductImgPath() {
+        return productImgPath;
+    }
+
+    public void setProductImgPath(String productImgPath) {
+        this.productImgPath = productImgPath;
+    }
+
     public int getProductPrice() {
         return productPrice;
     }
@@ -77,14 +96,26 @@ public class ProductDto {
         this.productStock = productStock;
     }
 
+    public Double getProductReviewScore() {
+        return productReviewScore;
+    }
+
+    public void setProductReviewScore(Double productReviewScore) {
+        this.productReviewScore = productReviewScore;
+    }
+
     @Override
     public String toString() {
         return "ProductDto{" +
-                "productNo='" + productNo + '\'' +
+                "reviewDtoList=" + reviewDtoList +
+                ", productImgDtoList=" + productImgDtoList +
+                ", productNo=" + productNo +
                 ", productCategory='" + productCategory + '\'' +
                 ", productName='" + productName + '\'' +
+                ", productImgPath='" + productImgPath + '\'' +
                 ", productPrice=" + productPrice +
                 ", productStock=" + productStock +
+                ", productReviewScore=" + productReviewScore +
                 '}';
     }
 }

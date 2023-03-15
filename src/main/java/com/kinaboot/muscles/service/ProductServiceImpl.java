@@ -3,6 +3,7 @@ package com.kinaboot.muscles.service;
 import com.kinaboot.muscles.dao.ProductDao;
 import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
+import com.kinaboot.muscles.domain.ProductImgDto;
 import com.kinaboot.muscles.domain.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public int modifyProduct(ProductDto productDto) {
         return productDao.updateProduct(productDto);
+    }
+
+    @Override
+    public List<ProductImgDto> getProductDetailImgList(Integer productNo) {
+        return productDao.selectProductDetailImg(productNo);
     }
 
     @Override

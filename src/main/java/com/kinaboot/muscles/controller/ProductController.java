@@ -33,7 +33,7 @@ public class ProductController {
 
     @GetMapping("product/display")
     public ResponseEntity<byte[]> getImage(String type, String fileName) throws IOException {
-        String path = "C:\\Muscles\\src\\main\\webapp\\resources\\uploadImg\\productImg\\" + type + "\\";
+        String path = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\product\\" + type + "\\";
         File file = new File(path + fileName);
         HttpHeaders header = new HttpHeaders();
         header.add("Content-type", Files.probeContentType(file.toPath()));
@@ -82,6 +82,7 @@ public class ProductController {
     public String productDetail(Integer productNo, Model m){
         ProductDto productDto = productService.getProductByNo(productNo);
         List<ReviewDto> reviewDtoList = reviewService.getReviewListByProductNo(productNo);
+        List<ProductImgDto> productImgDtoList = productService.getProductDetailImgList(productNo);
         double productScore=0.0;
         for(ReviewDto reviewDto : reviewDtoList)
             productScore += reviewDto.getScore();
@@ -89,6 +90,7 @@ public class ProductController {
         m.addAttribute(productDto);
         m.addAttribute("productScore", productScore);
         m.addAttribute(reviewDtoList);
+        m.addAttribute(productImgDtoList);
         return "product/detail";
     }
     // 바로구매

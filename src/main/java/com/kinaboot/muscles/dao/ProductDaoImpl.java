@@ -1,9 +1,6 @@
 package com.kinaboot.muscles.dao;
 
-import com.kinaboot.muscles.domain.FaqDto;
-import com.kinaboot.muscles.domain.ProductDto;
-import com.kinaboot.muscles.domain.SearchCondition;
-import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.domain.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,7 +24,20 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public List<ProductImgDto> selectProductDetailImg(Integer productNo) {
+        return session.selectList(namespace + "selectProductImg", productNo);
+    }
+
+    @Override
     public int updateProduct(ProductDto productDto) {
+        productDto.setProductImgPath("/muscles/img/product/thumbnail/" + productDto.getProductImgPath());
+        List<ProductImgDto> productImgDtoList = productDto.getProductImgDtoList();
+        for(ProductImgDto productImgDto : productImgDtoList){
+            Map map = new HashMap();
+            map.put("productNo", productImgDto.getProductNo());
+            map.put("filePath", "/muscles/img/product/detail/" +productImgDto.getUploadPath());
+            session.insert(namespace + "insertProductImg", map);
+        }
         return session.update(namespace + "updateProduct", productDto);
     }
 

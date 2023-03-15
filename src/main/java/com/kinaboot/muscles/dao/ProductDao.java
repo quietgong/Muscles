@@ -1,9 +1,6 @@
 package com.kinaboot.muscles.dao;
 
-import com.kinaboot.muscles.domain.FaqDto;
-import com.kinaboot.muscles.domain.ProductDto;
-import com.kinaboot.muscles.domain.SearchCondition;
-import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.domain.*;
 
 import java.util.List;
 
@@ -26,4 +23,6 @@ public interface ProductDao {
     int insertFaq(FaqDto faqDto);
 
     int selectByCategoryCnt(SearchCondition sc);
+
+    List<ProductImgDto> selectProductDetailImg(Integer productNo);
 }

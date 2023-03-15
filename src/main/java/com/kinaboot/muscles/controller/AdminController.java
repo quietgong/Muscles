@@ -84,7 +84,7 @@ public class AdminController {
     }
     @PostMapping("/admin/product/file/delete")
     public ResponseEntity<String> fileDeleteTest(String type, String fileName) {
-        String uploadPath = "C:\\Muscles\\src\\main\\webapp\\resources\\uploadImg\\productImg\\" + type + "\\";
+        String uploadPath = "C:\\Muscles\\src\\main\\webapp\\resources\\uploadImg\\product\\" + type + "\\";
         File file = new File(uploadPath+fileName);
         file.delete();
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
@@ -93,9 +93,8 @@ public class AdminController {
     @PostMapping(value = "/admin/product/file/{type}/{productNo}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<ProductImgDto>> uploadTest(MultipartFile[] uploadFile, @PathVariable String type, @PathVariable Integer productNo) throws IOException {
         // 서버 단에서 이미지 파일 체크 구현 필요
-
         List<ProductImgDto> productImgDtoList = new ArrayList<>();
-        String uploadPath = "C:\\Muscles\\src\\main\\webapp\\resources\\uploadImg\\productImg\\" + type;
+        String uploadPath = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\product\\" + type;
         for (MultipartFile file : uploadFile) {
             String uuid = UUID.randomUUID().toString();
             String uploadName = uuid + "_" + file.getOriginalFilename();

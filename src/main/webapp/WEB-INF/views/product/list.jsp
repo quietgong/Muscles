@@ -32,7 +32,7 @@
     <c:forEach var="productDto" items="${list}">
         <div class="product-list-item">
             <a href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>">
-                <img src="http://via.placeholder.com/250?text=mypage">
+                <img style="width: 250px; height: 250px;" src="${productDto.productImgPath}">
             </a>
             <span style="font-weight: bold;">${productDto.productName}</span>
             <div>

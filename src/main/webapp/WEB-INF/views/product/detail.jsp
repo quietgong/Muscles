@@ -19,7 +19,7 @@
 <form id="orderForm" method="post" action="<c:url value='/product/order'/>">
     <div class="product-detail-container">
         <div class="product-detail-item">
-            <img src="http://via.placeholder.com/250?text=mypage"/>
+            <img style="width: 300px; height: 300px" src="${productDto.productImgPath}"/>
             <div class="product-detail-item-detail">
                 <span id="category" style="font-size:25px; font-weight:bold;">${productDto.productCategory}</span>
                 <span id="name" style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
@@ -49,8 +49,12 @@
 <!-- 상품 상세 -->
 <h1>제품 상세</h1>
 <div class="product-detail-container">
+    <div style="display: flex; flex-direction: column">
+    <c:forEach var="productImgDto" items="${productImgDtoList}">
     <div class="product-detail-item">
-        <img src="http://via.placeholder.com/800?text=mypage"/>
+        <img style="height: 200px; width: 300px;" src="${productImgDto.uploadPath}"/>
+    </div>
+    </c:forEach>
     </div>
 </div>
 <hr/>
@@ -58,8 +62,11 @@
 <h1>상품 리뷰</h1>
 <!-- 작성한 리뷰 -->
 <div class="product-detail-review-container">
+    <div>
     <c:forEach var="reviewDto" items="${reviewDtoList}">
-        <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
+        <div>
+        <img style="width: 100px; height: 100px" src="${productDto.productImgPath}"/>
+        </div>
         <div class="product-detail-review-item"><h3>${reviewDto.productName}</h3></div>
         <div class="product-detail-review-item">
             <span>${reviewDto.content}</span>
@@ -71,6 +78,7 @@
             <span style="font-size:25px; font-weight:bold;">작성일자 : ${reviewDto.createdDate}</span>
         </div>
     </c:forEach>
+    </div>
 </div>
 <hr/>
 <!-- 작성한 리뷰 끝 -->
