@@ -85,8 +85,8 @@
     </select>
     <insert id="insert" parameterType="productDto">
         insert into product
-            (categoryName, productName, price, stock)
-        values (#{categoryName}, #{productName}, #{price}, #{stock})
+            (productCategory, productName, productPrice, productStock)
+        values (#{productCategory}, #{productName}, #{productPrice}, #{productStock})
     </insert>
     <insert id="insertFaqQuestion" parameterType="faqDto">
         insert into faq (userId, productNo, question, createdDate)

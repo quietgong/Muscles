@@ -30,12 +30,12 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public int updateProduct(ProductDto productDto) {
-        productDto.setProductImgPath("/muscles/img/product/thumbnail/" + productDto.getProductImgPath());
+        productDto.setProductImgPath("/muscles/product/display?type=thumbnail&fileName=" + productDto.getProductImgPath());
         List<ProductImgDto> productImgDtoList = productDto.getProductImgDtoList();
         for(ProductImgDto productImgDto : productImgDtoList){
             Map map = new HashMap();
             map.put("productNo", productImgDto.getProductNo());
-            map.put("filePath", "/muscles/img/product/detail/" +productImgDto.getUploadPath());
+            map.put("filePath", "/muscles/product/display?type=detail&fileName=" +productImgDto.getUploadPath());
             session.insert(namespace + "insertProductImg", map);
         }
         return session.update(namespace + "updateProduct", productDto);

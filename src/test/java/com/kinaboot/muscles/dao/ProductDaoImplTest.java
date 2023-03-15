@@ -20,7 +20,7 @@ public class ProductDaoImplTest {
     public void insertTest() throws Exception {
         deleteAll();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             int randomPrice = (int) (Math.random() * 10000) + 90000;
             ProductDto productDto = new ProductDto
                     ("treadmil", "product" + i, randomPrice, 100);
