@@ -1,21 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Home</title>
-    <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
-</head>
 <style>
     img{
         width: 400px;
         height: 300px;
     }
 </style>
-<body>
 <%@ include file="nav.jsp" %>
 <!-- 카테고리별 상품 시작 -->
 <h3>카테고리별 상품</h3>
@@ -114,8 +105,3 @@
 </div>
 <!-- 베스트 상품 끝 -->
 <%@ include file="footer.jsp" %>
-<script>
-    document.querySelector(`.star span`).style.width = `20%`;
-</script>
-</body>
-</html>

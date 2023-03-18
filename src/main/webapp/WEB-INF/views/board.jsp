@@ -1,15 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Muscles</title>
-    <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
-    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-</head>
 <style>
     .container {
         margin: auto;
@@ -24,10 +15,8 @@
     }
 
 </style>
-<body>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
-
 <!-- 본문 -->
 <h1 id="mode" style="display: none">수정 모드</h1>
 <div class="container">
@@ -67,9 +56,6 @@
         </div>
     </div>
 </div>
-
-<!-- footer -->
-<%@ include file="footer.jsp" %>
 <script>
     // 글쓰기 수정, 삭제
     $(document).ready(function () {
@@ -227,5 +213,5 @@
         return "0" + value;
     }
 </script>
-</body>
-</html>
+<!-- footer -->
+<%@ include file="footer.jsp" %>

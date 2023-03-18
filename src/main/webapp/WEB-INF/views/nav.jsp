@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<c:set var="welcomeUser"
+<c:set var="loginUserId"
        value="${pageContext.request.getSession(false)==null ? '' : pageContext.request.session.getAttribute('id')}"/>
-<c:set var="loginOutLink" value="${welcomeUser=='' ? '/login' : '/logout'}"/>
-<c:set var="loginOut" value="${welcomeUser=='' ? '로그인' : '로그아웃'}"/>
-<c:set var="chatting" value="${welcomeUser=='' ? '' : '채팅상담'}"/>
+<c:set var="loginOutLink" value="${loginUserId=='' ? '/login' : '/logout'}"/>
+<c:set var="loginOut" value="${loginUserId=='' ? '로그인' : '로그아웃'}"/>
+<c:set var="chatting" value="${loginUserId=='' ? '' : '채팅상담'}"/>
 <c:set var="register" value="${pageContext.request.getSession(false)==null ? '회원가입' : ''}"/>
+<c:set var="welcomeUser" value="${loginUserId=='' ? 'none' : 'block'}"/>
 <html>
 <head>
     <meta charset="UTF-8"/>
@@ -21,14 +22,14 @@
 <body>
 <div class="nav-container">
     <div class="nav-item" style="width: 150px; display: flex; justify-content: space-between">
-        <a href="<c:url value='/order/list'/>">
+        <a class="nav-a" href="<c:url value='/order/list'/>">
             <div style="text-align: center">
                 <i style="margin: auto" class="fa-sharp fa-solid fa-user"></i>
             </div>
             <span>마이페이지</span>
             <br/>
         </a>
-        <a href="<c:url value='/cart'/>">
+        <a class="nav-a" href="<c:url value='/cart'/>">
             <div style="text-align: center">
                 <i
                         style="margin: auto"
@@ -41,7 +42,7 @@
     </div>
     <div class="nav-item" style="text-align: center">
         <a href="<c:url value='/'/>">
-            <img src="http://via.placeholder.com/300X100/000000/ffffff"/>
+            <img style="width: 300px; height: 100px;" src="http://via.placeholder.com/300X100/000000/ffffff"/>
         </a>
         <span>
             <form action="<c:url value='/product/list'/>">
@@ -54,16 +55,15 @@
         <div>
           <span>
             <a href="<c:url value='${loginOutLink}'/>">${loginOut}</a> |
+            <a href="<c:url value='/chatting'/>">${chatting} |</a>
             <a href="<c:url value='/register'/>">${register}</a>
-            <a href="<c:url value='/chatting'/>">${chatting}</a>
           </span>
         </div>
-        <div><h2 id="userId">${welcomeUser}님! 좋은 하루 되세요</h2></div>
+        <div><h2 style="display: ${welcomeUser}">${loginUserId}님! 좋은 하루 되세요</h2></div>
     </div>
 </div>
 <!-- Dropdown -->
 <div class="nav-item">
-
     <ul class="nav">
         <li class="nav"><a href="<c:url value='/'/>">Home</a></li>
         <li class="dropdown">

@@ -76,7 +76,7 @@ public class OrderController {
 
         orderService.createOrder(userId, orderDto);
         UserDto userDto = userService.read(userId);
-
+        m.addAttribute(orderDto);
         m.addAttribute(userDto);
         m.addAttribute(orderItemDtoList);
         return "order/complete";

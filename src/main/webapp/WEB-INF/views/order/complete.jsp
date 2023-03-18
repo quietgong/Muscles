@@ -1,15 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Muscles</title>
-    <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
-</head>
-<body>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 
@@ -46,7 +37,7 @@
 <table id="myTable">
     <tr>
         <td>이름</td>
-        <td>${userDto.id}</td>
+        <td>${userDto.userId}</td>
     </tr>
     <tr>
         <td>연락처</td>
@@ -63,10 +54,10 @@
         <td>요청사항</td>
     </tr>
     <tr>
-        <td>${deliveryDto.receiver}</td>
-        <td>${deliveryDto.address}</td>
-        <td>${deliveryDto.phone}</td>
-        <td>${deliveryDto.message}</td>
+        <td>${orderDto.deliveryDto.receiver}</td>
+        <td>${orderDto.deliveryDto.address}</td>
+        <td>${orderDto.deliveryDto.phone}</td>
+        <td>${orderDto.deliveryDto.message}</td>
     </tr>
 </table>
 <!-- 결제 정보 -->
@@ -77,8 +68,8 @@
         <td>결제 금액</td>
     </tr>
     <tr>
-        <td>${paymentDto.type}</td>
-        <td>${paymentDto.price}</td>
+        <td>${orderDto.paymentDto.type}</td>
+        <td>${orderDto.paymentDto.price}</td>
     </tr>
 </table>
 <div class="order-container">
@@ -94,5 +85,3 @@
 
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
-</body>
-</html>
