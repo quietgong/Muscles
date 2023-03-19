@@ -97,7 +97,7 @@
                 tmp += '<span>재고수량 : ' + item.productStock + '</span><br>'
                 tmp += '</div>'
                 tmp += '<div data-productNo=' + item.productNo + ' data-productName=' + item.productName +
-                    ' data-productPrice=' + item.productPrice + ' data-productstock=' + item.productStock + '>'
+                    ' data-productPrice=' + item.productPrice + ' data-productstock=' + item.productStock + ' data-productImgPath=' + item.productImgPath + '>'
                 tmp += '<button class="modBtn" type="button">상품정보 변경</button>'
                 tmp += '<button class="delBtn" type="button">상품 삭제</button>'
                 tmp += '<input type="hidden" value=\"' + item.productNo + '\">'
@@ -130,12 +130,19 @@
     // 3. 상품 정보 수정
     $(document).on("click", ".modBtn", function () {
         // 2-1. 기존 작성내용의 모달창 출력
-        let productNo = $(this).parent().attr("data-productNo");
-        let productName = $(this).parent().attr("data-productName");
-        let productPrice = $(this).parent().attr("data-productPrice");
-        let productStock = $(this).parent().attr("data-productStock");
+        let clickedDiv = $(this).parent()
+        let productNo = clickedDiv.attr("data-productNo");
+        let productName = clickedDiv.attr("data-productName");
+        let productPrice = clickedDiv.attr("data-productPrice");
+        let productStock = clickedDiv.attr("data-productStock");
+        let productImgPath = clickedDiv.attr("data-productImgPath");
 
         $("#modalList").html(append())
+
+        // 기존 썸네일 이미지 출력
+        showPreview(items,"thumbnail")
+        // 기존 상세 이미지 출력
+        showPreview(items,"detail")
 
         // f : 리뷰 작성을 선택한 상품의 정보에 따라 모달 내용을 동적으로 추가
         function append() {
