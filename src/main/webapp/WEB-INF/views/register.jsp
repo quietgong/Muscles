@@ -1,15 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Muscles</title>
-    <link rel="stylesheet" href="css/style.css"/>
-    <script src="https://code.jquery.com/jquery-1.11.3.js"/>
-</head>
 <style>
     input[type=text], input[type=date] {
         width: 40%;
@@ -43,10 +34,8 @@
         color: red;
     }
 </style>
-<body>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
-
 <!-- 본문 -->
 <div>
     <form action="<c:url value="/register"/>" name="registerForm" method="post">
@@ -82,8 +71,6 @@
     </form>
 </div>
 
-<!-- footer -->
-<%@ include file="footer.jsp" %>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     /* 유효성 체크 */
@@ -157,5 +144,5 @@
         }).open();
     }
 </script>
-</body>
-</html>
+<!-- footer -->
+<%@ include file="footer.jsp" %>

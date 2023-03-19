@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Muscles</title>
-    <link rel="stylesheet" href="<c:url value='/css/style.css'/>"/>
-    <link rel="stylesheet" href="<c:url value='/css/modal.css'/>"/>
-    <script src="https://code.jquery.com/jquery-1.11.3.js"/>
-</head>
 <style>
     .item-head {
         text-align: center;
@@ -36,7 +26,6 @@
         flex-grow: 2;
     }
 </style>
-<body>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 <%@include file="sidebar.jsp" %>
@@ -61,8 +50,7 @@
     </div>
 </div>
 <!-- 모달 -->
-<!-- footer -->
-<%@ include file="../footer.jsp" %>
+
 <script>
     //수정 기능
     // 1. 수정 버튼 클릭
@@ -194,5 +182,5 @@
         $(this).prev().css("width", $(this).val() + '%')
     })
 </script>
-</body>
-</html>
+<!-- footer -->
+<%@ include file="../footer.jsp" %>
