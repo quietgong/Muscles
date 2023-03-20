@@ -15,7 +15,7 @@
     <table id="myTable" style="margin: auto">
         <tr>
             <td>아이디</td>
-            <td>${user.id}</td>
+            <td>${user.userId}</td>
         </tr>
         <tr>
             <form method="post">
@@ -25,7 +25,6 @@
         <tr>
             <td>휴대폰 번호</td>
             <td><input name="newPhone" value="${user.phone}" placeholder="-를 제외하고 입력해주세요"/></td>
-
         </tr>
     </table>
     </div>

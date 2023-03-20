@@ -23,10 +23,13 @@
         cursor: pointer;
     }
 
+    .container {
+        margin: auto;
+        border-radius: 3px;
+    }
+
     div {
         border-radius: 5px;
-        background-color: #f2f2f2;
-        padding: 20px;
     }
 
     .required {
@@ -37,40 +40,40 @@
 <!-- nav -->
 <%@ include file="nav.jsp" %>
 <!-- 본문 -->
-<div>
-    <form action="<c:url value="/register"/>" name="registerForm" method="post">
-        <p><span class="required">*</span> 표시는 필수입력 항목입니다.</p>
+<div class="container">
+    <div>
+        <form action="<c:url value="/register"/>" name="registerForm" method="post">
+            <p><span class="required">*</span> 표시는 필수입력 항목입니다.</p>
+            <label>아이디 <span class="required">*</span></label><br>
+            <input type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
+            <div><font id="id_check"></font></div>
+            <br>
 
-        <label>아이디 <span class="required">*</span></label><br>
-        <input type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
-        <div><font id="id_check"></font></div>
-        <br>
+            <label>비밀번호 <span class="required">*</span></label><br>
+            <input type="text" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
 
-        <label>비밀번호 <span class="required">*</span></label><br>
-        <input type="text" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
+            <label>비밀번호 확인 <span class="required">*</span></label><br>
+            <input type="text" id="password_check"><br>
 
-        <label>비밀번호 확인 <span class="required">*</span></label><br>
-        <input type="text" id="password_check"><br>
+            <label>휴대폰 번호 <span class="required">*</span></label><br>
+            <input type="text" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
 
-        <label>휴대폰 번호 <span class="required">*</span></label><br>
-        <input type="text" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
+            <label>주소 <span class="required">*</span></label>
+            <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+            <input type="text" id="postcode" placeholder="우편번호">
+            <input type="text" name="address" id="address" placeholder="주소"><br>
+            <input type="text" name="address" id="detailAddress" placeholder="상세주소"><br>
 
-        <label>주소 <span class="required">*</span></label>
-        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-        <input type="text" id="postcode" placeholder="우편번호">
-        <input type="text" name="address" id="address" placeholder="주소"><br>
-        <input type="text" name="address" id="detailAddress" placeholder="상세주소"><br>
+            <label>이메일</label><br>
+            <input type="text" name="email"><br>
 
-        <label>이메일</label><br>
-        <input type="text" name="email"><br>
+            <label>추천인 ID</label><br>
+            <input type="text" placeholder="10% 할인쿠폰을 드립니다"><br>
 
-        <label>추천인 ID</label><br>
-        <input type="text" placeholder="10% 할인쿠폰을 드립니다"><br>
-
-        <input type="submit" value="회원 가입">
-    </form>
+            <input type="submit" value="회원 가입">
+        </form>
+    </div>
 </div>
-
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     /* 유효성 체크 */
@@ -83,7 +86,7 @@
         let inputId = $("input[name=id]").val();
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/register/idDupCheck?inputId="+inputId,      // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/register/idDupCheck?inputId=" + inputId,      // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {              // Http header
                 "Content-Type": "application/json",
                 "X-HTTP-Method-Override": "POST"

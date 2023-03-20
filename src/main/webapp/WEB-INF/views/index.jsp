@@ -18,10 +18,14 @@
         </a>
     </div>
     <div class="index-item">
+        <a href="<c:url value='/product/list?category=strength'/>">
             <img src="<c:url value='/img/strength.jpg'/>">
+        </a>
     </div>
     <div class="index-item">
+        <a href="<c:url value='/product/list?category=etc'/>">
             <img src="<c:url value='/img/etc.jpg'/>">
+        </a>
     </div>
 </div>
 <div class="index-container">

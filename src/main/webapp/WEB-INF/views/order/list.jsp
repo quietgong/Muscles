@@ -2,88 +2,94 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <style>
-        .order-list-container {
-            display: flex;
-            flex-direction: column;
-            margin: auto;
-        }
+    .mypage{
+        display: flex;
+        flex-direction: row;
+    }
+    .order-list-container {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+    }
 
-        .order-list-item {
-            display: flex;
-            flex-direction: column;
-            margin: auto;
-        }
+    .order-list-item {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+    }
 
-        .order-list-item-detail {
-            display: flex;
-            flex-direction: column;
-            margin: auto;
-        }
-    </style>
+    .order-list-item-detail {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+    }
+</style>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-<!-- 사이드바 -->
-<%@include file="../mypage/sidebar.jsp" %>
-<!-- 본문 -->
-<div class="order-list-container">
-    <div class="order-list-item" style="flex-direction: row">
-        <!-- 검색 조건 -->
-        <div>
-            <label for="pw1">상품명</label>
-            <input type="text" id="lname" name="lastname"/>
-        </div>
-        <div>
-            <label>기간</label>
-            <input type="date" id="lname" name="lastname"/>
-        </div>
-        <div>
-            <label>~</label>
-            <input type="date" id="lname" name="lastname"/>
-            <input type="button" value="검색"/>
-        </div>
-    </div>
-    <!-- 주문 조회 -->
-    <c:forEach var="orderDto" items="${orderDtoList}">
-        <div style="border: 2px solid darkorange; border-radius: 2px;" class="order-list-item">
-            <div class="order-list-item-detail">
-                <div>
-                    <!-- 좌측:주문일자, 우측:주문번호 -->
-                    <span>${orderDto.createdDate} 주문</span>
-                    <span>주문번호 : ${orderDto.orderNo}</span>
-                </div>
-                <div>
-                    <form action="<c:url value='/order/detail'/>">
-                        <input type="hidden" name="orderNo" value="${orderDto.orderNo}">
-                        <input type="submit" style="float:right;" value="상세 내역"/>
-                        <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
-                        <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
-                    </form>
-                </div>
-                <!-- 주문 내 주문상품 조회 -->
-                <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
-                    <div>
-                        <c:set var="hasReview"
-                               value="${orderDto.status == '배송완료' && orderItemDto.hasReview == false ? 'button' : 'hidden'}"/>
-                        <input type="${hasReview}"
-                               onclick="createReview(${orderDto.orderNo}, ${orderItemDto.productNo})"
-                               value="리뷰 작성"/>
-                    </div>
-                    <div>
-                        <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
-                        <p>[${orderItemDto.productCategory}]</p>
-                        <p>${orderItemDto.productName}</p>
-                        <span>${orderItemDto.productPrice}원</span>
-                        <span> ${orderItemDto.productQty}개</span>
-                    </div>
-                    <!-- 주문 내 주문상품 조회 -->
-                </c:forEach>
+<div class="mypage">
+    <!-- 사이드바 -->
+    <%@include file="../mypage/sidebar.jsp" %>
+    <!-- 본문 -->
+    <div class="order-list-container">
+        <div class="order-list-item" style="flex-direction: row">
+            <!-- 검색 조건 -->
+            <div>
+                <label for="pw1">상품명</label>
+                <input type="text" id="lname" name="lastname"/>
             </div>
             <div>
-                <h2>주문상태 : ${orderDto.status}</h2>
+                <label>기간</label>
+                <input type="date" id="lname" name="lastname"/>
+            </div>
+            <div>
+                <label>~</label>
+                <input type="date" id="lname" name="lastname"/>
+                <input type="button" value="검색"/>
             </div>
         </div>
-    </c:forEach>
-    <!-- 주문 조회 -->
+        <!-- 주문 조회 -->
+        <c:forEach var="orderDto" items="${orderDtoList}">
+            <div style="border: 2px solid darkorange; border-radius: 2px;" class="order-list-item">
+                <div class="order-list-item-detail">
+                    <div>
+                        <!-- 좌측:주문일자, 우측:주문번호 -->
+                        <span>${orderDto.createdDate} 주문</span>
+                        <span>주문번호 : ${orderDto.orderNo}</span>
+                    </div>
+                    <div>
+                        <form action="<c:url value='/order/detail'/>">
+                            <input type="hidden" name="orderNo" value="${orderDto.orderNo}">
+                            <input type="submit" style="float:right;" value="상세 내역"/>
+                            <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
+                            <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
+                        </form>
+                    </div>
+                    <!-- 주문 내 주문상품 조회 -->
+                    <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
+                        <div>
+                            <c:set var="hasReview"
+                                   value="${orderDto.status == '배송완료' && orderItemDto.hasReview == false ? 'button' : 'hidden'}"/>
+                            <input type="${hasReview}"
+                                   onclick="createReview(${orderDto.orderNo}, ${orderItemDto.productNo})"
+                                   value="리뷰 작성"/>
+                        </div>
+                        <div>
+                            <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
+                            <p>[${orderItemDto.productCategory}]</p>
+                            <p>${orderItemDto.productName}</p>
+                            <span>${orderItemDto.productPrice}원</span>
+                            <span> ${orderItemDto.productQty}개</span>
+                        </div>
+                        <!-- 주문 내 주문상품 조회 -->
+                    </c:forEach>
+                </div>
+                <div>
+                    <h2>주문상태 : ${orderDto.status}</h2>
+                </div>
+            </div>
+        </c:forEach>
+        <!-- 주문 조회 -->
+    </div>
 </div>
 <!-- 본문 -->
 
@@ -100,8 +106,8 @@
         </div>
     </div>
 </div>
-<!-- 모달 -->
 
+<!-- 모달 -->
 
 <script>
     // 모달 내용 등록
@@ -177,7 +183,7 @@
         return tmp;
     }
     // 주문 취소
-    $(document).on("click", ".orderCancel", function (){
+    $(document).on("click", ".orderCancel", function () {
         let orderNo = $(this).prev().prev().val()
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.

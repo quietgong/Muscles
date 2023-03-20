@@ -132,6 +132,7 @@ ul.paging li a:hover, ul.paging li a:focus {
     border: none;
     text-align: center;
     font-size: 20px;
+
 }
 #side_bar_content {
     border: black 2px solid;
@@ -236,9 +237,9 @@ ul.paging li a:hover, ul.paging li a:focus {
 
 /* login */
 .login-container {
-    margin: auto;
+    margin: 100px auto auto;
     width: 800px;
-    height: 350px;
+    height: 400px;
     border-radius: 5px;
     border: 1px solid black;
     text-align: center;

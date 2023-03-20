@@ -42,7 +42,7 @@
     </div>
     <div class="nav-item" style="text-align: center">
         <a href="<c:url value='/'/>">
-            <img style="width: 300px; height: 100px;" src="http://via.placeholder.com/300X100/000000/ffffff"/>
+            <img style="width: 300px; height: 100px;" src="<c:url value='/img/logo.jpg'/>">
         </a>
         <span>
             <form action="<c:url value='/product/list'/>">
@@ -55,10 +55,11 @@
         <div>
           <span>
             <a href="<c:url value='${loginOutLink}'/>">${loginOut}</a> |
-            <a href="<c:url value='/chatting'/>">${chatting} |</a>
+            <a href="<c:url value='/chatting'/>">${chatting}</a>
             <a href="<c:url value='/register'/>">${register}</a>
           </span>
         </div>
+        <div><h2>머슬스입니다.</h2></div>
         <div><h2 style="display: ${welcomeUser}">${loginUserId}님! 좋은 하루 되세요</h2></div>
     </div>
 </div>

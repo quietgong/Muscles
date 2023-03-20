@@ -1,6 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<div class="item"  style="flex-shrink: 0; width: 130px; float: left;">
+<style>
+  .item{
+    width: 130px;
+    display: inline-block;
+    position: sticky;
+  }
+</style>
+<div class="item">
   <div id="side_bar_title">
     <span style="font-weight: bold">MY</span>
   </div>
