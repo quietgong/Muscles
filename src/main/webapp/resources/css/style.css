@@ -201,23 +201,15 @@ ul.paging li a:hover, ul.paging li a:focus {
 
 /* admin */
 .admin-container {
-    flex-direction: row;
+    flex-direction: column;
     display: flex;
-
-}
-
-.admin-item:nth-child(1) {
-    flex-shrink: 0;
-    width: 130px;
-}
-.admin-item:nth-child(2) {
-    flex-grow: 1;
 }
 
 .admin-item-detail{
-    margin: auto auto auto 120px;
-    width: 60%;
-    border: 2px dotted black;
+    margin: auto auto 20px;
+    width: 55%;
+    border: 3px solid #333333;
+    border-radius: 3px;
     display: flex;
     flex-direction: column;
 }

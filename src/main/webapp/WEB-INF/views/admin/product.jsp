@@ -16,7 +16,6 @@
 
 <!-- 컨테이너 -->
 <div class="admin-container">
-    <%@include file="sidebar.jsp" %>
     <!-- 내용 -->
     <div id="admin-item">
         <!-- AJAX 동적추가 -->
@@ -88,7 +87,7 @@
                 tmp += '<div class="admin-detail-section">'
                 tmp += '<div>'
                 if(item.productImgPath==null)
-                    item.productImgPath="/muscles/product/display?type=thumbnail&fileName=free.jpg"
+                    item.productImgPath="/muscles/img/logo.jpg"
                 tmp += '<img style="width: 200px; height: 100px" src=\"' + item.productImgPath +'\"/>'
                 tmp += '</div><div>'
                 tmp += '<span style=\"font-weight: bold\">[' + item.productCategory + ']</span><br>'

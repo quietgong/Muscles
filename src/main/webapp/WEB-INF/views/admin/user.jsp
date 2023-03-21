@@ -21,9 +21,6 @@
 
 <!-- 컨테이너 -->
 <div class="container">
-    <!-- 사이드바 -->
-    <%@include file="sidebar.jsp" %>
-    <!-- 사이드바 -->
     <!-- 내용 -->
     <div class="admin-item">
         <div class="admin-item-detail" style="border: none;">

@@ -82,6 +82,14 @@
                 <a href="<c:url value='/product/list?category=etc'/>">기타용품</a>
             </div>
         </li>
+        <li style="float:right;" class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">관리자 페이지</a>
+            <div class="dropdown-content">
+                <a href="<c:url value='/admin/user'/>">유저 관리</a>
+                <a href="<c:url value='/admin/order'/>">주문 관리</a>
+                <a href="<c:url value='/admin/product'/>">상품 관리</a>
+            </div>
+        </li>
     </ul>
 </div>
 </body>
