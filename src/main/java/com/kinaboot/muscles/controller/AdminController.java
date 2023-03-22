@@ -68,6 +68,12 @@ public class AdminController {
         return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
     }
 
+    @GetMapping("/admin/product/manage/detailImg/{productNo}")
+    @ResponseBody
+    public ResponseEntity<List<ProductImgDto>> getProductDetailImg(@PathVariable Integer productNo){
+        System.out.println("productService.getProductDetailImgList(productNo) = " + productService.getProductDetailImgList(productNo));
+        return new ResponseEntity<>(productService.getProductDetailImgList(productNo), HttpStatus.OK);
+    }
     @DeleteMapping("/admin/product/manage/{productNo}")
     @ResponseBody
     public ResponseEntity<String> removeProduct(@PathVariable Integer productNo) {

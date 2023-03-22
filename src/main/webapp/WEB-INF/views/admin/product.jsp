@@ -48,13 +48,13 @@
         </div>
         <!-- 이미지 파일 -->
         <div>
-            <label for="thumbnail">상품 썸네일 추가</label>
+            <label for="thumbnail">상품 썸네일</label>
             <input type="file" id="thumbnail" name='uploadFile' style="height: 30px;">
             <div id="thumbnailPreview">
             </div>
         </div>
         <div>
-            <label for="detail">상품 소개 이미지 추가</label>
+            <label for="detail">상품 소개 이미지</label>
             <input type="file" multiple id="detail" name='uploadFiles' style="height: 30px;">
             <div style="display: flex; flex-direction: row" id="detailPreview">
             </div>
@@ -86,9 +86,9 @@
                 tmp += '<div class="admin-item-detail">'
                 tmp += '<div class="admin-detail-section">'
                 tmp += '<div>'
-                if(item.productImgPath==null)
-                    item.productImgPath="/muscles/img/logo.jpg"
-                tmp += '<img style="width: 200px; height: 100px" src=\"' + item.productImgPath +'\"/>'
+                if (item.productImgPath == null)
+                    item.productImgPath = "/muscles/img/logo.jpg"
+                tmp += '<img style="width: 200px; height: 100px" src=\"' + item.productImgPath + '\"/>'
                 tmp += '</div><div>'
                 tmp += '<span style=\"font-weight: bold\">[' + item.productCategory + ']</span><br>'
                 tmp += '<span>상품명 : ' + item.productName + '</span><br>'
@@ -107,6 +107,7 @@
             return tmp;
         }
     }
+
     loadProductData()
 
     // 2. 상품 정보 삭제
@@ -135,13 +136,40 @@
         let productPrice = clickedDiv.attr("data-productPrice");
         let productStock = clickedDiv.attr("data-productStock");
         let productImgPath = clickedDiv.attr("data-productImgPath");
+        // 클릭한 상품의 소개 이미지들을 ajax로 가져온다.
+        $.ajax({
+            type: "GET",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/admin/product/manage/detailImg/" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                // 기존 상세 이미지 출력
+                if (res.length !== 0) {
+                    let detailImg = []
+                    res.forEach(function (r) {
+                        let tmp = {}
+                        tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1];
+                        detailImg.push(tmp)
+                    })
+                    showPreview(detailImg, "detail")
+                }
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
 
         $("#modalList").html(append())
-
         // 기존 썸네일 이미지 출력
-        showPreview(items,"thumbnail")
-        // 기존 상세 이미지 출력
-        showPreview(items,"detail")
+        let thumbnailImg = []
+        let tmp = {}
+        if(productImgPath.indexOf("&")!=-1) {
+            tmp.uploadName = productImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1];
+            thumbnailImg.push(tmp)
+            showPreview(thumbnailImg, "thumbnail")
+        }
+
 
         // f : 리뷰 작성을 선택한 상품의 정보에 따라 모달 내용을 동적으로 추가
         function append() {
@@ -180,14 +208,13 @@
             jsonData.productStock = $("#productStock").val()
             jsonData.productImgPath = $("#thumbnailPreview").children().attr("data-url")
             let productImgDtoList = []
-            $("#detailPreview").children().each(function (){
-                let tmp={}
+            $("#detailPreview").children().each(function () {
+                let tmp = {}
                 tmp.productNo = $("#productNo").val();
                 tmp.uploadPath = $(this).attr("data-url")
                 productImgDtoList.push(tmp)
             })
             jsonData.productImgDtoList = productImgDtoList
-            console.log(JSON.stringify(jsonData))
             $.ajax({
                 type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
                 url: "/muscles/admin/product/manage/", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -196,7 +223,7 @@
                 },
                 data: JSON.stringify(jsonData),
                 success: function () {
-                    alert("수정이 완료되었습니다.")
+                    alert("수정 완료")
                     loadProductData()
                 },
                 error: function () {
@@ -208,9 +235,11 @@
     })
     // 모달 닫기
     $("#closeBtn").on("click", function () {
+        // 기존 modal data 초기화
+        $("#thumbnailPreview").children().remove()
+        $("#detailPreview").children().remove()
         // body의 overflow 속성 활성화
         $("body").css("overflow", "visible");
-
         $("#myModal").css("display", "none")
     })
 </script>
