@@ -18,7 +18,8 @@
                p.productName     as productName,
                c.productQty      as productQty,
                p.productPrice    as productPrice,
-               p.productCategory as productCategory
+               p.productCategory as productCategory,
+               p.productImgPath  as productImgPath
         from cart c,
              product p
         where p.productNo = c.productNo

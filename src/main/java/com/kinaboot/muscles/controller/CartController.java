@@ -36,6 +36,7 @@ public class CartController {
     public ResponseEntity<List<CartDto>> cart(HttpSession session){
         String userId = (String) session.getAttribute("id");
         List<CartDto> cartItemList = cartService.getCartItems(userId);
+        System.out.println("cartItemList = " + cartItemList);
         return new ResponseEntity<>(cartItemList, HttpStatus.OK);
     }
     @PostMapping("/add")

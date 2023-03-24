@@ -5,6 +5,7 @@ public class OrderItemDto {
     private int productNo;
     private String productName;
     private String productCategory;
+    private String productImgPath;
     private int productQty;
     private int productPrice;
     private boolean hasReview;
@@ -26,6 +27,14 @@ public class OrderItemDto {
     }
 
     public OrderItemDto() {
+    }
+
+    public String getProductImgPath() {
+        return productImgPath;
+    }
+
+    public void setProductImgPath(String productImgPath) {
+        this.productImgPath = productImgPath;
     }
 
     public int getOrderNo() {

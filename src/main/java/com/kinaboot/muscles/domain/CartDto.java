@@ -5,9 +5,18 @@ public class CartDto {
     private String userId;
     private String productName;
     private String productCategory;
+    private String productImgPath;
     private int productNo;
     private int productPrice;
     private int productQty;
+
+    public String getProductImgPath() {
+        return productImgPath;
+    }
+
+    public void setProductImgPath(String productImgPath) {
+        this.productImgPath = productImgPath;
+    }
 
     public String getProductCategory() {
         return productCategory;

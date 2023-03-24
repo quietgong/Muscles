@@ -6,15 +6,14 @@
 
 <!-- 본문 -->
 <div>
-    <p>${param.category}</p>
-    <p>총 ${totalCnt}개의 상품이 있습니다.</p>
+    <span>${param.category}</span><br>
+    <span>${param.keyword} 검색 결과</span><br>
+    <span>총 ${totalCnt}개의 상품이 있습니다.</span>
 </div>
 <div class="product-list-container" style="justify-content: flex-end;">
     <form action="" id="conditionSearch">
         <input class="condition" type="button" value="낮은가격 순"/>
-        |
         <input class="condition" type="button" value="높은가격 순"/>
-        |
         <input class="condition" type="button" value="리뷰점수 높은 순"/>
     </form>
 </div>
@@ -53,7 +52,6 @@
         </c:if>
     </ul>
 </c:if>
-<hr>
 <!-- 반복부 -->
 <script>
     $(".condition").on("click", function () {

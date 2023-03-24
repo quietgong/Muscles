@@ -17,7 +17,7 @@
 <!-- 반복부 -->
 <c:forEach var="orderItemDto" items="${list}">
     <div class="order-container">
-        <img src="http://via.placeholder.com/100X100/000000/ffffff"/>
+        <img style="width: 100px; height: 100px;" src="${orderItemDto.productImgPath}"/>
         <input type="hidden" class="order-item" value="${orderItemDto.productNo}">
         <input type="hidden" value="${orderItemDto.productName}">
         <input type="hidden" value="${orderItemDto.productQty}">
@@ -44,20 +44,19 @@
 </div>
 <hr/>
 <label for="receiver">수령인</label><br/>
-<input name="receiver" type="text" value="오준호"/>
+<input id="receiver" class="delivery" name="receiver" type="text"/>
 <br/>
-<label for="pw2">연락처</label><br/>
-<input name="phone" type="text" value="01012345678" placeholder="-를 제외하고 입력해주세요"/>
+<label for="phone">연락처</label><br/>
+<input id="phone" class="delivery" name="phone" type="text" placeholder="-를 제외하고 입력해주세요"/>
 <br/>
-<label for="pw2">주소</label>
 <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"/>
 <br/>
 <input type="text" id="postcode" placeholder="우편번호"/>
-<input type="text" name="address" value="청주시" placeholder="주소"/><br/>
-<input type="text" id="detailAddress" value="복대동" placeholder="상세주소"/>
+<input id="address" class="address" type="text" name="address" placeholder="주소"/><br/>
+<input class="delivery" type="text" id="detailAddress" placeholder="상세주소"/>
 <br/>
-<label for="pw2">배송 메세지</label><br/>
-<input name="message" type="text" value="배송메세지 테스트입니다." placeholder="배송 메시지 입력"/>
+<label for="message">배송 메세지</label><br/>
+<input id="message" name="message" type="text" placeholder="배송 메시지 입력"/>
 <br/>
 
 <!-- 결제정보 -->
@@ -65,35 +64,33 @@
     <h3>결제 정보</h3>
 </div>
 <hr/>
+    <div>
 <table id="myTable" style="margin: auto">
     <tr>
         <td>총 상품가격</td>
-        <td>21,500원</td>
+        <td id="payPrice"></td>
     </tr>
     <tr>
         <td>포인트 사용</td>
-        <td><input/><span>보유 포인트 : ${userDto.point}</span>
+        <td><input type="text"><br>
+            <span>보유 포인트 : ${userDto.point}</span>
             <button type="button">모두 사용</button>
         </td>
     </tr>
     <tr>
-        <td>배송비</td>
-        <td>0원(택배발송)</td>
-    </tr>
-    <tr>
         <td>총 결제금액</td>
         <td>
-            <input name="price" type="text" class="order-payment" value="21500">
+            <input style="text-align: center" name="price" type="text" class="order-payment" readonly>
         </td>
     </tr>
     <tr>
-        <td>일반 결제</td>
+        <td>결제 수단</td>
         <td><input name="type" type="radio" checked class="order-payment" value="네이버페이"/>네이버페이</td>
     </tr>
 </table>
-
+    </div>
 <div class="order-item">
-    <input id="submit" type="submit" value="결제하기"/>
+    <input style="width: 80%; margin-top: 100px" id="submit" type="submit" value="결제하기"/>
 </div>
 </form>
 <script>
@@ -119,7 +116,6 @@
             name: 'orderJsonData',
             value: JSON.stringify(orderJsonData)
         }))
-
         form.attr("action", "<c:url value='/order/complete'/>");
         form.attr("method", "post");
         form.submit();
@@ -131,23 +127,25 @@
         sum+=Number($(this).html())
     })
     $("#totalPrice").html(sum)
+    $("#payPrice").html(sum)
+    $("input[name='price']").val(sum)
 
     // 배송지 기본 정보로 설정 체크 여부
     const checkbox = document.getElementById('checkbox');
-    const inputs = document.getElementsByClassName('address');
+    const inputs = document.getElementsByClassName('delivery');
 
-    let savedAddressInfo = [
-        '${userDto.userId}','${userDto.phone}','test','test','${userDto.address}','배송 메세지'
+    let savedDeliveryInfo = [
+        '${userDto.userId}','${userDto.phone}','${userDto.address}'
     ];
     // Checked
     if (checkbox.checked)
         for (let i = 0; i < inputs.length; i++)
-            inputs[i].value = savedAddressInfo[i];
+            inputs[i].value = savedDeliveryInfo[i];
 
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) { // 체크되어있을 떄
             for (let i = 0; i < inputs.length; i++)
-                inputs[i].value = savedAddressInfo[i];
+                inputs[i].value = savedDeliveryInfo[i];
         } else {
             for (let i = 0; i < inputs.length; i++)
                 inputs[i].value = '';

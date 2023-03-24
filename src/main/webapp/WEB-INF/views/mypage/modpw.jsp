@@ -2,7 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <style>
-
+    .modpw-container{
+        display: flex;
+        flex-direction: row;
+    }
     .item-head {
         text-align: center;
         flex: 1 1 20%;
@@ -17,17 +20,17 @@
 
 <!-- 본문 -->
 <!-- 사이드바 시작 -->
+<div class="mypage-container">
 <%@include file="sidebar.jsp" %>
 <!-- 사이드바 끝 -->
-<div><h3>${param.msg}</h3></div>
+<div>
 <form method="post">
-<div class="mypage-container">
+<div>
     <div class="item">
-        <label style="font-weight: bold;">현재의 비밀번호 입력 : </label>
+        <label style="font-weight: bold;">현재  비밀번호 입력 : </label>
         <input type="text" name="nowPassword" />
     </div>
 </div>
-<hr />
 <div class="mypage-container">
     <div class="item">
         <label style="font-weight: bold;" for="password2">새로운 비밀번호 입력 : </label>
@@ -49,5 +52,7 @@
     </div>
 </div>
 </form>
+</div>
+</div>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

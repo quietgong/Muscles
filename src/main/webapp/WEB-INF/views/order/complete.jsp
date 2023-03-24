@@ -28,7 +28,7 @@
     <img src="http://via.placeholder.com/100X100/000000/ffffff" />
     <div class="order-item"><h3>${orderItemDto.productName}</h3></div>
     <div class="order-item"><h3>${orderItemDto.productQty}</h3></div>
-    <div class="order-item"><h3>${orderItemDto.productPrice * orderItemDto.productQty}</h3></div>
+    <div class="order-item"><h3>${orderItemDto.productPrice}</h3></div>
 </div>
 <hr />
 <!-- 주문자 정보 -->

@@ -51,11 +51,6 @@ public class OrderServiceImpl implements OrderService{
         return orderDao.selectAll(userId);
     }
 
-//    @Override
-//    public int acceptOrder(Integer orderNo) {
-//        return orderDao.updateOrderStatus(orderNo);
-//    }
-
     @Override
     public int createOrder(String userId, OrderDto orderDto) {
         // 1. 구매 제품 카트에서 삭제

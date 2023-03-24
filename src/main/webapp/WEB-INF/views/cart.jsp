@@ -7,7 +7,7 @@
 <hr/>
 <div class="cart-container">
     <div class="cart-item-head">
-        <label><input id="allCheck" type="checkbox" checked onclick="allCheck(event)"/>
+        <label><input style="zoom: 2.0" id="allCheck" type="checkbox" checked onclick="allCheck(event);"/>
             <span>전체선택</span>
         </label>
     </div>
@@ -17,8 +17,9 @@
 </div>
 <hr/>
 <!-- 상품 정보 표시 시작 -->
-<form id="myForm" action="<c:url value='/cart/order'/>" method="post">
+<form id="cartForm" action="<c:url value='/cart/order'/>" method="post">
     <div id="cartItemList">
+        <!-- 동적 추가 -->
     </div>
     <!-- 상품 정보 표시 시작 -->
     <div class="cart-container">
@@ -32,51 +33,15 @@
 
     <div class="cart-container">
         <div class="cart-item">
-            <p style="font-weight: bold;">총 주문 금액은 13,500원입니다.</p>
+            <span style="font-weight: bold;">총 주문 금액은 </span>
+            <span style="font-weight: bold; font-size: 1.2rem;" id="totalPrice"></span>
+            <span>원입니다.</span><br>
             <input id="order" type="submit" value="주문하기"/>
             <a href="<c:url value="/"/>"><input type="button" value="홈 이동"/></a>
         </div>
     </div>
 </form>
 <script>
-    $("#cartItemList").on("click", ".qtyChange", function () {
-        if ($(this).html() == '-') {
-            const nowQty = $(this).next()
-            let number = parseInt(nowQty.html())
-            if (number > 1) {
-                nowQty.text(number - 1)
-            }
-        } else {
-            const nowQty = $(this).prev()
-            let number = parseInt(nowQty.html()) + 1
-            nowQty.text(number)
-        }
-        return false
-    });
-
-    $("#order").on("click", function () {
-        const form = $('#myForm');
-        let checkedItems = $('input[type=checkbox].check_all_list:checked');
-        let data = []
-
-        $(checkedItems).each(function () {
-            let tmp = {}
-            tmp.productNo = $(this).next().val()
-            tmp.productName = $(this).next().next().val()
-            tmp.productCategory = $(this).next().next().next().val()
-            tmp.productQty = $(this).parent().next().children("h1").text()
-            tmp.productPrice = $(this).next().next().next().next().val()
-            data.push(tmp)
-        });
-        console.log(JSON.stringify(data))
-        form.append($('<input>').attr({
-            type: 'hidden',
-            name: 'jsonData',
-            value: JSON.stringify(data)
-        }))
-        form.submit();
-    });
-
     loadCartItem()
     function loadCartItem() {
         $.ajax({
@@ -88,35 +53,85 @@
             success: function (res) {
                 $("#cartItemList").html(toHtml(res))
                 console.log("Get All Cart Item!")
+                displayTotalPrice();
             },
             error: function () {
                 console.log("통신 실패")
             }
         })
+
     }
+
+    $("#cartItemList").on("click", ".qtyChange", function () { // 수량 변경
+        let nowQty;
+        if ($(this).val() == '-') { // 감소
+            nowQty = $(this).next()
+            let number = parseInt(nowQty.html())
+            if (number > 1)
+                nowQty.text(number - 1)
+        } else { // 증가
+            nowQty = $(this).prev()
+            let number = parseInt(nowQty.html()) + 1
+            nowQty.text(number)
+        }
+        let targetDiv = $(this).parent().next()
+        let qtyPrice = targetDiv.attr("data-productPrice") * nowQty.html()
+        targetDiv.next().children().html(qtyPrice)
+        displayTotalPrice()
+        return false
+    });
+
+    // 체크박스에 변경이 있을때마다 주문금액 변경
+    $(document).on("click", "input[type=checkbox]", function (){
+        displayTotalPrice()
+    })
+
+    $("#order").on("click", function () {
+        const form = $('#cartForm');
+        let checkedItems = $('input[type=checkbox].check_all_list:checked');
+        let data = []
+        $(checkedItems).each(function (index) {
+            let tmp = {}
+            tmp.productNo = $(this).next().val()
+            tmp.productName = $(this).next().next().val()
+            tmp.productCategory = $(this).next().next().next().val()
+            tmp.productQty = $(".qty").eq(index).html()
+            tmp.productPrice = $(".price").eq(index).html()
+            tmp.productImgPath = $(this).prev().val()
+            data.push(tmp)
+        });
+        console.log(JSON.stringify(data))
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: 'jsonData',
+            value: JSON.stringify(data)
+        }))
+        form.submit();
+    });
 
     let toHtml = function (items) {
         let tmp = "";
         items.forEach(function (item) {
             tmp += '<div class="cart-container">'
-
-            tmp += '<div class="cart-item" style="flex-basis: 150px">'
-            tmp += '<input type="checkbox" checked class="check_all_list" />'
+            tmp += '<div class="cart-item">'
+            tmp += '<input type="hidden" value="' + item.productImgPath + '"/>'
+            tmp += '<input style="zoom:2.0;" type="checkbox" checked class="check_all_list" />'
             tmp += '<input type="hidden" value="' + item.productNo + '"/>'
             tmp += '<input type="hidden" value="' + item.productName + '"/>'
             tmp += '<input type="hidden" value="' + item.productCategory + '"/>'
             tmp += '<input type="hidden" value="' + item.productPrice + '"/>'
-
             tmp += '</div>'
-
             tmp += '<div class="cart-item">'
-            tmp += '<a class="qtyChange" href="#">-</a>'
-            tmp += '<h1>' + item.productQty + '</h1>'
-            tmp += '<a class="qtyChange" href="#">+</a>'
+            tmp += '<input style="font-size: 1.5rem" type="button" class="qtyChange" value="-"/>'
+            tmp += '<h1 class="qty">' + item.productQty + '</h1>'
+            tmp += '<input style="font-size: 1.5rem" type="button" class="qtyChange" value="+"/>'
             tmp += '</div>'
-
-            tmp += '<div class="cart-item">'
-            tmp += '<img src="http://via.placeholder.com/300X200/000000/ffffff"/>'
+            tmp += '<div class="cart-item" data-productNo=' + item.productNo +
+                ' data-productName=' + item.productName + ' data-productCategory=' + item.productCategory +
+                ' data-productPrice=' + item.productPrice + '>'
+            if (item.productImgPath == null)
+                item.productImgPath = "/muscles/img/logo.jpg"
+            tmp += '<img style="width: 300px; height: 200px" src=\"' + item.productImgPath + '\"/>'
             tmp += '<h3>' + item.productName + '</h3>'
             tmp += '</div>'
             tmp += '<div class="cart-item"><h3 class="price">' + item.productPrice + '</h3></div>'
@@ -125,9 +140,17 @@
         })
         return tmp;
     }
-
+    function displayTotalPrice(){
+        // 총 주문금액 구하기
+        let totalPrice=0;
+        let checkedItems = $('input[type=checkbox].check_all_list:checked');
+        $(checkedItems).each(function () {
+            totalPrice += parseInt($(this).parent().next().next().next().children().html())
+        });
+        $("#totalPrice").html(totalPrice)
+    }
     function deleteItem() {
-        var deleteItemList = []
+        const deleteItemList = [];
         let checkedItems = $('input[type=checkbox].check_all_list:checked');
         $(checkedItems).each(function () {
             deleteItemList.push($(this).next().val())
@@ -167,15 +190,13 @@
         // 체크 버튼 클릭시 전체 체크 버튼 체크 및 해제
         let checkCount = 0;
         document.querySelectorAll(".check_all_list").forEach(function (v, i) {
-            if (v.checked === false) {
+            if (v.checked === false)
                 checkCount++;
-            }
         });
-        if (checkCount > 0) {
+        if (checkCount > 0)
             document.getElementById("allCheck").checked = false;
-        } else if (checkCount === 0) {
+        else if (checkCount === 0)
             document.getElementById("allCheck").checked = true;
-        }
     }
 </script>
 <!-- footer -->
