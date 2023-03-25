@@ -3,95 +3,113 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-
+<style>
+    #submit {
+        width: 20%;
+        height: 60px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 50px;
+    }
+</style>
 <!-- 본문 -->
 <hr/>
 <form id="orderForm">
-<div class="order-container">
-    <img style="visibility: hidden" src="http://via.placeholder.com/100X100/000000/ffffff"/>
-    <div class="order-item-head"><h2>상품정보</h2></div>
-    <div class="order-item-head"><h2>수량</h2></div>
-    <div class="order-item-head"><h2>상품금액</h2></div>
-</div>
-<hr/>
-<!-- 반복부 -->
-<c:forEach var="orderItemDto" items="${list}">
     <div class="order-container">
-        <img style="width: 100px; height: 100px;" src="${orderItemDto.productImgPath}"/>
-        <input type="hidden" class="order-item" value="${orderItemDto.productNo}">
-        <input type="hidden" value="${orderItemDto.productName}">
-        <input type="hidden" value="${orderItemDto.productQty}">
-        <input type="hidden" value="${orderItemDto.productPrice}">
-        <input type="hidden" value="${orderItemDto.productCategory}">
-
-        <div class="order-item"><h3>${orderItemDto.productName}</h3></div>
-        <div class="order-item"><h3>${orderItemDto.productQty}</h3></div>
-        <div class="order-item"><h3 class="order-item-price">${orderItemDto.productPrice}</h3></div>
+        <img style="visibility: hidden" src="http://via.placeholder.com/300X200/000000/ffffff"/>
+        <div class="order-item-head"><h2>상품정보</h2></div>
+        <div class="order-item-head"><h2>수량</h2></div>
+        <div class="order-item-head"><h2>상품금액</h2></div>
     </div>
     <hr/>
-</c:forEach>
+    <!-- 반복부 -->
+    <c:forEach var="orderItemDto" items="${list}">
+        <div class="order-container">
+            <img style="width: 300px; height: 200px;" src="${orderItemDto.productImgPath}"/>
+            <input type="hidden" class="order-item" value="${orderItemDto.productNo}">
+            <input type="hidden" value="${orderItemDto.productName}">
+            <input type="hidden" value="${orderItemDto.productQty}">
+            <input type="hidden" value="${orderItemDto.productPrice}">
+            <input type="hidden" value="${orderItemDto.productCategory}">
 
-<!-- 반복부 끝 -->
-<div class="order-container" style="justify-content: flex-end; margin-right: 10%">
-    <h3>합계 : </h3><h3 id="totalPrice"></h3>
-</div>
-<!-- 배송지정보 -->
-<div class="order-container">
-    <h3>배송지 정보</h3>
-    <span style="justify-content: flex-end">기존 정보로 설정
+            <div class="order-item"><h3>${orderItemDto.productName}</h3></div>
+            <div class="order-item"><h3>${orderItemDto.productQty}</h3></div>
+            <div class="order-item"><h3 class="order-item-price">${orderItemDto.productPrice}</h3></div>
+        </div>
+        <hr/>
+    </c:forEach>
+    <!-- 반복부 끝 -->
+
+    <!-- 배송지정보 -->
+    <div class="order-container">
+        <h3>배송지 정보</h3>
+        <span style="justify-content: flex-end">기존 정보로 설정
         <input id="checkbox" style="justify-content: flex-end" type="checkbox" checked/>
     </span>
-</div>
-<hr/>
-<label for="receiver">수령인</label><br/>
-<input id="receiver" class="delivery" name="receiver" type="text"/>
-<br/>
-<label for="phone">연락처</label><br/>
-<input id="phone" class="delivery" name="phone" type="text" placeholder="-를 제외하고 입력해주세요"/>
-<br/>
-<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"/>
-<br/>
-<input type="text" id="postcode" placeholder="우편번호"/>
-<input id="address" class="address" type="text" name="address" placeholder="주소"/><br/>
-<input class="delivery" type="text" id="detailAddress" placeholder="상세주소"/>
-<br/>
-<label for="message">배송 메세지</label><br/>
-<input id="message" name="message" type="text" placeholder="배송 메시지 입력"/>
-<br/>
-
-<!-- 결제정보 -->
-<div class="order-container">
-    <h3>결제 정보</h3>
-</div>
-<hr/>
-    <div>
-<table id="myTable" style="margin: auto">
-    <tr>
-        <td>총 상품가격</td>
-        <td id="payPrice"></td>
-    </tr>
-    <tr>
-        <td>포인트 사용</td>
-        <td><input type="text"><br>
-            <span>보유 포인트 : ${userDto.point}</span>
-            <button type="button">모두 사용</button>
-        </td>
-    </tr>
-    <tr>
-        <td>총 결제금액</td>
-        <td>
-            <input style="text-align: center" name="price" type="text" class="order-payment" readonly>
-        </td>
-    </tr>
-    <tr>
-        <td>결제 수단</td>
-        <td><input name="type" type="radio" checked class="order-payment" value="네이버페이"/>네이버페이</td>
-    </tr>
-</table>
     </div>
-<div class="order-item">
-    <input style="width: 80%; margin-top: 100px" id="submit" type="submit" value="결제하기"/>
-</div>
+    <hr/>
+    <label for="receiver">수령인</label><br/>
+    <input id="receiver" class="delivery" name="receiver" type="text"/>
+    <br/>
+    <label for="phone">연락처</label><br/>
+    <input id="phone" class="delivery" name="phone" type="text" placeholder="-를 제외하고 입력해주세요"/>
+    <br/>
+    <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"/>
+    <br/>
+    <input type="text" id="postcode" placeholder="우편번호"/>
+    <input id="address" class="address" type="text" name="address" placeholder="주소"/><br/>
+    <input class="delivery" type="text" id="detailAddress" placeholder="상세주소"/>
+    <br/>
+    <label for="message">배송 메세지</label><br/>
+    <input id="message" name="message" type="text" placeholder="배송 메시지 입력"/>
+    <br/>
+
+    <!-- 결제정보 -->
+    <div class="order-container">
+        <h3>결제 정보</h3>
+    </div>
+    <hr/>
+    <div>
+        <table id="myTable" style="margin: auto">
+            <tr>
+                <td>총 상품가격</td>
+                <td id="payPrice"></td>
+            </tr>
+            <tr>
+                <td>할인 쿠폰 선택</td>
+                <td>
+                    <select>
+                        <option value="" selected>할인쿠폰 선택</option>
+                        <option value="">추천인 입력 이벤트</option>
+                        <option value="">준비중...</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>포인트 사용</td>
+                <td><input type="text"><br>
+                    <span>보유 포인트 : ${userDto.point}</span>
+                    <button type="button">모두 사용</button>
+                </td>
+            </tr>
+            <tr>
+                <td>최종 결제금액</td>
+                <td>
+                    <input style="text-align: center" name="price" type="text" class="order-payment" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td>결제 수단</td>
+                <td>
+                    <input name="type" type="radio" checked class="order-payment" value="네이버페이"/>네이버페이
+                    <input name="type" type="radio" class="order-payment" value="카카오페이"/>카카오페이
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="order-item">
+        <input id="submit" type="submit" value="결제하기"/>
+    </div>
 </form>
 <script>
     // 결제 처리
@@ -102,12 +120,13 @@
         // 상품 정보
         let orderItemInfo = $("input[type='hidden'].order-item");
         $(orderItemInfo).each(function () {
-            let data = {} ;
+            let data = {};
             data.productNo = $(this).val()
             data.productName = $(this).next().val()
             data.productQty = $(this).next().next().val()
             data.productPrice = $(this).next().next().next().val()
             data.productCategory = $(this).next().next().next().val()
+            data.productImgPath = $(this).prev().attr("src")
             orderJsonData.push(data);
         });
 
@@ -122,20 +141,19 @@
     });
 </script>
 <script>
-    let sum=0
-    $(".order-item-price").each(function (){
-        sum+=Number($(this).html())
+    let sum = 0
+    $(".order-item-price").each(function () {
+        sum += Number($(this).html())
     })
-    $("#totalPrice").html(sum)
     $("#payPrice").html(sum)
     $("input[name='price']").val(sum)
 
     // 배송지 기본 정보로 설정 체크 여부
-    const checkbox = document.getElementById('checkbox');
-    const inputs = document.getElementsByClassName('delivery');
+    const checkbox = $("#checkbox")
+    const inputs = $(".delivery")
 
     let savedDeliveryInfo = [
-        '${userDto.userId}','${userDto.phone}','${userDto.address}'
+        '${userDto.userId}', '${userDto.phone}', '${userDto.address}'
     ];
     // Checked
     if (checkbox.checked)

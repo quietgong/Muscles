@@ -112,7 +112,11 @@
         from payment
         WHERE orderNo='${orderNo}'
     </select>
-
+<select id="selectUserRecentOrderNo" resultType="int" parameterType="String">
+    select max(orderNo) orderNo
+    from orders
+    where orderNo = '${userId}';
+</select>
     <insert id="insertOrder" parameterType="orderDto">
         insert into orders (userId, status, createdDate)
         values (#{userId},#{status},now());

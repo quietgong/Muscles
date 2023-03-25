@@ -25,4 +25,6 @@ public interface OrderDao {
     OrderItemDto selectOrderItem(Integer orderNo, Integer productNo);
 
     int deleteOrder(Integer orderNo);
+
+    int selectUserRecentOrderNo(String userId);
 }

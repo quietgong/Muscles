@@ -24,20 +24,13 @@
     <div class="nav-item" style="width: 150px; display: flex; justify-content: space-between">
         <a class="nav-a" href="<c:url value='/order/list'/>">
             <div style="text-align: center">
-                <i style="margin: auto" class="fa-sharp fa-solid fa-user"></i>
+                <i class="fa-sharp fa-solid fa-user"></i>
             </div>
-            <span>마이페이지</span>
-            <br/>
         </a>
         <a class="nav-a" href="<c:url value='/cart'/>">
             <div style="text-align: center">
-                <i
-                        style="margin: auto"
-                        class="fa-sharp fa-solid fa-cart-shopping"
-                ></i>
+                <i class="fa-sharp fa-solid fa-cart-shopping"></i>
             </div>
-            <span>장바구니</span>
-            <br/>
         </a>
     </div>
     <div class="nav-item" style="text-align: center">

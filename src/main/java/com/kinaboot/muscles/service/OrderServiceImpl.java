@@ -52,6 +52,11 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    public int getUserRecentOrderNo(String userId) {
+        return orderDao.selectUserRecentOrderNo(userId);
+    }
+
+    @Override
     public int createOrder(String userId, OrderDto orderDto) {
         // 1. 구매 제품 카트에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();

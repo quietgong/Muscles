@@ -89,6 +89,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public int selectUserRecentOrderNo(String userId) {
+        return session.selectOne(namespace + "selectUserRecentOrderNo", userId);
+    }
+
+    @Override
     public List<OrderDto> selectOrderAllByUser() {
         return session.selectList(namespace + "selectAllByUser");
     }
@@ -100,7 +105,6 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public int insertOrder(String userId, OrderDto orderDto) {
-        int row=0;
         // 주문 정보 생성
         session.insert(namespace + "insertOrder", orderDto);
 
@@ -113,6 +117,6 @@ public class OrderDaoImpl implements OrderDao {
 
         // 결제 정보 생성
         session.insert(namespace + "insertPayment", orderDto.getPaymentDto());
-        return row;
+        return 0;
     }
 }

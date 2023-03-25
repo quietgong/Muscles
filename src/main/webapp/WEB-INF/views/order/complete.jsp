@@ -13,7 +13,7 @@
 <div class="order-container">
 </div>
 <hr />
-<p style="font-weight: bold">| 주문번호 : ${orderItemDtoList.get(0).orderNo}</p>
+<p style="font-weight: bold">| 주문번호 : ${orderDto.orderNo}</p>
 
 <div class="order-container">
     <img style="visibility: hidden;" src="http://via.placeholder.com/100X100/000000/ffffff" />
@@ -25,7 +25,7 @@
 <c:forEach var="orderItemDto" items="${orderItemDtoList}">
 <!-- 주문 상품 정보 -->
 <div class="order-container">
-    <img src="http://via.placeholder.com/100X100/000000/ffffff" />
+    <img style="width: 100px; height: 100px;" src="${orderItemDto.productImgPath}"/>
     <div class="order-item"><h3>${orderItemDto.productName}</h3></div>
     <div class="order-item"><h3>${orderItemDto.productQty}</h3></div>
     <div class="order-item"><h3>${orderItemDto.productPrice}</h3></div>

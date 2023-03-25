@@ -24,11 +24,6 @@
     <!-- 상품 정보 표시 시작 -->
     <div class="cart-container">
         <input id="delete" onclick="deleteItem()" type="button" value="선택삭제"/>
-        <select>
-            <option value="" selected>할인쿠폰 선택</option>
-            <option value="">추천인 입력 이벤트</option>
-            <option value="">준비중...</option>
-        </select>
     </div>
 
     <div class="cart-container">
@@ -36,8 +31,8 @@
             <span style="font-weight: bold;">총 주문 금액은 </span>
             <span style="font-weight: bold; font-size: 1.2rem;" id="totalPrice"></span>
             <span>원입니다.</span><br>
-            <input id="order" type="submit" value="주문하기"/>
-            <a href="<c:url value="/"/>"><input type="button" value="홈 이동"/></a>
+            <input style="font-size: 1.5rem;" id="order" type="submit" value="주문하기"/>
+            <a href="<c:url value="/"/>"><input style="font-size: 1.5rem;" type="button" value="홈 이동"/></a>
         </div>
     </div>
 </form>
@@ -123,7 +118,7 @@
             tmp += '</div>'
             tmp += '<div class="cart-item">'
             tmp += '<input style="font-size: 1.5rem" type="button" class="qtyChange" value="-"/>'
-            tmp += '<h1 class="qty">' + item.productQty + '</h1>'
+            tmp += '<span style="font-size: 1.5rem; font-weight: bold; padding-left: 20px; padding-right: 20px" class="qty">' + item.productQty + '</span>'
             tmp += '<input style="font-size: 1.5rem" type="button" class="qtyChange" value="+"/>'
             tmp += '</div>'
             tmp += '<div class="cart-item" data-productNo=' + item.productNo +

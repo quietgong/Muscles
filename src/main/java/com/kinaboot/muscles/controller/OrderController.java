@@ -73,7 +73,7 @@ public class OrderController {
         String userId = (String) session.getAttribute("id");
         List<OrderItemDto> orderItemDtoList = JsonToJava(orderJsonData);
         OrderDto orderDto = new OrderDto(orderItemDtoList, deliveryDto, paymentDto, userId, "대기중");
-
+        orderDto.setOrderNo(orderService.getUserRecentOrderNo(userId));
         orderService.createOrder(userId, orderDto);
         UserDto userDto = userService.read(userId);
         m.addAttribute(orderDto);
