@@ -115,7 +115,7 @@
 <select id="selectUserRecentOrderNo" resultType="int" parameterType="String">
     select max(orderNo) orderNo
     from orders
-    where orderNo = '${userId}';
+    where userId = '${userId}';
 </select>
     <insert id="insertOrder" parameterType="orderDto">
         insert into orders (userId, status, createdDate)
