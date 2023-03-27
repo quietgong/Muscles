@@ -89,18 +89,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int selectUserRecentOrderNo(String userId) {
-        return session.selectOne(namespace + "selectUserRecentOrderNo", userId);
+    public int selectUserRecentOrderNo() {
+        return session.selectOne(namespace + "selectUserRecentOrderNo");
     }
 
     @Override
     public List<OrderDto> selectOrderAllByUser() {
         return session.selectList(namespace + "selectAllByUser");
-    }
-
-    @Override
-    public OrderDto selectOrder(String userId, int bundleNo) {
-        return null;
     }
 
     @Override

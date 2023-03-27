@@ -52,8 +52,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public int getUserRecentOrderNo(String userId) {
-        return orderDao.selectUserRecentOrderNo(userId);
+    public int getUserRecentOrderNo() {
+        return orderDao.selectUserRecentOrderNo();
     }
 
     @Override

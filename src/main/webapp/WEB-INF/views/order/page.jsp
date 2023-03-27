@@ -49,10 +49,10 @@
     </div>
     <hr/>
     <label for="receiver">수령인</label><br/>
-    <input id="receiver" class="delivery" name="receiver" type="text"/>
+    <input id="receiver" class="delivery" name="receiver" type="text" value="${userDto.userId}"/>
     <br/>
     <label for="phone">연락처</label><br/>
-    <input id="phone" class="delivery" name="phone" type="text" placeholder="-를 제외하고 입력해주세요"/>
+    <input id="phone" class="delivery" name="phone" type="text" value="${userDto.phone}" placeholder="-를 제외하고 입력해주세요"/>
     <br/>
     <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"/>
     <br/>
@@ -149,8 +149,8 @@
     $("input[name='price']").val(sum)
 
     // 배송지 기본 정보로 설정 체크 여부
-    const checkbox = $("#checkbox")
-    const inputs = $(".delivery")
+    const checkbox = document.getElementById('checkbox');
+    const inputs = document.getElementsByClassName('delivery');
 
     let savedDeliveryInfo = [
         '${userDto.userId}', '${userDto.phone}', '${userDto.address}'

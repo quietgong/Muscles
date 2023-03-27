@@ -24,7 +24,7 @@
                 <span id="qty" style="font-size: 25px; font-weight: bold">1</span>
                 <a href="#" onclick='count("plus"); return false;'><span
                         style="font-size: 25px; font-weight: bold">+</span></a>
-                <span id="price" style="float: right">124000</span>
+                <span id="price" style="float: right">${productDto.productPrice}</span>
             </div>
             <div class="product-detail-item-detail" style="margin: auto">
                 <input onclick="addCart()" type="button" value="장바구니 담기"/>

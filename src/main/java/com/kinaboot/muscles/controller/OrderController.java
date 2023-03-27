@@ -33,6 +33,7 @@ public class OrderController {
         System.out.println(orderNo);
         OrderDto orderDto = orderService.getOrderDetail(orderNo);
         m.addAttribute(orderDto);
+        System.out.println("orderDto = " + orderDto);
         return "order/detail";
     }
 
@@ -73,11 +74,11 @@ public class OrderController {
         String userId = (String) session.getAttribute("id");
         List<OrderItemDto> orderItemDtoList = JsonToJava(orderJsonData);
         OrderDto orderDto = new OrderDto(orderItemDtoList, deliveryDto, paymentDto, userId, "대기중");
-        orderDto.setOrderNo(orderService.getUserRecentOrderNo(userId));
+        orderDto.setOrderNo(orderService.getUserRecentOrderNo());
+
         orderService.createOrder(userId, orderDto);
-        UserDto userDto = userService.read(userId);
         m.addAttribute(orderDto);
-        m.addAttribute(userDto);
+        m.addAttribute("userDto", userService.read(userId));
         m.addAttribute(orderItemDtoList);
         return "order/complete";
     }

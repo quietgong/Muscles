@@ -57,6 +57,7 @@
 
     }
 
+
     $("#cartItemList").on("click", ".qtyChange", function () { // 수량 변경
         let nowQty;
         if ($(this).val() == '-') { // 감소
@@ -129,7 +130,7 @@
             tmp += '<img style="width: 300px; height: 200px" src=\"' + item.productImgPath + '\"/>'
             tmp += '<h3>' + item.productName + '</h3>'
             tmp += '</div>'
-            tmp += '<div class="cart-item"><h3 class="price">' + item.productPrice + '</h3></div>'
+            tmp += '<div class="cart-item"><h3 class="price">' + item.productPrice*item.productQty + '</h3></div>'
             tmp += '</div>'
             tmp += '<hr>'
         })

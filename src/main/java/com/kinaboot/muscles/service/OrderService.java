@@ -21,5 +21,5 @@ public interface OrderService {
 
     int removeOrder(Integer orderNo);
 
-    int getUserRecentOrderNo(String userId);
+    int getUserRecentOrderNo();
 }

@@ -74,7 +74,7 @@
 </table>
 <div class="order-container">
     <div class="order-item">
-        <a href="<c:url value='/order/detail'/>">
+        <a href="<c:url value='/order/detail?orderNo=${orderDto.orderNo}'/>">
             <input type="button" value="주문내역 확인" />
         </a>
         <a href="<c:url value='/'/>">

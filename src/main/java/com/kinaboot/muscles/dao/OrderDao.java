@@ -11,7 +11,6 @@ public interface OrderDao {
 
     List<OrderDto> selectOrderAllByUser();
 
-    OrderDto selectOrder(String userId, int bundleNo);
     OrderDto selectOrder(Integer orderNo);
 
     int updateOrderStatus(Integer bundleNo);
@@ -26,5 +25,5 @@ public interface OrderDao {
 
     int deleteOrder(Integer orderNo);
 
-    int selectUserRecentOrderNo(String userId);
+    int selectUserRecentOrderNo();
 }
