@@ -76,5 +76,9 @@ public class OrderDaoImplTest {
         orderDto.setDeliveryDto(deliveryDto);
         orderDto.setPaymentDto(paymentDto);
     }
+    @Test
+    public void getOrder(){
+        System.out.println("orderService.getUserRecentOrderNo() = " + orderService.getUserRecentOrderNo());
+    }
 
 }

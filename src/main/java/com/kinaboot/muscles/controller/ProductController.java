@@ -93,17 +93,4 @@ public class ProductController {
         m.addAttribute(productImgDtoList);
         return "product/detail";
     }
-    // 바로구매
-    @PostMapping("/product/order")
-    public String productOrder(String jsonData, Model m) throws JsonProcessingException {
-        List<OrderItemDto> orderItemDtoList = new ArrayList<>();
-        orderItemDtoList.add(JsonToJava(jsonData));
-        m.addAttribute("list", orderItemDtoList);
-        return "order/page";
-    }
-    public OrderItemDto JsonToJava(String jsonData) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(jsonData, new TypeReference<OrderItemDto>() {
-        });
-    }
 }

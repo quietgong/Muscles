@@ -117,8 +117,8 @@
     from orders
 </select>
     <insert id="insertOrder" parameterType="orderDto">
-        insert into orders (userId, status, createdDate)
-        values (#{userId},#{status},now());
+        insert into orders (orderNo, userId, status, createdDate)
+        values (#{orderNo}, #{userId},#{status},now());
     </insert>
 
     <insert id="insertOrderItem" parameterType="orderItemDto">

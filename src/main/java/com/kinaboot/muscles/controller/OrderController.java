@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/order")
 public class OrderController {
     @Autowired
     OrderService orderService;
@@ -28,29 +29,36 @@ public class OrderController {
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping("/order/detail")
+    @GetMapping("/detail")
     public String getOrderDetail(Integer orderNo, Model m) {
-        System.out.println(orderNo);
-        OrderDto orderDto = orderService.getOrderDetail(orderNo);
-        m.addAttribute(orderDto);
-        System.out.println("orderDto = " + orderDto);
+        m.addAttribute("orderDto", orderService.getOrderDetail(orderNo));
         return "order/detail";
     }
 
-    @GetMapping("/order")
+    @GetMapping("")
     @ResponseBody
     public ResponseEntity<OrderItemDto> getOrder(Integer orderNo, Integer productNo) {
-        OrderItemDto orderItemDto = orderService.getOrderItem(orderNo, productNo);
-        return new ResponseEntity<>(orderItemDto, HttpStatus.OK);
+        return new ResponseEntity<>(orderService.getOrderItem(orderNo, productNo),
+                HttpStatus.OK);
     }
+    // 바로구매 또는 장바구니 주문
+    // 선택된 상품들의 정보를 주문 정보 페이지로 전달
+    @PostMapping("")
+    public String showOrderPage(String jsonData, Model m, HttpSession session) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        m.addAttribute("userDto", userService.read(userId));
+        m.addAttribute("list", JsonToJava(jsonData));
+        return "order/page";
+    }
+
     // 주문취소
-    @DeleteMapping("/order/{orderNo}")
+    @DeleteMapping("/{orderNo}")
     public ResponseEntity<String> removeOrder(@PathVariable Integer orderNo){
         orderService.removeOrder(orderNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
-    @GetMapping("/order/list")
+    @GetMapping("/list")
     public String getOrderList(HttpSession session, Model m) {
         String userId = (String) session.getAttribute("id");
         List<OrderDto> orderDtoList = verifyReviewExist(orderService.getOrderList(userId));
@@ -69,7 +77,7 @@ public class OrderController {
         return orderDtoList;
     }
 
-    @PostMapping("/order/complete")
+    @PostMapping("/complete")
     public String orderList(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto, HttpSession session, Model m) throws Exception {
         String userId = (String) session.getAttribute("id");
         List<OrderItemDto> orderItemDtoList = JsonToJava(orderJsonData);

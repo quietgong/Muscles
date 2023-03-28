@@ -24,12 +24,12 @@
     <div class="nav-item" style="width: 150px; display: flex; justify-content: space-between">
         <a class="nav-a" href="<c:url value='/order/list'/>">
             <div style="text-align: center">
-                <i class="fa-sharp fa-solid fa-user"></i>
+                <i style="font-size: 3rem;" class="fa-sharp fa-solid fa-user"></i>
             </div>
         </a>
         <a class="nav-a" href="<c:url value='/cart'/>">
             <div style="text-align: center">
-                <i class="fa-sharp fa-solid fa-cart-shopping"></i>
+                <i style="font-size: 3rem;" class="fa-sharp fa-solid fa-cart-shopping"></i>
             </div>
         </a>
     </div>

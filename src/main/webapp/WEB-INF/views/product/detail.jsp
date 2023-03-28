@@ -5,10 +5,17 @@
 <%@ include file="../nav.jsp" %>
 
 <!-- 본문 -->
-<form id="orderForm" method="post" action="<c:url value='/product/order'/>">
+<form id="orderForm" method="post" action="<c:url value='/order'/>">
     <div class="product-detail-container">
         <div class="product-detail-item">
-            <img style="width: 300px; height: 300px" src="${productDto.productImgPath}"/>
+            <c:choose>
+                <c:when test="${productDto.productImgPath eq null}">
+                    <img style="width: 250px; height: 250px;" src="<c:url value='/img/logo.jpg'/>">
+                </c:when>
+                <c:otherwise>
+                    <img style="width: 250px; height: 250px;" src="${productDto.productImgPath}">
+                </c:otherwise>
+            </c:choose>
             <div class="product-detail-item-detail">
                 <span id="category" style="font-size:25px; font-weight:bold;">${productDto.productCategory}</span>
                 <span id="name" style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
@@ -101,12 +108,15 @@
 <!-- 모달 -->
 <script>
     $("#directOrder").on("click", function () {
-        let data = {}
-        data.productNo = ${productDto.productNo};
-        data.productName = $("#name").html()
-        data.productCategory = $("#category").html()
-        data.productQty = $("#qty").html()
-        data.productPrice = $("#price").html()
+        let data = []
+        let tmp={}
+        tmp.productNo = ${productDto.productNo};
+        tmp.productName = $("#name").html()
+        tmp.productCategory = $("#category").html()
+        tmp.productQty = $("#qty").html()
+        tmp.productPrice = $("#price").html()
+        tmp.productImgPath = '${productDto.productImgPath}'
+        data.push(tmp);
 
         const form = $("#orderForm")
         form.append($('<input>').attr({

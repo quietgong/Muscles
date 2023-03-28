@@ -60,16 +60,6 @@ public class CartController {
         cartService.removeCartItem(userId, deleteList);
         return "cart";
     }
-    // 카트 정보를 받아서 주문 정보로 이동
-    @PostMapping("/order")
-    public String cartToOrder(String jsonData, Model m, HttpSession session) throws Exception {
-        String userId = (String) session.getAttribute("id");
-        UserDto userDto = userService.read(userId);
-        List<OrderItemDto> orderItemDtoList = JsonToJava(jsonData);
-        m.addAttribute("userDto", userDto);
-        m.addAttribute("list", orderItemDtoList);
-        return "order/page";
-    }
     public List<OrderItemDto> JsonToJava(String jsonData) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(jsonData, new TypeReference<List<OrderItemDto>>() {

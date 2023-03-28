@@ -22,7 +22,14 @@
     <c:forEach var="productDto" items="${list}">
         <div class="product-list-item">
             <a href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>">
-                <img style="width: 250px; height: 250px;" src="${productDto.productImgPath}">
+                <c:choose>
+                    <c:when test="${productDto.productImgPath eq null}">
+                        <img style="width: 250px; height: 250px;" src="<c:url value='/img/logo.jpg'/>">
+                    </c:when>
+                    <c:otherwise>
+                        <img style="width: 250px; height: 250px;" src="${productDto.productImgPath}">
+                    </c:otherwise>
+                </c:choose>
             </a>
             <span style="font-weight: bold;">${productDto.productName}</span>
             <div>

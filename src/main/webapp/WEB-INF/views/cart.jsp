@@ -17,7 +17,7 @@
 </div>
 <hr/>
 <!-- 상품 정보 표시 시작 -->
-<form id="cartForm" action="<c:url value='/cart/order'/>" method="post">
+<form id="cartForm" action="<c:url value='/order'/>" method="post">
     <div id="cartItemList">
         <!-- 동적 추가 -->
     </div>

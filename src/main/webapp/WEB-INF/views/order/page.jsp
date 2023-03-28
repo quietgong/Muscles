@@ -25,7 +25,14 @@
     <!-- 반복부 -->
     <c:forEach var="orderItemDto" items="${list}">
         <div class="order-container">
-            <img style="width: 300px; height: 200px;" src="${orderItemDto.productImgPath}"/>
+            <c:choose>
+                <c:when test='${empty orderItemDto.productImgPath || orderItemDto.productImgPath == "null" }'>
+                    <img style="width: 300px; height: 200px;" src="<c:url value='/img/logo.jpg'/>">
+                </c:when>
+                <c:otherwise>
+                    <img style="width: 300px; height: 200px;" src="${orderItemDto.productImgPath}">
+                </c:otherwise>
+            </c:choose>
             <input type="hidden" class="order-item" value="${orderItemDto.productNo}">
             <input type="hidden" value="${orderItemDto.productName}">
             <input type="hidden" value="${orderItemDto.productQty}">
