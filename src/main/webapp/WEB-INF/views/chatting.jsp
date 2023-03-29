@@ -4,82 +4,83 @@
 <!-- nav -->
 <%@ include file="nav.jsp" %>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-    }
-
-    .container {
-        width: 500px;
-        margin: 0 auto;
-        padding: 25px
-    }
-
     .container h1 {
         text-align: left;
         padding: 5px 5px 5px 15px;
-        color: #FFBB00;
-        border-left: 3px solid #FFBB00;
+        border-left: 3px solid black;
         margin-bottom: 20px;
     }
 
     .chating {
-        background-color: #000;
-        width: 500px;
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        border-radius: 10px;
+        background-color: #c7c4c4;
+        width: 700px;
         height: 500px;
         overflow: auto;
+        font-size: 1.2rem;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
-    .chating .me {
-        color: #F6F6F6;
+    #msgInput {
+        width: 500px;
+        height: 40px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        text-align: center;
+        margin: 20px auto auto;
+    }
+
+    .msgBox {
+        position: relative;
+        border-radius: 3px;
+        padding: 10px;
+        background-color: #d9d9ee;
+        max-width: 50%;
+        margin-top: 10px;
+    }
+
+    .msgDate {
+        font-size: 0.7rem;
         text-align: right;
-    }
-
-    .chating .others {
-        color: #FFE400;
-        text-align: left;
-    }
-
-    input {
-        width: 330px;
-        height: 25px;
     }
 </style>
 <!-- 본문 -->
-<div id="container" class="container">
-    <h1>채팅</h1>
-    <input type="hidden" id="chatName" value="${chatName}">
-    <input type="hidden" id="sessionId" value="">
+<h1>1:1 상담 문의</h1>
+<input type="hidden" id="chatName" value="${chatName}">
+<input type="hidden" id="sessionId" value="">
 
-    <div id="chating" class="chating">
-        <c:forEach var="pastChat" items="${chatDtoList}">
-            <c:set var="myMsg" value="${pageContext.request.session.getAttribute('id') == pastChat.talker ? 'me' : 'others'}"/>
-            <p class="${myMsg}">${pastChat.talker} : ${pastChat.msg} : ${pastChat.createdDate}</p>
-        </c:forEach>
-    </div>
-
-    <div id="yourMsg">
-        <table class="inputTable">
-            <tr>
-                <th>메시지</th>
-                <th><input id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
-                <th>
-                    <button onclick="send()" id="sendBtn">보내기</button>
-                </th>
-            </tr>
-        </table>
-    </div>
+<div id="chating" class="chating">
+    <c:forEach var="pastChat" items="${chatDtoList}">
+        <c:set var="myMsg"
+               value="${pageContext.request.session.getAttribute('id') == pastChat.talker ? 'left' : 'right'}"/>
+        <div class="msgBox" style="margin-${myMsg}: auto">
+            <span>
+                    ${pastChat.talker} : ${pastChat.msg}
+            </span>
+            <p class="msgDate">${pastChat.createdDate}</p>
+        </div>
+    </c:forEach>
 </div>
-<form action="<c:url value='/removeRoom?chatName=${chatName}'/>" id="disconnectForm" method="post">
-<input type="submit" id="disconnect" value="상담 완료">
-</form>
+
+<div style="text-align: center">
+    <input id="msgInput" placeholder="메시지를 입력하세요.">
+</div>
 
 <script>
     let ws;
     let userName = $("#chatName").val() == "" ? '${pageContext.request.session.getAttribute('id')}' : $("#chatName").val();
     let url = "ws://localhost:80/muscles/chatserver/" + userName;
 
+    scrollTop()
     wsOpen();
+
+    function scrollTop() {
+        var element = document.getElementById("chating");
+        element.scrollTop = element.scrollHeight;
+    }
 
     function wsOpen() {
         ws = new WebSocket(url);
@@ -91,20 +92,27 @@
             //소켓이 열리면 초기화 세팅하기
         }
         ws.onmessage = function (data) {
+            scrollTop()
             const msg = data.data;
             if (msg != null && msg.trim() != '') {
                 let d = JSON.parse(msg)
                 console.log(d)
                 if (d.type == "getId") {
                     var si = d.sessionId != null ? d.sessionId : "";
-                    if (si != '') {
+                    if (si != '')
                         $("#sessionId").val(si);
-                    }
                 } else if (d.type == "message") {
-                    if (d.sessionId == $("#sessionId").val())
-                        $("#chating").append("<p class='me'>나 :" + d.msg + "</p>");
-                    else
-                        $("#chating").append("<p class='others'>" + d.userName + " :" + d.msg + "</p>");
+                    let tmp = ""
+                    if (d.sessionId == $("#sessionId").val()) {
+                        tmp += "<div class='msgBox' style='margin-left: auto'>"
+                        tmp += "<span>나 :" + d.msg + "</span>"
+                    } else {
+                        tmp += "<div class='msgBox' style='margin-right: auto'>"
+                        tmp += "<span>" + d.userName + " :" + d.msg + "</span>"
+                    }
+                    tmp += "<p class='msgDate'>now</p>"
+                    tmp += "</div>"
+                    $(".msgBox").last().after(tmp)
                 } else
                     console.warn("unknown type!")
             }
@@ -122,7 +130,7 @@
             chatName: userName,
             sessionId: $("#sessionId").val(),
             userName: '${pageContext.request.session.getAttribute('id')}',
-            msg: $("#chatting").val()
+            msg: $("#msgInput").val()
         }
         // 웹소켓에 메시지 정보 전달
         ws.send(JSON.stringify(option))
@@ -131,7 +139,7 @@
         let data = {
             chatName: userName,
             talker: '${pageContext.request.session.getAttribute('id')}',
-            msg: $("#chatting").val()
+            msg: $("#msgInput").val()
         }
         // 채팅 메세지 DB 저장
         $.ajax({
@@ -140,12 +148,13 @@
             data: data,
             success: function () {
                 console.log("ok")
+                scrollTop()
             },
             error: function () {
                 console.log('error');
             }
         });
-        $('#chatting').val("");
+        $('#msgInput').val("");
     }
 </script>
 <!-- footer -->

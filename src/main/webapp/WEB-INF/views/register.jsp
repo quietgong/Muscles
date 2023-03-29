@@ -45,23 +45,23 @@
         <form action="<c:url value="/register"/>" name="registerForm" method="post">
             <p><span class="required">*</span> 표시는 필수입력 항목입니다.</p>
             <label>아이디 <span class="required">*</span></label><br>
-            <input type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
+            <input required type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
             <div><font id="id_check"></font></div>
             <br>
 
             <label>비밀번호 <span class="required">*</span></label><br>
-            <input type="text" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
+            <input required type="text" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
 
             <label>비밀번호 확인 <span class="required">*</span></label><br>
-            <input type="text" id="password_check"><br>
+            <input required type="text" id="password_check"><br>
 
             <label>휴대폰 번호 <span class="required">*</span></label><br>
-            <input type="text" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
+            <input required type="text" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
 
             <label>주소 <span class="required">*</span></label>
             <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
             <input type="text" id="postcode" placeholder="우편번호">
-            <input type="text" name="address" id="address" placeholder="주소"><br>
+            <input required type="text" name="address" id="address" placeholder="주소"><br>
             <input type="text" name="address" id="detailAddress" placeholder="상세주소"><br>
 
             <label>이메일</label><br>

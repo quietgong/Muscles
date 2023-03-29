@@ -35,13 +35,11 @@ public class ChattingController {
         // 사용자 ID 이름으로 된 채팅방을 생성한다.
         String chatName = (String) session.getAttribute("id");
         boolean hasAlreadyChatRoom = false;
-        if (chatName != null && !chatName.trim().equals("") && !chatName.equals("null")) {
-            if (chatDtoList.size() > 0) {
-                for (ChatDto chatDto : chatDtoList) {
-                    if (chatDto.getChatName().equals(chatName)) {
-                        hasAlreadyChatRoom = true;
-                        break;
-                    }
+        if (chatDtoList.size() != 0 && chatName != null && !chatName.trim().equals("") && !chatName.equals("null")) {
+            for (ChatDto chatDto : chatDtoList) {
+                if (chatDto.getChatName().equals(chatName)) {
+                    hasAlreadyChatRoom = true;
+                    break;
                 }
             }
         }
@@ -63,9 +61,9 @@ public class ChattingController {
     // 상담 완료 (채팅방 삭제)
     @ResponseBody
     @DeleteMapping("/removeRoom/{chatName}")
-    public ResponseEntity<List<ChatDto>> removeRoom(@PathVariable String chatName){
+    public ResponseEntity<List<ChatDto>> removeRoom(@PathVariable String chatName) {
         for (int i = 0; i < chatDtoList.size(); i++) {
-            if(chatDtoList.get(i).getChatName().equals(chatName)) {
+            if (chatDtoList.get(i).getChatName().equals(chatName)) {
                 chatDtoList.remove(i);
                 break;
             }
