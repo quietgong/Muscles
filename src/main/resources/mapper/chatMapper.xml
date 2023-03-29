@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kinaboot.muscles.dao.chatMapper">
+<insert id="insertChat" parameterType="ChatDto">
+    insert into chat (chatName, talker, msg, createdDate)
+    values (#{chatName},#{talker},#{msg},now());
+</insert>
+    <select id="selectChat" parameterType="String" resultType="ChatDto">
+        select talker, msg, createdDate
+        from chat
+        where chatName = '${chatName}'
+        order by createdDate
+    </select>
+</mapper>

@@ -17,6 +17,7 @@
         <typeAlias alias="ReviewDto" type="com.kinaboot.muscles.domain.ReviewDto"/>
         <typeAlias alias="FaqDto" type="com.kinaboot.muscles.domain.FaqDto"/>
         <typeAlias alias="ProductImgDto" type="com.kinaboot.muscles.domain.ProductImgDto"/>
+        <typeAlias alias="ChatDto" type="com.kinaboot.muscles.domain.ChatDto"/>
     </typeAliases>
 </configuration>
 

@@ -4,168 +4,148 @@
 <!-- nav -->
 <%@ include file="nav.jsp" %>
 <style>
-    .container {
-        width: 500px;
+    * {
+        margin: 0;
+        padding: 0;
     }
 
-    #list {
-        height: 300px;
-        padding: 15px;
+    .container {
+        width: 500px;
+        margin: 0 auto;
+        padding: 25px
+    }
+
+    .container h1 {
+        text-align: left;
+        padding: 5px 5px 5px 15px;
+        color: #FFBB00;
+        border-left: 3px solid #FFBB00;
+        margin-bottom: 20px;
+    }
+
+    .chating {
+        background-color: #000;
+        width: 500px;
+        height: 500px;
         overflow: auto;
+    }
+
+    .chating .me {
+        color: #F6F6F6;
+        text-align: right;
+    }
+
+    .chating .others {
+        color: #FFE400;
+        text-align: left;
+    }
+
+    input {
+        width: 330px;
+        height: 25px;
     }
 </style>
 <!-- 본문 -->
-<div class="container">
-    <h1 class="page-header">Chat</h1>
+<div id="container" class="container">
+    <h1>채팅</h1>
+    <input type="hidden" id="chatName" value="${chatName}">
+    <input type="hidden" id="sessionId" value="">
 
-    <table class="table table-bordered">
-        <tr>
-            <td><input type="text" name="user" id="user" class="form-control" placeholder="유저명"></td>
-            <td>
-                <button type="button" class="btn btn-default" id="btnConnect">연결</button>
-                <button type="button" class="btn btn-default" id="btnDisconnect" disabled>종료</button>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div id="list"></div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="text" name="msg" id="msg" placeholder="대화 내용을 입력하세요." class="form-control"
-                                   disabled></td>
-        </tr>
-    </table>
+    <div id="chating" class="chating">
+        <c:forEach var="pastChat" items="${chatDtoList}">
+            <c:set var="myMsg" value="${pageContext.request.session.getAttribute('id') == pastChat.talker ? 'me' : 'others'}"/>
+            <p class="${myMsg}">${pastChat.talker} : ${pastChat.msg} : ${pastChat.createdDate}</p>
+        </c:forEach>
+    </div>
+
+    <div id="yourMsg">
+        <table class="inputTable">
+            <tr>
+                <th>메시지</th>
+                <th><input id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
+                <th>
+                    <button onclick="send()" id="sendBtn">보내기</button>
+                </th>
+            </tr>
+        </table>
+    </div>
 </div>
 <script>
-    let userId = '${pageContext.request.session.getAttribute('id')}'
-    // 채팅 서버 주소
-    let url = "ws://localhost:80/muscles/chatserver/room="+userId;
-    // 웹 소켓
+
     let ws;
+    let userName = $("#chatName").val() == "" ? '${pageContext.request.session.getAttribute('id')}' : $("#chatName").val();
+    let url = "ws://localhost:80/muscles/chatserver/" + userName;
+    wsOpen();
 
-    // 연결하기
-    $('#btnConnect').click(function () {
-        // 유저명 확인
-        if ($('#user').val().trim() != '') {
-            // 연결
-            ws = new WebSocket(url);
+    function wsOpen() {
+        ws = new WebSocket(url);
+        wsEvt();
+    }
 
-            // 소켓 이벤트 매핑
-            /*
-            * 소켓 이벤트 종류
-            * onopen – 커넥션이 제대로 만들어졌을 때 발생함
-            * onmessage – 데이터를 수신하였을 때 발생함
-            * onerror – 에러가 생겼을 때 발생함
-            * onclose – 커넥션이 종료되었을 때 발생함
-            */
-            ws.onopen = function (evt) {
-                let userId = $("#user").val()
-                console.log(userId+ ' 서버 연결 성공');
-
-                // 현재 사용자가 입장했다고 서버에게 통지(유저명 전달)
-                // -> 1#유저명
-                ws.send('1#' + $('#user').val() + '#');
-
-                $('#user').attr('readonly', true); // 유저명 읽기 전용으로
-                $('#btnConnect').attr('disabled', true); // 연결 버튼 사용불가
-                $('#btnDisconnect').attr('disabled', false); // 종료 버튼 사용가능
-                $('#msg').attr('disabled', false); // 대화내용 입력 사용가능
-                $('#msg').focus(); // 대화내용 입력으로 이동
-            };
-            // 데이터 수신 시
-            ws.onmessage = function (evt) {
-                // evt : MessageEvent
-                // 유저 접속 시 data : "1#bbb#"
-                // 유저 메세지 전송 시 data : "2#bbb:test message"
-                let index = evt.data.indexOf("#", 2); // # 문자가 2번째 나오는 인덱스 없으면 -1
-                let no = evt.data.substring(0, 1);
-                let user = evt.data.substring(2, index);
-                let txt = evt.data.substring(index + 1);
-
-                if (no == '1') { // 다른 유저 접속
-                    print2(user);
-                } else if (no == '2') { // 메세지 수신
-                    print(user, txt);
-                } else if (no == '3') { // client의 종료를 알림
-                    print3(user);
+    function wsEvt() {
+        ws.onopen = function (data) {
+            //소켓이 열리면 초기화 세팅하기
+        }
+        ws.onmessage = function (data) {
+            const msg = data.data;
+            if (msg != null && msg.trim() != '') {
+                let d = JSON.parse(msg)
+                console.log(d)
+                if (d.type == "getId") {
+                    var si = d.sessionId != null ? d.sessionId : "";
+                    if (si != '') {
+                        $("#sessionId").val(si);
+                    }
+                } else if (d.type == "message") {
+                    if (d.sessionId == $("#sessionId").val()) {
+                        $("#chating").append("<p class='me'>나 :" + d.msg + "</p>");
+                    } else {
+                        $("#chating").append("<p class='others'>" + d.userName + " :" + d.msg + "</p>");
+                    }
+                } else {
+                    console.warn("unknown type!")
                 }
-                $('#list').scrollTop($('#list').prop('scrollHeight'));
-            };
-
-            ws.onclose = function (evt) {
-                console.log('SOCKET CLOSED');
-            };
-            ws.onerror = function (evt) {
-                console.log(evt.data);
-            };
-        } else {
-            alert('유저명을 입력하세요.');
-            $('#user').focus();
+            }
         }
-    });
-
-    // 메세지 전송 및 아이디
-    function print(user, txt) {
-        let temp = '';
-        temp += '<div style="margin-bottom:3px;">';
-        temp += '[' + user + '] ';
-        temp += txt;
-        temp += ' <span style="font-size:11px;color:#777;">' + new Date().toLocaleTimeString() + '</span>';
-        temp += '</div>';
-        $('#list').append(temp);
+        document.addEventListener("keypress", function (e) {
+            if (e.keyCode == 13) { //enter press
+                send();
+            }
+        });
     }
 
-    // 다른 client 접속
-    function print2(user) {
-        let temp = '';
-        temp += '<div style="margin-bottom:3px;">';
-        temp += "'" + user + "' 이(가) 접속했습니다.";
-        temp += ' <span style="font-size:11px;color:#777;">' + new Date().toLocaleTimeString() + '</span>';
-        temp += '</div>';
-        $('#list').append(temp);
-    }
-    // client 접속 종료
-    function print3(user) {
-        let temp = '';
-        temp += '<div style="margin-bottom:3px;">';
-        temp += "'" + user + "' 이(가) 종료했습니다.";
-        temp += ' <span style="font-size:11px;color:#777;">' + new Date().toLocaleTimeString() + '</span>';
-        temp += '</div>';
-        $('#list').append(temp);
-    }
-
-    $('#user').keydown(function () {
-        if (event.keyCode == 13) { // 엔터키를 누르면 메시지 전송
-            $('#btnConnect').click();
+    function send() {
+        let option = {
+            type: "message",
+            chatName: userName,
+            sessionId: $("#sessionId").val(),
+            userName: '${pageContext.request.session.getAttribute('id')}',
+            msg: $("#chatting").val()
         }
-    });
+        // 웹소켓에 메시지 정보 전달
+        ws.send(JSON.stringify(option))
 
-    $('#msg').keydown(function () {
-        if (event.keyCode == 13) {
-            //서버에게 메시지 전달
-            //2#유저명#메시지
-            ws.send('2#' + $('#user').val() + '#' + $(this).val()); //서버에게
-            print($('#user').val(), $(this).val()); //본인 대화창에
-
-            $('#msg').val('');
-            $('#msg').focus();
+        // 컨트롤러에 메시지 정보 전달
+        let data = {
+            chatName: userName,
+            talker: '${pageContext.request.session.getAttribute('id')}',
+            msg: $("#chatting").val()
         }
-    });
-    // 종료 버튼 클릭 시
-    $('#btnDisconnect').click(function () {
-        ws.send('3#' + $('#user').val() + '#');
-        ws.close();
+        // 채팅 메세지 DB 저장
+        $.ajax({
+            type: "POST",
+            url: '/muscles/chat/post',
+            data: data,
+            success: function () {
+                console.log("ok")
+            },
+            error: function () {
+                console.log('error');
+            }
+        });
 
-        $('#user').attr('readonly', false);
-        $('#user').val('');
-
-        $('#btnConnect').attr('disabled', false);
-        $('#btnDisconnect').attr('disabled', true);
-
-        $('#msg').val('');
-        $('#msg').attr('disabled', true);
-    });
+        $('#chatting').val("");
+    }
 </script>
 <!-- footer -->
 <%@ include file="footer.jsp" %>

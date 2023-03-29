@@ -81,7 +81,7 @@
                 <a href="<c:url value='/admin/user'/>">유저 관리</a>
                 <a href="<c:url value='/admin/order'/>">주문 관리</a>
                 <a href="<c:url value='/admin/product'/>">상품 관리</a>
-                <a href="<c:url value='/chatting/list'/>">문의 목록</a>
+                <a href="<c:url value='/admin/chatting'/>">채팅 문의</a>
             </div>
         </li>
     </ul>

@@ -26,8 +26,4 @@
     <context:component-scan base-package="com.kinaboot.muscles"/>
 
     <view-controller path="/" view-name="index"/>
-    <!-- jsp파일 테스트 -->
-    <!--	<view-controller path="/cart" view-name="cart"/>-->
-    <view-controller path="/FileUploadTest" view-name="FileUploadTest"/>
-    <!-- jsp파일 테스트 -->
 </beans:beans>
