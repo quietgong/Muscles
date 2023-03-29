@@ -70,11 +70,15 @@
         </table>
     </div>
 </div>
-<script>
+<form action="<c:url value='/removeRoom?chatName=${chatName}'/>" id="disconnectForm" method="post">
+<input type="submit" id="disconnect" value="상담 완료">
+</form>
 
+<script>
     let ws;
     let userName = $("#chatName").val() == "" ? '${pageContext.request.session.getAttribute('id')}' : $("#chatName").val();
     let url = "ws://localhost:80/muscles/chatserver/" + userName;
+
     wsOpen();
 
     function wsOpen() {
@@ -97,14 +101,12 @@
                         $("#sessionId").val(si);
                     }
                 } else if (d.type == "message") {
-                    if (d.sessionId == $("#sessionId").val()) {
+                    if (d.sessionId == $("#sessionId").val())
                         $("#chating").append("<p class='me'>나 :" + d.msg + "</p>");
-                    } else {
+                    else
                         $("#chating").append("<p class='others'>" + d.userName + " :" + d.msg + "</p>");
-                    }
-                } else {
+                } else
                     console.warn("unknown type!")
-                }
             }
         }
         document.addEventListener("keypress", function (e) {
@@ -143,7 +145,6 @@
                 console.log('error');
             }
         });
-
         $('#chatting').val("");
     }
 </script>

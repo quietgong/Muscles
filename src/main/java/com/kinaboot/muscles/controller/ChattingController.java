@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ public class ChattingController {
     @PostMapping("/chat/post")
     @ResponseBody
     public ResponseEntity<String> chatPost(ChatDto chatDto) {
-        System.out.println("chatDto = " + chatDto);
         chatService.saveChat(chatDto);
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
@@ -53,8 +50,7 @@ public class ChattingController {
             chatDto.setChatName(chatName);
             chatDtoList.add(chatDto);
         }
-        m.addAttribute("chatDtoList", chatService.getChat(chatName);
-        System.out.println("chatService.getChat(chatName) = " + chatService.getChat(chatName));
+        m.addAttribute("chatDtoList", chatService.getChat(chatName));
         return "chatting";
     }
 
@@ -64,16 +60,28 @@ public class ChattingController {
         return chatDtoList;
     }
 
+    // 상담 완료 (채팅방 삭제)
+    @ResponseBody
+    @DeleteMapping("/removeRoom/{chatName}")
+    public ResponseEntity<List<ChatDto>> removeRoom(@PathVariable String chatName){
+        for (int i = 0; i < chatDtoList.size(); i++) {
+            if(chatDtoList.get(i).getChatName().equals(chatName)) {
+                chatDtoList.remove(i);
+                break;
+            }
+        }
+        return new ResponseEntity<>(chatDtoList, HttpStatus.OK);
+    }
+
     // 관리자가 유저 채팅목록에 접속할 때
     @GetMapping("/moveChating")
     public String chating(String chatName, Model m) {
-        System.out.println("chatName = " + chatName);
         List<ChatDto> new_list = chatDtoList.stream().
                 filter(o -> Objects.equals(o.getChatName(), chatName))
                 .collect(Collectors.toList());
         if (new_list != null && new_list.size() > 0) {
             m.addAttribute("chatName", chatName);
-            m.addAttribute("chatDto", chatService.getChat(chatName));
+            m.addAttribute("chatDtoList", chatService.getChat(chatName));
             return "chatting";
         } else
             return "chatRoom";

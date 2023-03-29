@@ -101,9 +101,16 @@
         location.href = "/muscles/moveChating?chatName=" + name;
     }
 
+    function removeRoom(name){
+        commonAjax('/muscles/removeRoom/'+name,"",'delete',function (result){
+            console.log(result)
+            createChatingRoom(result)
+        })
+    }
+
     function createChatingRoom(res) {
         if (res != null) {
-            let tag = "<tr><th class='num'>순서</th><th class='room'>방 이름</th><th class='go'></th></tr>";
+            let tag = "<tr><th class='num'>순서</th><th class='room'>방 이름</th><th class='go'></th><th></th></tr>";
             res.forEach(function (d, idx) {
                 if(d.chatName!=null) {
                     const rn = d.chatName.trim();
@@ -111,6 +118,7 @@
                         "<td class='num'>" + (idx + 1) + "</td>" +
                         "<td class='room'>" + rn + "</td>" +
                         "<td class='go'><button type='button' onclick='goRoom(\"" + rn + "\")'>참여</button></td>" +
+                        "<td><button type='button' onclick='removeRoom(\"" + rn + "\")'>상담 종료</button></td>" +
                         "</tr>";
                 }
             });
