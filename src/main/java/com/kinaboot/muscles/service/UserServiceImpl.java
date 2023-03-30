@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.UserDao;
+import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto read(String userId) throws Exception {
         return userDao.selectUser(userId);
+    }
+
+    @Override
+    public List<CouponDto> getCoupon(String userId) {
+        return userDao.selectUserCoupon(userId);
+    }
+
+    @Override
+    public int registerRecommendEventCoupon(String userId, String recommendId) {
+        return userDao.insertRecommendEventCoupon(userId, recommendId);
     }
 
     @Override

@@ -98,19 +98,20 @@
                 let d = JSON.parse(msg)
                 console.log(d)
                 if (d.type == "getId") {
-                    var si = d.sessionId != null ? d.sessionId : "";
+                    const si = d.sessionId != null ? d.sessionId : "";
                     if (si != '')
                         $("#sessionId").val(si);
                 } else if (d.type == "message") {
                     let tmp = ""
-                    if (d.sessionId == $("#sessionId").val()) {
+                    let currentTime = new Date().toLocaleString()
+                    if (d.sessionId === $("#sessionId").val()) {
                         tmp += "<div class='msgBox' style='margin-left: auto'>"
                         tmp += "<span>나 :" + d.msg + "</span>"
                     } else {
                         tmp += "<div class='msgBox' style='margin-right: auto'>"
                         tmp += "<span>" + d.userName + " :" + d.msg + "</span>"
                     }
-                    tmp += "<p class='msgDate'>now</p>"
+                    tmp += "<p class='msgDate'>" + currentTime + "</p>"
                     tmp += "</div>"
                     $(".msgBox").last().after(tmp)
                 } else

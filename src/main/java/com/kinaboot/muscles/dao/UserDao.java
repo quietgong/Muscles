@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +27,8 @@ public interface UserDao {
     List<UserDto> selectAllUser();
 
     int insertQuit(String userId);
+
+    int insertRecommendEventCoupon(String userId, String recommendId);
+
+    List<CouponDto> selectUserCoupon(String userId);
 }

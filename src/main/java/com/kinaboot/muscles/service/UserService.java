@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.service;
 
+import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.UserDto;
 
@@ -23,4 +24,8 @@ public interface UserService {
     List<UserDto> getAllUser();
 
     int createQuit(String userId);
+
+    int registerRecommendEventCoupon(String userId, String recommendId);
+
+    List<CouponDto> getCoupon(String userId);
 }

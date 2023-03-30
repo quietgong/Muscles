@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,20 @@ public class UserDaoImpl implements UserDao{
     @Override
     public UserDto selectUser(String id) {
         return session.selectOne(namespace+"selectUser", id);
+    }
+
+    @Override
+    public List<CouponDto> selectUserCoupon(String userId) {
+        return session.selectList(namespace + "selectUserCoupon", userId);
+    }
+
+    @Override
+    public int insertRecommendEventCoupon(String userId, String recommendId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("recommendId", recommendId);
+        session.update(namespace + "updateUserPoint", recommendId);
+        return session.insert(namespace + "insertRecommendEventCoupon", map);
     }
 
     @Override

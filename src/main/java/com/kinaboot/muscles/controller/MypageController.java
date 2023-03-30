@@ -3,6 +3,7 @@ package com.kinaboot.muscles.controller;
 import com.kinaboot.muscles.dao.PostDao;
 import com.kinaboot.muscles.dao.ReviewDao;
 import com.kinaboot.muscles.dao.UserDao;
+import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.ReviewDto;
 import com.kinaboot.muscles.domain.UserDto;
@@ -27,9 +28,11 @@ import java.util.Map;
 @RequestMapping("/mypage")
 public class MypageController {
     private final UserDao userDao;
+
     MypageController(UserDao userDao) {
         this.userDao = userDao;
     }
+
     @Autowired
     UserService userService;
     @Autowired
@@ -37,13 +40,45 @@ public class MypageController {
     @Autowired
     ReviewService reviewService;
 
+    // 마이페이지 - 추천인 아이디 유효성 검사
+    @GetMapping("/mycoupon/validIdCheck/{recommendId}")
+    @ResponseBody
+    public ResponseEntity<String> checkIsValidId(@PathVariable String recommendId) throws Exception {
+        if (userService.read(recommendId) == null)
+            return new ResponseEntity<>("invalid", HttpStatus.OK); // 유효하지 않음.
+        else
+            return new ResponseEntity<>("valid", HttpStatus.OK); // 유효
+    }
+
+    // 마이페이지 - 쿠폰 리스트
+    @GetMapping("/mycoupon/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<CouponDto>> getCoupon(@PathVariable String userId){
+        List<CouponDto> couponDtoList = userService.getCoupon(userId);
+        return new ResponseEntity<>(couponDtoList, HttpStatus.OK);
+    }
+    // 마이페이지 - 쿠폰 등록
+    @PostMapping("/mycoupon/{recommendId}")
+    @ResponseBody
+    public ResponseEntity<String> registerCoupon(HttpSession session, @PathVariable String recommendId){
+        String userId = (String) session.getAttribute("id");
+        userService.registerRecommendEventCoupon(userId, recommendId);
+        return new ResponseEntity<>("valid", HttpStatus.OK); // 유효
+    }
+    // 마이페이지 - 쿠폰
+    @GetMapping("/mycoupon")
+    public String showMyCoupon() {
+        return "mypage/mycoupon";
+    }
+
     @DeleteMapping("/myreview/delete")
     @ResponseBody
-    public ResponseEntity<String> deleteReview(Integer orderNo, Integer productNo, HttpSession session){
+    public ResponseEntity<String> deleteReview(Integer orderNo, Integer productNo, HttpSession session) {
         String userId = (String) session.getAttribute("id");
         reviewService.removeReview(orderNo, productNo, userId);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
+
     // 내가 쓴 리뷰
     @GetMapping("/myreview/get")
     @ResponseBody
@@ -54,11 +89,9 @@ public class MypageController {
     }
 
     @GetMapping("/myreview")
-    public String myreview(){
+    public String myreview() {
         return "mypage/myreview";
     }
-
-
 
     // 내가 쓴 글
     @GetMapping("/mypost")
