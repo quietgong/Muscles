@@ -70,8 +70,8 @@
         items.forEach(function (item) {
             tmp += "<tr class='coupon-item'>";
             tmp += '<td>' + item.couponName + '</td>'
-            tmp += '<td>' + item.couponCode + '</td>'
-            tmp += '<td>' + item.discount + '</td>'
+            tmp += '<td>[추천인] ' + item.couponCode + '</td>'
+            tmp += '<td>' + item.discount + '%</td>'
             tmp += '<td>' + item.status + '</td>'
             tmp += '</tr>'
         })
@@ -96,7 +96,14 @@
         let tmp = "";
         items.forEach(function (item) {
             tmp += "<tr class='point-item'>";
-            tmp += '<td>' + item.pointName + '</td>'
+
+            if(isNaN(item.pointName)) // 적립 구분이 '이벤트' 일 때
+                tmp += '<td>' + item.pointName + '</td>'
+            else if(item.point<0)
+                tmp += '<td>포인트 사용 [주문번호:' + item.pointName + ']</td>'
+            else
+                tmp += '<td>결제 적립 [주문번호:' + item.pointName + ']</td>'
+
             tmp += '<td>' + item.point + '</td>'
             tmp += '</tr>'
         })

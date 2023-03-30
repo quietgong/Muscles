@@ -15,7 +15,7 @@
     <p style="font-weight: bold">쇼핑이용 정보</p>
     <a href="<c:url value='/order/list'/>"><p>> 주문 내역</p></a>
     <a href="<c:url value='/cart'/>"><p>> 장바구니</p></a>
-    <a href="<c:url value='/mypage/mycoupon'/>"><p>> 쿠폰 등록</p></a>
+    <a href="<c:url value='/mypage/mycoupon'/>"><p>> 쿠폰/포인트</p></a>
     <br />
     <a href="<c:url value='/chatting'/>"><p>> 1:1 채팅 문의</p></a>
     <br />

@@ -91,16 +91,19 @@
             <tr>
                 <td>할인 쿠폰 선택</td>
                 <td>
-                    <select id="selectEvent" style="font-size: 1.2rem; text-align: center">
+                    <select name="couponName" id="selectEvent" style="font-size: 1.2rem; text-align: center">
                         <option value="" selected>쿠폰 선택</option>
-                        <option value="recommend">추천인 이벤트</option>
-                        <option value="">준비중...</option>
+                        <c:forEach var="couponDto" items="${couponDtoList}">
+                            <c:if test="${couponDto.status == '사용가능'}">
+                                <option value="${couponDto.couponName}" data-sub=${couponDto.discount}>${couponDto.couponName}</option>
+                            </c:if>
+                        </c:forEach>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>포인트 사용</td>
-                <td><input id="pointUse" type="number">
+                <td><input id="pointUse" type="number" name="point">
                     <span>보유 포인트 : ${userDto.point}</span>
                     <button id="pointAll" type="button">모두 사용</button>
                 </td>
@@ -129,6 +132,7 @@
     // 쿠폰 및 포인트 사용
     let discount = 0
     let point = 0
+    let selectedCoupon;
     // 포인트 사용
     $("#pointUse").keyup(function () {
         calculateFinalPrice()
@@ -141,11 +145,10 @@
     })
     // 셀렉트박스 선택
     $("#selectEvent").on("change", function () {
-        let selectedOption = this.value;
-        discount = selectedOption === 'recommend' ? 10 : 0
+        selectedCoupon = this.value;
+        discount = selectedCoupon === '추천인 이벤트' ? $(this).find("option:selected").data("sub") : 0
         calculateFinalPrice()
     })
-
     // 최종 결제 금액 계산
     function calculateFinalPrice() {
         let totalPrice = parseInt($("#payPrice").html())

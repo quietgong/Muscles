@@ -19,7 +19,7 @@ public interface UserService {
 
     int removeUser(String userId) throws Exception;
 
-    int modifyUserInfo(String[] userInfo);
+    int modifyUserInfo(UserDto userDto);
     int modifyUserPassword(String userId, String newPassword);
     int leaveUser(Map map);
     List<UserDto> getAllUser();
@@ -31,4 +31,8 @@ public interface UserService {
     List<CouponDto> getCoupon(String userId);
 
     List<PointDto> getPointList(String userId);
+
+    int modifyUserCouponStatus(String userId, String couponName);
+
+    int modifyUserPoint(String userId, Integer point, int price, int orderNo);
 }

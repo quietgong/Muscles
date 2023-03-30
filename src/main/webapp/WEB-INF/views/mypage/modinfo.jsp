@@ -15,16 +15,16 @@
     <table id="myTable" style="margin: auto">
         <tr>
             <td>아이디</td>
-            <td>${user.userId}</td>
+            <td>${userDto.userId}</td>
         </tr>
         <tr>
             <form method="post">
             <td>이메일</td>
-            <td><input name="newEmail" value="${user.email}"/></td>
+            <td><input name="email" value="${userDto.email}"/></td>
         </tr>
         <tr>
             <td>휴대폰 번호</td>
-            <td><input name="newPhone" value="${user.phone}" placeholder="-를 제외하고 입력해주세요"/></td>
+            <td><input name="phone" value="${userDto.phone}" placeholder="-를 제외하고 입력해주세요"/></td>
         </tr>
     </table>
     </div>

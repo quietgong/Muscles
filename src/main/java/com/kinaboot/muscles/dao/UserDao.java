@@ -17,7 +17,7 @@ public interface UserDao {
 
     int count();
 
-    int updateUser(String[] userInfo);
+    int updateUser(UserDto userDto);
 
     int deleteUser(String userId);
 
@@ -34,4 +34,8 @@ public interface UserDao {
     List<CouponDto> selectUserCoupon(String userId);
 
     List<PointDto> selectUserPoint(String userId);
+
+    int updateUserCouponStatus(String userId, String couponName);
+
+    int updateUserPoint(String userId, Integer point, int price, int orderNo);
 }

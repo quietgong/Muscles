@@ -110,21 +110,18 @@ public class MypageController {
 
     // 사용자 정보 변경
     @PostMapping("/modinfo")
-    public String modInfoPost(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+    public String modInfoPost(UserDto userDto, Model m, HttpSession session){
         String userId = (String) session.getAttribute("id");
-        String userNewEmail = request.getParameter("newEmail");
-        String userNewPhone = request.getParameter("newPhone");
-        String[] userInfo = {userId, userNewEmail, userNewPhone};
-        userService.modifyUserInfo(userInfo);
+        userDto.setUserId(userId);
+        userService.modifyUserInfo(userDto);
         session.invalidate();
         return "redirect:/";
     }
 
     @GetMapping("/modinfo")
-    public String modinfoGet(Model m, HttpSession session, HttpServletRequest request) throws Exception {
+    public String modinfoGet(Model m, HttpSession session) throws Exception {
         String userId = (String) session.getAttribute("id");
-        UserDto userDto = userDao.selectUser(userId);
-        m.addAttribute("user", userDto);
+        m.addAttribute("userDto", userDao.selectUser(userId));
         return "mypage/modinfo";
     }
 

@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int modifyUserInfo(String[] userInfo) {
-        return userDao.updateUser(userInfo);
+    public int modifyUserInfo(UserDto userDto) {
+        return userDao.updateUser(userDto);
     }
 
     @Override
@@ -50,6 +50,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto read(String userId) throws Exception {
         return userDao.selectUser(userId);
+    }
+
+    @Override
+    public int modifyUserCouponStatus(String userId, String couponName) {
+        return userDao.updateUserCouponStatus(userId, couponName);
+    }
+
+    @Override
+    public int modifyUserPoint(String userId, Integer point, int price, int orderNo) {
+        return userDao.updateUserPoint(userId, point, price, orderNo);
     }
 
     @Override

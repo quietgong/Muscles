@@ -4,7 +4,8 @@
 
 <mapper namespace="com.kinaboot.muscles.dao.userMapper">
     <select id="count" resultType="int">
-        SELECT count(*) FROM user
+        SELECT count(*)
+        FROM user
     </select>
     <select id="selectAllUser" resultType="UserDto">
         SELECT *
@@ -19,17 +20,18 @@
 
     <select id="selectUserCoupon" resultType="CouponDto" parameterType="String">
         select couponName, couponCode, userId, discount, status
-        from coupon where userId=#{userId};
+        from coupon
+        where userId = #{userId};
     </select>
     <select id="selectUserPoint" resultType="PointDto" parameterType="String">
         select pointName, point
         from point
         where userId = '${userId}';
     </select>
-    <update id="updateUser" parameterType="map">
+    <update id="updateUser" parameterType="UserDto">
         UPDATE USER
-        SET EMAIL = #{userEmail}
-          , PHONE = #{userPhone}
+        SET EMAIL = #{email}
+          , PHONE = #{phone}
         WHERE userId = #{userId}
     </update>
 
@@ -38,42 +40,49 @@
         SET PASSWORD = #{newPassword}
         WHERE userId = #{userId}
     </update>
-
+    <update id="updateCouponStatus" parameterType="map">
+        update coupon
+        set status = '사용완료'
+        where userId = #{userId}
+        and couponName = #{couponName}
+    </update>
     <insert id="insertRecommendEventCoupon" parameterType="map">
         insert into coupon (couponName, couponCode, userId, discount, status)
         values ("추천인 이벤트", #{recommendId}, #{userId}, 10, "사용가능");
     </insert>
-    <update id="updateUserPoint" parameterType="String">
+    <update id="updateUserPoint" parameterType="map">
         update user
-        set point = point + 100
-        where userId = '${recommendId}';
+        set point = point + #{point}
+        where userId = #{userId};
     </update>
-    <insert id="insertPoint" parameterType="String">
+    <insert id="insertPoint" parameterType="map">
+        insert into point (userId, point, pointName)
+        values (#{userId}, #{point}, #{orderNo});
+    </insert>
+    <insert id="insertRecommendPoint" parameterType="map">
         insert into point (userId, point, pointName)
         values ('${recommendId}', 100, "추천인 이벤트");
     </insert>
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user
-            (userId,password,email,phone,birth,address,point,createdDate)
-        values
-            (#{userId},#{password},#{email},#{phone},now(),#{address},0,now())
+            (userId, password, email, phone, birth, address, point, createdDate)
+        values (#{userId}, #{password}, #{email}, #{phone}, now(), #{address}, 0, now())
     </insert>
 
     <insert id="insertLeave" parameterType="map">
         INSERT INTO quit
-            (userId,type1,type2,type3,opinion)
-        values
-            (#{userId},#{type1},#{type2},#{type3},#{opinion})
+            (userId, type1, type2, type3, opinion)
+        values (#{userId}, #{type1}, #{type2}, #{type3}, #{opinion})
     </insert>
     <insert id="insertQuitByAdmin" parameterType="map">
         INSERT INTO quit
-            (userId,opinion)
-        values
-            (#{userId},#{opinion})
+            (userId, opinion)
+        values (#{userId}, #{opinion})
     </insert>
 
     <delete id="deleteAllUser">
-        DELETE FROM USER
+        DELETE
+        FROM USER
     </delete>
     <delete id="deleteUser" parameterType="int">
         UPDATE USER

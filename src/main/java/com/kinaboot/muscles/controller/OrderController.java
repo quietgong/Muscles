@@ -46,6 +46,7 @@ public class OrderController {
     @PostMapping("")
     public String showOrderPage(String jsonData, Model m, HttpSession session) throws Exception {
         String userId = (String) session.getAttribute("id");
+        m.addAttribute("couponDtoList", userService.getCoupon(userId));
         m.addAttribute("userDto", userService.read(userId));
         m.addAttribute("list", JsonToJava(jsonData));
         return "order/page";
@@ -77,17 +78,22 @@ public class OrderController {
         return orderDtoList;
     }
 
+    // 결제하기 버튼
     @PostMapping("/complete")
-    public String orderList(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto, HttpSession session, Model m) throws Exception {
+    public String orderList(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto,
+                            String couponName, Integer point, HttpSession session, Model m) throws Exception {
         String userId = (String) session.getAttribute("id");
-        List<OrderItemDto> orderItemDtoList = JsonToJava(orderJsonData);
-        OrderDto orderDto = new OrderDto(orderItemDtoList, deliveryDto, paymentDto, userId, "대기중");
+        OrderDto orderDto = new OrderDto(JsonToJava(orderJsonData), deliveryDto, paymentDto, userId, "대기중");
         orderDto.setOrderNo(orderService.getUserRecentOrderNo());
-
+        // 주문정보 생성
         orderService.createOrder(userId, orderDto);
+        // 쿠폰 상태 변경
+        userService.modifyUserCouponStatus(userId, couponName);
+        // 포인트 사용 적용
+        userService.modifyUserPoint(userId, point, paymentDto.getPrice(), orderDto.getOrderNo());
+
         m.addAttribute(orderDto);
         m.addAttribute("userDto", userService.read(userId));
-        m.addAttribute(orderItemDtoList);
         return "order/complete";
     }
 

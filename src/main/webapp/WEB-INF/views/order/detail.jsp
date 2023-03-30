@@ -27,7 +27,7 @@
     <!-- 주문자 정보 -->
 </c:forEach>
 <p style="font-weight: bold">| 주문자 정보</p>
-<table id="myTable">
+<table class="myTable">
     <tr>
         <td>이름</td>
         <td>${orderDto.deliveryDto.receiver}</td>
@@ -39,7 +39,7 @@
 </table>
 <!-- 배송 정보 -->
 <p style="font-weight: bold">| 배송 정보</p>
-<table id="myTable">
+<table class="myTable">
     <tr>
         <td>수령인</td>
         <td>주소</td>
@@ -55,7 +55,7 @@
 </table>
 <!-- 결제 정보 -->
 <p style="font-weight: bold">| 결제</p>
-<table id="myTable">
+<table class="myTable">
     <tr>
         <td>결제 방법</td>
         <td>결제 금액</td>
