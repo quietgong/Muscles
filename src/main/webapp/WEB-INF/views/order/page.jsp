@@ -11,6 +11,12 @@
         font-weight: bold;
         margin-top: 50px;
     }
+
+    #finalPrice {
+        font-weight: bold;
+        font-size: 1.5rem;
+        font-style: italic;
+    }
 </style>
 <!-- 본문 -->
 <hr/>
@@ -77,7 +83,7 @@
     </div>
     <hr/>
     <div>
-        <table id="myTable" style="margin: auto">
+        <table class="myTable" style="margin: auto">
             <tr>
                 <td>총 상품가격</td>
                 <td id="payPrice"></td>
@@ -85,24 +91,25 @@
             <tr>
                 <td>할인 쿠폰 선택</td>
                 <td>
-                    <select>
-                        <option value="" selected>할인쿠폰 선택</option>
-                        <option value="">추천인 입력 이벤트</option>
+                    <select id="selectEvent" style="font-size: 1.2rem; text-align: center">
+                        <option value="" selected>쿠폰 선택</option>
+                        <option value="recommend">추천인 이벤트</option>
                         <option value="">준비중...</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>포인트 사용</td>
-                <td><input type="text"><br>
+                <td><input id="pointUse" type="number">
                     <span>보유 포인트 : ${userDto.point}</span>
-                    <button type="button">모두 사용</button>
+                    <button id="pointAll" type="button">모두 사용</button>
                 </td>
             </tr>
             <tr>
                 <td>최종 결제금액</td>
                 <td>
-                    <input style="text-align: center" name="price" type="text" class="order-payment" readonly>
+                    <input id="finalPrice" style="text-align: center" name="price" type="text" class="order-payment"
+                           readonly>
                 </td>
             </tr>
             <tr>
@@ -119,7 +126,35 @@
     </div>
 </form>
 <script>
-    // 결제 처리
+    // 쿠폰 및 포인트 사용
+    let discount = 0
+    let point = 0
+    // 포인트 사용
+    $("#pointUse").keyup(function () {
+        calculateFinalPrice()
+    })
+    // 포인트 모두 사용 버튼 클릭
+    $("#pointAll").on("click", function () {
+        $("#pointUse").val("${userDto.point}")
+        point = parseInt($("#pointUse").val())
+        calculateFinalPrice()
+    })
+    // 셀렉트박스 선택
+    $("#selectEvent").on("change", function () {
+        let selectedOption = this.value;
+        discount = selectedOption === 'recommend' ? 10 : 0
+        calculateFinalPrice()
+    })
+
+    // 최종 결제 금액 계산
+    function calculateFinalPrice() {
+        let totalPrice = parseInt($("#payPrice").html())
+        let pointUse = $("#pointUse").val() == '' ? 0 : parseInt($("#pointUse").val());
+        $("#finalPrice").val(Math.floor(totalPrice * (1 - (discount / 100)) - pointUse))
+    }
+</script>
+<script>
+    // 결제 버튼 처리
     $("#submit").on("click", function () {
         const form = $('#orderForm');
         let orderJsonData = [];

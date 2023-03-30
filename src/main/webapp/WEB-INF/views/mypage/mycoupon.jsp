@@ -9,7 +9,7 @@
 <%@include file="sidebar.jsp" %>
 <!-- 사이드바 끝 -->
 <div id="Wrapper" style="margin: auto; width: 70%;">
-    <h3 style="text-align: left">쿠폰 등록</h3>
+    <h1 style="text-align: left">쿠폰 등록</h1>
     <hr/>
     <label for="selectEvent">이벤트 선택</label>
     <select id="selectEvent">
@@ -24,9 +24,9 @@
         <p id="checkmsg"></p>
     </div>
 
-    <h3 style="text-align: left">쿠폰 리스트</h3>
+    <h1 style="text-align: left">쿠폰 리스트</h1>
     <hr/>
-    <table id="myTable">
+    <table class="myTable">
         <tr id="couponList">
             <th>이벤트</th>
             <th>쿠폰 코드</th>
@@ -35,9 +35,21 @@
         </tr>
         <!-- 동적 추가-->
     </table>
+
+    <h1 style="text-align: left">포인트 내역</h1>
+    <hr/>
+    <h3>보유 포인트 : ${userDto.point}</h3>
+    <table class="myTable">
+        <tr id="pointList">
+            <th>적립 구분</th>
+            <th>적립 포인트</th>
+        </tr>
+        <!-- 동적 추가-->
+    </table>
 </div>
 <script>
-    let userId = '${pageContext.request.session.getAttribute('id')}'
+    let userId = '${userDto.userId}'
+    loadCoupon();
 
     function loadCoupon() {
         $.ajax({
@@ -52,16 +64,6 @@
             }
         });
     }
-    function checkCouponList(items){
-        items.forEach(function (item){
-            if(item.couponName === '추천인 이벤트') {
-                $("#recommendId").val("이미 참여한 이벤트입니다.")
-                $("#recommendId").attr("readonly",true)
-                $("#registerCoupon").attr("disabled",true)
-                return false
-            }
-        })
-    }
 
     let toHtml = function (items) {
         let tmp = "";
@@ -75,7 +77,41 @@
         })
         return tmp
     }
-    loadCoupon();
+    loadPoint();
+
+    function loadPoint() {
+        $.ajax({
+            type: "GET",
+            url: '/muscles/mypage/mypoint/' + userId,
+            success: function (res) {
+                $("#pointList").after(toHtmlPoint(res));
+            },
+            error: function () {
+                console.log('error');
+            }
+        });
+    }
+
+    let toHtmlPoint = function (items) {
+        let tmp = "";
+        items.forEach(function (item) {
+            tmp += "<tr class='point-item'>";
+            tmp += '<td>' + item.pointName + '</td>'
+            tmp += '<td>' + item.point + '</td>'
+            tmp += '</tr>'
+        })
+        return tmp
+    }
+
+    function checkCouponList(items) {
+        items.forEach(function (item) {
+            if (item.couponName === '추천인 이벤트') {
+                $("#recommendId").val("이미 참여한 이벤트입니다.")
+                $("#recommendId").attr("readonly", true)
+                $("#registerCoupon").attr("disabled", true)
+            }
+        })
+    }
 
     function checkIsValidId() {
         let recommendId = $("#recommendId").val()
@@ -87,10 +123,8 @@
                 url: '/muscles/mypage/mycoupon/validIdCheck/' + recommendId,
                 success: function (res) {
                     if (res === "invalid") { // 유효하지 않은 아이디일 때
-                        $("#checkmsg").html("유효하지 않은 아이디입니다. 다시 입력해주세요.")
                         result = false
                     } else {
-                        $("#checkmsg").html("")
                         result = true
                     }
                 },

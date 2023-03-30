@@ -142,27 +142,27 @@ ul.paging li a:hover, ul.paging li a:focus {
 /* sidebar */
 
 /* table */
-#myTable {
+.myTable {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
 }
 
-#myTable td,
-#myTable th {
+.myTable td,
+.myTable th {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-#myTable tr:nth-child(odd) {
+.myTable tr:nth-child(odd) {
     background-color: #f2f2f2;
 }
 
-#myTable th {
+.myTable th {
     text-align: center;
     background-color: #04aa6d;
     color: white;
 }
-#myTable td {
+.myTable td {
     text-align: center;
 }
 /* table */

@@ -19,6 +19,7 @@
         <typeAlias alias="ProductImgDto" type="com.kinaboot.muscles.domain.ProductImgDto"/>
         <typeAlias alias="ChatDto" type="com.kinaboot.muscles.domain.ChatDto"/>
         <typeAlias alias="CouponDto" type="com.kinaboot.muscles.domain.CouponDto"/>
+        <typeAlias alias="PointDto" type="com.kinaboot.muscles.domain.PointDto"/>
     </typeAliases>
 </configuration>
 

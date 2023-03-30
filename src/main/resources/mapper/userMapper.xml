@@ -21,6 +21,11 @@
         select couponName, couponCode, userId, discount, status
         from coupon where userId=#{userId};
     </select>
+    <select id="selectUserPoint" resultType="PointDto" parameterType="String">
+        select pointName, point
+        from point
+        where userId = '${userId}';
+    </select>
     <update id="updateUser" parameterType="map">
         UPDATE USER
         SET EMAIL = #{userEmail}
@@ -43,6 +48,10 @@
         set point = point + 100
         where userId = '${recommendId}';
     </update>
+    <insert id="insertPoint" parameterType="String">
+        insert into point (userId, point, pointName)
+        values ('${recommendId}', 100, "추천인 이벤트");
+    </insert>
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user
             (userId,password,email,phone,birth,address,point,createdDate)

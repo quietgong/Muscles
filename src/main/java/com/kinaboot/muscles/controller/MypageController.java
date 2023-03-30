@@ -3,10 +3,7 @@ package com.kinaboot.muscles.controller;
 import com.kinaboot.muscles.dao.PostDao;
 import com.kinaboot.muscles.dao.ReviewDao;
 import com.kinaboot.muscles.dao.UserDao;
-import com.kinaboot.muscles.domain.CouponDto;
-import com.kinaboot.muscles.domain.PostDto;
-import com.kinaboot.muscles.domain.ReviewDto;
-import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.ReviewService;
 import com.kinaboot.muscles.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +37,12 @@ public class MypageController {
     @Autowired
     ReviewService reviewService;
 
+    // 마이페이지 - 포인트 내역
+    @GetMapping("/mypoint/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<PointDto>> getPointList(@PathVariable String userId){
+        return new ResponseEntity<>(userService.getPointList(userId), HttpStatus.OK);
+    }
     // 마이페이지 - 추천인 아이디 유효성 검사
     @GetMapping("/mycoupon/validIdCheck/{recommendId}")
     @ResponseBody
@@ -54,8 +57,7 @@ public class MypageController {
     @GetMapping("/mycoupon/{userId}")
     @ResponseBody
     public ResponseEntity<List<CouponDto>> getCoupon(@PathVariable String userId){
-        List<CouponDto> couponDtoList = userService.getCoupon(userId);
-        return new ResponseEntity<>(couponDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getCoupon(userId), HttpStatus.OK);
     }
     // 마이페이지 - 쿠폰 등록
     @PostMapping("/mycoupon/{recommendId}")
@@ -67,7 +69,9 @@ public class MypageController {
     }
     // 마이페이지 - 쿠폰
     @GetMapping("/mycoupon")
-    public String showMyCoupon() {
+    public String showMyCoupon(HttpSession session, Model m) throws Exception {
+        String userId = (String) session.getAttribute("id");
+        m.addAttribute("userDto", userService.read(userId));
         return "mypage/mycoupon";
     }
 
