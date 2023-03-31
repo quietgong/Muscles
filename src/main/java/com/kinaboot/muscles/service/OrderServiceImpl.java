@@ -2,6 +2,7 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.CartDao;
 import com.kinaboot.muscles.dao.OrderDao;
+import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     OrderDao orderDao;
     @Autowired
+    UserDao userDao;
+    @Autowired
     CartDao cartDao;
 
     @Override
@@ -23,6 +26,13 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public int acceptOrder(Integer orderNo) {
+        // 포인트 적립
+        OrderDto orderDto = orderDao.selectOrder(orderNo);
+        String userId = orderDto.getUserId();
+        // 적립 포인트 = 주문금액의 1%
+        int point = (int) (orderDto.getPaymentDto().getPrice()*0.01);
+        userDao.updateUserGetPoint(userId, point, orderNo);
+        // 주문상태 변경
         return orderDao.updateOrderStatus(orderNo);
     }
 

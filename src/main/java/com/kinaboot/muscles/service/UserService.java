@@ -34,5 +34,5 @@ public interface UserService {
 
     int modifyUserCouponStatus(String userId, String couponName);
 
-    int modifyUserPoint(String userId, Integer point, int price, int orderNo);
+    int modifyUserPoint(String userId, int point, int orderNo);
 }

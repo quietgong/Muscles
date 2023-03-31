@@ -83,14 +83,16 @@ public class OrderController {
     public String orderList(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto,
                             String couponName, Integer point, HttpSession session, Model m) throws Exception {
         String userId = (String) session.getAttribute("id");
-        OrderDto orderDto = new OrderDto(JsonToJava(orderJsonData), deliveryDto, paymentDto, userId, "대기중");
+        OrderDto orderDto = new OrderDto
+                (JsonToJava(orderJsonData), deliveryDto, paymentDto, userId, "대기중");
         orderDto.setOrderNo(orderService.getUserRecentOrderNo());
         // 주문정보 생성
         orderService.createOrder(userId, orderDto);
         // 쿠폰 상태 변경
         userService.modifyUserCouponStatus(userId, couponName);
         // 포인트 사용 적용
-        userService.modifyUserPoint(userId, point, paymentDto.getPrice(), orderDto.getOrderNo());
+        if(point!=0)
+            userService.modifyUserPoint(userId, point, orderDto.getOrderNo());
 
         m.addAttribute(orderDto);
         m.addAttribute("userDto", userService.read(userId));

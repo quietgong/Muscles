@@ -14,6 +14,12 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
 	<dependencies>
+		<!-- 테스트 코드 실행을 위한 tomcat-embed-websocket -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-websocket</artifactId>
+			<version>9.0.16</version>
+		</dependency>
 		<!-- WebSocket -->
 		<dependency>
 			<groupId>org.springframework</groupId>

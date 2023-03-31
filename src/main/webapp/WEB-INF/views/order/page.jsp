@@ -103,7 +103,7 @@
             </tr>
             <tr>
                 <td>포인트 사용</td>
-                <td><input id="pointUse" type="number" name="point">
+                <td><input id="pointUse" type="number" name="point" value="0" min="0" max="${userDto.point}">
                     <span>보유 포인트 : ${userDto.point}</span>
                     <button id="pointAll" type="button">모두 사용</button>
                 </td>

@@ -37,5 +37,7 @@ public interface UserDao {
 
     int updateUserCouponStatus(String userId, String couponName);
 
-    int updateUserPoint(String userId, Integer point, int price, int orderNo);
+    int updateUserPoint(String userId, int point, int orderNo);
+
+    int updateUserGetPoint(String userId, int point, Integer orderNo);
 }

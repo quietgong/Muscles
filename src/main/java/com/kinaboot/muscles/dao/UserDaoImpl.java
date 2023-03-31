@@ -88,26 +88,30 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int updateUserPoint(String userId, Integer point, int price, int orderNo) {
+    public int updateUserGetPoint(String userId, int point, Integer orderNo){
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("orderNo", String.valueOf(orderNo));
-        // 포인트를 사용했다면
-        if (point != 0) {
-            // 포인트 차감
-            map.put("point", String.valueOf(-point));
-            session.update(namespace + "updateUserPoint", map);
-            // 포인트 사용내역 추가
-            session.insert(namespace + "insertPoint", map);
-        }
-        // 포인트 적립 (주문금액의 1%)
-        map.put("point", String.valueOf((int) (price * 0.01)));
+        map.put("point", String.valueOf(point));
         session.update(namespace + "updateUserPoint", map);
-
         // 포인트 적립 내역 추가
         session.insert(namespace + "insertPoint", map);
         return 0;
     }
+    @Override
+    public int updateUserPoint(String userId, int point, int orderNo) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("orderNo", String.valueOf(orderNo));
+        // 포인트 차감
+        map.put("point", String.valueOf(-point));
+        session.update(namespace + "updateUserPoint", map);
+        // 포인트 사용내역 추가
+        session.insert(namespace + "insertPoint", map);
+        return 0;
+    }
+
+
 
     @Override
     public int insertRecommendEventCoupon(String userId, String recommendId) {
