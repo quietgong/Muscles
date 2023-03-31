@@ -72,7 +72,10 @@
             tmp += '<td>' + item.couponName + '</td>'
             tmp += '<td>[추천인] ' + item.couponCode + '</td>'
             tmp += '<td>' + item.discount + '%</td>'
-            tmp += '<td>' + item.status + '</td>'
+            if(isNaN(item.status))
+                tmp += '<td>' + item.status + '</td>'
+            else
+                tmp += '<td>사용완료</td>'
             tmp += '</tr>'
         })
         return tmp

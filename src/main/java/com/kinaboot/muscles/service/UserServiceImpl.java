@@ -53,12 +53,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int modifyUserCouponStatus(String userId, String couponName) {
-        return userDao.updateUserCouponStatus(userId, couponName);
+    public int modifyUserCouponStatus(String userId, String couponName, String orderNo) {
+        return userDao.updateUserCouponStatus(userId, couponName, orderNo);
     }
 
     @Override
-    public int modifyUserPoint(String userId, int point, int orderNo) {
+    public int modifyUserPoint(String userId, int point, String orderNo) {
         return userDao.updateUserPoint(userId, point, orderNo);
     }
 

@@ -20,7 +20,24 @@ public class OrderServiceImpl implements OrderService{
     CartDao cartDao;
 
     @Override
-    public int removeOrder(Integer orderNo) {
+    public int removeOrder(String userId, Integer orderNo) {
+        // 해당 주문에 쿠폰이 사용된 경우, 쿠폰 상태를 사용가능으로 변경
+        List<CouponDto> couponDtoList = userDao.selectUserCoupon(userId);
+        for(CouponDto couponDto : couponDtoList){
+            if(couponDto.getStatus().equals(String.valueOf(orderNo))){
+                userDao.updateUserCouponStatus(userId, couponDto.getCouponName(), "사용가능");
+                break;
+            }
+        }
+        // 포인트 환불
+        List<PointDto> pointDtoList = userDao.selectUserPoint(userId);
+        for(PointDto pointDto : pointDtoList){
+            if(pointDto.getPointName().equals(String.valueOf(orderNo))){
+                userDao.updateUserPoint(userId, pointDto.getPoint(), String.valueOf(orderNo));
+                userDao.deleteUserPoint(userId, pointDto.getPointName());
+                break;
+            }
+        }
         return orderDao.deleteOrder(orderNo);
     }
 

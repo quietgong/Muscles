@@ -1,11 +1,15 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.OrderDto;
+import com.kinaboot.muscles.domain.PointDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
@@ -28,5 +32,27 @@ public class PointTest {
 //        userDao.updateUserGetPoint(userId, point, orderNo);
 //        // 주문상태 변경
 //        orderDao.updateOrderStatus(orderNo);
+    }
+    @Test
+    public void refundCouponPointTest(){
+        String userId = "admin";
+        String orderNo = "5";
+        // 포인트 환불
+        List<PointDto> pointDtoList = userDao.selectUserPoint(userId);
+        for(PointDto pointDto : pointDtoList){
+            if(pointDto.getPointName().equals(orderNo)){
+                userDao.updateUserPoint(userId, pointDto.getPoint(), orderNo);
+                userDao.deleteUserPoint(userId, pointDto.getPointName());
+                break;
+            }
+        }
+        // 해당 주문에 쿠폰이 사용된 경우, 쿠폰 상태를 사용가능으로 변경
+        List<CouponDto> couponDtoList = userDao.selectUserCoupon(userId);
+        for(CouponDto couponDto : couponDtoList){
+            if(couponDto.getStatus().equals(orderNo)){
+                userDao.updateUserCouponStatus(userId, couponDto.getCouponName(), "사용가능");
+                break;
+            }
+        }
     }
 }

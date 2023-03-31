@@ -35,9 +35,11 @@ public interface UserDao {
 
     List<PointDto> selectUserPoint(String userId);
 
-    int updateUserCouponStatus(String userId, String couponName);
+    int updateUserCouponStatus(String userId, String couponName, String orderNo);
 
-    int updateUserPoint(String userId, int point, int orderNo);
+    int updateUserPoint(String userId, int point, String orderNo);
 
     int updateUserGetPoint(String userId, int point, Integer orderNo);
+
+    int deleteUserPoint(String userId, String pointName);
 }

@@ -32,7 +32,7 @@ public interface UserService {
 
     List<PointDto> getPointList(String userId);
 
-    int modifyUserCouponStatus(String userId, String couponName);
+    int modifyUserCouponStatus(String userId, String couponName, String orderNo);
 
-    int modifyUserPoint(String userId, int point, int orderNo);
+    int modifyUserPoint(String userId, int point, String orderNo);
 }

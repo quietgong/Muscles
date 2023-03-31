@@ -54,8 +54,9 @@ public class OrderController {
 
     // 주문취소
     @DeleteMapping("/{orderNo}")
-    public ResponseEntity<String> removeOrder(@PathVariable Integer orderNo){
-        orderService.removeOrder(orderNo);
+    public ResponseEntity<String> removeOrder(HttpSession session, @PathVariable Integer orderNo){
+        String userId = (String) session.getAttribute("id");
+        orderService.removeOrder(userId,orderNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
@@ -89,10 +90,10 @@ public class OrderController {
         // 주문정보 생성
         orderService.createOrder(userId, orderDto);
         // 쿠폰 상태 변경
-        userService.modifyUserCouponStatus(userId, couponName);
+        userService.modifyUserCouponStatus(userId, couponName, String.valueOf(orderDto.getOrderNo()));
         // 포인트 사용 적용
         if(point!=0)
-            userService.modifyUserPoint(userId, point, orderDto.getOrderNo());
+            userService.modifyUserPoint(userId, point, String.valueOf(orderDto.getOrderNo()));
 
         m.addAttribute(orderDto);
         m.addAttribute("userDto", userService.read(userId));

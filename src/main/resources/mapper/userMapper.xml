@@ -42,7 +42,7 @@
     </update>
     <update id="updateCouponStatus" parameterType="map">
         update coupon
-        set status = '사용완료'
+        set status = #{orderNo}
         where userId = #{userId}
         and couponName = #{couponName}
     </update>
@@ -93,4 +93,10 @@
         UPDATE USER
         SET expiredDate = now();
     </update>
+    <delete id="deleteUserPoint" parameterType="map">
+        delete
+        from point
+        where userId = #{userId}
+        and pointName = ${pointName};
+    </delete>
 </mapper>

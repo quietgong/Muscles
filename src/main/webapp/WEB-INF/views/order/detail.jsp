@@ -30,10 +30,10 @@
 <table class="myTable">
     <tr>
         <td>이름</td>
-        <td>${orderDto.deliveryDto.receiver}</td>
+        <td>연락처</td>
     </tr>
     <tr>
-        <td>연락처</td>
+        <td>${orderDto.deliveryDto.receiver}</td>
         <td>${orderDto.deliveryDto.phone}</td>
     </tr>
 </table>

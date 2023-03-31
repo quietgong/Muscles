@@ -19,7 +19,7 @@ public interface OrderService {
 
     OrderDto getOrderDetail(Integer orderNo);
 
-    int removeOrder(Integer orderNo);
+    int removeOrder(String userId, Integer orderNo);
 
     int getUserRecentOrderNo();
 }
