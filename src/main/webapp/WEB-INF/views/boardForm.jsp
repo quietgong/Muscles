@@ -4,7 +4,6 @@
 <style>
     .container {
         justify-content: center;
-
         align-items: center;
         flex-direction: column;
     }
@@ -15,7 +14,8 @@
 <!-- nav -->
 <%@ include file="nav.jsp" %>
 <!-- 본문 -->
-<form action="<c:url value='/community/write'/>" name="wrtForm" method="post">
+<form action="<c:url value='/${postCategory}'/>" method="post">
+    <input type="hidden" name="postCategory" value="${postCategory}">
 <div class="container">
     <div class="item">
             <span>제목
@@ -27,8 +27,7 @@
     </div>
     <div class="item">
         <input type="submit" value="완료">
-        <input type="submit" value="저장">
-        <input type="submit" value="취소">
+        <input onclick="history.back()" type="button" value="취소">
     </div>
 </div>
 </form>

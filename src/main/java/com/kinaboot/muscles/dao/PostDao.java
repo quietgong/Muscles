@@ -14,7 +14,7 @@ public interface PostDao {
     void deleteAll() // int delete(String statement)
     ;
 
-    int delete(Integer postNo, String writer) throws Exception // int delete(String statement, Object parameter)
+    int delete(Integer postNo) throws Exception // int delete(String statement, Object parameter)
     ;
 
     int insert(PostDto postDto, String type) throws Exception // int insert(String statement, Object parameter)

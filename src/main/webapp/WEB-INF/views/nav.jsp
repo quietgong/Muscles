@@ -63,8 +63,8 @@
         <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">Muscles</a>
             <div class="dropdown-content">
-                <a href="<c:url value='/community/list'/>">커뮤니티</a>
-                <a href="<c:url value='/notice/list'/>">공지사항/이벤트</a>
+                <a href="<c:url value='/community'/>">커뮤니티</a>
+                <a href="<c:url value='/notice'/>">공지사항/이벤트</a>
             </div>
         </li>
         <li class="dropdown">

@@ -19,7 +19,7 @@ public interface PostSerivce {
 
     int modify(PostDto postDto) throws Exception;
 
-    int remove(Integer postNo, String userId) throws Exception;
+    int remove(Integer postNo) throws Exception;
 
     List<PostDto> getListByPage(PageHandler ph) throws Exception;
     List<PostDto> getListBySearch(SearchCondition sc) throws Exception;

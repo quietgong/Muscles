@@ -16,6 +16,7 @@ public class PostDaoImpl implements PostDao {
     @Autowired
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.postMapper.";
+
     @Override
     public int count(String type) throws Exception {
         return session.selectOne(namespace + "count", type);
@@ -27,29 +28,26 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public int delete(Integer postNo, String userId) throws Exception {
-        Map map = new HashMap();
-        map.put("postNo", postNo);
-        map.put("userId", userId);
-        return session.delete(namespace+"delete", map);
+    public int delete(Integer postNo) throws Exception {
+        return session.delete(namespace + "delete", postNo);
     }
 
     @Override
     public int insert(PostDto postDto, String type) throws Exception {
-        Map map = new HashMap();
+        Map<Object, Object> map = new HashMap<>();
         map.put("postDto", postDto);
         map.put("type", type);
         return session.insert(namespace + "insert", map);
     }
 
     @Override
-    public List<PostDto> searchResult(SearchCondition sc) throws Exception {
-        return session.selectList(namespace+"searchResult", sc);
+    public List<PostDto> searchResult(SearchCondition sc) {
+        return session.selectList(namespace + "searchResult", sc);
     }
 
     @Override
-    public int searchResultCnt(SearchCondition sc) throws Exception {
-        return session.selectOne(namespace + "searchResultCnt",sc);
+    public int searchResultCnt(SearchCondition sc) {
+        return session.selectOne(namespace + "searchResultCnt", sc);
     }
 
     @Override
@@ -58,7 +56,7 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public List<PostDto> selectAllByUser(String userId) throws Exception {
+    public List<PostDto> selectAllByUser(String userId) {
         return session.selectList(namespace + "selectAllByUser", userId);
     }
 
@@ -68,18 +66,18 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public List<PostDto> selectPage(PageHandler ph){
-        int limit = (ph.getSc().getPage()-1)*ph.getPageSize();
-        return session.selectList(namespace+"selectPage",limit);
+    public List<PostDto> selectPage(PageHandler ph) {
+        int limit = (ph.getSc().getPage() - 1) * ph.getPageSize();
+        return session.selectList(namespace + "selectPage", limit);
     }
 
     @Override
     public int update(PostDto postDto) throws Exception {
-        return session.update(namespace+"update", postDto);
+        return session.update(namespace + "update", postDto);
     }
 
     @Override
-    public int increaseViewCnt(Integer postNo) throws Exception {
-        return session.update(namespace+"increaseViewCnt", postNo);
+    public int increaseViewCnt(Integer postNo) {
+        return session.update(namespace + "increaseViewCnt", postNo);
     }
 }

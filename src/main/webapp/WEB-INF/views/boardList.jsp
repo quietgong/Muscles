@@ -12,10 +12,10 @@
             <option value="T" ${ph.sc.option=='T' ? "selected" : ""}>제목</option>
             <option value="A" ${ph.sc.option=='A' ? "selected" : ""}>작성자</option>
         </select>
-        <input type="text" name="keyword" class="search-input" type="text" value="${ph.sc.keyword}" placeholder="내용을 입력해주세요">
+        <input type="text" name="keyword" class="search-input" value="${ph.sc.keyword}" placeholder="내용을 입력해주세요">
         <input type="submit" class="search-button" value="검색">
     </form>
-    <table id="myTable" style="margin: auto;">
+    <table class="myTable" style="margin: auto;">
         <tr>
             <th>번호</th>
             <th>제목</th>
@@ -27,7 +27,7 @@
             <tr>
                 <td class="no">${postDto.postNo}</td>
                 <td class="title">
-                    <a href="<c:url value="/community/read${ph.sc.queryString}&postNo=${postDto.postNo}"/>">${postDto.title}</a>
+                    <a href="<c:url value="/${postCategory}/${postDto.postNo}${ph.sc.queryString}"/>">${postDto.title}</a>
                 </td>
                 <td class="writer">${postDto.userId}</td>
                 <td class="viewCnt">${postDto.viewCnt}</td>
@@ -35,9 +35,9 @@
             </tr>
         </c:forEach>
     </table>
-    <a href="<c:url value='/community/write'/>">
-        <input type="button" class="search-button" value="글쓰기">
-    </a>
+    <form method="post" action="<c:url value='/${postCategory}/add'/>">
+        <input type="submit" class="search-button" value="글쓰기">
+    </form>
     <br>
     <c:if test="${totalCnt==null||totalCnt==0}">
         <h1>게시물이 없습니다.</h1>
@@ -45,13 +45,13 @@
     <c:if test="${totalCnt!=null&&totalCnt!=0}">
     <ul class="paging">
         <c:if test="${ph.showPrev}">
-        <li><a href="<c:url value='/community/list${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt</a></li>
+        <li><a href="<c:url value='/community/${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt</a></li>
         </c:if>
         <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-        <li><a href="<c:url value='/community/list${ph.sc.getQueryString(i)}'/>">${i}</a></li>
+        <li><a href="<c:url value='/community/${ph.sc.getQueryString(i)}'/>">${i}</a></li>
         </c:forEach>
         <c:if test="${ph.showNext}">
-            <li><a href="<c:url value='/community/list${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt</a></li>
+            <li><a href="<c:url value='/community/${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt</a></li>
         </c:if>
     </ul>
     </c:if>

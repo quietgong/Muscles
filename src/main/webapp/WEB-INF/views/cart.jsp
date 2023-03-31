@@ -54,10 +54,7 @@
                 console.log("통신 실패")
             }
         })
-
     }
-
-
     $("#cartItemList").on("click", ".qtyChange", function () { // 수량 변경
         let nowQty;
         if ($(this).val() == '-') { // 감소

@@ -61,8 +61,8 @@
     <delete id="deleteAll">
         DELETE from post
     </delete>
-    <delete id="delete" parameterType="map">
-        DELETE from post where postNo=#{postNo} and userId=#{userId}
+    <delete id="delete" parameterType="int">
+        DELETE from post where postNo=${postNo}
     </delete>
 
     <insert id="insert" parameterType="map">
@@ -78,7 +78,6 @@
           , content = #{content}
           , modDate = now()
         where postNo = #{postNo}
-          and userId = #{userId}
     </update>
     <update id="increaseViewCnt" parameterType="int">
         update post set viewCnt = viewCnt+1

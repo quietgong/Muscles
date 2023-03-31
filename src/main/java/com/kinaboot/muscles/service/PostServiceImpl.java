@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostSerivce{
 
     @Override
     public PostDto read(Integer postNo) throws Exception {
-        PostDto postDto = postDao.select(postNo); // postNo에 해당하는 데이터를 읽고
+        PostDto postDto = postDao.select(postNo); // postNo에 해당하는 데이터 읽기
         postDao.increaseViewCnt(postNo); // postNo의 조회수를 증가시킨다.
         return postDto;
     }
@@ -54,8 +54,8 @@ public class PostServiceImpl implements PostSerivce{
     }
 
     @Override
-    public int remove(Integer postNo, String userId) throws Exception {
-        return postDao.delete(postNo, userId);
+    public int remove(Integer postNo) throws Exception {
+        return postDao.delete(postNo);
     }
 
     @Override

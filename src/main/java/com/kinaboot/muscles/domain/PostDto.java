@@ -92,12 +92,14 @@ public class PostDto {
     @Override
     public String toString() {
         return "PostDto{" +
-                "type='" + type + '\'' +
+                "postNo=" + postNo +
+                ", type='" + type + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", userId='" + userId + '\'' +
                 ", createdDate=" + createdDate +
                 ", modDate=" + modDate +
+                ", viewCnt=" + viewCnt +
                 '}';
     }
 }

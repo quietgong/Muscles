@@ -21,15 +21,13 @@
 <h1 id="mode" style="display: none">수정 모드</h1>
 <div class="container">
     <div class="item">
-        <form id="form">
-            <p style="display: none">${postDto.postNo}</p>
-            <input type="text" name="title" readonly value="${postDto.title}">
-            <span>${postDto.userId} | ${postDto.createdDate}</span>
-            <hr/>
-            <div class="container">
-                <input type="text" name="content" readonly value="${postDto.content}">
-            </div>
-        </form>
+        <p style="display: none">${postDto.postNo}</p>
+        <input type="text" name="title" readonly value="${postDto.title}">
+        <span>${postDto.userId} | ${postDto.createdDate}</span>
+        <hr/>
+        <div class="container">
+            <input type="text" name="content" readonly value="${postDto.content}">
+        </div>
     </div>
     <div class="item">
         <div>
@@ -48,43 +46,60 @@
     </div>
     <div class="item">
         <div class="item-btn">
-            <a href="<c:url value='/community/list?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>">
+            <a href="<c:url value='/${postCategory}?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>">
                 <input type="button" value="목록"/>
             </a>
-            <input id="modifyPost" type="button" value="수정"/>
-            <input id="removePost" type="button" value="삭제"/>
+            <input id="modify" type="button" value="수정"/>
+            <input id="remove" type="button" value="삭제"/>
         </div>
     </div>
 </div>
 <script>
-    // 글쓰기 수정, 삭제
-    $(document).ready(function () {
-        $("#modifyPost").on("click", function () {
-            $("#mode").show();
-            let isReadOnly = $("input[name=content]").attr("readonly");
-            // readonly가 체크되어있으면 (읽기 모드)
-            if (isReadOnly == "readonly") {
-                // 1. 수정버튼을 등록버튼으로 바꾼다.
-                $("#modifyPost").attr("value", "등록");
-                // 2. 제목, 내용의 readonly 태그를 해제한다.
-                $("input[name=content]").attr("readonly", false);
-                $("input[name=title]").attr("readonly", false);
+    // 글 수정
+    $("#modify").on("click", function () {
+        $("#mode").show();
+        let isReadOnly = $("input[name=content]").attr("readonly");
+        if (isReadOnly === "readonly") {
+            $("#modifyPost").attr("value", "등록");
+            $("input[name=content]").attr("readonly", false);
+            $("input[name=title]").attr("readonly", false);
+        } else {
+            let modData = {}
+            modData.postNo = postNo
+            modData.title = $("input[name=title]").val()
+            modData.content = $("input[name=content]").val()
+            $.ajax({
+                type: "PATCH",
+                url: "/muscles/${postCategory}/" + postNo,
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify(modData),
+                success: function (res) {
+                    if (res === "MOD_OK")
+                        // 수정 성공 시, 새로 고침
+                        location.reload()
+                },
+                error: function () {
+                    console.log("수정 실패")
+                }
+            });
+        }
+    });
+    // 글 삭제
+    $("#remove").on("click", function () {
+        if (!confirm("정말로 삭제하시겠습니까?")) return;
+        $.ajax({
+            type: "DELETE",
+            url: "/muscles/${postCategory}/" + postNo,
+            success: function (res) {
+                if (res === "DEL_OK")
+                    // 삭제 성공 시, 해당 게시판 목록으로 이동
+                    location.href = "<c:url value='/${postCategory}'/>"
+            },
+            error: function () {
+                console.log("삭제 실패")
             }
-            // readonly가 체크되어 있지 않으면 (수정 모드)
-            else {
-                // 수정된 내용을 DB에 반영한다.
-                let form = $("#form");
-                form.attr("action", "<c:url value="/community/modify?postNo=${postDto.postNo}"/>")
-                form.attr("method", "post");
-                form.submit();
-            }
-        });
-        $("#removePost").on("click", function () {
-            if (!confirm("정말로 삭제하시겠습니까?")) return;
-            let form = $("#form");
-            form.attr("action", "<c:url value="/community/remove?postNo=${postDto.postNo}"/>")
-            form.attr("method", "post");
-            form.submit();
         });
     });
 </script>
