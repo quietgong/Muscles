@@ -14,11 +14,9 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
-    @Override
-    public List<OrderDto> selectAll(String userId) {
-        // userId별 주문목록 가져오기
-        List<OrderDto> orderDtoList = session.selectList(namespace + "selectOrderList", userId);
-        for(OrderDto orderDto: orderDtoList) {
+
+    private List<OrderDto> getOrderDtoList(List<OrderDto> orderDtoList) {
+        for (OrderDto orderDto : orderDtoList) {
             // 해당 주문정보의 orderNo를 통해 주문상품 정보, 배송정보, 결제정보를 가져온다.
             int orderNo = orderDto.getOrderNo();
             orderDto.setOrderItemDtoList(session.selectList(namespace + "selectOrderItemList", orderNo));
@@ -27,10 +25,16 @@ public class OrderDaoImpl implements OrderDao {
         }
         return orderDtoList;
     }
+    @Override
+    public List<OrderDto> selectAll(String userId) {
+        // userId별 주문목록 가져오기
+        List<OrderDto> orderDtoList = session.selectList(namespace + "selectOrderList", userId);
+        return getOrderDtoList(orderDtoList);
+    }
 
     @Override
     public int updateStock(List<OrderItemDto> orderItemDtoList) {
-        Map map = new HashMap();
+        HashMap<String, Integer> map = new HashMap<>();
         for (OrderItemDto orderItemDto : orderItemDtoList) {
             map.put("productNo", orderItemDto.getProductNo());
             map.put("productQty", orderItemDto.getProductQty());
@@ -51,15 +55,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<OrderDto> selectOrderAll(SearchCondition sc) {
-        List<OrderDto> orderDtoList = session.selectList(namespace + "selectOrderAllList", sc);
-        for(OrderDto orderDto: orderDtoList) {
-            // 해당 주문정보의 orderNo를 통해 주문상품 정보, 배송정보, 결제정보를 가져온다.
-            int orderNo = orderDto.getOrderNo();
-            orderDto.setOrderItemDtoList(session.selectList(namespace + "selectOrderItemList", orderNo));
-            orderDto.setDeliveryDto(session.selectOne(namespace + "selectDelivery", orderNo));
-            orderDto.setPaymentDto(session.selectOne(namespace + "selectPayment", orderNo));
-        }
-        return orderDtoList;
+        return getOrderDtoList(session.selectList(namespace + "selectOrderAllList", sc));
     }
 
     @Override
@@ -73,6 +69,7 @@ public class OrderDaoImpl implements OrderDao {
         List<OrderItemDto> orderItemDtoList = session.selectList(namespace + "selectOrderItemList", orderNo);
         DeliveryDto deliveryDto = session.selectOne(namespace + "selectDelivery", orderNo);
         PaymentDto paymentDto = session.selectOne(namespace + "selectPayment", orderNo);
+
         orderDto.setOrderItemDtoList(orderItemDtoList);
         orderDto.setDeliveryDto(deliveryDto);
         orderDto.setPaymentDto(paymentDto);
@@ -82,10 +79,10 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public OrderItemDto selectOrderItem(Integer orderNo, Integer productNo) {
-        Map map = new HashMap();
+        HashMap<String, Integer> map = new HashMap<>();
         map.put("orderNo", orderNo);
         map.put("productNo", productNo);
-        return session.selectOne(namespace+"selectOrderItem",map);
+        return session.selectOne(namespace + "selectOrderItem", map);
     }
 
     @Override
@@ -104,7 +101,7 @@ public class OrderDaoImpl implements OrderDao {
         session.insert(namespace + "insertOrder", orderDto);
 
         // 주문상품 정보 생성
-        for(OrderItemDto orderItemDto : orderDto.getOrderItemDtoList())
+        for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList())
             session.insert(namespace + "insertOrderItem", orderItemDto);
 
         // 배송 정보 생성

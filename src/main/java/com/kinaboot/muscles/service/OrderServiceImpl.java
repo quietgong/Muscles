@@ -43,6 +43,8 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public int acceptOrder(Integer orderNo) {
+        // 구매 제품 재고 수량 변경
+        orderDao.updateStock(orderDao.selectOrderItemList(orderNo));
         // 포인트 적립
         OrderDto orderDto = orderDao.selectOrder(orderNo);
         String userId = orderDto.getUserId();
@@ -91,9 +93,8 @@ public class OrderServiceImpl implements OrderService{
         for(OrderItemDto orderItemDto : orderItemDtoList)
                 deleteList.add(String.valueOf(orderItemDto.getProductNo()));
         cartDao.deleteCartItem(userId, deleteList);
-        // 2. 구매 제품 재고 수량 변경
-        orderDao.updateStock(orderItemDtoList);
-        // 3. 구매제품, 배송, 결제 정보 입력
+
+        // 2. 구매제품, 배송, 결제 정보 입력
         return orderDao.insertOrder(userId, orderDto);
     }
 }
