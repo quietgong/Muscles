@@ -2,6 +2,8 @@ package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.domain.ChatDto;
 import com.kinaboot.muscles.service.ChatService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Controller
 public class ChattingController {
+    private static final Logger logger = LoggerFactory.getLogger(ChattingController.class);
+
     @Autowired
     ChatService chatService;
     List<ChatDto> chatDtoList = new ArrayList<>();

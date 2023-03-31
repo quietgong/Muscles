@@ -1,11 +1,12 @@
 package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.dao.PostDao;
-import com.kinaboot.muscles.dao.ReviewDao;
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.ReviewService;
 import com.kinaboot.muscles.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -24,6 +24,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/mypage")
 public class MypageController {
+    private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
+
     private final UserDao userDao;
 
     MypageController(UserDao userDao) {

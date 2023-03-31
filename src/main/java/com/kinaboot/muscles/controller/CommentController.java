@@ -2,6 +2,8 @@ package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.domain.CommentDto;
 import com.kinaboot.muscles.service.CommentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import java.util.List;
 
 @Controller
 public class CommentController {
+    private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
+
     @Autowired
     CommentService commentService;
 

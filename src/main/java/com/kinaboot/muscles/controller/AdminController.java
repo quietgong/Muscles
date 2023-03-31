@@ -4,6 +4,8 @@ import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.ProductService;
 import com.kinaboot.muscles.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,16 +15,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     UserService userService;
 
@@ -60,6 +62,8 @@ public class AdminController {
 
     @GetMapping("/product")
     public String getProduct(Model m) {
+        logger.info("상품관리 페이지 진입");
+
         List<ProductDto> productDtoList = productService.getAllProduct();
         m.addAttribute("list", productDtoList);
         return "admin/product";

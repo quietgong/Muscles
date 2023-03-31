@@ -4,6 +4,8 @@ import com.kinaboot.muscles.domain.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.SearchCondition;
 import com.kinaboot.muscles.service.PostSerivce;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping({"/community", "/notice"})
 public class PostController {
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+
     @Autowired
     PostSerivce postSerivce;
 
