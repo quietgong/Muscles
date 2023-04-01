@@ -3,11 +3,6 @@
 <%@ page session="false" %>
 <c:set var="loginUserId"
        value="${pageContext.request.getSession(false)==null ? '' : pageContext.request.session.getAttribute('id')}"/>
-<c:set var="loginOutLink" value="${loginUserId=='' ? '/login' : '/logout'}"/>
-<c:set var="loginOut" value="${loginUserId=='' ? '로그인' : '로그아웃'}"/>
-<c:set var="chatting" value="${loginUserId=='' ? '' : '채팅상담'}"/>
-<c:set var="register" value="${pageContext.request.getSession(false)==null ? '회원가입' : ''}"/>
-<c:set var="welcomeUser" value="${loginUserId=='' ? 'none' : 'block'}"/>
 <html>
 <head>
     <meta charset="UTF-8"/>
@@ -47,15 +42,19 @@
     <div class="nav-item" style="align-self: baseline">
         <div>
           <span>
-            <a href="<c:url value='${loginOutLink}'/>">${loginOut}</a> |
-            <a href="<c:url value='/chatting'/>">${chatting}</a>
-            <a href="<c:url value='/register'/>">${register}</a>
+            <a class="logout-buttons" href="<c:url value='/login'/>">로그인</a>
+            <a class="logout-buttons" href="<c:url value='/register'/>">회원가입</a>
+            <a class="login-buttons" id="logout">로그아웃</a>
+            <a class="login-buttons" href="<c:url value='/chatting'/>">채팅상담</a>
           </span>
         </div>
         <div><h2>머슬스입니다.</h2></div>
-        <div><h2 style="display: ${welcomeUser}">${loginUserId}님! 좋은 하루 되세요</h2></div>
+        <div>
+            <h2 class="login-buttons" style="display: ${welcomeUser}">${loginUserId}님! 좋은 하루 되세요</h2>
+        </div>
     </div>
 </div>
+
 <!-- Dropdown -->
 <div class="nav-item">
     <ul class="nav">
@@ -86,5 +85,32 @@
         </li>
     </ul>
 </div>
+<script>
+    checkLoginStatus()
+
+    function checkLoginStatus() {
+        let loginUserId = '${loginUserId}'
+        if (loginUserId == "") { // 로그아웃 상태
+            $(".login-buttons").css("display", "none")
+            $(".logout-buttons").css("display", "block")
+        } else {
+            $(".login-buttons").css("display", "block")
+            $(".logout-buttons").css("display", "none")
+        }
+    }
+
+    $("#logout").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/muscles/logout",
+            success: function () {
+                location.reload()
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    })
+</script>
 </body>
 </html>

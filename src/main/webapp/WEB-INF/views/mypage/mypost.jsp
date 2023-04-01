@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
@@ -13,7 +14,7 @@
         <input type="text" name="keyword" class="search-input" type="text" value="" placeholder="제목을 입력해주세요">
         <input type="submit" class="search-button" value="검색">
     </form>
-    <table id="myTable" style="margin: auto;">
+    <table class="myTable" style="margin: auto;">
         <tr>
             <th>번호</th>
             <th>제목</th>
@@ -29,11 +30,13 @@
                 </td>
                 <td class="writer">${postDto.userId}</td>
                 <td class="viewCnt">${postDto.viewCnt}</td>
-                <td colspan="regdate">${postDto.createdDate}</td>
+                <td class="regDate" colspan="regdate">
+                    <fmt:formatDate value="${postDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
+                </td>
             </tr>
         </c:forEach>
     </table>
-    <ul>
+    <ul class="paging">
         <li><a href="#"><</a></li>
         <li><a href="#">1</a></li>
         <li><a href="#">2</a></li>

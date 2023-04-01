@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../nav.jsp" %>
 <style>
@@ -41,7 +42,9 @@
             <div class="order-list-item-detail">
                 <div>
                     <span style="font-weight: bold; font-style: italic">주문번호 : ${orderDto.orderNo} (${orderDto.status})</span>
-                    <span style="float: right">주문일자 : ${orderDto.createdDate}</span>
+                    <span style="float: right">주문일자 :
+                        <fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
+                    </span>
                     <form action="<c:url value='/order/detail'/>">
                         <input type="hidden" name="orderNo" value="${orderDto.orderNo}">
                         <input type="submit" style="float:right;" value="상세 내역"/>

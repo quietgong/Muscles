@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
@@ -31,7 +32,9 @@
                 </td>
                 <td class="writer">${postDto.userId}</td>
                 <td class="viewCnt">${postDto.viewCnt}</td>
-                <td colspan="regdate">${postDto.createdDate}</td>
+                <td colspan="regdate">
+                    <fmt:formatDate value="${postDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
+                </td>
             </tr>
         </c:forEach>
     </table>

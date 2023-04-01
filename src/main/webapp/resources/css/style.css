@@ -283,12 +283,12 @@ ul.paging li a:hover, ul.paging li a:focus {
 }
 .product-detail-review-item {
     text-align: center;
-    flex: 1 1 20%;
+    flex: 1 1 25%;
 }
 .product-detail-faq-container {
     flex-direction: row;
     display: flex;
-    flex: 1 1 20%;
+    flex: 1 1 25%;
     justify-content: space-between;
 }
 .product-detail-faq-item{

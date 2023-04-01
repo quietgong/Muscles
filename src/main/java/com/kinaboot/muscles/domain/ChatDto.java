@@ -1,11 +1,14 @@
 package com.kinaboot.muscles.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ChatDto {
     String chatName;
     String talker;
     String msg;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     Date createdDate;
 
     public ChatDto() {

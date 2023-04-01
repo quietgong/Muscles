@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
@@ -60,7 +61,9 @@
             <span>
                     ${pastChat.talker} : ${pastChat.msg}
             </span>
-            <p class="msgDate">${pastChat.createdDate}</p>
+            <p class="msgDate">
+                <fmt:formatDate value="${pastChat.createdDate}" pattern="yyyy-MM-dd" type="date"/>
+            </p>
         </div>
     </c:forEach>
 </div>

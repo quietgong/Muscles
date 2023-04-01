@@ -1,5 +1,8 @@
 package com.kinaboot.muscles.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class PostDto {
@@ -8,7 +11,9 @@ public class PostDto {
     private String title;
     private String content;
     private String userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date modDate;
 
     private Integer viewCnt;

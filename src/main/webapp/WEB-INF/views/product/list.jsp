@@ -3,7 +3,14 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-
+<style>
+    img{
+        border-radius: 20px;
+        transition: all 0.3s ease-in-out;
+        z-index: 20;
+        box-shadow: 5px 5px 26px 0px rgba(0,0,0,0.49);
+    }
+</style>
 <!-- 본문 -->
 <div>
     <span>${param.category}</span><br>
@@ -18,16 +25,16 @@
     </form>
 </div>
 <!-- 반복부 -->
-<div class="product-list-container">
+<div class="product-list-container" style="padding: 30px">
     <c:forEach var="productDto" items="${list}">
-        <div class="product-list-item">
+        <div class="product-list-item" style="padding: 30px">
             <a href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>">
                 <c:choose>
                     <c:when test="${productDto.productImgPath eq null}">
-                        <img style="width: 250px; height: 250px;" src="<c:url value='/img/logo.jpg'/>">
+                        <img style="width: 300px; height: 400px;" src="<c:url value='/img/logo.jpg'/>">
                     </c:when>
                     <c:otherwise>
-                        <img style="width: 250px; height: 250px;" src="${productDto.productImgPath}">
+                        <img style="width: 300px; height: 400px;" src="${productDto.productImgPath}">
                     </c:otherwise>
                 </c:choose>
             </a>
@@ -35,8 +42,10 @@
             <div>
                 <span class="star">★★★★★<span style="width: ${productDto.productReviewScore}%">★★★★★</span></span>
             </div>
+            <div>
             <span style="font-weight: bold;">${productDto.productPrice}</span>
-            <span style="font-weight: bold;">리뷰개수 : ${productDto.reviewDtoList.size()}</span>
+            <span>리뷰개수 : ${productDto.reviewDtoList.size()}</span>
+            </div>
         </div>
     </c:forEach>
 </div>

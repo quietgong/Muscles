@@ -1,5 +1,7 @@
 package com.kinaboot.muscles.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +12,7 @@ public class OrderDto {
     private int orderNo;
     private String userId;
     private String status;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
 
     public OrderDto() {

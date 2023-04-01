@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
 <style>
     .mypage{
         display: flex;
@@ -39,11 +41,11 @@
             </div>
             <div>
                 <label>기간</label>
-                <input type="date" id="lname" name="lastname"/>
+                <input type="date" name="startDate"/>
             </div>
             <div>
                 <label>~</label>
-                <input type="date" id="lname" name="lastname"/>
+                <input type="date" name="endDate"/>
                 <input type="button" value="검색"/>
             </div>
         </div>
@@ -53,7 +55,8 @@
                 <div class="order-list-item-detail">
                     <div>
                         <!-- 좌측:주문일자, 우측:주문번호 -->
-                        <span>${orderDto.createdDate} 주문</span>
+                        <span>
+                        <fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd" type="date"/> 주문</span>
                         <span>주문번호 : ${orderDto.orderNo}</span>
                     </div>
                     <div>
@@ -106,7 +109,6 @@
         </div>
     </div>
 </div>
-
 <!-- 모달 -->
 
 <script>
@@ -205,6 +207,7 @@
     $(document).on('mousemove', '.starRange', function () {
         $(this).prev().css("width", $(this).val() + '%')
     })
+
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

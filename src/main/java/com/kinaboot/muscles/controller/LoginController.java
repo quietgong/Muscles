@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -54,8 +55,10 @@ public class LoginController {
         return false;
     }
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    @ResponseBody
+    public void logout(HttpSession session) {
+        logger.info("로그아웃 진입");
+
         session.invalidate();
-        return "redirect:/";
     }
 }

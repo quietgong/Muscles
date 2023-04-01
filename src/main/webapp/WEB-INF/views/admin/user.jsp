@@ -24,7 +24,7 @@
     <!-- 내용 -->
     <div class="admin-item">
         <div class="admin-item-detail" style="border: none;">
-            <table id="myTable">
+            <table class="myTable">
             <!-- AJAX 동적 추가 -->
             </table>
         </div>
@@ -81,7 +81,7 @@
             },
             success: function (res) {
                 console.log(res)
-                $("#myTable").html(toHtml(res))
+                $(".myTable").html(toHtml(res))
             },
             error: function () {
                 console.log("통신 실패")

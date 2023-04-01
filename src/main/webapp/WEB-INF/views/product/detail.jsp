@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
@@ -71,7 +72,9 @@
             <div>
                 <span class="star">★★★★★<span style="width: ${reviewDto.score}%">★★★★★</span></span>
             </div>
-            <span style="font-size:25px; font-weight:bold;">작성일자 : ${reviewDto.createdDate}</span>
+            <span style="font-size:25px; font-weight:bold;">작성일자 :
+                <fmt:formatDate value="${reviewDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
+            </span>
         </div>
     </c:forEach>
     </div>

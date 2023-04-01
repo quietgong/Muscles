@@ -201,9 +201,9 @@
             tmp += ' data-postNo=' + comment.postNo + '>'
             tmp += ' <span style="font-weight: bold" class="commenter">' + "└ " + comment.userId + '</span>'
             if (comment.createdDate === comment.modDate)
-                tmp += ' <span style="font-weight: bold" class="commentDate">' + JavaDateToJavaScriptDate(comment.createdDate)
+                tmp += ' <span style="font-weight: bold" class="commentDate">' + comment.createdDate
             else
-                tmp += ' |  <span class="commentDate">' + JavaDateToJavaScriptDate(comment.modDate) + "(수정됨)"
+                tmp += ' |  <span class="commentDate">' + comment.modDate + "(수정됨)"
             tmp += '</span>'
             tmp += '<br>'
             tmp += ' <span style="font-style: italic" class="comment">' + comment.content + '</span>'
@@ -212,20 +212,6 @@
             tmp += '</div>'
         })
         return tmp;
-    }
-
-    function JavaDateToJavaScriptDate(source) {
-        const date = new Date(source);
-        const year = date.getFullYear();
-        const month = leftPad(date.getMonth() + 1);
-        const day = leftPad(date.getDate());
-        return [year, month, day].join('-');
-    }
-
-    function leftPad(value) {
-        if (Number(value) >= 10)
-            return value;
-        return "0" + value;
     }
 </script>
 <!-- footer -->

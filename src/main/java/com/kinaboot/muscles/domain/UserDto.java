@@ -1,8 +1,11 @@
 package com.kinaboot.muscles.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class UserDto {
+
     private Integer userNo;
     private String userId;
     private String password;
@@ -11,8 +14,11 @@ public class UserDto {
     private String address1;
     private String address2;
     private int point;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date birth;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date expiredDate;
 
     public UserDto() {
@@ -21,7 +27,7 @@ public class UserDto {
     public UserDto(String userId, String password, String address1) {
         this.userId = userId;
         this.password = password;
-        this.address1=address1;
+        this.address1 = address1;
     }
 
     public UserDto(String userId, String password, String email, String phone, String address1, int point) {
@@ -34,8 +40,8 @@ public class UserDto {
     }
 
     public UserDto(String userId, String password) {
-        this.userId=userId;
-        this.password=password;
+        this.userId = userId;
+        this.password = password;
     }
 
     public Integer getUserNo() {
@@ -85,6 +91,7 @@ public class UserDto {
     public void setAddress1(String address1) {
         this.address1 = address1;
     }
+
     public String getAddress2() {
         return address2;
     }

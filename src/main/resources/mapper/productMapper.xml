@@ -63,7 +63,7 @@
         ON A.productNo=B.productNo
         where productName like concat('%',#{keyword},'%')
         <include refid="optionCondition"/>
-        LIMIT #{offset}, 10;
+        LIMIT #{offset}, 8;
     </select>
     <sql id="optionCondition">
         <choose>
