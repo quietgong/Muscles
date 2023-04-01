@@ -8,7 +8,8 @@ public class UserDto {
     private String password;
     private String email;
     private String phone;
-    private String address;
+    private String address1;
+    private String address2;
     private int point;
     private Date birth;
     private Date createdDate;
@@ -17,18 +18,18 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String userId, String password, String address) {
+    public UserDto(String userId, String password, String address1) {
         this.userId = userId;
         this.password = password;
-        this.address=address;
+        this.address1=address1;
     }
 
-    public UserDto(String userId, String password, String email, String phone, String address, int point) {
+    public UserDto(String userId, String password, String email, String phone, String address1, int point) {
         this.userId = userId;
         this.password = password;
         this.email = email;
         this.phone = phone;
-        this.address = address;
+        this.address1 = address1;
         this.point = point;
     }
 
@@ -77,12 +78,19 @@ public class UserDto {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddress1() {
+        return address1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
     }
 
     public int getPoint() {
@@ -125,7 +133,8 @@ public class UserDto {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
                 ", point=" + point +
                 ", birth=" + birth +
                 ", createdDate=" + createdDate +

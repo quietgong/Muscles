@@ -137,6 +137,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int insertUser(UserDto userDto) {
+        System.out.println("userDto = " + userDto);
         return session.insert(namespace + "insertUser", userDto);
     }
 }

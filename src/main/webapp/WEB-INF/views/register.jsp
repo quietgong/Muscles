@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <style>
+    #emailVerifyNumber {
+        background-color: #e0d9d9;
+    }
+
     input[type=text], input[type=date] {
         width: 40%;
         padding: 12px 20px;
@@ -32,9 +36,9 @@
         border-radius: 5px;
     }
 
-    .required {
-        font-weight: bold;
-        color: red;
+    .checkMsg {
+        display: none;
+        color: #dc3545;
     }
 </style>
 <!-- nav -->
@@ -42,70 +46,57 @@
 <!-- 본문 -->
 <div class="container">
     <div>
-        <form action="<c:url value="/register"/>" name="registerForm" method="post">
-            <p><span class="required">*</span> 표시는 필수입력 항목입니다.</p>
-            <label>아이디 <span class="required">*</span></label><br>
-            <input required type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
-            <div><font id="id_check"></font></div>
+        <form id="registerForm" method="post">
+            <label>아이디</label><br>
+            <input type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
+            <span id="id_check" class="checkMsg">아이디를 입력해주세요</span>
+            <span id="id_length_check" class="checkMsg">ID는 4자 이상 20자 이하로 입력해주세요</span>
+            <span id="dup_id_check" class="checkMsg">이미 사용중인 아이디입니다.</span>
             <br>
 
-            <label>비밀번호 <span class="required">*</span></label><br>
-            <input required type="text" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
+            <label>비밀번호</label><br>
+            <input type="text" id="pw1" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
+            <span id="pw_check" class="checkMsg">비밀번호를 입력해주세요</span>
+            <span id="pw_length_check" class="checkMsg">비밀번호는 5자 이상으로 입력해주세요</span>
+            <br>
 
-            <label>비밀번호 확인 <span class="required">*</span></label><br>
-            <input required type="text" id="password_check"><br>
+            <label>비밀번호 확인</label><br>
+            <input type="text" id="pw2"><br>
+            <span id="pw2_check_ok" class="checkMsg" style="color: #04aa6d">비밀번호가 일치합니다</span>
+            <span id="pw2_check_fail" class="checkMsg">비밀번호가 일치하지 않습니다</span>
+            <br>
 
-            <label>휴대폰 번호 <span class="required">*</span></label><br>
-            <input required type="text" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
-
-            <label>주소 <span class="required">*</span></label>
-            <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-            <input type="text" id="postcode" placeholder="우편번호">
-            <input required type="text" name="address" id="address" placeholder="주소"><br>
-            <input type="text" name="address" id="detailAddress" placeholder="상세주소"><br>
+            <label>휴대폰 번호</label><br>
+            <input type="text" id="phone" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
+            <span id="phone_check" class="checkMsg">연락처를 입력해주세요</span>
+            <br>
 
             <label>이메일</label><br>
-            <input type="text" name="email"><br>
+            <input type="text" id="email" name="email"><br>
+            <span id="email_check" class="checkMsg">이메일을 입력해주세요</span>
+            <br>
 
-            <label>추천인 ID</label><br>
-            <input type="text" placeholder="10% 할인쿠폰을 드립니다"><br>
+            <!-- 인증번호를 입력하는 input -->
+            <input id="emailVerifyNumber" type="text" readonly name="verify">
+            <button type="button">인증번호 전송</button>
+            <br>
+            <input type="hidden" name="">
 
-            <input type="submit" value="회원 가입">
+            <label>주소</label><br>
+            <input type="button" onclick="execDaumPostcode()" value="주소 찾기"><br>
+            <input type="text" readonly name="address1" id="address" placeholder="주소">
+            <input type="text" name="address2" id="detailAddress" placeholder="상세주소"><br>
+            <span id="address_check" class="checkMsg">주소를 입력해주세요</span>
+            <br>
+
+            <input id="register" type="button" value="회원 가입">
         </form>
     </div>
 </div>
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-    /* 유효성 체크 */
-    // 1. 비밀번호
-    // let regPass = /^(?=.*[a-zA-Z])(?=.*[0-9]).{5,20}$/;
-    // if (!regPass.test(password)) alert("영문, 숫자 조합으로 5-20자리 입력해주세요.")
-
-    /* 아이디 중복체크 (비동기) */
-    $("#inputId").keyup(function () {
-        let inputId = $("input[name=id]").val();
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/register/idDupCheck?inputId=" + inputId,      // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-                "X-HTTP-Method-Override": "POST"
-            },
-            dataType: 'text',
-            data: inputId,
-            success: function (res) {
-                if (res == 0)
-                    $("#id_check").html("사용 가능한 아이디입니다.").attr('color', '#2fb380')
-                else
-                    $("#id_check").html("이미 사용중인 아이디입니다.").attr('color', '#dc3545')
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
-        })
-    })
-
-    /* 우편번호 API */
+    /* Daum 우편번호 API */
     function execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function (data) {
@@ -139,13 +130,187 @@
                         extraAddr = ' (' + extraAddr + ')';
                 }
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('postcode').value = data.zonecode;
                 document.getElementById("address").value = addr + extraAddr;
                 // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("detailAddress").focus();
             }
         }).open();
     }
+</script>
+<script>
+    /* 회원가입 정보 유효성 체크 */
+
+    let idCheck = false // 아이디 입력 체크
+    let dupIdCheck = false // 아이디 중복 체크
+    let idLengthCheck = false // 아이디 길이 체크
+    let pwCheck = false // 비밀번호 입력 체크
+    let pwLengthCheck = false // 비밀번호 길이 체크
+    let pw1pw2Check = false // 비밀번호, 비밀번호 확인 일치 체크
+    let phoneCheck = false // 휴대폰번호 입력 체크
+    let emailCheck = false // 이메일 입력 체크
+    let addressCheck = false // 주소 입력 체크
+
+    $(document).ready(function () {
+        $("#register").on("click", function () {
+            IdValidCheck()
+            PwValidCheck()
+            Pw1Pw2Check()
+            EmailValidCheck()
+            AddressValidCheck()
+            PhoneValidCheck()
+            /* 최종 유효성 검사 */
+            if (idCheck && dupIdCheck && idLengthCheck && pwCheck && pwLengthCheck && pw1pw2Check && phoneCheck && emailCheck && addressCheck) {
+                const form = $("#registerForm")
+                form.attr("action", "<c:url value="/register"/>")
+                form.submit()
+            }
+            return false;
+        })
+        /*
+        * ID 유효성 체크
+         */
+        function IdValidCheck(){
+            let id = $("input[name=userId]").val()
+            // 입력 여부 체크
+            if (id == "") {
+                $("#id_check").css("display", "block")
+                idCheck = false
+            } else {
+                $("#id_check").css("display", "none")
+                idCheck = true
+            }
+            // 아이디 길이 체크
+            if (id != "" && id.length < 4 || id.length > 20) {
+                $("#id_length_check").css("display", "block")
+                idLengthCheck = false
+            } else {
+                $("#id_length_check").css("display", "none")
+                idLengthCheck = true
+            }
+            // 아이디 중복체크 //
+            if (idCheck && idLengthCheck) {
+                $.ajax({
+                    type: "GET",            // HTTP method type(GET, POST) 형식이다.
+                    url: "/muscles/register/idDupCheck/" + id,      // 컨트롤러에서 대기중인 URL 주소이다.
+                    headers: {              // Http header
+                        "Content-Type": "application/json",
+                        "X-HTTP-Method-Override": "POST"
+                    },
+                    success: function (res) {
+                        if (res !== 0) {
+                            $("#dup_id_check").css("display", "block")
+                            dupIdCheck = false
+                        } else {
+                            $("#dup_id_check").css("display", "none")
+                            dupIdCheck = true
+                        }
+                    },
+                    error: function () {
+                        console.log("통신 실패")
+                    }
+                })
+            }
+        }
+        $("#inputId").on("keyup", function () {
+            IdValidCheck()
+        })
+        /*
+        * 비밀번호 유효성 체크
+         */
+        function PwValidCheck(){
+            let pw1 = $("#pw1").val()
+            // 입력 여부 체크
+            if (pw1 == "") {
+                $("#pw_check").css("display", "block")
+                pwCheck = false
+            } else {
+                $("#pw_check").css("display", "none")
+                pwCheck = true
+            }
+            // 비밀번호 길이 체크
+            if (pw1 != "" && pw1.length < 5) {
+                $("#pw_length_check").css("display", "block")
+                pwLengthCheck = false
+            } else {
+                $("#pw_length_check").css("display", "none")
+                pwLengthCheck = true
+            }
+        }
+        $("#pw1").on("keyup", function () {
+            PwValidCheck()
+        });
+        // 비밀번호1, 비밀번호2 일치 체크
+        function Pw1Pw2Check(){
+            let pw1 = $("#pw1").val()
+            let pw2 = $("#pw2").val()
+            if(pw2!="") {
+                if (pw1 == pw2) {
+                    $("#pw2_check_ok").css("display", "block")
+                    $("#pw2_check_fail").css("display", "none")
+                    pw1pw2Check = true
+                } else {
+                    $("#pw2_check_ok").css("display", "none")
+                    $("#pw2_check_fail").css("display", "block")
+                    pw1pw2Check = false
+                }
+            }
+        }
+        $("#pw2").on("keyup", function () {
+            Pw1Pw2Check()
+        });
+        /*
+        * 이메일 유효성 체크
+         */
+        function EmailValidCheck(){
+            let email = $("#email").val()
+            // 입력 여부 체크
+            if (email == "") {
+                $("#email_check").css("display", "block")
+                emailCheck = false
+            } else {
+                $("#email_check").css("display", "none")
+                emailCheck = true
+            }
+        }
+        $("#email").on("keyup", function () {
+            EmailValidCheck()
+        })
+        /*
+        * 주소 유효성 체크
+         */
+        function AddressValidCheck(){
+            let address = $("#address").val()
+            // 입력 여부 체크
+            if (address == "") {
+                $("#address_check").css("display", "block")
+                addressCheck = false
+            } else {
+                $("#address_check").css("display", "none")
+                addressCheck = true
+            }
+        }
+        $("#address").on("keyup", function () {
+            AddressValidCheck()
+        })
+        /*
+        * 연락처 유효성 체크
+         */
+        function PhoneValidCheck(){
+            $("#phone").val($("#phone").val().replaceAll("-", ""))
+            let phone = $("#phone").val()
+            // 입력 여부 체크
+            if (phone == "") {
+                $("#phone_check").css("display", "block")
+                phoneCheck = false
+            } else {
+                $("#phone_check").css("display", "none")
+                phoneCheck = true
+            }
+        }
+        $("#phone").on("keyup", function () {
+            PhoneValidCheck()
+        })
+    })
 </script>
 <!-- footer -->
 <%@ include file="footer.jsp" %>

@@ -27,24 +27,22 @@ public class RegisterController {
     }
 
     @PostMapping("")
-    public String registerUser(UserDto userDto, HttpServletRequest request) throws Exception {
-        userDto.setAddress(String.join(" ", request.getParameterValues("address")));
-        System.out.println("userDto = " + userDto);
-        // 중복된 아이디가 있으면 오류 메세지 출력
+    public String registerUser(UserDto userDto) throws Exception {
+        logger.info("회원가입 진입");
         String id = userDto.getUserId();
-        if (userDao.selectUser(id) != null) {
-            String msg = "중복된 아이디입니다.";
-            return "redirect:/?msg=" + URLEncoder.encode(msg, "UTF-8");
-        }
+        if (userDao.selectUser(id) != null)
+            return "redirect:/?msg=" + URLEncoder.encode("중복된 아이디입니다.", "UTF-8");
         userDao.insertUser(userDto);
+
+        logger.info("ID : " + userDto.getUserId() + "생성 성공");
         return "redirect:/";
     }
 
-    @GetMapping("/idDupCheck")
+    @GetMapping("/idDupCheck/{id}")
     @ResponseBody
-    public int idDupCheck(@RequestParam(value = "inputId") String inputId){
-        if (userDao.selectUser(inputId) == null)
-            return 0;
-        else return 1;
+    public int idDupCheck(@PathVariable String id) {
+        logger.info("중복검사 ID : " + id);
+
+        return userDao.selectUser(id) == null ? 0 : 1;
     }
 }
