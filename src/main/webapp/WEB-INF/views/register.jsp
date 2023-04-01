@@ -32,7 +32,8 @@
         border-radius: 3px;
     }
 
-    div {
+    .items {
+        padding: 25px;
         border-radius: 5px;
     }
 
@@ -40,49 +41,52 @@
         display: none;
         color: #dc3545;
     }
+
+    .registerLabel {
+        display: inline-block;
+        width: 120px;
+    }
 </style>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
 <!-- 본문 -->
 <div class="container">
-    <div>
+    <div class="items">
         <form id="registerForm" method="post">
-            <label>아이디</label><br>
+            <label class="registerLabel">아이디</label>
             <input type="text" id="inputId" name="userId" placeholder="5자 이상 20자 이하">
             <span id="id_check" class="checkMsg">아이디를 입력해주세요</span>
             <span id="id_length_check" class="checkMsg">ID는 4자 이상 20자 이하로 입력해주세요</span>
             <span id="dup_id_check" class="checkMsg">이미 사용중인 아이디입니다.</span>
             <br>
 
-            <label>비밀번호</label><br>
+            <label class="registerLabel">비밀번호</label>
             <input type="text" id="pw1" name="password" placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
             <span id="pw_check" class="checkMsg">비밀번호를 입력해주세요</span>
             <span id="pw_length_check" class="checkMsg">비밀번호는 5자 이상으로 입력해주세요</span>
             <br>
 
-            <label>비밀번호 확인</label><br>
+            <label class="registerLabel">비밀번호 확인</label>
             <input type="text" id="pw2"><br>
             <span id="pw2_check_ok" class="checkMsg" style="color: #04aa6d">비밀번호가 일치합니다</span>
             <span id="pw2_check_fail" class="checkMsg">비밀번호가 일치하지 않습니다</span>
             <br>
 
-            <label>휴대폰 번호</label><br>
+            <label class="registerLabel">휴대폰 번호</label>
             <input type="text" id="phone" name="phone" placeholder="-를 제외하고 입력해주세요"><br>
             <span id="phone_check" class="checkMsg">연락처를 입력해주세요</span>
             <br>
 
-            <label>이메일</label><br>
-            <input type="text" id="email" name="email"><br>
-            <span id="email_check" class="checkMsg">이메일을 입력해주세요</span>
-            <br>
-
+            <label class="registerLabel">이메일</label>
+            <input type="text" id="email" name="email">
             <!-- 인증번호를 입력하는 input -->
             <input id="emailVerifyNumber" type="text" readonly name="verify">
             <button type="button">인증번호 전송</button>
             <br>
+            <span id="email_check" class="checkMsg">이메일을 입력해주세요</span>
             <input type="hidden" name="">
 
-            <label>주소</label><br>
+            <label>주소</label>
             <input type="button" onclick="execDaumPostcode()" value="주소 찾기"><br>
             <input type="text" readonly name="address1" id="address" placeholder="주소">
             <input type="text" name="address2" id="detailAddress" placeholder="상세주소"><br>
@@ -166,10 +170,11 @@
             }
             return false;
         })
+
         /*
         * ID 유효성 체크
          */
-        function IdValidCheck(){
+        function IdValidCheck() {
             let id = $("input[name=userId]").val()
             // 입력 여부 체크
             if (id == "") {
@@ -211,13 +216,15 @@
                 })
             }
         }
+
         $("#inputId").on("keyup", function () {
             IdValidCheck()
         })
+
         /*
         * 비밀번호 유효성 체크
          */
-        function PwValidCheck(){
+        function PwValidCheck() {
             let pw1 = $("#pw1").val()
             // 입력 여부 체크
             if (pw1 == "") {
@@ -236,14 +243,16 @@
                 pwLengthCheck = true
             }
         }
+
         $("#pw1").on("keyup", function () {
             PwValidCheck()
         });
+
         // 비밀번호1, 비밀번호2 일치 체크
-        function Pw1Pw2Check(){
+        function Pw1Pw2Check() {
             let pw1 = $("#pw1").val()
             let pw2 = $("#pw2").val()
-            if(pw2!="") {
+            if (pw2 != "") {
                 if (pw1 == pw2) {
                     $("#pw2_check_ok").css("display", "block")
                     $("#pw2_check_fail").css("display", "none")
@@ -255,13 +264,15 @@
                 }
             }
         }
+
         $("#pw2").on("keyup", function () {
             Pw1Pw2Check()
         });
+
         /*
         * 이메일 유효성 체크
          */
-        function EmailValidCheck(){
+        function EmailValidCheck() {
             let email = $("#email").val()
             // 입력 여부 체크
             if (email == "") {
@@ -272,13 +283,15 @@
                 emailCheck = true
             }
         }
+
         $("#email").on("keyup", function () {
             EmailValidCheck()
         })
+
         /*
         * 주소 유효성 체크
          */
-        function AddressValidCheck(){
+        function AddressValidCheck() {
             let address = $("#address").val()
             // 입력 여부 체크
             if (address == "") {
@@ -289,13 +302,15 @@
                 addressCheck = true
             }
         }
+
         $("#address").on("keyup", function () {
             AddressValidCheck()
         })
+
         /*
         * 연락처 유효성 체크
          */
-        function PhoneValidCheck(){
+        function PhoneValidCheck() {
             $("#phone").val($("#phone").val().replaceAll("-", ""))
             let phone = $("#phone").val()
             // 입력 여부 체크
@@ -307,6 +322,7 @@
                 phoneCheck = true
             }
         }
+
         $("#phone").on("keyup", function () {
             PhoneValidCheck()
         })
