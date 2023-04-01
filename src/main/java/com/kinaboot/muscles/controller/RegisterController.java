@@ -73,20 +73,20 @@ public class RegisterController {
         String content =
                 "머슬스 회원가입을 환영합니다."
                 +"<br><br>"
-                +"인증 번호는 " + verifyNum + " 입니다.";
+                +"인증 번호는 " + "<strong>" + verifyNum + "</strong> 입니다.";
 
-//        /* 발송 */
-//        try {
-//            MimeMessage message = mailSender.createMimeMessage();
-//            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-//            helper.setFrom(setFrom);
-//            helper.setTo(toMail);
-//            helper.setSubject(title);
-//            helper.setText(content,true);
-//            mailSender.send(message);
-//        }catch(Exception e) {
-//            e.printStackTrace();
-//        }
+        /* 발송 */
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            helper.setFrom(setFrom);
+            helper.setTo(toMail);
+            helper.setSubject(title);
+            helper.setText(content,true);
+            mailSender.send(message);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
 
         return String.valueOf(verifyNum);
     }
