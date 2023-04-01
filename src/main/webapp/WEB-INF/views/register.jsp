@@ -79,12 +79,16 @@
 
             <label class="registerLabel">이메일</label>
             <input type="text" id="email" name="email">
-            <!-- 인증번호를 입력하는 input -->
-            <input id="emailVerifyNumber" type="text" readonly name="verify">
-            <button type="button">인증번호 전송</button>
-            <br>
             <span id="email_check" class="checkMsg">이메일을 입력해주세요</span>
-            <input type="hidden" name="">
+            <span id="email_form_check" class="checkMsg">올바른 이메일 형식을 입력해주세요</span>
+            <br>
+
+            <input id="emailVerifyNumber" type="text" readonly name="verify">
+            <button id="sendVerifyNumber" type="button">인증번호 전송</button>
+            <br>
+
+            <span id="email_verify_check_ok" class="checkMsg" style="color: #04aa6d">인증번호가 일치합니다</span>
+            <span id="email_verify_check_fail" class="checkMsg">인증번호가 불일치합니다</span>
 
             <label>주소</label>
             <input type="button" onclick="execDaumPostcode()" value="주소 찾기"><br>
@@ -152,6 +156,8 @@
     let pw1pw2Check = false // 비밀번호, 비밀번호 확인 일치 체크
     let phoneCheck = false // 휴대폰번호 입력 체크
     let emailCheck = false // 이메일 입력 체크
+    let emailFormCheck = false // 이메일 형식 체크
+    let emailVerifyCheck = false // 이메일 인증 체크
     let addressCheck = false // 주소 입력 체크
 
     $(document).ready(function () {
@@ -160,10 +166,12 @@
             PwValidCheck()
             Pw1Pw2Check()
             EmailValidCheck()
+            EmailVerifyCheck()
+            EmailFormCheck($("#email").val())
             AddressValidCheck()
             PhoneValidCheck()
             /* 최종 유효성 검사 */
-            if (idCheck && dupIdCheck && idLengthCheck && pwCheck && pwLengthCheck && pw1pw2Check && phoneCheck && emailCheck && addressCheck) {
+            if (idCheck && dupIdCheck && idLengthCheck && pwCheck && pwLengthCheck && pw1pw2Check && phoneCheck && emailCheck && emailFormCheck && emailVerifyCheck && addressCheck) {
                 const form = $("#registerForm")
                 form.attr("action", "<c:url value="/register"/>")
                 form.submit()
@@ -286,6 +294,62 @@
 
         $("#email").on("keyup", function () {
             EmailValidCheck()
+            if (emailCheck) {
+                if (EmailFormCheck($("#email").val())) {
+                    $("#email_form_check").css("display", "none")
+                    emailFormCheck = true
+                } else {
+                    $("#email_form_check").css("display", "block")
+                    emailFormCheck = false
+                }
+            }
+        })
+
+        function EmailFormCheck(email) {
+            var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            return form.test(email)
+        }
+
+        // 이메일 인증 체크
+        function EmailVerifyCheck() {
+            if ($("#emailVerifyNumber").val() == verifyCode) {
+                emailVerifyCheck = true
+                $("#email_verify_check_ok").css("display", "block")
+                $("#email_verify_check_fail").css("display", "none")
+            } else {
+                emailVerifyCheck = false
+                $("#email_verify_check_ok").css("display", "none")
+                $("#email_verify_check_fail").css("display", "block")
+            }
+        }
+
+        $("#emailVerifyNumber").on("keyup", function () {
+            EmailVerifyCheck()
+        })
+        /* 이메일 인증코드 발송 */
+        let verifyCode;
+        $("#sendVerifyNumber").on("click", function () {
+            EmailValidCheck()
+            if (emailCheck) {
+                let email = $("#email").val()
+                $.ajax({
+                    type: "GET",            // HTTP method type(GET, POST) 형식이다.
+                    url: "/muscles/register/mailCheck?email=" + email,
+                    headers: {              // Http header
+                        "Content-Type": "application/json",
+                    },
+                    success: function (verifyNum) {
+                        console.log("인증번호 : " + verifyNum)
+                        verifyCode = verifyNum
+                        $("#emailVerifyNumber").attr("readonly", false)
+                        $("#emailVerifyNumber").css("background-color", "#fff")
+                        $("#emailVerifyNumber").focus()
+                    },
+                    error: function () {
+                        console.log("통신 실패")
+                    }
+                })
+            }
         })
 
         /*
@@ -327,6 +391,9 @@
             PhoneValidCheck()
         })
     })
+</script>
+<script>
+
 </script>
 <!-- footer -->
 <%@ include file="footer.jsp" %>
