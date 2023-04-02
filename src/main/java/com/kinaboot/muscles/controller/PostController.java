@@ -1,8 +1,8 @@
 package com.kinaboot.muscles.controller;
 
-import com.kinaboot.muscles.domain.PageHandler;
+import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
-import com.kinaboot.muscles.domain.SearchCondition;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.PostSerivce;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class PostController {
             return "redirect:/login?toURL=" + request.getRequestURL();
         sc.setType(postCategory);
 
-        int totalCnt = postSerivce.getCountBySearch(sc);
+        Integer totalCnt = postSerivce.getCountBySearch(sc);
         m.addAttribute("postCategory", postCategory);
         m.addAttribute("totalCnt", totalCnt);
         m.addAttribute("ph", new PageHandler(totalCnt, sc));

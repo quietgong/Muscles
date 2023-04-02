@@ -1,7 +1,6 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.CartDto;
-import com.kinaboot.muscles.domain.ProductDto;
 
 import java.util.List;
 

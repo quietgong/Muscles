@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.domain.*;
+import com.kinaboot.muscles.handler.SearchCondition;
 
 import java.util.List;
 

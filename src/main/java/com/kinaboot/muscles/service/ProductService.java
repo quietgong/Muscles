@@ -3,7 +3,7 @@ package com.kinaboot.muscles.service;
 import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.domain.ProductImgDto;
-import com.kinaboot.muscles.domain.SearchCondition;
+import com.kinaboot.muscles.handler.SearchCondition;
 
 import java.util.List;
 

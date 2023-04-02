@@ -1,4 +1,4 @@
-package com.kinaboot.muscles.domain;
+package com.kinaboot.muscles.handler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;

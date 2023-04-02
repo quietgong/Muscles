@@ -1,12 +1,11 @@
 package com.kinaboot.muscles.dao;
 
-import com.kinaboot.muscles.domain.PageHandler;
+import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
-import com.kinaboot.muscles.domain.SearchCondition;
-import org.springframework.stereotype.Repository;
+import com.kinaboot.muscles.handler.SearchCondition;
 
 import java.util.List;
-import java.util.Map;
+
 public interface PostDao {
     int count(String type) throws Exception // T selectOne(String statement)
     ;
@@ -35,7 +34,7 @@ public interface PostDao {
     List<PostDto> searchResult(SearchCondition sc) throws Exception // List<E> selectList(String statement, Object parameter)
     ;
 
-    int searchResultCnt(SearchCondition sc) throws Exception;
+    Integer searchResultCnt(SearchCondition sc) throws Exception;
 
     int update(PostDto dto) throws Exception // int update(String statement, Object parameter)
     ;

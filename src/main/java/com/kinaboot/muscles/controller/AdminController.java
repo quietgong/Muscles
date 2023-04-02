@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.domain.*;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.ProductService;
 import com.kinaboot.muscles.service.UserService;

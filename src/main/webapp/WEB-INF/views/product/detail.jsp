@@ -25,7 +25,9 @@
                 </div>
                 <span style="font-size: small">리뷰 : ${reviewDtoList.size()}개</span>
                 <hr/>
-                <span style="font-size:25px; font-weight:bold;">${productDto.productStock}</span>
+                <c:if test="${productDto.productStock<10}">
+                    <span style="font-size:15px; color: red">${productDto.productStock}개 남음</span>
+                </c:if>
 
                 <a href="#" onclick='count("minus"); return false;'><span
                         style="font-size: 25px; font-weight: bold">-</span></a>

@@ -1,5 +1,9 @@
-package com.kinaboot.muscles.domain;
+package com.kinaboot.muscles.handler;
 
+import com.kinaboot.muscles.domain.ProductDto;
+import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.handler.PageHandler;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.ProductService;
 import com.kinaboot.muscles.service.ReviewService;
 import org.junit.Test;

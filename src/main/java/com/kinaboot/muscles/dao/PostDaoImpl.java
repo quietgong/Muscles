@@ -1,8 +1,8 @@
 package com.kinaboot.muscles.dao;
 
-import com.kinaboot.muscles.domain.PageHandler;
+import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
-import com.kinaboot.muscles.domain.SearchCondition;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,7 +46,7 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public int searchResultCnt(SearchCondition sc) {
+    public Integer searchResultCnt(SearchCondition sc) {
         return session.selectOne(namespace + "searchResultCnt", sc);
     }
 

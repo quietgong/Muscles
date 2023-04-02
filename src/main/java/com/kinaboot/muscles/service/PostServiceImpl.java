@@ -1,15 +1,13 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.PostDao;
-import com.kinaboot.muscles.domain.PageHandler;
+import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
-import com.kinaboot.muscles.domain.SearchCondition;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PostServiceImpl implements PostSerivce{
@@ -39,7 +37,7 @@ public class PostServiceImpl implements PostSerivce{
     }
 
     @Override
-    public int getCountBySearch(SearchCondition sc) throws Exception {
+    public Integer getCountBySearch(SearchCondition sc) throws Exception {
         return postDao.searchResultCnt(sc);
     }
 

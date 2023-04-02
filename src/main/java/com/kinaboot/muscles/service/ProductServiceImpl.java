@@ -4,7 +4,7 @@ import com.kinaboot.muscles.dao.ProductDao;
 import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.ProductDto;
 import com.kinaboot.muscles.domain.ProductImgDto;
-import com.kinaboot.muscles.domain.SearchCondition;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

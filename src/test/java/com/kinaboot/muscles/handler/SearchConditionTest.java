@@ -1,9 +1,11 @@
-package com.kinaboot.muscles.domain;
+package com.kinaboot.muscles.handler;
 
 import com.kinaboot.muscles.dao.PostDao;
+import com.kinaboot.muscles.domain.OrderDto;
+import com.kinaboot.muscles.domain.PostDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.ProductService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class SearchConditionTest {

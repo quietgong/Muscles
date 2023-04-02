@@ -4,6 +4,7 @@ import com.kinaboot.muscles.dao.CartDao;
 import com.kinaboot.muscles.dao.OrderDao;
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.*;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

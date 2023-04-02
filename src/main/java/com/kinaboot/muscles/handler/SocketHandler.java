@@ -1,4 +1,4 @@
-package com.kinaboot.muscles.domain;
+package com.kinaboot.muscles.handler;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
