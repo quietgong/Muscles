@@ -10,6 +10,9 @@
     .item {
         flex-basis: 100%;
     }
+    .ck-content{
+        height: 170px;
+    }
 </style>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
@@ -23,7 +26,7 @@
             </span>
     </div>
     <div class="item">
-        <textarea name="content" rows="7" cols="80" placeholder="내용을 입력해주세요"></textarea>
+        <textarea id="board_textarea" name="content" rows="7" cols="80" placeholder="내용을 입력해주세요"></textarea>
     </div>
     <div class="item">
         <input type="submit" value="완료">
@@ -31,5 +34,14 @@
     </div>
 </div>
 </form>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script>
+    /* 책 소개 */
+    ClassicEditor
+        .create(document.querySelector('#board_textarea'))
+        .catch(error=>{
+            console.error(error);
+        });
+</script>
 <!-- footer -->
 <%@ include file="footer.jsp" %>

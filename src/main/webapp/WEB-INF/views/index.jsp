@@ -4,7 +4,7 @@
 <style>
     img {
         width: 400px;
-        height: 300px;
+        height: 400px;
     }
 
     .content {
@@ -18,7 +18,6 @@
     }
 
     .image_wrap img {
-        max-width: 85%;
         height: auto;
         display: block;
         margin: auto;

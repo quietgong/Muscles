@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,9 @@ public class RegisterController {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     private final UserDao userDao;
 
@@ -42,6 +46,13 @@ public class RegisterController {
         String id = userDto.getUserId();
         if (userDao.selectUser(id) != null)
             return "redirect:/?msg=" + URLEncoder.encode("중복된 아이디입니다.", "UTF-8");
+        String originPw = "";
+        String encodingPw = "";
+
+        originPw = userDto.getPassword();
+        encodingPw = passwordEncoder.encode(originPw);
+        userDto.setPassword(encodingPw);
+
         userDao.insertUser(userDto);
 
         logger.info("ID : " + userDto.getUserId() + "생성 성공");
@@ -67,7 +78,7 @@ public class RegisterController {
         int verifyNum = random.nextInt(888888) + 111111;
         logger.info("생성된 인증번호 : " + verifyNum);
         /* 이메일 발송 */
-        String setFrom = "admin@muscles.com";
+        String setFrom = "quietgong@naver.com";
         String toMail = email;
         String title = "머슬스 회원가입 인증 이메일 입니다.";
         String content =

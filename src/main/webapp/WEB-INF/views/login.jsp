@@ -22,7 +22,7 @@
     <div class="login-btn">
         <form action="<c:url value="/login"/>" name="loginForm" method="post">
         <input type="text" name="userId" value="${cookie.id.value}" placeholder="아이디" /><br>
-        <input type="text" name="password" value="1234" placeholder="비밀번호" /><br>
+        <input type="password" name="password" value="1234" placeholder="비밀번호" /><br>
         <input type="submit" value="로그인">
         <a href="register.html"><input type="submit" value="회원가입"></a>
         <div>
