@@ -105,9 +105,9 @@
 </script>
 <script>
     // 댓글 기능
-    let postNo = ${postDto.postNo}
-        // 댓글 불러오기
-        loadComments()
+    let postNo = ${postDto.postNo};
+    // 댓글 불러오기
+    loadComments()
 
     function loadComments() {
         $.ajax({
@@ -120,26 +120,31 @@
                 $("#commentList").html(toHtml(res))
             },
             error: function () {
-                console.log("통신 실패")
+                alert("AJAX 통신 실패")
             }
         })
     }
 
     // 댓글 생성
     $("#createComment").on("click", function () {
+        let userId = '${userId}';
         let content = $("#inputComment").val()
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/comments?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/comments/", // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
-            data: JSON.stringify({content: content}),
+            data: JSON.stringify({
+                userId: userId,
+                postNo: postNo,
+                content: content
+            }),
             success: function () {
                 loadComments()
             },
             error: function () {
-                console.log("통신 실패")
+                alert("AJAX 통신 실패")
             }
         })
         $("#inputComment").val("")
@@ -149,15 +154,15 @@
         let commentNo = $(this).parent().attr('data-commentno')
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/comments/" + commentNo + "?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/comments/" + commentNo,
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
-            success: function (res) {
+            success: function () {
                 loadComments()
             },
             error: function () {
-                console.log("통신 실패")
+                alert("AJAX 통신 실패")
             }
         })
     })
@@ -176,7 +181,7 @@
 
             $.ajax({
                 type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/comments/" + commentNo + "?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
+                url: "/muscles/comments/" + commentNo,
                 headers: {              // Http header
                     "Content-Type": "application/json",
                 },
@@ -185,7 +190,7 @@
                     loadComments()
                 },
                 error: function () {
-                    console.log("통신 실패")
+                    alert("AJAX 통신 실패")
                 }
             })
             $("#createComment").show()

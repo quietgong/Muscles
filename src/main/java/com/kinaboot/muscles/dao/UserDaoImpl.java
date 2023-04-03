@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int insertQuit(String userId) {
-        Map map = new HashMap();
+        HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("opinion", "운영자에 의한 탈퇴처리");
         return session.insert(namespace + "insertQuitByAdmin", map);

@@ -28,71 +28,55 @@ public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     UserService userService;
-
     @Autowired
     ProductService productService;
-
     @Autowired
     OrderService orderService;
 
-    @GetMapping("/chatting")
-    public String chattingList() {
-        return "chatRoom";
-    }
-    @GetMapping("/user")
-    public String adminUser() {
-        return "admin/user";
-    }
-
-    @GetMapping("/user/manage")
+    // 유저 목록
+    @GetMapping("/user/")
     @ResponseBody
     public ResponseEntity<List<UserDto>> getUser() {
+        logger.info("유저 목록 출력");
         return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
-
-    @DeleteMapping("/user/manage/{userId}")
+    // 유저 탈퇴 처리
+    @DeleteMapping("/user/{userId}")
     @ResponseBody
-    public ResponseEntity<String> removeUser(@PathVariable String userId) throws Exception {
-        System.out.println("userid = " + userId);
-        // 1. 유저 expiredDate 생성
-        userService.removeUser(userId);
-        // 2. 회원탈퇴 데이터에 운영자에 의한 탈퇴임을 기록
-        userService.createQuit(userId);
-        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
+    public ResponseEntity<String> removeUser(@PathVariable String userId) {
+        logger.info("ID : " + userId + " 탈퇴 처리");
+        try {
+            userService.removeUser(userId);
+            return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("DEL_FAIL", HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/product")
-    public String getProduct(Model m) {
-        logger.info("상품관리 페이지 진입");
-
-        List<ProductDto> productDtoList = productService.getAllProduct();
-        m.addAttribute("list", productDtoList);
-        return "admin/product";
-    }
-
-    @GetMapping("/product/manage")
+    /* 상품관리 */
+    @GetMapping("/product/")
     @ResponseBody
     public ResponseEntity<List<ProductDto>> getProductItems() {
+        logger.info("상품관리 진입");
         return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
     }
 
-    @GetMapping("/product/manage/detailImg/{productNo}")
+    @GetMapping("/product/detailImg/{productNo}")
     @ResponseBody
     public ResponseEntity<List<ProductImgDto>> getProductDetailImg(@PathVariable Integer productNo) {
         return new ResponseEntity<>(productService.getProductDetailImgList(productNo), HttpStatus.OK);
     }
 
-    @DeleteMapping("/product/manage/{productNo}")
+    @DeleteMapping("/product/{productNo}")
     @ResponseBody
     public ResponseEntity<String> removeProduct(@PathVariable Integer productNo) {
         productService.removeProduct(productNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
-    @PatchMapping("/product/manage/")
+    @PatchMapping("/product/")
     @ResponseBody
     public ResponseEntity<String> modifyProduct(@RequestBody ProductDto productDto) {
-        System.out.println("productDto = " + productDto);
         productService.modifyProduct(productDto);
         return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
     }
@@ -120,16 +104,15 @@ public class AdminController {
         }
         return new ResponseEntity<>(productImgDtoList, HttpStatus.OK);
     }
-
+    /* 상품관리 */
 
     @GetMapping("/order")
     public String getOrder(SearchCondition sc, Model m) {
-        List<OrderDto> orderDtoList = orderService.getAdminOrderList(sc);
-        m.addAttribute(orderDtoList);
+        m.addAttribute("orderDtoList", orderService.getAdminOrderList(sc));
         return "admin/order";
     }
 
-    @PostMapping("/order/accept/{orderNo}")
+    @PostMapping("/order/{orderNo}")
     @ResponseBody
     public ResponseEntity<String> acceptOrder(@PathVariable Integer orderNo) {
         orderService.acceptOrder(orderNo);

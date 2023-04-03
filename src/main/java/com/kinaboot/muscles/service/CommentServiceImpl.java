@@ -27,8 +27,8 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public int remove(Integer commentNo, Integer postNo, String userId) throws Exception {
-        return commentDao.delete(commentNo,postNo,userId);
+    public int remove(Integer commentNo) throws Exception {
+        return commentDao.delete(commentNo);
     }
 
     @Override

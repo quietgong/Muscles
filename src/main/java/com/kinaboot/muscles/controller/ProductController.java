@@ -42,36 +42,39 @@ public class ProductController {
 
     @GetMapping("product/faq/{productNo}")
     @ResponseBody
-    public ResponseEntity<List<FaqDto>> getFaq(@PathVariable Integer productNo){
+    public ResponseEntity<List<FaqDto>> getFaq(@PathVariable Integer productNo) {
         List<FaqDto> faqDtoList = productService.getFaqList(productNo);
         return new ResponseEntity<>(faqDtoList, HttpStatus.OK);
     }
+
     @PostMapping("product/faq/")
     @ResponseBody
-    public ResponseEntity<String> registerFaq(@RequestBody FaqDto faqDto){
+    public ResponseEntity<String> registerFaq(@RequestBody FaqDto faqDto) {
         productService.registerFaq(faqDto);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }
 
 
     @GetMapping("product/list")
-    public String productList(SearchCondition sc, Model m){
+    public String productList(SearchCondition sc, Model m) {
         int totalCnt = productService.getTotalCntByCategory(sc);
         List<ProductDto> productDtoList = calculateReviewScore(productService.productList(sc));
         PageHandler ph = new PageHandler(totalCnt, sc);
-        m.addAttribute("list",productDtoList);
-        m.addAttribute("ph",ph);
+        m.addAttribute("list", productDtoList);
+        m.addAttribute("ph", ph);
         m.addAttribute("totalCnt", totalCnt);
         return "product/list";
     }
 
-    public List<ProductDto> calculateReviewScore(List<ProductDto> productDtoList) {
-        for(ProductDto productDto : productDtoList){
+    private List<ProductDto> calculateReviewScore(List<ProductDto> productDtoList) {
+        for (ProductDto productDto : productDtoList) {
             List<ReviewDto> reviewDtoList = reviewService.getReviewListByProductNo(productDto.getProductNo());
-            double productScore=0.0;
-            for(ReviewDto reviewDto : reviewDtoList)
-                productScore += reviewDto.getScore();
-            productScore = productScore / reviewDtoList.size();
+            double productScore = 0.0;
+            if (reviewDtoList.size() != 0) {
+                for (ReviewDto reviewDto : reviewDtoList)
+                    productScore += reviewDto.getScore();
+                productScore = productScore / reviewDtoList.size();
+            }
             productDto.setProductReviewScore(productScore);
             productDto.setReviewDtoList(reviewDtoList);
         }
@@ -79,16 +82,18 @@ public class ProductController {
     }
 
     @GetMapping("product/detail")
-    public String productDetail(Integer productNo, Model m){
+    public String productDetail(Integer productNo, Model m) {
         ProductDto productDto = productService.getProductByNo(productNo);
         List<ReviewDto> reviewDtoList = reviewService.getReviewListByProductNo(productNo);
         List<ProductImgDto> productImgDtoList = productService.getProductDetailImgList(productNo);
-        double productScore=0.0;
-        for(ReviewDto reviewDto : reviewDtoList)
-            productScore += reviewDto.getScore();
-        productScore = productScore / reviewDtoList.size();
+        double productScore = 0.0;
+        if(reviewDtoList.size()!=0){
+            for (ReviewDto reviewDto : reviewDtoList)
+                productScore += reviewDto.getScore();
+            productScore = productScore / reviewDtoList.size();
+        }
+        productDto.setProductReviewScore(productScore);
         m.addAttribute(productDto);
-        m.addAttribute("productScore", productScore);
         m.addAttribute(reviewDtoList);
         m.addAttribute(productImgDtoList);
         return "product/detail";

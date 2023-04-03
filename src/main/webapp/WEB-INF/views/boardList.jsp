@@ -48,16 +48,19 @@
     <c:if test="${totalCnt!=null&&totalCnt!=0}">
     <ul class="paging">
         <c:if test="${ph.showPrev}">
-        <li><a href="<c:url value='/community/${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt</a></li>
+        <li><a href="<c:url value='/${postCategory}${ph.sc.getQueryString(ph.beginPage-1)}'/>">&lt</a></li>
         </c:if>
         <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-        <li><a href="<c:url value='/community/${ph.sc.getQueryString(i)}'/>">${i}</a></li>
+        <li><a id="${i}" href="<c:url value='/${postCategory}${ph.sc.getQueryString(i)}'/>">${i}</a></li>
         </c:forEach>
         <c:if test="${ph.showNext}">
-            <li><a href="<c:url value='/community/${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt</a></li>
+            <li><a href="<c:url value='/${postCategory}${ph.sc.getQueryString(ph.endPage+1)}'/>">&gt</a></li>
         </c:if>
     </ul>
     </c:if>
 </div>
+<script>
+    $("#${param.page}").attr("class","paging-active")
+</script>
 <!-- footer -->
 <%@ include file="footer.jsp" %>

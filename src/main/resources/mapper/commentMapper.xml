@@ -36,11 +36,9 @@
     <delete id="deleteAll">
         DELETE from comment
     </delete>
-    <delete id="delete" parameterType="map">
+    <delete id="delete" parameterType="int">
         DELETE from comment
-        where commentNo=#{commentNo}
-          and postNo=#{postNo}
-          and userId=#{userId}
+        where commentNo='${commentNo}'
     </delete>
 
 </mapper>

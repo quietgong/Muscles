@@ -5,84 +5,139 @@
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 
-<!-- 본문 -->
+<!-- 상품 정보 시작 -->
 <form id="orderForm" method="post" action="<c:url value='/order'/>">
-    <div class="product-detail-container">
-        <div class="product-detail-item">
-            <c:choose>
-                <c:when test="${productDto.productImgPath eq null}">
-                    <img style="width: 250px; height: 250px;" src="<c:url value='/img/logo.jpg'/>">
-                </c:when>
-                <c:otherwise>
-                    <img style="width: 250px; height: 250px;" src="${productDto.productImgPath}">
-                </c:otherwise>
-            </c:choose>
-            <div class="product-detail-item-detail">
-                <span id="category" style="font-size:25px; font-weight:bold;">${productDto.productCategory}</span>
-                <span id="name" style="font-size:25px; font-weight:bold;">${productDto.productName}</span>
-                <div>
-                    <span class="star">★★★★★<span style="width: ${productScore}%;">★★★★★</span></span>
+    <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-5 mt-5">
+                    <div class="card mb-3">
+                        <c:choose>
+                            <c:when test="${productDto.productImgPath eq null}">
+                                <img class="card-img img-fluid" src="<c:url value='/img/logo.jpg'/>"
+                                     alt="Card image cap" id="product-detail">
+                            </c:when>
+                            <c:otherwise>
+                                <img class="card-img img-fluid" src="${productDto.productImgPath}" alt="Card image cap"
+                                     id="product-detail">
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
-                <span style="font-size: small">리뷰 : ${reviewDtoList.size()}개</span>
-                <hr/>
-                <c:if test="${productDto.productStock<10}">
-                    <span style="font-size:15px; color: red">${productDto.productStock}개 남음</span>
-                </c:if>
-
-                <a href="#" onclick='count("minus"); return false;'><span
-                        style="font-size: 25px; font-weight: bold">-</span></a>
-                <span id="qty" style="font-size: 25px; font-weight: bold">1</span>
-                <a href="#" onclick='count("plus"); return false;'><span
-                        style="font-size: 25px; font-weight: bold">+</span></a>
-                <span id="price" style="float: right">${productDto.productPrice}</span>
-            </div>
-            <div class="product-detail-item-detail" style="margin: auto">
-                <input onclick="addCart()" type="button" value="장바구니 담기"/>
-                <a href="<c:url value='/order/page'/>">
-                    <input id="directOrder" type="submit" value="바로구매"/>
-                </a>
+                <!-- col end -->
+                <div class="col-lg-7 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="h2">${productDto.productName}</h1>
+                            <p id="price" class="h3 py-2">${productDto.productPrice}</p>
+                            <ul class="list-inline pb-3">
+                                <li class="list-inline-item text-right">
+                                    <div class="star-ratings">
+                                        <div class="fill-ratings" style="width: 50%;">
+                                            <span style="font-size: 1.8rem;">★★★★★</span>
+                                        </div>
+                                        <div class="empty-ratings">
+                                            <span style="font-size: 1.8rem;">★★★★★</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <p class="py-2">
+                                <span class="list-inline-item text-dark">
+                                평점 : ${productDto.productReviewScore} | 리뷰 (${productDto.reviewDtoList.size()})
+                                </span>
+                            </p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt
+                                ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum
+                                convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
+                            <input type="hidden" name="product-title" value="Activewear">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <ul class="list-inline pb-3">
+                                        <li class="list-inline-item text-right">
+                                            수량
+                                            <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <c:if test="${productDto.productStock<10}">
+                                                <span>${productDto.productStock}개 남음</span>
+                                            </c:if>
+                                        </li>
+                                        <li class="list-inline-item"><span class="btn btn-success"
+                                                                           id="btn-minus">-</span></li>
+                                        <li class="list-inline-item"><span class="badge bg-secondary"
+                                                                           id="var-value">1</span></li>
+                                        <li class="list-inline-item"><span class="btn btn-success"
+                                                                           id="btn-plus">+</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col d-grid">
+                                    <a href="<c:url value='/order/page'/>">
+                                        <button id="directOrder" type="submit" class="btn btn-success btn-lg"
+                                                name="submit" value="buy">구매
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="col d-grid">
+                                    <button onclick="addCart()" type="button" class="btn btn-success btn-lg"
+                                            name="submit" value="addtocard">장바구니 추가
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </form>
-<!-- 상품 상세 -->
-<h1>제품 상세</h1>
-<div class="product-detail-container">
-    <div style="display: flex; flex-direction: column">
-    <c:forEach var="productImgDto" items="${productImgDtoList}">
-    <div class="product-detail-item">
-        <img style="height: 200px; width: 300px;" src="${productImgDto.uploadPath}"/>
-    </div>
-    </c:forEach>
-    </div>
-</div>
-<hr/>
-<!-- 상품 리뷰 -->
-<h1>상품 리뷰</h1>
-<!-- 작성한 리뷰 -->
-<div class="product-detail-review-container">
-    <div>
-    <c:forEach var="reviewDto" items="${reviewDtoList}">
-        <div>
-        <img style="width: 100px; height: 100px" src="${productDto.productImgPath}"/>
+<!-- 상품 정보 끝 -->
+
+<!-- 상품 상세 시작 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-left p-2 pb-3">
+            <h4>상품 설명</h4>
         </div>
-        <div class="product-detail-review-item"><h3>${reviewDto.productName}</h3></div>
-        <div class="product-detail-review-item">
-            <span>${reviewDto.content}</span>
-        </div>
-        <div class="product-detail-review-item">
-            <div>
-                <span class="star">★★★★★<span style="width: ${reviewDto.score}%">★★★★★</span></span>
+        <c:forEach var="productImgDto" items="${productImgDtoList}">
+            <div class="row">
+                <img src="${productImgDto.uploadPath}"/>
             </div>
-            <span style="font-size:25px; font-weight:bold;">작성일자 :
+        </c:forEach>
+    </div>
+</section>
+<!-- 상품 상세 끝 -->
+
+<!-- 작성 리뷰 시작 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-left p-2 pb-3">
+            <h4>리뷰 목록</h4>
+        </div>
+        <c:forEach var="reviewDto" items="${reviewDtoList}">
+            <div class="row">
+                <div>
+                    <img src="${productDto.productImgPath}"/>
+                </div>
+                <div class="product-detail-review-item"><h3>${reviewDto.productName}</h3></div>
+                <div class="product-detail-review-item">
+                    <span>${reviewDto.content}</span>
+                </div>
+                <div class="product-detail-review-item">
+                    <div>
+                        <span class="star">★★★★★<span style="width: ${reviewDto.score}%">★★★★★</span></span>
+                    </div>
+                    <span style="font-size:25px; font-weight:bold;">작성일자 :
                 <fmt:formatDate value="${reviewDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
             </span>
-        </div>
-    </c:forEach>
+                </div>
+            </div>
+        </c:forEach>
     </div>
-</div>
-<hr/>
-<!-- 작성한 리뷰 끝 -->
+</section>
+<!-- 작성 리뷰 끝 -->
 
 <h1>상품 문의</h1>
 <!-- admin이 접속해있으면 type=hidden 그렇지 않으면 button -->
@@ -112,15 +167,22 @@
 </div>
 <!-- 모달 -->
 <script>
+    let productNo = ${productDto.productNo};
+    let productName = '${productDto.productNo}';
+    let productPrice = '${productDto.productPrice}';
+    let productCategory = '${productDto.productNo}';
+    let productStock = ${productDto.productStock};
+    let productImgPath = '${productDto.productImgPath}';
+
     $("#directOrder").on("click", function () {
         let data = []
-        let tmp={}
-        tmp.productNo = ${productDto.productNo};
-        tmp.productName = $("#name").html()
-        tmp.productCategory = $("#category").html()
-        tmp.productQty = $("#qty").html()
-        tmp.productPrice = $("#price").html()
-        tmp.productImgPath = '${productDto.productImgPath}'
+        let tmp = {}
+        tmp.productNo = productNo
+        tmp.productName = productName
+        tmp.productCategory = productCategory
+        tmp.productQty = $("#var-value").html()
+        tmp.productPrice = productPrice * parseInt($("#var-value").html())
+        tmp.productImgPath = productImgPath
         data.push(tmp);
 
         const form = $("#orderForm")
@@ -134,15 +196,15 @@
 
     function addCart() {
         let data = {}
-        data.productNo = ${productDto.productNo};
-        data.productName = $("#name").html()
-        data.productCategory = $("#category").html()
-        data.productQty = $("#qty").html()
-        data.productPrice = $("#price").html()
+        data.productNo = productNo
+        data.productName = productName
+        data.productCategory = productCategory
+        data.productQty = $("#var-value").html()
+        data.productPrice = productPrice * parseInt($("#var-value").html())
         console.log(JSON.stringify(data))
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/add", // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/cart/",
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
@@ -158,41 +220,21 @@
             }
         })
     }
-
-    // 수량변경
-    function count(type) {
-        const price = parseInt($("#price").html())
-        const qty = parseInt($("#qty").html())
-        let number = qty
-        let amount = price / number
-
-        if (type == "minus") {
-            if (number > 1)
-                number = parseInt(number) - 1
-        } else {
-            number = parseInt(number) + 1
-        }
-        $("#qty").html(number)
-        amount = parseInt(amount) * number
-        $("#price").html(amount)
-    }
 </script>
 <script>
-    let loginUser = '${pageContext.request.session.getAttribute('id')}'
-
-    $("#closeBtn").on("click", function (){
+    // FAQ
+    let loginUser = '${userId}'
+    $("#closeBtn").on("click", function () {
         $("#myModal").css("display", "none")
     })
 
-    // 문의하기, 답변등록 버튼 클릭
     function registerContent(type, faqNo) {
         // 모달창 출력
         $("#myModal").css("display", "block")
-        console.log(faqNo)
         $("#registerBtn").on("click", function () {
             let jsonData = {};
             jsonData.userId = loginUser
-            jsonData.productNo =${productDto.productNo};
+            jsonData.productNo = productNo
             if (type == 'question')
                 jsonData.question = $("#content").val()
             else {
@@ -225,17 +267,15 @@
     function loadFaqData() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/product/faq/" + ${productDto.productNo},
+            url: "/muscles/product/faq/" + productNo,
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
             success: function (res) {
-                console.log(res)
                 $("#faqList").html(toHtml(res))
-                console.log("GET FAQ DATA")
             },
             error: function () {
-                console.log("통신 실패")
+                alert("AJAX 통신 실패")
             }
         })
         let toHtml = function (items) {
@@ -245,7 +285,7 @@
                 tmp += '<div>'
                 tmp += '<input type="button" value="질문"/>'
                 if (item.answer == null && loginUser == 'admin')
-                    tmp += '<input onclick="registerContent(\'answer\'' +','+item.faqNo + ')" type="button" value="답변 등록하기"/><br/></div>'
+                    tmp += '<input onclick="registerContent(\'answer\'' + ',' + item.faqNo + ')" type="button" value="답변 등록하기"/><br/></div>'
                 tmp += '<div class="product-detail-faq-container">'
                 tmp += '<div class="product-detail-faq-item">'
                 tmp += '<span>' + item.question + '</span>'

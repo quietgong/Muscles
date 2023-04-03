@@ -122,7 +122,7 @@
             console.log(orderNo)
             $.ajax({
                 type: "POST",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/admin/order/accept/" + orderNo, // 컨트롤러에서 대기중인 URL 주소이다.
+                url: "/muscles/admin/order/" + orderNo, // 컨트롤러에서 대기중인 URL 주소이다.
                 headers: {              // Http header
                     "Content-Type": "application/json",
                 },

@@ -28,9 +28,9 @@
 
     <div class="cart-container">
         <div class="cart-item">
-            <span style="font-weight: bold;">총 주문 금액은 </span>
-            <span style="font-weight: bold; font-size: 1.2rem;" id="totalPrice"></span>
-            <span>원입니다.</span><br>
+            <span class="totalPriceText" style="font-weight: bold;">총 주문 금액은 </span>
+            <span class="totalPriceText" style="font-weight: bold; font-size: 1.2rem;" id="totalPrice"></span>
+            <span class="totalPriceText">원입니다.</span><br>
             <input style="font-size: 1.5rem;" id="order" type="submit" value="주문하기"/>
             <a href="<c:url value="/"/>"><input style="font-size: 1.5rem;" type="button" value="홈 이동"/></a>
         </div>
@@ -38,23 +38,40 @@
 </form>
 <script>
     loadCartItem()
+    function notEmptyCart(){
+        $("#delete").css("display", "block");
+        $("#order").css("display", "block");
+        $(".totalPriceText").css("display", "block");
+    }
+    function emptyCart(){
+        $("#delete").css("display", "none");
+        $("#order").css("display", "none");
+        $(".totalPriceText").css("display", "none");
+    }
     function loadCartItem() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/get", // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/cart/", // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
             success: function (res) {
+                // 장바구니에 담긴 상품이 없을 때
                 $("#cartItemList").html(toHtml(res))
-                console.log("Get All Cart Item!")
                 displayTotalPrice();
+                if (res.length == 0) {
+                    emptyCart()
+                }
+                else {
+                    notEmptyCart()
+                }
             },
             error: function () {
                 console.log("통신 실패")
             }
         })
     }
+
     $("#cartItemList").on("click", ".qtyChange", function () { // 수량 변경
         let nowQty;
         if ($(this).val() == '-') { // 감소
@@ -75,7 +92,7 @@
     });
 
     // 체크박스에 변경이 있을때마다 주문금액 변경
-    $(document).on("click", "input[type=checkbox]", function (){
+    $(document).on("click", "input[type=checkbox]", function () {
         displayTotalPrice()
     })
 
@@ -127,21 +144,23 @@
             tmp += '<img style="width: 300px; height: 200px" src=\"' + item.productImgPath + '\"/>'
             tmp += '<h3>' + item.productName + '</h3>'
             tmp += '</div>'
-            tmp += '<div class="cart-item"><h3 class="price">' + item.productPrice*item.productQty + '</h3></div>'
+            tmp += '<div class="cart-item"><h3 class="price">' + item.productPrice * item.productQty + '</h3></div>'
             tmp += '</div>'
             tmp += '<hr>'
         })
         return tmp;
     }
-    function displayTotalPrice(){
+
+    function displayTotalPrice() {
         // 총 주문금액 구하기
-        let totalPrice=0;
+        let totalPrice = 0;
         let checkedItems = $('input[type=checkbox].check_all_list:checked');
         $(checkedItems).each(function () {
             totalPrice += parseInt($(this).parent().next().next().next().children().html())
         });
         $("#totalPrice").html(totalPrice)
     }
+
     function deleteItem() {
         const deleteItemList = [];
         let checkedItems = $('input[type=checkbox].check_all_list:checked');

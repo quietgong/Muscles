@@ -84,7 +84,7 @@
         DELETE
         FROM USER
     </delete>
-    <delete id="deleteUser" parameterType="int">
+    <delete id="deleteUser" parameterType="String">
         UPDATE USER
         SET expiredDate = now()
         where userId = '${userId}';

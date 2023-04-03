@@ -67,17 +67,17 @@
 </div>
 <!-- 모달-->
 <script>
-    // 1. 상품 정보 불러오기
+    // 상품 정보 불러오기
+    loadProductData()
     function loadProductData() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/product/manage", // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/admin/product/", // 컨트롤러에서 대기중인 URL 주소이다.
             success: function (res) {
                 $("#admin-item").html(toHtml(res))
-                console.log("Get All Product Item!")
             },
             error: function () {
-                console.log("통신 실패")
+                alert("AJAX 통신 실패")
             }
         })
         let toHtml = function (items) {
@@ -108,21 +108,18 @@
         }
     }
 
-    loadProductData()
-
     // 2. 상품 정보 삭제
     $(document).on("click", ".delBtn", function () {
         let productNo = $(this).next().val();
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/product/manage/" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/admin/product/" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
             success: function () {
-                console.log("Delete Product Item!")
-                alert("삭제되었습니다.")
+                alert("해당 상품 정보를 삭제하였습니다.")
                 loadProductData()
             },
             error: function () {
-                console.log("통신 실패")
+                alert("AJAX 통신 실패")
             }
         })
     })
@@ -139,7 +136,7 @@
         // 클릭한 상품의 소개 이미지들을 ajax로 가져온다.
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/product/manage/detailImg/" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/admin/product/detailImg/" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
@@ -156,7 +153,7 @@
                 }
             },
             error: function () {
-                console.log("통신 실패")
+                alert("AJAX 통신 실패")
             }
         })
 
@@ -217,7 +214,7 @@
             jsonData.productImgDtoList = productImgDtoList
             $.ajax({
                 type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/admin/product/manage/", // 컨트롤러에서 대기중인 URL 주소이다.
+                url: "/muscles/admin/product/", // 컨트롤러에서 대기중인 URL 주소이다.
                 headers: {              // Http header
                     "Content-Type": "application/json",
                 },
@@ -227,7 +224,7 @@
                     loadProductData()
                 },
                 error: function () {
-                    console.log("통신 실패")
+                    alert("AJAX 통신 실패")
                 }
             })
             $("#myModal").css("display", "none")

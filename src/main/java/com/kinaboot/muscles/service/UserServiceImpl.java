@@ -7,6 +7,7 @@ import com.kinaboot.muscles.domain.UserDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int removeUser(String userId) throws Exception {
+        // 1. 유저 expiredDate 생성
+        userDao.insertQuit(userId);
+        // 2. 회원탈퇴 데이터에 운영자에 의한 탈퇴임을 기록
         return userDao.deleteUser(userId);
     }
 

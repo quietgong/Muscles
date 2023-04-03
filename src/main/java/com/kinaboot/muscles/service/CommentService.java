@@ -11,7 +11,7 @@ public interface CommentService {
 
     int modify(CommentDto CommentDto) throws Exception;
 
-    int remove(Integer cno, Integer bno, String writer) throws Exception;
+    int remove(Integer cno) throws Exception;
 
     List<CommentDto> getList(Integer bno) throws Exception;
 }

@@ -22,28 +22,23 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CartController {
     private static final Logger logger = LoggerFactory.getLogger(CartController.class);
-
     @Autowired
     CartService cartService;
     @Autowired
     UserService userService;
-    @GetMapping("")
-    public String view(){
-        return "/cart";
-    }
-    @GetMapping("/get")
+    @GetMapping("/")
     @ResponseBody
     public ResponseEntity<List<CartDto>> cart(HttpSession session){
+        logger.info("장바구니 페이지 진입");
+
         String userId = (String) session.getAttribute("id");
         List<CartDto> cartItemList = cartService.getCartItems(userId);
-        System.out.println("cartItemList = " + cartItemList);
         return new ResponseEntity<>(cartItemList, HttpStatus.OK);
     }
-    @PostMapping("/add")
+    @PostMapping("/")
     @ResponseBody
     public ResponseEntity<String> addCart(@RequestBody CartDto cartDto, HttpSession session){
         String userId = (String) session.getAttribute("id");
-        System.out.println("cartDto = " + cartDto);
 
         // 추가하고자 하는 아이템이 이미 장바구니에 있을 때
         int rowCnt = cartService.checkCartProduct(userId, String.valueOf(cartDto.getProductNo()));
