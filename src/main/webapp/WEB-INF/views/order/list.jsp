@@ -2,38 +2,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
-<style>
-    .mypage{
-        display: flex;
-        flex-direction: row;
-    }
-    .order-list-container {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
-
-    .order-list-item {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
-
-    .order-list-item-detail {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
-</style>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-<div class="mypage">
-    <!-- 사이드바 -->
-    <%@include file="../mypage/sidebar.jsp" %>
-    <!-- 본문 -->
-    <div class="order-list-container">
-        <div class="order-list-item" style="flex-direction: row">
+<div class="container">
+    <div class="row">
+        <!-- 사이드바 -->
+        <div class="col-md-2">
+            <%@include file="../mypage/sidebar.jsp" %>
+        </div>
+        <!-- 컨텐츠 -->
+        <div class="col-md-10">
             <!-- 검색 조건 -->
             <div>
                 <label for="pw1">상품명</label>
@@ -51,8 +29,8 @@
         </div>
         <!-- 주문 조회 -->
         <c:forEach var="orderDto" items="${orderDtoList}">
-            <div style="border: 2px solid darkorange; border-radius: 2px;" class="order-list-item">
-                <div class="order-list-item-detail">
+            <div>
+                <div>
                     <div>
                         <!-- 좌측:주문일자, 우측:주문번호 -->
                         <span>
@@ -94,8 +72,6 @@
         <!-- 주문 조회 -->
     </div>
 </div>
-<!-- 본문 -->
-
 <!-- 모달 -->
 <div id="myModal" class="modal">
     <div class="modal-content">

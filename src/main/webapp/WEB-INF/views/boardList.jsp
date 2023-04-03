@@ -16,7 +16,7 @@
         <input type="text" name="keyword" class="search-input" value="${ph.sc.keyword}" placeholder="내용을 입력해주세요">
         <input type="submit" class="search-button" value="검색">
     </form>
-    <table class="myTable" style="margin: auto;">
+    <table class="table table-hover">
         <tr>
             <th>번호</th>
             <th>제목</th>

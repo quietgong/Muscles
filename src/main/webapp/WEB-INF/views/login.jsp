@@ -66,6 +66,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="toURL" value="${param.toURL}">
                 </form>
             </div>
         </div>

@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/templatemo.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/custom.css'/>">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="<c:url value='/css/fontawesome.min.css'/>">
     <!-- jQuery -->
     <script src="<c:url value='/js/jquery-1.11.0.min.js'/>"></script>
@@ -21,20 +22,24 @@
 </head>
 
 <body>
-<!-- Start Top Nav -->
-<nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
-    <div class="container text-light">
-        <div class="w-100 d-flex justify-content-between">
-            <div style="text-align: right">
-                <a class="text-light" id="login" href="<c:url value='/login'/>">로그인</a>
-                <a class="text-light" id="register" href="<c:url value='/register'/>">회원가입</a>
-                <a class="text-light" id="logout">로그아웃</a>
-                <a class="text-light" id="chatting" href="<c:url value='/chatting'/>">채팅상담</a>
-                <a class="text-light" id="admin" href="<c:url value='/admin/user'/>">관리자 페이지</a>
-            </div>
-        </div>
-    </div>
-</nav>
+<div class="container d-grid gap-2 d-md-flex justify-content-md-end">
+    <button id="login" onclick="location.href='<c:url value='/login'/>'" type="button" class="me-md-2 btn btn-outline-primary">
+        로그인
+    </button>
+    <button id="logout" type="button" class="me-md-2 btn btn-outline-primary">로그아웃</button>
+    <button id="register" onclick="location.href='<c:url value='/register'/>'" type="button"
+            class="me-md-2 btn btn-outline-primary">
+        회원가입
+    </button>
+    <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button"
+            class="me-md-2 btn btn-outline-primary">
+        채팅상담
+    </button>
+    <button id="admin" onclick="location.href='<c:url value='/admin/user'/>'" type="button"
+            class="me-md-2 btn btn-outline-primary">
+        관리자 페이지
+    </button>
+</div>
 <!-- Close Top Nav -->
 
 <!-- Header -->
@@ -43,11 +48,14 @@
         <a class="navbar-brand text-success logo h1 align-self-center" href="<c:url value='/'/>">
             Muscles
         </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+        <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
+             id="templatemo_main_nav">
             <div class="flex-fill">
                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                     <li class="nav-item">
@@ -73,17 +81,19 @@
                         </div>
                     </div>
                 </div>
-                <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-                    <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal"
+                   data-bs-target="#templatemo_search">
+                    <i class="fa fa-fw fa-search text-dark mr-2 fa-2x"></i>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="<c:url value='/cart'/>">
-                    <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                    <span id="cartNum" class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                    <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1 fa-2x"></i>
+                    <span id="cartNum"
+                          class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
                         <!-- 장바구니 아이템 개수 -->
                     </span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="<c:url value='/order/list'/>">
-                    <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                    <i class="fa fa-fw fa-user text-dark mr-3 fa-2x"></i>
                 </a>
             </div>
         </div>
@@ -91,7 +101,8 @@
 </nav>
 <!-- Close Header -->
 <!-- Modal -->
-<div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="w-100 pt-1 mb-5 text-right">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -108,20 +119,24 @@
 </div>
 <script>
     checkLoginStatus()
+
     function checkLoginStatus() {
         let userId = '${userId}'
         if (userId == "") { // 로그아웃 상태
             $("#login").css("display", "inline-block")
-            $("#chatting").css("display", "inline-block")
+            $("#register").css("display", "inline-block")
+            $("#chatting").css("display", "none")
+            $("#admin").css("display", "none")
             $("#logout").css("display", "none")
-            $("#register").css("display", "none")
         } else {
             $("#login").css("display", "none")
-            $("#chatting").css("display", "none")
+            $("#register").css("display", "none")
+            $("#chatting").css("display", "inline-block")
+            $("#admin").css("display", "inline-block")
             $("#logout").css("display", "inline-block")
-            $("#register").css("display", "inline-block")
         }
     }
+
     $("#logout").click(function () {
         $.ajax({
             type: "GET",

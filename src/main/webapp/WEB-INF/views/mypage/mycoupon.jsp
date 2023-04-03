@@ -3,49 +3,53 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
+<div class="container">
+    <div class="row">
+        <!-- 사이드바 -->
+        <div class="col-md-2">
+            <%@include file="sidebar.jsp" %>
+        </div>
+        <!-- 컨텐츠 -->
+        <div class="col-md-10">
+            <h1 style="text-align: left">쿠폰 등록</h1>
+            <hr/>
+            <label for="selectEvent">이벤트 선택</label>
+            <select id="selectEvent">
+                <option value="" selected disabled>이벤트를 선택하세요</option>
+                <option value="recommend">추천인 입력 이벤트</option>
+                <option value="">준비중...</option>
+            </select>
+            <br>
+            <div id="inputRecommend" style="display: none">
+                <input id="recommendId" type="text" placeholder="추천인 아이디(코드)를 입력하세요"/>
+                <input id="registerCoupon" type="button" onclick="registerRecommend()" value="등록"/>
+                <p id="checkmsg"></p>
+            </div>
 
-<!-- 본문 -->
-<!-- 사이드바 시작 -->
-<%@include file="sidebar.jsp" %>
-<!-- 사이드바 끝 -->
-<div id="Wrapper" style="margin: auto; width: 70%;">
-    <h1 style="text-align: left">쿠폰 등록</h1>
-    <hr/>
-    <label for="selectEvent">이벤트 선택</label>
-    <select id="selectEvent">
-        <option value="" selected disabled>이벤트를 선택하세요</option>
-        <option value="recommend">추천인 입력 이벤트</option>
-        <option value="">준비중...</option>
-    </select>
-    <br>
-    <div id="inputRecommend" style="display: none">
-        <input id="recommendId" type="text" placeholder="추천인 아이디(코드)를 입력하세요"/>
-        <input id="registerCoupon" type="button" onclick="registerRecommend()" value="등록"/>
-        <p id="checkmsg"></p>
+            <h1 style="text-align: left">쿠폰 리스트</h1>
+            <hr/>
+            <table class="myTable">
+                <tr id="couponList">
+                    <th>이벤트</th>
+                    <th>쿠폰 코드</th>
+                    <th>할인율</th>
+                    <th>상태</th>
+                </tr>
+                <!-- 동적 추가-->
+            </table>
+
+            <h1 style="text-align: left">포인트 내역</h1>
+            <hr/>
+            <h3>보유 포인트 : ${userDto.point}</h3>
+            <table class="table table-hover">
+                <tr id="pointList">
+                    <th>적립 구분</th>
+                    <th>적립 포인트</th>
+                </tr>
+                <!-- 동적 추가-->
+            </table>
+        </div>
     </div>
-
-    <h1 style="text-align: left">쿠폰 리스트</h1>
-    <hr/>
-    <table class="myTable">
-        <tr id="couponList">
-            <th>이벤트</th>
-            <th>쿠폰 코드</th>
-            <th>할인율</th>
-            <th>상태</th>
-        </tr>
-        <!-- 동적 추가-->
-    </table>
-
-    <h1 style="text-align: left">포인트 내역</h1>
-    <hr/>
-    <h3>보유 포인트 : ${userDto.point}</h3>
-    <table class="myTable">
-        <tr id="pointList">
-            <th>적립 구분</th>
-            <th>적립 포인트</th>
-        </tr>
-        <!-- 동적 추가-->
-    </table>
 </div>
 <script>
     let userId = '${userDto.userId}'

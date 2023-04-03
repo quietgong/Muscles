@@ -47,21 +47,22 @@
                 <div class="col-md-6">
                     <ul class="list-inline shop-top-menu pb-3 pt-1">
                         <li class="list-inline-item">
-                            <p class="h3 text-dark text-decoration-none mr-3">${param.category}</p>
+                            <p class="h3 text-dark text-decoration-none mr-3">
+                                ${param.keyword}
+                            </p>
                         </li>
                         <li class="list-inline-item">
-                            <p class="h3 text-dark text-decoration-none mr-3">${param.keyword}</p>
-                        </li>
-                        <li class="list-inline-item">
-                            <p class="h3 text-dark text-decoration-none">총 ${totalCnt} 개</p>
+                            <p class="h3 text-dark text-decoration-none">총 ${totalCnt} 개의 상품이 존재합니다.</p>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-6 pb-4">
-                    <div class="d-flex">
-                        <button type="button" class="btn btn-outline-primary">낮은가격 순</button>
-                        <button type="button" class="btn btn-outline-primary">높은가격 순</button>
-                        <button type="button" class="btn btn-outline-primary">리뷰 점수 순</button>
+                    <div class="d-flex justify-content-end gap-2">
+                        <form action="" id="conditionSearch">
+                            <button type="button" class="btn btn-outline-primary" name="condition">낮은가격 순</button>
+                            <button type="button" class="btn btn-outline-primary" name="condition">높은가격 순</button>
+                            <button type="button" class="btn btn-outline-primary" name="condition">리뷰 점수 순</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -112,27 +113,31 @@
                     </div>
                     <!-- 상품 카드 -->
                 </c:forEach>
-                <div class="row">
-                    <ul class="pagination pagination-lg justify-content-end">
-                        <li class="page-item disabled">
-                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#"
-                               tabindex="-1">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
-                               href="#">>></a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- 페이징 -->
+                <c:if test="${totalCnt!=null&&totalCnt!=0}">
+                    <div class="row">
+                        <ul class="pagination pagination-lg justify-content-center">
+                            <c:if test="${ph.showPrev}">
+                                <li class="page-item">
+                                    <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
+                                       href="<c:url value='/product/list${ph.sc.getQueryString(ph.beginPage-1)}'/>"><<</a>
+                                </li>
+                            </c:if>
+                            <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
+                                <li>
+                                    <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
+                                       href="<c:url value='/product/list${ph.sc.getQueryString(i)}'/>">${i}</a>
+                                </li>
+                            </c:forEach>
+                            <c:if test="${ph.showNext}">
+                                <li class="page-item">
+                                    <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
+                                       href="<c:url value='/product/list${ph.sc.getQueryString(ph.endPage+1)}'/>">>></a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
+                </c:if>
             </div>
         </div>
     </div>
@@ -144,7 +149,7 @@
     })
 </script>
 <script>
-    $(".condition").on("click", function () {
+    $("button[name='condition']").click(function () {
         let option = "";
         if ($(this).html() == "낮은가격 순")
             option = 'lowPrice'

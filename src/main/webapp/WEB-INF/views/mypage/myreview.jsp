@@ -2,16 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <style>
-    .item-head {
-        text-align: center;
-        flex: 1 1 20%;
-    }
-
-    .item {
-        text-align: center;
-        flex: 1 1 20%;
-    }
-
     .modal-container {
         align-items: center;
         justify-content: flex-start;
@@ -28,14 +18,21 @@
 </style>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-<%@include file="sidebar.jsp" %>
-<!-- 작성한 리뷰 -->
-
-<h1>리뷰 관리</h1>
-<div id="reviewList">
-    <!-- AJAX 동적 추가 -->
+<div class="container">
+    <div class="row">
+        <!-- 사이드바 -->
+        <div class="col-md-2">
+            <%@include file="sidebar.jsp" %>
+        </div>
+        <!-- 컨텐츠 -->
+        <div class="col-md-10">
+            <h1>리뷰 관리</h1>
+            <div id="reviewList">
+                <!-- AJAX 동적 추가 -->
+            </div>
+        </div>
+    </div>
 </div>
-<!-- 작성한 리뷰 끝 -->
 <!-- 모달 -->
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -134,6 +131,7 @@
             }
         })
     })
+
     function loadReviewData() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
