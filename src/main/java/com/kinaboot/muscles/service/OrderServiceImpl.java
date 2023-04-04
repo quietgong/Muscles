@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderDao orderDao;
     @Autowired
@@ -24,16 +24,16 @@ public class OrderServiceImpl implements OrderService{
     public int removeOrder(String userId, Integer orderNo) {
         // 해당 주문에 쿠폰이 사용된 경우, 쿠폰 상태를 사용가능으로 변경
         List<CouponDto> couponDtoList = userDao.selectUserCoupon(userId);
-        for(CouponDto couponDto : couponDtoList){
-            if(couponDto.getStatus().equals(String.valueOf(orderNo))){
+        for (CouponDto couponDto : couponDtoList) {
+            if (couponDto.getStatus().equals(String.valueOf(orderNo))) {
                 userDao.updateUserCouponStatus(userId, couponDto.getCouponName(), "사용가능");
                 break;
             }
         }
         // 포인트 환불
         List<PointDto> pointDtoList = userDao.selectUserPoint(userId);
-        for(PointDto pointDto : pointDtoList){
-            if(pointDto.getPointName().equals(String.valueOf(orderNo))){
+        for (PointDto pointDto : pointDtoList) {
+            if (pointDto.getPointName().equals(String.valueOf(orderNo))) {
                 userDao.updateUserPoint(userId, pointDto.getPoint(), String.valueOf(orderNo));
                 userDao.deleteUserPoint(userId, pointDto.getPointName());
                 break;
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService{
         OrderDto orderDto = orderDao.selectOrder(orderNo);
         String userId = orderDto.getUserId();
         // 적립 포인트 = 주문금액의 1%
-        int point = (int) (orderDto.getPaymentDto().getPrice()*0.01);
+        int point = (int) (orderDto.getPaymentDto().getPrice() * 0.01);
         userDao.updateUserGetPoint(userId, point, orderNo);
         // 주문상태 변경
         return orderDao.updateOrderStatus(orderNo);
@@ -90,10 +90,8 @@ public class OrderServiceImpl implements OrderService{
     public int createOrder(String userId, OrderDto orderDto) {
         // 1. 구매 제품 카트에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
-        List<String> deleteList = new ArrayList<>();
-        for(OrderItemDto orderItemDto : orderItemDtoList)
-                deleteList.add(String.valueOf(orderItemDto.getProductNo()));
-        cartDao.deleteCartItem(userId, deleteList);
+        for (OrderItemDto orderItemDto : orderItemDtoList)
+            cartDao.deleteCartItem(userId, orderItemDto.getProductNo());
 
         // 2. 구매제품, 배송, 결제 정보 입력
         return orderDao.insertOrder(userId, orderDto);

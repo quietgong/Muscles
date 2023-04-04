@@ -17,11 +17,16 @@
         FROM user
         where userId = #{userId}
     </select>
+    <select id="selectUserOne" resultType="String">
+        SELECT *
+        FROM user
+        where userId = '${userId}'
+    </select>
 
     <select id="selectUserCoupon" resultType="CouponDto" parameterType="String">
         select couponName, couponCode, userId, discount, status
         from coupon
-        where userId = #{userId};
+        where userId = '${userId}';
     </select>
     <select id="selectUserPoint" resultType="PointDto" parameterType="String">
         select pointName, point

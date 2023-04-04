@@ -9,9 +9,9 @@ public interface CartDao {
 
     List<CartDto> selectAll(String userId);
 
-    int select(String userId, String productNo);
+    int select(String userId, Integer productNo);
 
-    int deleteCartItem(String userId, List<String> deleteList);
+    int deleteCartItem(String userId, Integer productNo);
 
     CartDto selectItem(Integer productNo);
 }

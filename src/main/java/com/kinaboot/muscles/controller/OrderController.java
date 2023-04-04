@@ -40,36 +40,43 @@ public class OrderController {
         return "order/detail";
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     @ResponseBody
     public ResponseEntity<OrderItemDto> getOrder(Integer orderNo, Integer productNo) {
+        logger.info("주문상품 목록 가져오기");
         return new ResponseEntity<>(orderService.getOrderItem(orderNo, productNo),
                 HttpStatus.OK);
     }
+
     // 바로구매 또는 장바구니 주문
     // 선택된 상품들의 정보를 주문 정보 페이지로 전달
-    @PostMapping("")
+    @PostMapping("/")
     public String showOrderPage(String jsonData, Model m, HttpSession session) throws Exception {
+        logger.info("주문 페이지 진입");
         String userId = (String) session.getAttribute("id");
-        m.addAttribute("couponDtoList", userService.getCoupon(userId));
+        if (userService.getCoupon(userId) != null)
+            m.addAttribute("couponDtoList", userService.getCoupon(userId));
         m.addAttribute("userDto", userService.read(userId));
         m.addAttribute("list", JsonToJava(jsonData));
-        return "order/page";
+        return "order/checkout";
     }
 
     // 주문취소
     @DeleteMapping("/{orderNo}")
-    public ResponseEntity<String> removeOrder(HttpSession session, @PathVariable Integer orderNo){
+    public ResponseEntity<String> removeOrder(HttpSession session, @PathVariable Integer orderNo) {
         String userId = (String) session.getAttribute("id");
-        orderService.removeOrder(userId,orderNo);
+        orderService.removeOrder(userId, orderNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
     @GetMapping("/list")
     public String getOrderList(HttpSession session, Model m) {
+        logger.info("유저 주문내역 진입");
         String userId = (String) session.getAttribute("id");
-        List<OrderDto> orderDtoList = verifyReviewExist(orderService.getOrderList(userId));
-        m.addAttribute(orderDtoList);
+        if (orderService.getOrderList(userId) != null) {
+            List<OrderDto> orderDtoList = verifyReviewExist(orderService.getOrderList(userId));
+            m.addAttribute(orderDtoList);
+        }
         return "order/list";
     }
 
@@ -97,7 +104,7 @@ public class OrderController {
         // 쿠폰 상태 변경
         userService.modifyUserCouponStatus(userId, couponName, String.valueOf(orderDto.getOrderNo()));
         // 포인트 사용 적용
-        if(point!=0)
+        if (point != 0)
             userService.modifyUserPoint(userId, point, String.valueOf(orderDto.getOrderNo()));
 
         m.addAttribute(orderDto);

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class CartDaoImpl implements CartDao{
+public class CartDaoImpl implements CartDao {
     @Autowired
     private SqlSession session;
 
@@ -23,7 +23,7 @@ public class CartDaoImpl implements CartDao{
     private static String namespace = "com.kinaboot.muscles.dao.cartMapper.";
 
     @Override
-    public int select(String userId, String productNo) {
+    public int select(String userId, Integer productNo) {
         Map map = new HashMap();
         map.put("userId", userId);
         map.put("productNo", productNo);
@@ -31,15 +31,11 @@ public class CartDaoImpl implements CartDao{
     }
 
     @Override
-    public int deleteCartItem(String userId, List<String> deleteList) {
-        int rowCnt=0;
-        for (int i = 0; i < deleteList.size(); i++) {
-            Map map = new HashMap();
-            map.put("userId", userId);
-            map.put("productNo", deleteList.get(i));
-            session.delete(namespace + "deleteItem", map);
-        }
-        return rowCnt;
+    public int deleteCartItem(String userId, Integer productNo) {
+        Map map = new HashMap();
+        map.put("userId", userId);
+        map.put("productNo", productNo);
+        return session.delete(namespace + "deleteItem", map);
     }
 
     @Override
@@ -56,6 +52,6 @@ public class CartDaoImpl implements CartDao{
         map.put("productCategory", cartDto.getProductCategory());
         map.put("productPrice", cartDto.getProductPrice());
         map.put("productQty", cartDto.getProductQty());
-        return session.insert(namespace+"insert", map);
+        return session.insert(namespace + "insert", map);
     }
 }

@@ -1,10 +1,12 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.service.UserService;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,6 +24,8 @@ public class UserDaoImplTest  {
     private static String namespace = "com.kinaboot.muscles.dao.userMapper.";
     @Autowired
     UserDao userDao;
+    @Autowired
+    UserService userService;
 
     @Test
     public void insertUserTest() {
@@ -43,5 +47,12 @@ public class UserDaoImplTest  {
         String userId = "test9";
         String recommendId = "test8";
         userDao.insertRecommendEventCoupon(userId,recommendId);
+    }
+    @Test
+    public void getCouponTest(){
+        String userId = "none";
+        System.out.println("userService.getCoupon(userId) = " + userService.getCoupon(userId));
+        System.out.println("userService.getCoupon(userId).getClass().getName() = " + userService.getCoupon(userId).getClass().getName());
+
     }
 }

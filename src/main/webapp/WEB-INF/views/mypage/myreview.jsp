@@ -19,7 +19,7 @@
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
-    <div class="row">
+    <div class="row mt-5">
         <!-- 사이드바 -->
         <div class="col-md-2">
             <%@include file="sidebar.jsp" %>

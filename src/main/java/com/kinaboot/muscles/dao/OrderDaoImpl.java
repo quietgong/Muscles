@@ -27,9 +27,7 @@ public class OrderDaoImpl implements OrderDao {
     }
     @Override
     public List<OrderDto> selectAll(String userId) {
-        // userId별 주문목록 가져오기
-        List<OrderDto> orderDtoList = session.selectList(namespace + "selectOrderList", userId);
-        return getOrderDtoList(orderDtoList);
+        return session.selectList(namespace + "selectOrderList", userId);
     }
 
     @Override

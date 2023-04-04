@@ -1,78 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<style>
-    .item:nth-child(1) {
-        flex-shrink: 0;
-        width: 130px;
-    }
-
-    .item:nth-child(2) {
-        padding-left: 100px;
-        margin: auto;
-        flex-grow: 1;
-    }
-</style>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-
-<!-- 본문 -->
-<div class="mypage-container">
-    <!-- 사이드바 시작 -->
-    <%@include file="sidebar.jsp" %>
-    <!-- 사이드바 끝 -->
-    <!-- 내용 -->
-    <div class="item">
-        <p style="font-weight: bold">| 회원 탈퇴 안내</p>
-        <span>
-          {고객명} 고객님! 지금까지 저희 머슬스를 이용해 주셔서감사합니다.
-          부족한 점이 있었다면 너그러운 양해 바라며, 아래의 사항을 확인 하시고,
-          개선해야 할점이 있다면 남겨 주세요! 더욱 고객님의 의견을 적극 반영하여
-          이용에 불편이 없도록 개선하겠습니다</span
-        >
-        <p style="font-weight: bold">| 회원 탈퇴 시 꼭 확인해 주세요!</p>
-        <span>
-          1. 사용하고 계신 아이디({이용자ID})는 탈퇴할 경우 3개월 간 재사용이
-          불가능 합니다. <br/>2. 탈퇴 이후 등록한 게시물, 보유 포인트 등
-          이용기록이 모두 삭제 됩니다.
-        </span>
-        <p style="font-weight: bold">| 탈퇴 사유를 선택해 주세요!</p>
-        <form method="post">
-        <span>
-          <input
-                  type="checkbox"
-                  style="float: left"
-                  name="type"
-                  value="1"
-          />
-          <span style="float: left">이용률 감소</span>
-          <input
-                  type="checkbox"
-                  style="float: left"
-                  name="type"
-                  value="2"
-          />
-          <span style="float: left">상품 저품질</span>
-          <input
-                  type="checkbox"
-                  style="float: left"
-                  name="type"
-                  value="3"
-          />
-          <span style="float: left">상품 가격불만</span>
-
-        </span>
-        <br/>
-        <p style="font-weight: bold">
-            | 쇼핑몰 이용에 개선 사항 있다면 의견을 남겨 주세요!
-        </p>
-        <textarea name="opinion" style="width: 500px; height: 100px"></textarea>
-        <br/>
-        <input type="submit" value="확인"/>
-        </form>
-        <input type="submit" value="취소"/>
+<div class="container">
+    <div class="row mt-5">
+        <!-- 사이드바 -->
+        <div class="col-md-2">
+            <%@include file="../mypage/sidebar.jsp" %>
+        </div>
+        <!-- 컨텐츠 -->
+        <div class="col-md-10">
+            <div class="container-fluid bg-light py-5">
+                <div class="col-md-8 m-auto text-center">
+                    <h3>
+                        ${userId} 고객님!
+                    </h3>
+                    <p>지금까지 저희 머슬스를 이용해 주셔서 감사합니다.</p>
+                    <p>부족한 점이 있었다면 너그러운 양해 바라며,</p>
+                    <p>아래의 사항을 확인 하시고, 개선해야 할점이 있다면 남겨 주세요! </p>
+                    <p>더욱 고객님의 의견을 적극 반영하여
+                        이용에 불편이 없도록 개선하겠습니다
+                    </p>
+                    <h5 style="font-weight: bold">* 회원 탈퇴 시 꼭 확인해 주세요!</h5>
+                    <p>
+                        1. 사용하고 계신 아이디는 탈퇴할 경우 <strong>3개월 간</strong> 재사용이 불가능 합니다.
+                    </p>
+                    <p>
+                        2. 탈퇴 이후 등록한 게시물, 보유 포인트 등 이용기록이 모두 삭제 됩니다.
+                    </p>
+                    <h5 style="font-weight: bold">* 탈퇴 사유를 선택해 주세요!</h5>
+                    <form method="post">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="1">
+                            <label class="form-check-label" for="inlineCheckbox1">이용률 감소</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2">
+                            <label class="form-check-label" for="inlineCheckbox2">상품 불만족</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                            <label class="form-check-label" for="inlineCheckbox3">단순 탈퇴</label>
+                        </div>
+                        <textarea class="form-control mt-1" id="message" name="opinion"
+                                  placeholder="쇼핑몰 이용에 개선 사항 있다면 의견을 남겨 주세요!" rows="8"></textarea>
+                    </form>
+                    <button type="submit" class="btn btn-outline-primary">회원탈퇴</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

@@ -10,9 +10,9 @@ public interface CartService {
 
     List<CartDto> getCartItems(String userId);
 
-    int checkCartProduct(String userId, String productNo);
+    int checkCartProduct(String userId, Integer productNo);
 
-    int removeCartItem(String userId, List<String> deleteList);
+    int removeCartItem(String userId, Integer productNo);
 
     CartDto getItem(Integer productNo);
 }

@@ -5,7 +5,7 @@
 <script src="<c:url value='/js/slick.min.js'/>"></script>
 <script src="<c:url value='/js/templatemo.js'/>"></script>
 <!-- Start Footer -->
-<footer class="bg-dark" id="tempaltemo_footer">
+<footer class="bg-dark mt-5" id="tempaltemo_footer">
     <div class="container">
         <div class="row">
             <div class="col-md-4 pt-5">

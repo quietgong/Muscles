@@ -18,7 +18,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public int checkCartProduct(String userId, String productNo) {
+    public int checkCartProduct(String userId, Integer productNo) {
         return cartDao.select(userId, productNo);
     }
 
@@ -32,7 +32,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public int removeCartItem(String userId, List<String> deleteList) {
-        return cartDao.deleteCartItem(userId, deleteList);
+    public int removeCartItem(String userId, Integer productNo) {
+        return cartDao.deleteCartItem(userId, productNo);
     }
 }
