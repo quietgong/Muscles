@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,8 +35,9 @@ public class OrderController {
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping("/detail")
-    public String getOrderDetail(Integer orderNo, Model m) {
+    @GetMapping("/{orderNo}")
+    public String getOrderDetail(@PathVariable Integer orderNo, Model m) {
+        logger.info("상세 주문내역 진입");
         m.addAttribute("orderDto", orderService.getOrderDetail(orderNo));
         return "order/detail";
     }
@@ -73,24 +75,24 @@ public class OrderController {
     public String getOrderList(HttpSession session, Model m) {
         logger.info("유저 주문내역 진입");
         String userId = (String) session.getAttribute("id");
-        if (orderService.getOrderList(userId) != null) {
-            List<OrderDto> orderDtoList = verifyReviewExist(orderService.getOrderList(userId));
+        List<OrderDto> orderDtoList = orderService.getOrderList(userId);
+        if (orderDtoList != null) {
+            orderDtoList = verifyReviewExist(orderService.getOrderList(userId));
             m.addAttribute(orderDtoList);
         }
+        logger.info("해당 유저 주문내역 : " + orderDtoList);
         return "order/list";
     }
 
     private List<OrderDto> verifyReviewExist(List<OrderDto> orderDtoList) {
         for (OrderDto orderDto : orderDtoList) {
-            List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
-            for (OrderItemDto orderItemDto : orderItemDtoList)
+            for (OrderItemDto orderItemDto : orderService.getOrderItemList(orderDto.getOrderNo()))
                 orderItemDto.setHasReview
                         (reviewService.getReviewOne
                                 (orderItemDto.getOrderNo(), orderItemDto.getProductNo()) != null);
         }
         return orderDtoList;
     }
-
     // 결제하기 버튼
     @PostMapping("/complete")
     public String orderList(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto,

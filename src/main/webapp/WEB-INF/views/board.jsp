@@ -1,73 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<style>
-    .container {
-        margin: auto;
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .item {
-        display: flex;
-        flex-direction: row;
-    }
-
-</style>
-<!-- nav -->
 <%@ include file="nav.jsp" %>
-<!-- 본문 -->
-<h1 id="mode" style="display: none">수정 모드</h1>
 <div class="container">
-    <div class="item">
-        <p style="display: none">${postDto.postNo}</p>
-        <input type="text" name="title" readonly value="${postDto.title}">
-        <span>${postDto.userId} | ${postDto.createdDate}</span>
-        <hr/>
-        <div class="container">
-            <input type="text" name="content" readonly value="${postDto.content}">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <label class="form-label" for="title">제목</label>
+                <input id="title" class="form-control" type="text" name="title" readonly value="${postDto.title}">
+            </div>
         </div>
     </div>
-    <div class="item">
-        <div>
-            <input id="inputComment" type="text" placeholder="입력">
-        </div>
-        <div>
-            <button id="createComment" type="button">댓글 등록</button>
-        </div>
-        <div>
-            <button id="modifyComment" type="button" style="display: none">댓글 수정</button>
-        </div>
-    </div>
-    <div id="item">
-        <div id="commentList">
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <label class="form-label" for="writer">작성자 (작성일자 : <fmt:formatDate value="${postDto.createdDate}"
+                                                                                   pattern="yyyy-MM-dd"
+                                                                                   type="date"/>)</label>
+                <input id="writer" class="form-control" type="text" name="title" readonly value="${postDto.userId}">
+            </div>
         </div>
     </div>
-    <div class="item">
-        <div class="item-btn">
-            <a href="<c:url value='/${postCategory}?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>">
-                <input type="button" value="목록"/>
-            </a>
-            <input id="modify" type="button" value="수정"/>
-            <input id="remove" type="button" value="삭제"/>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <textarea readonly id="board_textarea" class="form-control mt-1" name="content" rows="20"
+                      cols="80">${postDto.content}</textarea>
+        </div>
+    </div>
+    <input id="commentList" type="hidden">
+    <!-- 댓글 -->
+    <div class="row mt-5">
+        <div class="col-md-12" style="text-align: right">
+            <button onclick='location.href="<c:url
+                    value='/${postCategory}?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>"'
+                    class="btn btn-lg btn-outline-primary" type="button">목록
+            </button>
+            <%--            <c:if test="${userId == postDto.userId}">--%>
+            <button id="modify" class="btn btn-lg btn-primary" type="button">수정</button>
+            <button id="remove" class="btn btn-lg btn-primary" type="button">삭제</button>
+            <%--            </c:if>--%>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
 <script>
     // 글 수정
     $("#modify").on("click", function () {
-        $("#mode").show();
-        let isReadOnly = $("input[name=content]").attr("readonly");
+        let isReadOnly = $("textarea[name=content]").attr("readonly");
+        // 글 수정 시작
         if (isReadOnly === "readonly") {
-            $("#modifyPost").attr("value", "등록");
-            $("input[name=content]").attr("readonly", false);
+            // 에디터로 전환
+            ClassicEditor
+                .create(document.querySelector('#board_textarea'))
+                .then(editor => {
+                    editor.getData(${postDto.content})
+                    editor.ui.view.editable.element.style.minHeight = '500px';
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            $("#modifyPost").html("등록");
+            $("#writer").attr("readonly", true)
             $("input[name=title]").attr("readonly", false);
-        } else {
+            $("textarea[name=content]").attr("readonly", false);
+        }
+        // 글 수정 완료
+        else {
             let modData = {}
             modData.postNo = postNo
             modData.title = $("input[name=title]").val()
-            modData.content = $("input[name=content]").val()
+            modData.content = $("textarea[name=content]").val()
             $.ajax({
                 type: "PATCH",
                 url: "/muscles/${postCategory}/" + postNo,
@@ -86,6 +90,7 @@
             });
         }
     });
+
     // 글 삭제
     $("#remove").on("click", function () {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
@@ -117,7 +122,7 @@
                 "Content-Type": "application/json",
             },
             success: function (res) {
-                $("#commentList").html(toHtml(res))
+                $("#commentList").after(toHtml(res))
             },
             error: function () {
                 alert("AJAX 통신 실패")
@@ -202,20 +207,26 @@
     let toHtml = function (comments) {
         let tmp = "";
         comments.forEach(function (comment) {
-            tmp += '<div data-commentNo=' + comment.commentNo
-            tmp += ' data-postNo=' + comment.postNo + '>'
-            tmp += ' <span style="font-weight: bold" class="commenter">' + "└ " + comment.userId + '</span>'
+            tmp += '<div class="row">'
+            tmp += '<div class="col-md-12" data-commentNo=' + comment.commentNo + ' data-postNo=' + comment.postNo + '>'
+            tmp += '<div class="mb-0" style="border: 1px solid #e2e3e5">'
+            tmp += '<span style="font-weight: bold" class="commenter">' + comment.userId + '</span>'
+            tmp += '<button style="float: right" type="button" class="delBtn btn btn-outline-primary">삭제</button>'
+            tmp += '<button style="float: right" type="button" class="modBtn btn btn-outline-primary">수정</button>'
+            tmp += ' <p style="font-style: italic" class="comment">' + comment.content + '</p>'
             if (comment.createdDate === comment.modDate)
-                tmp += ' <span style="font-weight: bold" class="commentDate">' + comment.createdDate
+                tmp += ' <p style="font-weight: bold" class="commentDate">' + comment.createdDate
             else
-                tmp += ' |  <span class="commentDate">' + comment.modDate + "(수정됨)"
-            tmp += '</span>'
-            tmp += '<br>'
-            tmp += ' <span style="font-style: italic" class="comment">' + comment.content + '</span>'
-            tmp += '<button class="delBtn">삭제</button>'
-            tmp += '<button class="modBtn">수정</button>'
+                tmp += ' |  <p class="commentDate">' + comment.modDate + "(수정됨)"
+            tmp += '</p>'
+            tmp += '</div>'
+            tmp += '</div>'
             tmp += '</div>'
         })
+        tmp += '<div class="input-group mb-3">'
+        tmp += '<input style="background-color: #ced4da" id="inputComment" class="form-control" type="text" placeholder="댓글을 입력하세요">'
+        tmp += '<button id="createComment" type="button" class="btn btn-outline-primary">댓글 등록</button>'
+        tmp += '</div>'
         return tmp;
     }
 </script>

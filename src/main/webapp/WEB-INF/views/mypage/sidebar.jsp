@@ -12,7 +12,6 @@
 <p style="font-weight: bold">쇼핑이용 정보</p>
 <a class="mypage-links" href="<c:url value='/order/list'/>"><p>> 주문 내역</p></a>
 <a class="mypage-links" href="<c:url value='/mypage/mycoupon'/>"><p>> 쿠폰/포인트</p></a>
-<a class="mypage-links" href="<c:url value='/chatting'/>"><p>> 1:1 채팅 문의</p></a>
 <hr class="col-8 mt-2">
 <p style="font-weight: bold">게시물</p>
 <a class="mypage-links" href="<c:url value='/mypage/mypost'/>"><p>> 내가 쓴 글</p></a>

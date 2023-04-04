@@ -7,52 +7,6 @@
         SELECT count(*)
         FROM orders
     </select>
-    <select id="selectAll" resultType="orderDto">
-        SELECT
-            O.* as userId
-            ,u.userId as userId
-             ,O.createdDate AS createdDate
-             ,O.STATUS AS status
-             ,CONCAT((SELECT NAME
-                      FROM CATEGORY
-                      WHERE CATEGORY_NO=(
-                          (SELECT PCATEGORY_NO
-                           FROM CATEGORY
-                           WHERE NAME=C.NAME)
-                      )), "-" ,C.NAME) AS productCategory
-             ,P.productName AS productName
-             ,O.productQty AS productQty
-             ,P.PRICE*O.productQty AS productPrice
-        FROM ORDERS O, USER U, PRODUCT P, CATEGORY C
-        WHERE O.productNo=P.productNo
-          AND O.userId=U.ID
-          AND C.NAME=P.categoryName
-        order by createdDate
-    </select>
-    <select id="selectOrderAll" parameterType="String" resultType="OrderDto">
-        SELECT
-            O.userId as userId
-             ,O.bundleNo AS bundleNo
-             ,O.createdDate AS createdDate
-             ,O.STATUS AS status
-        FROM ORDERS O, USER U, PRODUCT P, CATEGORY C
-        WHERE O.userId=U.ID
-          AND C.NAME=P.categoryName
-        group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
-    </select>
-    <select id="selectOrderOne" parameterType="map" resultType="OrderDto">
-        SELECT
-            O.userId as userId
-             ,O.bundleNo AS bundleNo
-             ,O.createdDate AS createdDate
-             ,O.STATUS AS status
-        FROM ORDERS O, USER U, PRODUCT P, CATEGORY C
-        WHERE U.ID= #{userId}
-          AND O.bundleNo = #{bundleNo}
-          AND O.userId=U.ID
-          AND C.NAME=P.categoryName
-        group by O.userId, O.bundleNo, O.createdDate, O.STATUS;
-    </select>
     <!-- 전체 주문목록 반환 -->
     <select id="selectOrderAllList" parameterType="SearchCondition" resultType="orderDto">
         select orderNo, userId, status, createdDate

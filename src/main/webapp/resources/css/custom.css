@@ -31,3 +31,7 @@ span {
     display: block;
     z-index: 0;
 }
+
+.ck-editor__editable {
+    min-height: 500px;
+}

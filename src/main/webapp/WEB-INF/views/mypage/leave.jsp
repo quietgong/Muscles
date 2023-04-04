@@ -16,12 +16,6 @@
                     <h3>
                         ${userId} 고객님!
                     </h3>
-                    <p>지금까지 저희 머슬스를 이용해 주셔서 감사합니다.</p>
-                    <p>부족한 점이 있었다면 너그러운 양해 바라며,</p>
-                    <p>아래의 사항을 확인 하시고, 개선해야 할점이 있다면 남겨 주세요! </p>
-                    <p>더욱 고객님의 의견을 적극 반영하여
-                        이용에 불편이 없도록 개선하겠습니다
-                    </p>
                     <h5 style="font-weight: bold">* 회원 탈퇴 시 꼭 확인해 주세요!</h5>
                     <p>
                         1. 사용하고 계신 아이디는 탈퇴할 경우 <strong>3개월 간</strong> 재사용이 불가능 합니다.
@@ -46,6 +40,11 @@
                         <textarea class="form-control mt-1" id="message" name="opinion"
                                   placeholder="쇼핑몰 이용에 개선 사항 있다면 의견을 남겨 주세요!" rows="8"></textarea>
                     </form>
+                    <p>지금까지 저희 머슬스를 이용해 주셔서 감사합니다.</p>
+                    <p>부족한 점이 있었다면 너그러운 양해 바라며,</p>
+                    <p>더욱 고객님의 의견을 적극 반영하여
+                        이용에 불편이 없도록 개선하겠습니다
+                    </p>
                     <button type="submit" class="btn btn-outline-primary">회원탈퇴</button>
                 </div>
             </div>

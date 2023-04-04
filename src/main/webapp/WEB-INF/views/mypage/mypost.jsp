@@ -4,53 +4,34 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-
-<!-- 본문 -->
-<!-- 사이드바 시작 -->
-<%@include file="sidebar.jsp" %>
-<!-- 사이드바 끝 -->
-<div class="search-container" style="text-align: center;">
-    <form action="" class="search-form" method="get">
-        <input type="text" name="keyword" class="search-input" type="text" value="" placeholder="제목을 입력해주세요">
-        <input type="submit" class="search-button" value="검색">
-    </form>
-    <table class="myTable" style="margin: auto;">
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>조회수</th>
-            <th>작성일자</th>
-        </tr>
-        <c:forEach var="postDto" items="${list}">
-            <tr>
-                <td class="no">${postDto.postNo}</td>
-                <td class="title">
-                    <a href="<c:url value="/community/read?page=1&postNo=${postDto.postNo}"/>">${postDto.title}</a>
-                </td>
-                <td class="writer">${postDto.userId}</td>
-                <td class="viewCnt">${postDto.viewCnt}</td>
-                <td class="regDate" colspan="regdate">
-                    <fmt:formatDate value="${postDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-    <ul class="paging">
-        <li><a href="#"><</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">6</a></li>
-        <li><a href="#">7</a></li>
-        <li><a href="#">8</a></li>
-        <li><a href="#">9</a></li>
-        <li><a href="#">10</a></li>
-        <li><a href="#">></a></li>
-    </ul>
+<div class="container">
+    <div class="row mt-5">
+        <!-- 사이드바 -->
+        <div class="col-md-2">
+            <%@include file="../mypage/sidebar.jsp" %>
+        </div>
+        <!-- 컨텐츠 -->
+        <div class="col-md-10">
+            <table class="table table-hover" style="text-align: center">
+                <tr>
+                    <th>제목</th>
+                    <th>조회수</th>
+                    <th>작성일자</th>
+                </tr>
+                <c:forEach var="postDto" items="${list}">
+                    <tr>
+                        <td class="title">
+                            <a href="<c:url value="/community/${postDto.postNo}?page=1"/>">${postDto.title}</a>
+                        </td>
+                        <td class="viewCnt">${postDto.viewCnt}</td>
+                        <td colspan="regdate">
+                            <fmt:formatDate value="${postDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+    </div>
 </div>
-
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

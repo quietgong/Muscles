@@ -59,9 +59,9 @@
                 <div class="col-md-6 pb-4">
                     <div class="d-flex justify-content-end gap-2">
                         <form action="" id="conditionSearch">
-                            <button type="button" class="btn btn-outline-primary" name="condition">낮은가격 순</button>
-                            <button type="button" class="btn btn-outline-primary" name="condition">높은가격 순</button>
-                            <button type="button" class="btn btn-outline-primary" name="condition">리뷰 점수 순</button>
+                            <button type="button" class="btn btn-primary" name="condition">낮은가격 순</button>
+                            <button type="button" class="btn btn-primary" name="condition">높은가격 순</button>
+                            <button type="button" class="btn btn-primary" name="condition">리뷰 점수 순</button>
                         </form>
                     </div>
                 </div>

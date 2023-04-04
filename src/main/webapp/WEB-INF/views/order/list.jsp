@@ -38,12 +38,12 @@
                         <span>주문번호 : ${orderDto.orderNo}</span>
                     </div>
                     <div>
-                        <form action="<c:url value='/order/detail'/>">
-                            <input type="hidden" name="orderNo" value="${orderDto.orderNo}">
-                            <input type="submit" style="float:right;" value="상세 내역"/>
-                            <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
-                            <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
-                        </form>
+                        <button onclick='location.href="<c:url value='/order/${orderDto.orderNo}'/>"' type="button"
+                                class="btn btn-primary">상세 내역
+                        </button>
+                        <input type="submit" style="float:right;" value="상세 내역"/>
+                        <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
+                        <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
                     </div>
                     <!-- 주문 내 주문상품 조회 -->
                     <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">

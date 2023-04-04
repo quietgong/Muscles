@@ -89,7 +89,7 @@
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1 fa-2x"></i>
                     <span id="cartNum"
                           class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                        <!-- 장바구니 아이템 개수 -->
+                        <!-- 장바구니 아이템 개수 -->0
                     </span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="<c:url value='/order/list'/>">
