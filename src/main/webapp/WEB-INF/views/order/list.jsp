@@ -5,7 +5,7 @@
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-3">
         <!-- 사이드바 -->
         <div class="col-md-2">
             <%@include file="../mypage/sidebar.jsp" %>
@@ -13,65 +13,79 @@
         <!-- 컨텐츠 -->
         <div class="col-md-10">
             <!-- 검색 조건 -->
-            <div>
-                <label for="pw1">상품명</label>
-                <input type="text" id="lname" name="lastname"/>
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-text">상품명</span>
+                        <input type="text" class="form-control" id="productName" name="lastname" />
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <label class="form-label">주문일자</label>
+                    <input class="form-label" type="date" name="startDate" />
+                    <label>~</label>
+                    <input class="form-label" type="date" name="endDate" />
+                    <button class="btn btn-primary" type="button">검색</button>
+                </div>
             </div>
-            <div>
-                <label>기간</label>
-                <input type="date" name="startDate"/>
+            <!-- 검색 조건 -->
+            <!-- 주문 내역 -->
+            <div class="row mt-5">
+                <!-- 주문 반복 -->
+                <c:forEach var="orderDto" items="${orderDtoList}">
+                <div class="col-md-8 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-md-12">
+                                <span style="font-size: 1.6rem; font-weight: bold;" class="card-title"><fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd" type="date"/> 주문</span>
+                                <a style="float: right; text-decoration: none;" class="card-title" href="<c:url value='/order/${orderDto.orderNo}'/>">상세내역 확인</a>
+                            </div>
+                            <div class="col-md-12">
+                                <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
+                                <button type="${accept}" class="btn btn-outline-danger">주문 취소</button>
+                            </div>
+                            <!-- 주문상품 반복 -->
+                            <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <div class="row mt-2">
+                                        <h5 style="font-weight: bold; display: block;" class="card-text">${orderDto.status}</h5>
+                                    </div>
+                                    <div class="row mt-2 gx-4">
+                                        <div class="col-md-3">
+                                            <!-- 상품 이미지 -->
+                                            <img class="card-img rounded-0 img-fluid" src="${orderItemDto.productImgPath}">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <!-- 상품 이름 -->
+                                            <p class="card-text">${orderItemDto.productName}</p>
+                                            <!-- 상품 단가 -->
+                                            <span class="card-text">${orderItemDto.productPrice}원</span>
+                                            <span class="card-text"> · </span>
+                                            <!-- 주문 개수 -->
+                                            <span class="card-text">${orderItemDto.productQty} 개</span><br>
+                                            <button type="button" class="btn btn-outline-primary mt-4">장바구니 담기</button><br>
+                                            <button type="button" class="btn btn-outline-primary mt-4">상품 페이지 이동</button><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <c:set var="hasReview"
+                                       value="${orderDto.status == '배송완료' && orderItemDto.hasReview == false ? 'button' : 'hidden'}"/>
+                                <button type="${hasReview}" class="btn btn-primary" onclick="createReview(${orderDto.orderNo}, ${orderItemDto.productNo})">리뷰 작성</button>
+                            </div>
+                            </c:forEach>
+                            <!-- 주문상품 반복 -->
+                        </div>
+                    </div>
+                </div>
+                </c:forEach>
+                <!-- 주문 반복 -->
             </div>
-            <div>
-                <label>~</label>
-                <input type="date" name="endDate"/>
-                <input type="button" value="검색"/>
-            </div>
+            <!-- 주문 내역 -->
         </div>
-        <!-- 주문 조회 -->
-        <c:forEach var="orderDto" items="${orderDtoList}">
-            <div>
-                <div>
-                    <div>
-                        <!-- 좌측:주문일자, 우측:주문번호 -->
-                        <span>
-                        <fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd" type="date"/> 주문</span>
-                        <span>주문번호 : ${orderDto.orderNo}</span>
-                    </div>
-                    <div>
-                        <button onclick='location.href="<c:url value='/order/${orderDto.orderNo}'/>"' type="button"
-                                class="btn btn-primary">상세 내역
-                        </button>
-                        <input type="submit" style="float:right;" value="상세 내역"/>
-                        <c:set var="accept" value="${orderDto.status=='대기중' ? 'button' : 'hidden'}"/>
-                        <input class="orderCancel" style="float: right" type="${accept}" value="주문 취소">
-                    </div>
-                    <!-- 주문 내 주문상품 조회 -->
-                    <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
-                        <div>
-                            <c:set var="hasReview"
-                                   value="${orderDto.status == '배송완료' && orderItemDto.hasReview == false ? 'button' : 'hidden'}"/>
-                            <input type="${hasReview}"
-                                   onclick="createReview(${orderDto.orderNo}, ${orderItemDto.productNo})"
-                                   value="리뷰 작성"/>
-                        </div>
-                        <div>
-                            <img style="float: left;" src="http://via.placeholder.com/150X100/000000/ffffff"/>
-                            <p>[${orderItemDto.productCategory}]</p>
-                            <p>${orderItemDto.productName}</p>
-                            <span>${orderItemDto.productPrice}원</span>
-                            <span> ${orderItemDto.productQty}개</span>
-                        </div>
-                        <!-- 주문 내 주문상품 조회 -->
-                    </c:forEach>
-                </div>
-                <div>
-                    <h2>주문상태 : ${orderDto.status}</h2>
-                </div>
-            </div>
-        </c:forEach>
-        <!-- 주문 조회 -->
     </div>
 </div>
+<%@ include file="../footer.jsp" %>
 <!-- 모달 -->
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -186,4 +200,3 @@
 
 </script>
 <!-- footer -->
-<%@ include file="../footer.jsp" %>

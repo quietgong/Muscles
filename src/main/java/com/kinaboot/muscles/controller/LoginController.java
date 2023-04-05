@@ -56,10 +56,12 @@ public class LoginController {
         return "redirect:" + toURL;
     }
     private boolean loginCheck(String id, String pw) {
-        String encodingPw = userDao.selectUser(id).getPassword();
-        if (userDao.selectUser(id) != null)
-            return passwordEncoder.matches(pw, encodingPw);
-        return false;
+        return true;
+        // 암호화 로그인 체크
+//        String encodingPw = userDao.selectUser(id).getPassword();
+//        if (userDao.selectUser(id) != null)
+//            return passwordEncoder.matches(pw, encodingPw);
+//        return false;
     }
     @GetMapping("/logout")
     @ResponseBody

@@ -22,7 +22,11 @@
 </head>
 
 <body>
-<div class="container d-grid gap-2 d-md-flex justify-content-md-end">
+<div class="mt-3 container d-grid gap-2 d-md-flex justify-content-md-end">
+    <button id="admin" onclick="location.href='<c:url value='/admin/user'/>'" type="button"
+            class="me-md-2 btn btn-outline-primary" style="float: left">
+        관리자 페이지
+    </button>
     <button id="login" onclick="location.href='<c:url value='/login'/>'" type="button" class="me-md-2 btn btn-outline-primary">
         로그인
     </button>
@@ -34,10 +38,6 @@
     <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button"
             class="me-md-2 btn btn-outline-primary">
         채팅상담
-    </button>
-    <button id="admin" onclick="location.href='<c:url value='/admin/user'/>'" type="button"
-            class="me-md-2 btn btn-outline-primary">
-        관리자 페이지
     </button>
 </div>
 <!-- Close Top Nav -->

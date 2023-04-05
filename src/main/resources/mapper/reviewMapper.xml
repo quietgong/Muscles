@@ -9,6 +9,11 @@
         where orderNo = #{orderNo}
           and productNo = #{productNo}
     </select>
+    <select id="selectReviewOne" parameterType="int" resultType="reviewDto">
+        select *
+        from review
+        where reviewNo = ${reviewNo}
+    </select>
     <select id="selectReviewById" parameterType="String" resultType="reviewDto">
         select *
         from review
@@ -32,15 +37,11 @@
     SET modDate = now(),
         score = #{score},
         content = #{content}
-    where userId = #{userId}
-      and orderNo = #{orderNo}
-      and productNo = #{productNo}
+    where reviewNo = #{reviewNo}
 </update>
-    <delete id="deleteReview" parameterType="map">
+    <delete id="deleteReview" parameterType="int">
         UPDATE review
         SET expiredDate = now()
-        where userId = #{userId}
-          and orderNo = ${orderNo}
-          and productNo = #{productNo}
+        where reviewNo = ${reviewNo}
     </delete>
 </mapper>

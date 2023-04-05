@@ -12,8 +12,9 @@ public interface ReviewDao {
     List<ReviewDto> selectReviewListByProductId(Integer productNo);
 
     ReviewDto selectReview(int orderNo, int productNo);
+    ReviewDto selectReview(Integer reviewNo);
 
-    int deleteReview(Integer orderNo, Integer productNo, String userId);
+    int deleteReview(Integer reviewNo);
 
     int updateReview(ReviewDto reviewDto);
 }

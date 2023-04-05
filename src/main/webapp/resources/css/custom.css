@@ -10,6 +10,14 @@ Custom Css
     margin: 0;
     padding: 0;
 }
+.starRange{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    z-index: 2;
+}
 
 .fill-ratings {
     color: #f1f50d;
@@ -34,4 +42,8 @@ span {
 
 .ck-editor__editable {
     min-height: 500px;
+}
+
+td {
+    word-break: break-all;
 }

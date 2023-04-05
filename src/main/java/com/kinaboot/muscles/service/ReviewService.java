@@ -11,9 +11,10 @@ public interface ReviewService {
 
     List<ReviewDto> getReviewListByProductNo(Integer productNo);
 
+    ReviewDto getReviewOne(Integer reviewNo);
     ReviewDto getReviewOne(int orderNo, int productNo);
 
-    int removeReview(Integer orderNo, Integer productNo, String userId);
+    int removeReview(Integer reviewNo);
 
     int modifyReview(ReviewDto reviewDto);
 }

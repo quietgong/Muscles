@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
+<c:set var="isAdmin"
+       value="${pageContext.request.session.getAttribute('id')=='admin' ? 'hidden' : 'button'}"/>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 
@@ -33,7 +35,7 @@
                             <ul class="list-inline pb-3">
                                 <li class="list-inline-item text-right">
                                     <div class="star-ratings">
-                                        <div class="fill-ratings" style="width: 50%;">
+                                        <div class="fill-ratings" style="width: ${productDto.productReviewScore}%;">
                                             <span style="font-size: 1.8rem;">★★★★★</span>
                                         </div>
                                         <div class="empty-ratings">
@@ -74,11 +76,9 @@
                             </div>
                             <div class="row pb-3">
                                 <div class="col d-grid">
-                                    <a href="<c:url value='/order/page'/>">
-                                        <button id="directOrder" type="submit" class="btn btn-success btn-lg"
-                                                name="submit" value="buy">구매
-                                        </button>
-                                    </a>
+                                    <button id="directOrder" type="submit" class="btn btn-success btn-lg"
+                                            name="submit" value="buy">구매
+                                    </button>
                                 </div>
                                 <div class="col d-grid">
                                     <button onclick="addCart()" type="button" class="btn btn-success btn-lg"
@@ -117,55 +117,113 @@
             <h4>리뷰 목록</h4>
         </div>
         <c:forEach var="reviewDto" items="${reviewDtoList}">
-            <div class="row">
-                <div>
-                    <img src="${productDto.productImgPath}"/>
-                </div>
-                <div class="product-detail-review-item"><h3>${reviewDto.productName}</h3></div>
-                <div class="product-detail-review-item">
-                    <span>${reviewDto.content}</span>
-                </div>
-                <div class="product-detail-review-item">
-                    <div>
-                        <span class="star">★★★★★<span style="width: ${reviewDto.score}%">★★★★★</span></span>
+        <div class="row">
+            <div class="col">
+                <p>${reviewDto.userId}</p>
+                <ul class="list-unstyled d-flex mb-1">
+                    <div class="star-ratings">
+                        <div class="fill-ratings" style="width: ${reviewDto.score}%;">
+                            <span style="font-size: 1.8rem;">★★★★★</span>
+                        </div>
+                        <div class="empty-ratings">
+                            <span style="font-size: 1.8rem;">★★★★★</span>
+                            <fmt:formatDate value="${reviewDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
+                        </div>
                     </div>
-                    <span style="font-size:25px; font-weight:bold;">작성일자 :
-                <fmt:formatDate value="${reviewDto.createdDate}" pattern="yyyy-MM-dd" type="date"/>
-            </span>
-                </div>
+                </ul>
             </div>
-        </c:forEach>
-    </div>
+            <div class="col-md-12">
+                <h3>${reviewDto.productName}</h3>
+            </div>
+            <div class="col-md-12">
+                <span>${reviewDto.content}</span>
+            </div>
+            <hr class="mb-4 mt-5">
+            </c:forEach>
+        </div>
+        <div class="row">
+        </div>
 </section>
 <!-- 작성 리뷰 끝 -->
 
-<h1>상품 문의</h1>
-<!-- admin이 접속해있으면 type=hidden 그렇지 않으면 button -->
-<c:set var="isAdmin" value="${pageContext.request.session.getAttribute('id')=='admin' ? 'hidden' : 'button'}"/>
-<input type="${isAdmin}" onclick="registerContent('question')" value="문의하기"/>
-<div id="faqList">
-    <!-- AJAX 동적 추가 -->
-</div>
-
-<!-- 모달 -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <h3 style="text-align: center; font-style: italic;">상품 문의</h3>
-        <div id="modalList">
-            <div>
-                <textarea id="content" rows="6" cols="40"></textarea>
-            </div>
-            <div>
-                <span style="font-size: 15px;">개인정보가 포함되지 않도록 유의해주세요.</span>
+<!-- 상품 문의 시작 -->
+<section class="py-5">
+    <div class="container form-control">
+        <div class="row text-left p-2 pb-3">
+            <div class="col-md-12">
+                <h4 style="display: inline;">상품 문의</h4>
+                <button style="float: right;" class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        onclick="registerContent('question')">문의하기
+                </button>
             </div>
         </div>
-        <div style="text-align: center;">
-            <button id="registerBtn">등록</button>
-            <button id="closeBtn">닫기</button>
+        <div class="row p-2 pb-3">
+            <div class="col-md-12">
+                <ul>
+                    <li>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
+                    <li>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 고객센터 내 1:1 문의하기를 이용해주세요.</li>
+                    <li>"해당 상품 자체"와 관계없는 글, 양도, 광고성, 욕설, 비방, 도배 등의 글은 예고 없이 이동, 노출제한, 삭제 등의 조치가 취해질 수 있습니다.</li>
+                    <li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li>
+                </ul>
+            </div>
+        </div>
+        <hr style="border: 2px solid black;">
+        <!-- 상품문의 문답 -->
+        <div class="row mt-4">
+            <!-- 질문 -->
+            <div class="col-md-12">
+                <button class="btn btn-secondary disabled" type="button">질문</button>
+                <!-- admin이 접속해있으면 type=hidden 그렇지 않으면 button -->
+                <button class="btn btn-primary" type="${isAdmin}">답변 작성</button>
+                <p style="float: right;">작성 날짜</p>
+            </div>
+            <div class="col-md-12 mt-4">
+                <span>질문입니다.</span>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <!-- 답변 -->
+            <div class="col-md-12 mt-4">
+                <span>  </span>
+                <button class="btn btn-outline-primary disabled" type="button">답변</button>
+                <p style="float: right;">작성 날짜</p>
+            </div>
+            <div class="col-md-12 mt-4">
+                <span>  </span>
+                <span>답변입니다</span>
+            </div>
+        </div>
+
+        <div id="faqList" class="col-md-12">
+            <!-- AJAX 동적 추가 -->
+        </div>
+    </div>
+    <!-- 상품문의 문답 -->
+</section>
+<!-- 상품 문의 끝 -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">상품문의 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <textarea id="content" class="form-control mt-1" rows="6" cols="40" placeholder="개인정보가 포함되지 않도록 유의해주세요."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="registerBtn" type="button" class="btn btn-primary">등록</button>
+            </div>
         </div>
     </div>
 </div>
-<!-- 모달 -->
+<!-- Modal -->
+
 <script>
     let productNo = ${productDto.productNo};
     let productName = '${productDto.productNo}';
@@ -175,6 +233,7 @@
     let productImgPath = '${productDto.productImgPath}';
 
     $("#directOrder").on("click", function () {
+        alert("구매 클릭")
         let data = []
         let tmp = {}
         tmp.productNo = productNo

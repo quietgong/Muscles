@@ -77,14 +77,6 @@ public class MypageController {
         return "mypage/mycoupon";
     }
 
-    @DeleteMapping("/myreview/delete")
-    @ResponseBody
-    public ResponseEntity<String> deleteReview(Integer orderNo, Integer productNo, HttpSession session) {
-        String userId = (String) session.getAttribute("id");
-        reviewService.removeReview(orderNo, productNo, userId);
-        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
-    }
-
     // 내가 쓴 리뷰
     @GetMapping("/myreview/get")
     @ResponseBody

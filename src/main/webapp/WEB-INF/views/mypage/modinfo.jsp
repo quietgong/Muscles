@@ -20,15 +20,15 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="email">이메일</label>
-                            <input class="form-control mt-1" type="text" id="email" name="email"
+                            <input class="form-control mt-1" type="text" id="email" name="email" value="${userDto.email}"
                                    placeholder="이메일을 입력해주세요" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="phone">연락처</label>
-                            <input class="form-control mt-1" type="text" id="phone" name="phone" placeholder="- 를 제외하고 입력해주세요" />
+                            <input class="form-control mt-1" value="${userDto.phone}" type="text" id="phone" name="phone" placeholder="- 를 제외하고 입력해주세요" />
                         </div>
                         <div class="col-md-6" style="margin: auto;">
-                            <button class="btn btn-primary form-control mt-3" type="submit">변경</button>
+                            <button class="btn btn-lg btn-primary form-control mt-3" type="submit">변경</button>
                         </div>
                     </div>
                 </div>

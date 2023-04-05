@@ -27,7 +27,7 @@
                             <input class="form-control mt-1" type="text" id="newpassword" name="newPassword2" />
                         </div>
                         <div class="col-md-6" style="margin: auto;">
-                            <button class="btn btn-primary form-control mt-3" type="submit">변경</button>
+                            <button class="btn btn-lg btn-primary form-control mt-3" type="submit">변경</button>
                         </div>
                     </div>
                 </div>

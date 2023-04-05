@@ -17,12 +17,8 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int deleteReview(Integer orderNo, Integer productNo, String userId) {
-        Map map = new HashMap();
-        map.put("orderNo", orderNo);
-        map.put("productNo", productNo);
-        map.put("userId", userId);
-        return session.delete(namespace + "deleteReview", map);
+    public int deleteReview(Integer reviewNo) {
+        return session.delete(namespace + "deleteReview", reviewNo);
     }
 
     @Override
@@ -36,6 +32,11 @@ public class ReviewDaoImpl implements ReviewDao {
         map.put("orderNo", orderNo);
         map.put("productNo", productNo);
         return session.selectOne(namespace + "selectReview", map);
+    }
+
+    @Override
+    public ReviewDto selectReview(Integer reviewNo) {
+        return session.selectOne(namespace + "selectReviewOne", reviewNo);
     }
 
     @Override

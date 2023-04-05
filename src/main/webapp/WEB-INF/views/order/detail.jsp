@@ -1,80 +1,92 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-
-<!-- 본문 -->
-<p style="font-weight: bold">| 주문번호 : ${orderDto.orderNo}</p>
-<hr>
-<p style="font-weight: bold">| 주문 상품 정보</p>
-<div class="order-container">
-    <img style="visibility: hidden;" src="http://via.placeholder.com/100X100/000000/ffffff" />
-    <div class="order-item-head"><h2>상품명</h2></div>
-    <div class="order-item-head"><h2>수량</h2></div>
-    <div class="order-item-head"><h2>상품금액</h2></div>
-</div>
-<hr />
-<c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
-    <!-- 주문 상품 정보 -->
-    <div class="order-container">
-        <img src="http://via.placeholder.com/100X100/000000/ffffff" />
-        <div class="order-item"><h3>${orderItemDto.productName}</h3></div>
-        <div class="order-item"><h3>${orderItemDto.productQty}</h3></div>
-        <div class="order-item"><h3>${orderItemDto.productPrice * orderItemDto.productQty}</h3></div>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-8 mt-5">
+            <span style="font-size: 1.6rem; font-weight: bold;" class="card-title">주문번호 : ${orderDto.orderNo}</span>
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <span>주문자 ID : ${orderDto.userId}</span>
+                        <span style="float: right;" class="card-title"
+                              href="<c:url value='/order/${orderDto.orderNo}'/>">
+                            <fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd" type="date"/> 주문</span>
+                    </div>
+                    <!-- 주문상품 반복 -->
+                    <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <div class="row mt-2 gx-4">
+                                    <div class="col-md-2">
+                                        <!-- 상품 이미지 -->
+                                        <img class="card-img rounded-0 img-fluid" src="${orderItemDto.productImgPath}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <!-- 상품 이름 -->
+                                        <p class="card-text">${orderItemDto.productName}</p>
+                                        <!-- 상품 단가 -->
+                                        <span class="card-text">${orderItemDto.productPrice}원</span>
+                                        <span class="card-text"> · </span>
+                                        <!-- 주문 개수 -->
+                                        <span class="card-text">${orderItemDto.productQty} 개</span><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 주문상품 반복 -->
+                    </c:forEach>
+                    <div class="col-md-12 mt-5">
+                        <h4 class="card-title">배송 정보</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">수령인</th>
+                                <th scope="col">주소</th>
+                                <th scope="col">휴대폰</th>
+                                <th scope="col">요청사항</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="word-break: break-all">${orderDto.deliveryDto.receiver}</td>
+                                <td style="word-break: break-all">${orderDto.deliveryDto.address}</td>
+                                <td style="word-break: break-all">${orderDto.deliveryDto.phone}</td>
+                                <td style="word-break: break-all">${orderDto.deliveryDto.message}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 mt-5">
+                        <h4 class="card-title">결제 정보</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">결제 수단</th>
+                                <th scope="col">결제 금액</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="word-break: break-all">${orderDto.paymentDto.type}</td>
+                                <td style="word-break: break-all">${orderDto.paymentDto.price}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 mt-5" style="text-align: center;">
+                        <button class="btn btn-outline-primary" onclick="location.history()"
+                                type="button">뒤로가기</button>
+                        <button class="btn btn-outline-primary" onclick="<c:url value='/'/>" type="button">홈으로
+                            이동</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <hr />
-    <!-- 주문자 정보 -->
-</c:forEach>
-<p style="font-weight: bold">| 주문자 정보</p>
-<table class="myTable">
-    <tr>
-        <td>이름</td>
-        <td>연락처</td>
-    </tr>
-    <tr>
-        <td>${orderDto.deliveryDto.receiver}</td>
-        <td>${orderDto.deliveryDto.phone}</td>
-    </tr>
-</table>
-<!-- 배송 정보 -->
-<p style="font-weight: bold">| 배송 정보</p>
-<table class="myTable">
-    <tr>
-        <td>수령인</td>
-        <td>주소</td>
-        <td>휴대폰</td>
-        <td>요청사항</td>
-    </tr>
-    <tr>
-        <td>${orderDto.deliveryDto.receiver}</td>
-        <td>${orderDto.deliveryDto.address}</td>
-        <td>${orderDto.deliveryDto.phone}</td>
-        <td>${orderDto.deliveryDto.message}</td>
-    </tr>
-</table>
-<!-- 결제 정보 -->
-<p style="font-weight: bold">| 결제</p>
-<table class="myTable">
-    <tr>
-        <td>결제 방법</td>
-        <td>결제 금액</td>
-    </tr>
-    <tr>
-        <td>${orderDto.paymentDto.type}</td>
-        <td>${orderDto.paymentDto.price}</td>
-    </tr>
-</table>
-<div class="order-container">
-    <div class="order-item">
-        <a href="<c:url value='/order/detail'/>">
-            <input type="button" value="뒤로가기" />
-        </a>
-        <a href="<c:url value='/'/>">
-            <input type="button" value="홈으로 이동" />
-        </a>
-    </div>
 </div>
-
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

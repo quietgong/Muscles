@@ -23,8 +23,8 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public int removeReview(Integer orderNo, Integer productNo, String userId) {
-        return reviewDao.deleteReview(orderNo, productNo, userId);
+    public int removeReview(Integer reviewNo) {
+        return reviewDao.deleteReview(reviewNo);
     }
 
     @Override
@@ -35,6 +35,11 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<ReviewDto> getReviewListByProductNo(Integer productNo) {
         return reviewDao.selectReviewListByProductId(productNo);
+    }
+
+    @Override
+    public ReviewDto getReviewOne(Integer reviewNo) {
+        return reviewDao.selectReview(reviewNo);
     }
 
     @Override
