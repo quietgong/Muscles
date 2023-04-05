@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center footer p-3 gap-2">
-                    <a href="<c:url value='/order/detail?orderNo=${orderDto.orderNo}'/>">
+                    <a href="<c:url value='/order/${orderDto.orderNo}'/>">
                         <button class="btn btn-primary" type="button">주문내역 확인</button>
                     </a>
                     <a href="<c:url value='/'/>">

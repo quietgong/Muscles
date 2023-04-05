@@ -20,7 +20,6 @@
     <script src="<c:url value='/js/jquery-1.11.0.min.js'/>"></script>
     <script src="<c:url value='/js/jquery-migrate-1.2.1.min.js'/>"></script>
 </head>
-
 <body>
 <div class="mt-3 container d-grid gap-2 d-md-flex justify-content-md-end">
     <button id="admin" onclick="location.href='<c:url value='/admin/user'/>'" type="button"

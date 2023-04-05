@@ -42,7 +42,7 @@ public class OrderController {
         return "order/detail";
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @ResponseBody
     public ResponseEntity<OrderItemDto> getOrder(Integer orderNo, Integer productNo) {
         logger.info("주문상품 목록 가져오기");

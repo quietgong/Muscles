@@ -15,7 +15,8 @@ public class OrderDaoImpl implements OrderDao {
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
 
-    private List<OrderDto> getOrderDtoList(List<OrderDto> orderDtoList) {
+    @Override
+    public List<OrderDto> getOrderDtoList(List<OrderDto> orderDtoList) {
         for (OrderDto orderDto : orderDtoList) {
             // 해당 주문정보의 orderNo를 통해 주문상품 정보, 배송정보, 결제정보를 가져온다.
             int orderNo = orderDto.getOrderNo();

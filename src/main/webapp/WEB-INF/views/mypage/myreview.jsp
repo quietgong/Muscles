@@ -174,7 +174,6 @@
         })
     }
 
-
     // 리뷰 삭제
     function delReview(e) {
         alert("삭제 동작")

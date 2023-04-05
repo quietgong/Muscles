@@ -27,4 +27,5 @@ public interface OrderDao {
     int deleteOrder(Integer orderNo);
 
     int selectUserRecentOrderNo();
+    List<OrderDto> getOrderDtoList(List<OrderDto> orderDtoList);
 }
