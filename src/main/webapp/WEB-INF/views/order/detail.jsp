@@ -40,7 +40,8 @@
                         <!-- 주문상품 반복 -->
                     </c:forEach>
                     <div class="col-md-12 mt-5">
-                        <h4 class="card-title">배송 정보</h4>
+                        <i class="fas fa-truck fa-2x fa-fw me-3"></i>
+                        <span style="font-weight: bold" class="card-title"> 배송 정보</span>
                         <table class="table table-bordered">
                             <thead>
                             <tr>
@@ -61,7 +62,8 @@
                         </table>
                     </div>
                     <div class="col-md-12 mt-5">
-                        <h4 class="card-title">결제 정보</h4>
+                        <i class="fas fa-credit-card fa-2x fa-fw me-3"></i>
+                        <span style="font-weight: bold" class="card-title"> 결제 정보</span>
                         <table class="table table-bordered">
                             <thead>
                             <tr>
