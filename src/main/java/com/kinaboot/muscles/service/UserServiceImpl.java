@@ -28,14 +28,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int createQuit(String userId) {
-        return userDao.insertQuit(userId);
+    public int createQuit(Integer userNo) {
+        return userDao.insertQuit(userNo);
     }
 
     @Override
-    public int leaveUser(Map map) {
-        userDao.insertLeave(map);
-        return userDao.deleteUser((String) map.get("userId"));
+    public int leaveUser(Integer userNo) {
+        userDao.insertLeave(userNo);
+        return userDao.deleteUser(userNo);
     }
 
     @Override
@@ -89,11 +89,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int removeUser(String userId) throws Exception {
+    public int removeUser(Integer userNo) throws Exception {
         // 1. 유저 expiredDate 생성
-        userDao.insertQuit(userId);
+        userDao.insertQuit(userNo);
         // 2. 회원탈퇴 데이터에 운영자에 의한 탈퇴임을 기록
-        return userDao.deleteUser(userId);
+        return userDao.deleteUser(userNo);
     }
 
 }

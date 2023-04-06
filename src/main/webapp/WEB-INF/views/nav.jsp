@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/templatemo.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/custom.css'/>">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="<c:url value='/css/fontawesome.min.css'/>">
     <!-- jQuery -->
     <script src="<c:url value='/js/jquery-1.11.0.min.js'/>"></script>
@@ -125,13 +124,13 @@
             $("#login").css("display", "inline-block")
             $("#register").css("display", "inline-block")
             $("#chatting").css("display", "none")
-            $("#admin").css("display", "none")
+            // $("#admin").css("display", "none")
             $("#logout").css("display", "none")
         } else {
             $("#login").css("display", "none")
             $("#register").css("display", "none")
             $("#chatting").css("display", "inline-block")
-            $("#admin").css("display", "inline-block")
+            // $("#admin").css("display", "inline-block")
             $("#logout").css("display", "inline-block")
         }
     }

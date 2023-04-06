@@ -19,8 +19,8 @@ import java.net.URLEncoder;
 
 @Controller
 public class LoginController {
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     private final UserDao userDao;

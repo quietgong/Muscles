@@ -24,4 +24,6 @@ public interface ProductService {
     int getTotalCntByCategory(SearchCondition sc);
 
     List<ProductImgDto> getProductDetailImgList(Integer productNo);
+
+    ProductDto getProduct(Integer productNo);
 }

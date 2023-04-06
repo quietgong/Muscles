@@ -26,8 +26,8 @@ public class RegisterController {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder passwordEncoder;
 
     private final UserDao userDao;
 
@@ -50,7 +50,7 @@ public class RegisterController {
         String encodingPw = "";
 
         originPw = userDto.getPassword();
-        encodingPw = passwordEncoder.encode(originPw);
+//        encodingPw = passwordEncoder.encode(originPw);
         userDto.setPassword(encodingPw);
 
         userDao.insertUser(userDto);

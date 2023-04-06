@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.ProductDto;
+import com.kinaboot.muscles.service.ProductService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ProductDaoImplTest {
     @Autowired
     ProductDao productDao;
+    @Autowired
+    ProductService productService;
+    @Test
+    public void getProduct(){
+        productService.getProduct(3);
+    }
     @Test
     public void insertTest() throws Exception {
         deleteAll();

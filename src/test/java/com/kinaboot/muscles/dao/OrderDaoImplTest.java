@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.*;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
@@ -81,4 +82,9 @@ public class OrderDaoImplTest {
         System.out.println("orderService.getUserRecentOrderNo() = " + orderService.getUserRecentOrderNo());
     }
 
+    @Test
+    public void getOrderAll(){
+        SearchCondition sc = new SearchCondition();
+        orderService.getAdminOrderList(sc);
+    }
 }

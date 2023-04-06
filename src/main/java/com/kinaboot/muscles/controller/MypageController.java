@@ -160,7 +160,7 @@ public class MypageController {
         map.put("type2", String.valueOf(typeValue[1]));
         map.put("type3", String.valueOf(typeValue[2]));
         map.put("opinion", opinion);
-        userService.leaveUser(map);
+        userService.leaveUser(userService.read(userId).getUserNo());
         session.invalidate();
         return "redirect:/";
     }

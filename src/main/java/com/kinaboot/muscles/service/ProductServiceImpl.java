@@ -16,6 +16,13 @@ public class ProductServiceImpl implements ProductService{
     ProductDao productDao;
 
     @Override
+    public ProductDto getProduct(Integer productNo) {
+        ProductDto productDto = productDao.select(productNo);
+        productDto.setProductImgDtoList(productDao.selectProductDetailImg(productNo));
+        return productDto;
+    }
+
+    @Override
     public List<ProductDto> getAllProduct() {
         return productDao.selectAll();
     }

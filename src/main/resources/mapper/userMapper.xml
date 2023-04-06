@@ -10,7 +10,6 @@
     <select id="selectAllUser" resultType="UserDto">
         SELECT *
         FROM user
-        where expiredDate is null
     </select>
     <select id="selectUser" resultType="UserDto">
         SELECT *
@@ -74,25 +73,20 @@
         values (#{userId}, #{password}, #{email}, #{phone}, now(), #{address1}, #{address2}, 0, now())
     </insert>
 
-    <insert id="insertLeave" parameterType="map">
+    <insert id="insertQuit" parameterType="map">
         INSERT INTO quit
             (userId, type1, type2, type3, opinion)
         values (#{userId}, #{type1}, #{type2}, #{type3}, #{opinion})
-    </insert>
-    <insert id="insertQuitByAdmin" parameterType="map">
-        INSERT INTO quit
-            (userId, opinion)
-        values (#{userId}, #{opinion})
     </insert>
 
     <delete id="deleteAllUser">
         DELETE
         FROM USER
     </delete>
-    <delete id="deleteUser" parameterType="String">
+    <delete id="deleteUser" parameterType="int">
         UPDATE USER
         SET expiredDate = now()
-        where userId = '${userId}';
+        where userNo = '${userNo}';
     </delete>
     <update id="updateExpiredDate" parameterType="String">
         UPDATE USER

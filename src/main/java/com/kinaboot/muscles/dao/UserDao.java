@@ -19,15 +19,15 @@ public interface UserDao {
 
     int updateUser(UserDto userDto);
 
-    int deleteUser(String userId);
+    int deleteUser(Integer userNo);
 
-    int insertLeave(Map map);
+    int insertLeave(Integer userNo);
 
     int updateUserPassword(String userId, String newPassword);
 
     List<UserDto> selectAllUser();
 
-    int insertQuit(String userId);
+    int insertQuit(Integer userNo);
 
     int insertRecommendEventCoupon(String userId, String recommendId);
 

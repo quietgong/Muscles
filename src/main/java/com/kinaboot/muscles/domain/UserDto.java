@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class UserDto {
-
     private Integer userNo;
     private String userId;
     private String password;

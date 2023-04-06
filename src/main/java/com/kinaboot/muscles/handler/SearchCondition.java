@@ -83,7 +83,7 @@ public class SearchCondition {
         this.type = type;
     }
 
-    SearchCondition() {
+    public SearchCondition() {
     }
     public SearchCondition(Integer page) {
         this(page, "", "");

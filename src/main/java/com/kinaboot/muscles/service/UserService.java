@@ -17,14 +17,14 @@ public interface UserService {
 
     int modify(UserDto userDto) throws Exception;
 
-    int removeUser(String userId) throws Exception;
+    int removeUser(Integer userNo) throws Exception;
 
     int modifyUserInfo(UserDto userDto);
     int modifyUserPassword(String userId, String newPassword);
-    int leaveUser(Map map);
+    int leaveUser(Integer userNo);
     List<UserDto> getAllUser();
 
-    int createQuit(String userId);
+    int createQuit(Integer userNo);
 
     int registerRecommendEventCoupon(String userId, String recommendId);
 

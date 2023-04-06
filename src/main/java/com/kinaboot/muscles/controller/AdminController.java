@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,12 +42,12 @@ public class AdminController {
         return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
     // 유저 탈퇴 처리
-    @DeleteMapping("/user/{userId}")
+    @DeleteMapping("/user/{userNo}")
     @ResponseBody
-    public ResponseEntity<String> removeUser(@PathVariable String userId) {
-        logger.info("ID : " + userId + " 탈퇴 처리");
+    public ResponseEntity<String> removeUser(@PathVariable Integer userNo) {
+        logger.info("고객번호 : " + userNo + " 탈퇴 처리");
         try {
-            userService.removeUser(userId);
+            userService.removeUser(userNo);
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("DEL_FAIL", HttpStatus.BAD_REQUEST);
@@ -60,6 +61,14 @@ public class AdminController {
         logger.info("상품관리 진입");
         return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
     }
+
+    @GetMapping("/product/{productNo}")
+    @ResponseBody
+    public ResponseEntity<ProductDto> getProductItem(@PathVariable Integer productNo) {
+        logger.info("상품 1개 데이터 반환");
+        return new ResponseEntity<>(productService.getProduct(productNo), HttpStatus.OK);
+    }
+
 
     @GetMapping("/product/detailImg/{productNo}")
     @ResponseBody
@@ -108,6 +117,8 @@ public class AdminController {
 
     @GetMapping("/order")
     public String getOrder(SearchCondition sc, Model m) {
+        logger.info("관리자 주문 목록 진입");
+        System.out.println("sc = " + sc);
         m.addAttribute("orderDtoList", orderService.getAdminOrderList(sc));
         return "admin/order";
     }
