@@ -31,6 +31,5 @@
     <view-controller path="/admin/user" view-name="admin/user"/>
     <view-controller path="/chatting" view-name="chatRoom"/>
     <view-controller path="/cart" view-name="cart"/>
-
     <view-controller path="/nav" view-name="nav"/>
 </beans:beans>

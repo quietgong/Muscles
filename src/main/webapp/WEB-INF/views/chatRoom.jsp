@@ -3,89 +3,23 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-    }
+<section>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-6" style="margin: auto;">
+                <h3>채팅상담 목록</h3>
+                <div class="card" style="border-radius: 15px; overflow: auto;">
+                    <div class="card-body" id="roomList">
+                        <!-- 반복부 -->
 
-    .container {
-        width: 500px;
-        margin: 0 auto;
-        padding: 25px
-    }
-
-    .container h1 {
-        text-align: left;
-        padding: 5px 5px 5px 15px;
-        border-left: 3px solid #FFBB00;
-        margin-bottom: 20px;
-    }
-
-    .roomContainer {
-        background-color: #F6F6F6;
-        width: 500px;
-        height: 500px;
-        overflow: auto;
-    }
-
-    .roomList {
-        border: none;
-    }
-
-    .roomList th {
-        border: 1px solid #FFBB00;
-        background-color: #fff;
-        color: #FFBB00;
-    }
-
-    .roomList td {
-        border: 1px solid #FFBB00;
-        background-color: #fff;
-        text-align: left;
-        color: #FFBB00;
-    }
-
-    .roomList .num {
-        width: 75px;
-        text-align: center;
-    }
-
-    .roomList .room {
-        width: 350px;
-    }
-
-    .roomList .go {
-        width: 71px;
-        text-align: center;
-    }
-
-    button {
-        background-color: #FFBB00;
-        font-size: 14px;
-        color: #000;
-        border: 1px solid #000;
-        border-radius: 5px;
-        padding: 3px;
-        margin: 3px;
-    }
-
-    .inputTable th {
-        padding: 5px;
-    }
-
-    .inputTable input {
-        width: 330px;
-        height: 25px;
-    }
-</style>
-<!-- 본문 -->
-<div class="container">
-    <h1>채팅문의 목록</h1>
-    <div id="roomContainer" class="roomContainer">
-        <table id="roomList" class="roomList"></table>
+                        <!-- 반복부 -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
 <script>
     let ws;
     getRoom();
@@ -101,8 +35,8 @@
         location.href = "/muscles/moveChating?chatName=" + name;
     }
 
-    function removeRoom(name){
-        commonAjax('/muscles/removeRoom/'+name,"",'delete',function (result){
+    function removeRoom(name) {
+        commonAjax('/muscles/removeRoom/' + name, "", 'delete', function (result) {
             console.log(result)
             createChatingRoom(result)
         })
@@ -110,19 +44,31 @@
 
     function createChatingRoom(res) {
         if (res != null) {
-            let tag = "<tr><th class='num'>순서</th><th class='room'>방 이름</th><th class='go'></th><th></th></tr>";
-            res.forEach(function (d, idx) {
-                if(d.chatName!=null) {
-                    const rn = d.chatName.trim();
-                    tag += "<tr>" +
-                        "<td class='num'>" + (idx + 1) + "</td>" +
-                        "<td class='room'>" + rn + "</td>" +
-                        "<td class='go'><button type='button' onclick='goRoom(\"" + rn + "\")'>참여</button></td>" +
-                        "<td><button type='button' onclick='removeRoom(\"" + rn + "\")'>상담 종료</button></td>" +
-                        "</tr>";
+            let tmp = "";
+            res.forEach(function (d) {
+                console.log(d)
+                if (d.chatName != null) {
+                    const rn = d.chatName.trim()
+                    tmp += '<div class="row mt-3">'
+                    tmp += '<div class="col-md-3">'
+                    tmp += '<span class="badge bg-danger rounded float-end mb-0" style="float: right;">3</span>'
+                    tmp += '<img src="/muscles/img/logo.jpg" class="d-flex align-self-center me-3" width="60">'
+                    tmp += '</div>'
+                    tmp += '<div class="col-md-3 pt-3">'
+                    tmp += "<a onclick='goRoom(\"" + rn + "\")' style='text-decoration: none; cursor: pointer' class='fw-bold mb-0'>" + d.chatName + '</a>'
+                    tmp += '</div>'
+                    tmp += '<div class="col-md-3 pt-3">'
+                    tmp += '<p class="small text-muted mb-0">마지막메세지시간</p>'
+                    tmp += '</div>'
+                    tmp += '<div class="col-md-3 pt-3">'
+                    tmp += "<button type='button' onclick='removeRoom(\"" + rn + "\")' style='float: right;' class='small btn btn-primary'>상담종료</button>"
+                    tmp += '</button>'
+                    tmp += '</div>'
+                    tmp += '</div>'
+                    tmp += '<hr>'
                 }
             });
-            $("#roomList").empty().append(tag);
+            $("#roomList").empty().append(tmp);
         }
     }
 

@@ -4,84 +4,78 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="nav.jsp" %>
-<style>
-    .container h1 {
-        text-align: left;
-        padding: 5px 5px 5px 15px;
-        border-left: 3px solid black;
-        margin-bottom: 20px;
-    }
-
-    .chating {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-        border-radius: 10px;
-        background-color: #c7c4c4;
-        width: 700px;
-        height: 500px;
-        overflow: auto;
-        font-size: 1.2rem;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    #msgInput {
-        width: 500px;
-        height: 40px;
-        font-size: 1.2rem;
-        border-radius: 10px;
-        text-align: center;
-        margin: 20px auto auto;
-    }
-
-    .msgBox {
-        position: relative;
-        border-radius: 3px;
-        padding: 10px;
-        background-color: #d9d9ee;
-        max-width: 50%;
-        margin-top: 10px;
-    }
-
-    .msgDate {
-        font-size: 0.7rem;
-        text-align: right;
-    }
-</style>
 <!-- 본문 -->
-<h1>1:1 상담 문의</h1>
 <input type="hidden" id="chatName" value="${chatName}">
 <input type="hidden" id="sessionId" value="">
-
-<div id="chating" class="chating">
-    <c:forEach var="pastChat" items="${chatDtoList}">
-        <c:set var="myMsg"
-               value="${pageContext.request.session.getAttribute('id') == pastChat.talker ? 'left' : 'right'}"/>
-        <div class="msgBox" style="margin-${myMsg}: auto">
-            <span>
-                    ${pastChat.talker} : ${pastChat.msg}
-            </span>
-            <p class="msgDate">
-                <fmt:formatDate value="${pastChat.createdDate}" pattern="yyyy-MM-dd" type="date"/>
-            </p>
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-10 col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center p-3"
+                         style="border-top: 4px solid #b6c4f8;">
+                        <h5 class="mb-0">1:1 상담 문의</h5>
+                    </div>
+                    <div id="chattingBox" class="card-body" style="position: relative; height: 400px; overflow: auto;">
+                        <c:forEach var="pastChat" items="${chatDtoList}">
+                            <c:choose>
+                                <c:when test="${pageContext.request.session.getAttribute('id') == pastChat.talker}">
+                                    <!-- 나의 대화 -->
+                                    <div class="d-flex justify-content-between">
+                                        <p class="small mb-1 text-muted">${pastChat.createdDate}</p>
+                                        <p class="small mb-1">${pastChat.talker}</p>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                                        <div style="max-width: 80%;">
+                                            <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-primary">${pastChat.msg}</p>
+                                        </div>
+                                        <img src="<c:url value='/img/logo.jpg'/>" style="width: 45px; height: 100%;">
+                                    </div>
+                                    <!-- 나의 대화 -->
+                                </c:when>
+                                <c:otherwise>
+                                    <!-- 상대방 대화 -->
+                                    <div class="d-flex justify-content-between">
+                                        <p class="small mb-1">${pastChat.talker}</p>
+                                        <p class="small mb-1 text-muted">${pastChat.createdDate}</p>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-start">
+                                        <img src="<c:url value='/img/logo.jpg'/>" style="width: 45px; height: 100%;">
+                                        <div style="max-width: 80%;">
+                                            <p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">${pastChat.msg}</p>
+                                        </div>
+                                    </div>
+                                    <!-- 상대방 대화 -->
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                        <div class="input-group mb-0">
+                            <input id="msgInput" type="text" class="form-control" placeholder="Type message"
+                                   aria-label="Recipient's username" aria-describedby="button-addon2"/>
+                            <button class="btn btn-primary" type="button" id="button-addon2"
+                                    style="padding-top: .55rem;">
+                                전송
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </c:forEach>
-</div>
-
-<div style="text-align: center">
-    <input id="msgInput" placeholder="메시지를 입력하세요.">
-</div>
+    </div>
+</section>
 
 <script>
     let ws;
-    let userName = $("#chatName").val() == "" ? '${pageContext.request.session.getAttribute('id')}' : $("#chatName").val();
+    let userName = $("#chatName").val() == "" ? '${userId}' : $("#chatName").val();
     let url = "ws://localhost:80/muscles/chatserver/" + userName;
 
     scrollTop()
     wsOpen();
 
     function scrollTop() {
-        var element = document.getElementById("chating");
+        let element = document.getElementById("chattingBox");
         element.scrollTop = element.scrollHeight;
     }
 
@@ -95,6 +89,7 @@
             //소켓이 열리면 초기화 세팅하기
         }
         ws.onmessage = function (data) {
+            let newChat = $("#chattingBox").children().length === 0
             scrollTop()
             const msg = data.data;
             if (msg != null && msg.trim() != '') {
@@ -108,15 +103,35 @@
                     let tmp = ""
                     let currentTime = new Date().toLocaleString()
                     if (d.sessionId === $("#sessionId").val()) {
-                        tmp += "<div class='msgBox' style='margin-left: auto'>"
-                        tmp += "<span>나 :" + d.msg + "</span>"
+                        // 내가 메세지를 전달할 때
+                        tmp+='<div class="d-flex justify-content-between">'
+                        tmp+='<p class="small mb-1 text-muted">'+currentTime+'</p>'
+                        tmp+='<p class="small mb-1">' + d.userName + '</p>'
+                        tmp+='</div>'
+                        tmp+='<div class="d-flex flex-row justify-content-end mb-4 pt-1">'
+                        tmp+='<div style="max-width: 80%;">'
+                        tmp+='<p class="small p-2 me-3 mb-3 text-white rounded-3 bg-primary">' + d.msg + '</p>'
+                        tmp+='</div>'
+                        tmp+='<img src="/muscles/img/logo.jpg" style="width: 45px; height: 100%;">'
+                        tmp+='</div>'
                     } else {
-                        tmp += "<div class='msgBox' style='margin-right: auto'>"
-                        tmp += "<span>" + d.userName + " :" + d.msg + "</span>"
+                        // 상대방의 메세지를 받았을 때
+                        tmp+='<div class="d-flex justify-content-between">'
+                        tmp+='<p class="small mb-1">' + d.userName + '</p>'
+                        tmp+='<p class="small mb-1 text-muted">' +currentTime + '</p>'
+                        tmp+='</div>'
+                        tmp+='<div class="d-flex flex-row justify-content-start">'
+                        tmp+='<img src="/muscles/img/logo.jpg" style="width: 45px; height: 100%;">'
+                        tmp+='<div style="max-width: 80%;">'
+                        tmp+='<p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">' + d.msg + '</p>'
+                        tmp+='</div>'
+                        tmp+='</div>'
                     }
-                    tmp += "<p class='msgDate'>" + currentTime + "</p>"
-                    tmp += "</div>"
-                    $(".msgBox").last().after(tmp)
+                    console.log(newChat)
+                    if(newChat) // 신규 대화
+                        $("#chattingBox").append(tmp)
+                    else // 기존 대화
+                        $("#chattingBox").children().last().after(tmp)
                 } else
                     console.warn("unknown type!")
             }
@@ -133,7 +148,7 @@
             type: "message",
             chatName: userName,
             sessionId: $("#sessionId").val(),
-            userName: '${pageContext.request.session.getAttribute('id')}',
+            userName: '${userId}',
             msg: $("#msgInput").val()
         }
         // 웹소켓에 메시지 정보 전달
@@ -142,7 +157,7 @@
         // 컨트롤러에 메시지 정보 전달
         let data = {
             chatName: userName,
-            talker: '${pageContext.request.session.getAttribute('id')}',
+            talker: '${userId}',
             msg: $("#msgInput").val()
         }
         // 채팅 메세지 DB 저장

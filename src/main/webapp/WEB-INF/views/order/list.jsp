@@ -14,18 +14,22 @@
         <div class="col-md-10">
             <!-- 검색 조건 -->
             <div class="row mt-5 justify-content-center">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-text">상품명</span>
-                        <input type="text" class="form-control" id="name" name="lastname"/>
+                        <input type="text" class="form-control" id="name" name="lastname" />
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <label class="form-label">주문일자</label>
-                    <input class="form-label" type="date" name="startDate"/>
-                    <label>~</label>
-                    <input class="form-label" type="date" name="endDate"/>
-                    <button class="btn btn-primary" type="button">검색</button>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group gap-3">
+                        <label class="form-label mt-2" for="startDate">주문일자</label>
+                        <input id="startDate" class="form-control" type="date" name="startDate" />
+                        <label class="form-label mt-2">~</label>
+                        <input class="form-control" type="date" name="endDate" />
+                        <button class="btn btn-primary" type="button">검색</button>
+                    </div>
                 </div>
             </div>
             <!-- 검색 조건 -->
@@ -111,7 +115,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">리뷰 작성</h5>
-                <button type="button" onclick="initModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" onclick="initModal()" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- 모달 구성 요소 -->
@@ -146,7 +151,8 @@
             </div>
             <!-- 모달 구성 요소 -->
             <div id="modal-footer" class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="initModal()" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" onclick="initModal()" data-bs-dismiss="modal">Close
+                </button>
                 <button onclick="reviewRegister(this)" type="button" class="btn btn-primary">등록</button>
                 <input id="reviewNo" value="" type="hidden">
             </div>
@@ -176,11 +182,12 @@
 </script>
 <script>
     // 모달창이 닫혔을 때 모달 내용 초기화
-    function initModal(){
+    function initModal() {
         $("#reviewContent").val("")
         $("#starRange").val("")
-        $("#starRange").next().css("width","100%")
+        $("#starRange").next().css("width", "100%")
     }
+
     // 해당 주문에 대한 정보를 모달창에 입력
     function createReview(orderNo, productNo) {
         $.ajax({

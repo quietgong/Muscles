@@ -78,9 +78,13 @@ public class ChattingController {
     // 관리자가 유저 채팅목록에 접속할 때
     @GetMapping("/moveChating")
     public String chating(String chatName, Model m) {
+        logger.info("관리자 채팅문의 진입");
+        System.out.println("chatName = " + chatName);
         List<ChatDto> new_list = chatDtoList.stream().
                 filter(o -> Objects.equals(o.getChatName(), chatName))
                 .collect(Collectors.toList());
+
+
         if (new_list != null && new_list.size() > 0) {
             m.addAttribute("chatName", chatName);
             m.addAttribute("chatDtoList", chatService.getChat(chatName));
