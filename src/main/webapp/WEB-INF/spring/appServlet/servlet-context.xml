@@ -25,7 +25,7 @@
     <!-- 인터셉터 적용 -->
     <interceptors>
         <interceptor>
-            <mapping path="/member/login.do"></mapping>
+            <mapping path="/login"></mapping>
             <beans:bean id="loginIntreceptor" class="com.kinaboot.muscles.interceptor.LoginInterceptor"/>
         </interceptor>
         <interceptor>
