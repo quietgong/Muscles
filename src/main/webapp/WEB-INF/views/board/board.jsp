@@ -70,11 +70,12 @@
         else {
             let modData = {}
             modData.postNo = postNo
+            modData.userId = '${userId}'
             modData.title = $("input[name=title]").val()
             modData.content = $("textarea[name=content]").val()
             $.ajax({
                 type: "PATCH",
-                url: "/muscles/${postCategory}/" + postNo,
+                url: "/muscles/${postCategory}",
                 headers: {              // Http header
                     "Content-Type": "application/json",
                 },
