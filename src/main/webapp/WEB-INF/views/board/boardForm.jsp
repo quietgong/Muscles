@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<%@ include file="nav.jsp" %>
+<%@ include file="../nav.jsp" %>
 <input type="hidden" name="postCategory" value="${postCategory}">
 <form action="<c:url value='/${postCategory}'/>" method="post">
 <div class="container">
@@ -37,4 +37,4 @@
         });
 </script>
 <!-- footer -->
-<%@ include file="footer.jsp" %>
+<%@ include file="../footer.jsp" %>

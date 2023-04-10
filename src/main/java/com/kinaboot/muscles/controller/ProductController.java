@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.util.List;
 
 @Controller
+@RequestMapping("/product")
 public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
@@ -31,8 +32,14 @@ public class ProductController {
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping("product/display")
-    public ResponseEntity<byte[]> getImage(String type, String fileName) throws IOException {
+    @GetMapping("/{productNo}")
+    @ResponseBody
+    public ResponseEntity<ProductDto> productDetails(@PathVariable Integer productNo) {
+        return new ResponseEntity<>(productService.findProduct(productNo), HttpStatus.OK);
+    }
+
+    @GetMapping("/display")
+    public ResponseEntity<byte[]> productImgDetails(String type, String fileName) throws IOException {
         String path = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\product\\" + type + "\\";
         File file = new File(path + fileName);
         HttpHeaders header = new HttpHeaders();
@@ -40,25 +47,25 @@ public class ProductController {
         return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
     }
 
-    @GetMapping("product/faq/{productNo}")
+    @GetMapping("/faq/{productNo}")
     @ResponseBody
-    public ResponseEntity<List<FaqDto>> getFaq(@PathVariable Integer productNo) {
-        List<FaqDto> faqDtoList = productService.getFaqList(productNo);
+    public ResponseEntity<List<FaqDto>> faqList(@PathVariable Integer productNo) {
+        List<FaqDto> faqDtoList = productService.findFaqs(productNo);
         return new ResponseEntity<>(faqDtoList, HttpStatus.OK);
     }
 
-    @PostMapping("product/faq/")
+    @PostMapping("/faq/")
     @ResponseBody
-    public ResponseEntity<String> registerFaq(@RequestBody FaqDto faqDto) {
-        productService.registerFaq(faqDto);
+    public ResponseEntity<String> faqAdd(@RequestBody FaqDto faqDto) {
+        productService.addFaq(faqDto);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }
 
 
-    @GetMapping("product/list")
+    @GetMapping("/list")
     public String productList(SearchCondition sc, Model m) {
         int totalCnt = productService.getTotalCntByCategory(sc);
-        List<ProductDto> productDtoList = calculateReviewScore(productService.productList(sc));
+        List<ProductDto> productDtoList = calculateReviewScore(productService.findProducts(sc));
         PageHandler ph = new PageHandler(totalCnt, sc);
         m.addAttribute("list", productDtoList);
         m.addAttribute("ph", ph);
@@ -68,7 +75,7 @@ public class ProductController {
 
     private List<ProductDto> calculateReviewScore(List<ProductDto> productDtoList) {
         for (ProductDto productDto : productDtoList) {
-            List<ReviewDto> reviewDtoList = reviewService.getReviewListByProductNo(productDto.getProductNo());
+            List<ReviewDto> reviewDtoList = reviewService.findReviews(productDto.getProductNo());
             double productScore = 0.0;
             if (reviewDtoList.size() != 0) {
                 for (ReviewDto reviewDto : reviewDtoList)
@@ -81,10 +88,10 @@ public class ProductController {
         return productDtoList;
     }
 
-    @GetMapping("product/detail")
-    public String productDetail(Integer productNo, Model m) {
-        ProductDto productDto = productService.getProductByNo(productNo);
-        List<ReviewDto> reviewDtoList = reviewService.getReviewListByProductNo(productNo);
+    @GetMapping("/detail")
+    public String productDetails(Integer productNo, Model m) {
+        ProductDto productDto = productService.findProduct(productNo);
+        List<ReviewDto> reviewDtoList = reviewService.findReviews(productNo);
         List<ProductImgDto> productImgDtoList = productService.getProductDetailImgList(productNo);
         double productScore = 0.0;
         if(reviewDtoList.size()!=0){

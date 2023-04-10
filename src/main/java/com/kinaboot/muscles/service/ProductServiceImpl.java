@@ -16,14 +16,7 @@ public class ProductServiceImpl implements ProductService{
     ProductDao productDao;
 
     @Override
-    public ProductDto getProduct(Integer productNo) {
-        ProductDto productDto = productDao.select(productNo);
-        productDto.setProductImgDtoList(productDao.selectProductDetailImg(productNo));
-        return productDto;
-    }
-
-    @Override
-    public List<ProductDto> getAllProduct() {
+    public List<ProductDto> findAllProduct() {
         return productDao.selectAll();
     }
 
@@ -38,7 +31,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<FaqDto> getFaqList(Integer productNo) {
+    public List<FaqDto> findFaqs(Integer productNo) {
         return productDao.selectFaqList(productNo);
     }
 
@@ -48,12 +41,14 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public int registerFaq(FaqDto faqDto) {
+    public int addFaq(FaqDto faqDto) {
         return productDao.insertFaq(faqDto);
     }
 
     @Override
-    public ProductDto getProductByNo(Integer productNo) {
+    public ProductDto findProduct(Integer productNo) {
+        ProductDto productDto = productDao.select(productNo);
+        productDto.setProductImgDtoList(productDao.selectProductDetailImg(productNo));
         return productDao.select(productNo);
     }
 
@@ -63,7 +58,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductDto> productList(SearchCondition sc) {
+    public List<ProductDto> findProducts(SearchCondition sc) {
         return productDao.selectByCategory(sc);
     }
 }

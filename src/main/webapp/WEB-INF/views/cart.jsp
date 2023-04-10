@@ -153,6 +153,7 @@
                 if (res == "DEL_OK")
                     alert("장바구니에서 삭제하였습니다.")
                 loadCartItem()
+                getCartItemsNum()
             },
             error: function () {
                 console.log("통신 실패")

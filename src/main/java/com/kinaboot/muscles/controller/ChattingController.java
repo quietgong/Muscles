@@ -28,14 +28,14 @@ public class ChattingController {
     // 채팅 내용 DB 저장
     @PostMapping("/chat/post")
     @ResponseBody
-    public ResponseEntity<String> chatPost(ChatDto chatDto) {
+    public ResponseEntity<String> chatAdd(ChatDto chatDto) {
         chatService.saveChat(chatDto);
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     // 유저가 채팅상담 페이지에 접속했을 때
     @GetMapping("/chatting")
-    public String chatting(HttpSession session, Model m) {
+    public String chatList(HttpSession session, Model m) {
         // 사용자 ID 이름으로 된 채팅방을 생성한다.
         String chatName = (String) session.getAttribute("id");
         boolean hasAlreadyChatRoom = false;
@@ -52,20 +52,20 @@ public class ChattingController {
             chatDto.setChatName(chatName);
             chatDtoList.add(chatDto);
         }
-        m.addAttribute("chatDtoList", chatService.getChat(chatName));
-        return "chatting";
+        m.addAttribute("chatDtoList", chatService.findChat(chatName));
+        return "chatting/chatting";
     }
 
     // 방 정보 가져오기
     @GetMapping("/getRoom")
-    public @ResponseBody List<ChatDto> getRoom() {
+    public @ResponseBody List<ChatDto> roomList() {
         return chatDtoList;
     }
 
     // 상담 완료 (채팅방 삭제)
     @ResponseBody
     @DeleteMapping("/removeRoom/{chatName}")
-    public ResponseEntity<List<ChatDto>> removeRoom(@PathVariable String chatName) {
+    public ResponseEntity<List<ChatDto>> roomRemove(@PathVariable String chatName) {
         for (int i = 0; i < chatDtoList.size(); i++) {
             if (chatDtoList.get(i).getChatName().equals(chatName)) {
                 chatDtoList.remove(i);
@@ -77,19 +77,18 @@ public class ChattingController {
 
     // 관리자가 유저 채팅목록에 접속할 때
     @GetMapping("/moveChating")
-    public String chating(String chatName, Model m) {
+    public String chatList(String chatName, Model m) {
         logger.info("관리자 채팅문의 진입");
         System.out.println("chatName = " + chatName);
         List<ChatDto> new_list = chatDtoList.stream().
                 filter(o -> Objects.equals(o.getChatName(), chatName))
                 .collect(Collectors.toList());
 
-
         if (new_list != null && new_list.size() > 0) {
             m.addAttribute("chatName", chatName);
-            m.addAttribute("chatDtoList", chatService.getChat(chatName));
-            return "chatting";
+            m.addAttribute("chatDtoList", chatService.findChat(chatName));
+            return "chatting/chatting";
         } else
-            return "chatRoom";
+            return "chatting/chatRoom";
     }
 }

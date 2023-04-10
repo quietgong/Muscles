@@ -20,28 +20,28 @@ public class ReviewController {
 
     // 리뷰 등록
     @PostMapping("")
-    public ResponseEntity<String> createReview(@RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<String> reviewAdd(@RequestBody ReviewDto reviewDto) {
         logger.info("리뷰 등록 진입");
 
-        reviewService.createReview(reviewDto);
+        reviewService.addReview(reviewDto);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }
     // 리뷰 수정
     @PatchMapping("")
-    public ResponseEntity<String> modifyReview(@RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<String> reviewModify(@RequestBody ReviewDto reviewDto) {
         logger.info("리뷰 수정 진입");
         reviewService.modifyReview(reviewDto);
         return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
     }
     // 리뷰 읽기
     @GetMapping("/{reviewNo}")
-    public ResponseEntity<ReviewDto> findReview(@PathVariable Integer reviewNo){
+    public ResponseEntity<ReviewDto> reviewDetails(@PathVariable Integer reviewNo){
         logger.info("리뷰 데이터 GET 진입");
-        return new ResponseEntity<>(reviewService.getReviewOne(reviewNo), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.findReview(reviewNo), HttpStatus.OK);
     }
     // 리뷰 삭제
     @DeleteMapping("/{reviewNo}")
-    public ResponseEntity<String> deleteReview(@PathVariable Integer reviewNo) {
+    public ResponseEntity<String> reviewRemove(@PathVariable Integer reviewNo) {
         logger.info("리뷰 삭제 진입");
         reviewService.removeReview(reviewNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);

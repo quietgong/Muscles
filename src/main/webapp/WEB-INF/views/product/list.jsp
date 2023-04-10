@@ -20,7 +20,8 @@
                     </ul>
                 </li>
                 <li class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                       href="<c:url value='/product/list?category=strength'/>">
                         근력
                         <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
@@ -86,13 +87,13 @@
                                         <li><a class="btn btn-success text-white mt-2"
                                                href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>"><i
                                                 class="far fa-eye"></i></a></li>
-                                        <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i
+                                        <li><a class="btn btn-success text-white mt-2" onclick="addCart(${productDto.productNo},'${productDto.productName}','${productDto.productCategory}',${productDto.productPrice})"><i
                                                 class="fas fa-cart-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <a href="shop-single.html" class="h3 text-decoration-none">상품 카테고리</a>
+                                <a href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>" class="h3 text-decoration-none">상품 카테고리</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>${productDto.productName}</li>
                                     <li>리뷰개수 : ${productDto.reviewDtoList.size()}</li>
@@ -143,8 +144,36 @@
     </div>
 </div>
 <script>
+    function addCart(productNo, productName, productCategory, productPrice) {
+        let data={}
+        data.productNo = productNo
+        data.productName = productName
+        data.productCategory = productCategory
+        data.productQty = 1
+        data.productPrice = productPrice
+        $.ajax({
+            type: "POST",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/cart/",
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            data: JSON.stringify(data),
+            success: function (res) {
+                if (res == "ADD_OK")
+                    alert("장바구니에 추가하였습니다.")
+                else
+                    alert("장바구니에 이미 존재합니다.")
+                getCartItemsNum()
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    }
+</script>
+<script>
     $(document).ready(function () {
-        var star_rating_width = $('.fill-ratings span').width();
+        let star_rating_width = $('.fill-ratings span').width();
         $('.star-ratings').width(star_rating_width);
     })
 </script>

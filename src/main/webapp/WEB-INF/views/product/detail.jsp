@@ -273,6 +273,7 @@
                     alert("장바구니에 추가하였습니다.")
                 else
                     alert("장바구니에 이미 존재합니다.")
+                getCartItemsNum()
             },
             error: function () {
                 console.log("통신 실패")

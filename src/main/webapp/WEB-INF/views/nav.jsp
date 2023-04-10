@@ -87,7 +87,8 @@
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1 fa-2x"></i>
                     <span id="cartNum"
                           class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                        <!-- 장바구니 아이템 개수 -->0
+                        <!-- 장바구니 아이템 개수 -->
+                        ${cartNum}
                     </span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="<c:url value='/order/list'/>">
@@ -117,7 +118,6 @@
 </div>
 <script>
     checkLoginStatus()
-
     function checkLoginStatus() {
         let userId = '${userId}'
         if (userId == "") { // 로그아웃 상태
@@ -127,6 +127,7 @@
             // $("#admin").css("display", "none")
             $("#logout").css("display", "none")
         } else {
+            getCartItemsNum()
             $("#login").css("display", "none")
             $("#register").css("display", "none")
             $("#chatting").css("display", "inline-block")
@@ -147,6 +148,21 @@
             }
         })
     })
+    function getCartItemsNum(){
+        $.ajax({
+            type: "GET",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/cart/" + '${userId}', // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {"Content-Type": "application/json"},
+            success: function (res) {
+                console.log(res)
+                $("#cartNum").html(res)
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    }
+
 </script>
 </body>
 </html>

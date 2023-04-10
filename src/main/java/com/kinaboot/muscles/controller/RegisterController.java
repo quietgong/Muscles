@@ -2,6 +2,7 @@ package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +29,14 @@ public class RegisterController {
 
 //    @Autowired
 //    private BCryptPasswordEncoder passwordEncoder;
-
-    private final UserDao userDao;
-
-    RegisterController(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    @GetMapping("")
-    public String register() {
-        return "register";
-    }
+    @Autowired
+    UserService userService;
 
     @PostMapping("")
-    public String registerUser(UserDto userDto) throws Exception {
+    public String registerDetails(UserDto userDto) throws Exception {
         logger.info("회원가입 진입");
         String id = userDto.getUserId();
-        if (userDao.selectUser(id) != null)
+        if (userService.findUser(id) != null)
             return "redirect:/?msg=" + URLEncoder.encode("중복된 아이디입니다.", "UTF-8");
         String originPw = "";
         String encodingPw = "";
@@ -53,7 +45,7 @@ public class RegisterController {
 //        encodingPw = passwordEncoder.encode(originPw);
         userDto.setPassword(encodingPw);
 
-        userDao.insertUser(userDto);
+        userService.addUser(userDto);
 
         logger.info("ID : " + userDto.getUserId() + "생성 성공");
         return "redirect:/";
@@ -62,9 +54,13 @@ public class RegisterController {
     @GetMapping("/idDupCheck/{id}")
     @ResponseBody
     public int idDupCheck(@PathVariable String id) {
-        logger.info("중복검사 ID : " + id);
-
-        return userDao.selectUser(id) == null ? 0 : 1;
+        logger.info("ID 중복검사 [id] : " + id);
+        try {
+            userService.findUser(id);
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     @GetMapping("/mailCheck")

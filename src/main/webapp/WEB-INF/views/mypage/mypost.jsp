@@ -8,7 +8,7 @@
     <div class="row mt-5">
         <!-- 사이드바 -->
         <div class="col-md-2">
-            <%@include file="../mypage/sidebar.jsp" %>
+            <%@include file="sidebar.jsp" %>
         </div>
         <!-- 컨텐츠 -->
         <div class="col-md-10">

@@ -14,4 +14,6 @@ public interface CartDao {
     int deleteCartItem(String userId, Integer productNo);
 
     CartDto selectItem(Integer productNo);
+
+    int count(String userId);
 }

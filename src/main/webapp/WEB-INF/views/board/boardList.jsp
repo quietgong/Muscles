@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
-<%@ include file="nav.jsp" %>
+<%@ include file="../nav.jsp" %>
 <div class="container">
     <form>
         <div class="row justify-content-center mt-5">
@@ -88,4 +88,4 @@
     $("#${param.page}").attr("class", "paging-active")
 </script>
 <!-- footer -->
-<%@ include file="footer.jsp" %>
+<%@ include file="../footer.jsp" %>

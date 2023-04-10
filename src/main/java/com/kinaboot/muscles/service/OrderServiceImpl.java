@@ -46,49 +46,52 @@ public class OrderServiceImpl implements OrderService {
     public int acceptOrder(Integer orderNo) {
         // 구매 제품 재고 수량 변경
         orderDao.updateStock(orderDao.selectOrderItemList(orderNo));
+
         // 포인트 적립
         OrderDto orderDto = orderDao.selectOrder(orderNo);
         String userId = orderDto.getUserId();
+
         // 적립 포인트 = 주문금액의 1%
         int point = (int) (orderDto.getPaymentDto().getPrice() * 0.01);
         userDao.updateUserGetPoint(userId, point, orderNo);
+
         // 주문상태 변경
         return orderDao.updateOrderStatus(orderNo);
     }
 
     @Override
-    public List<OrderItemDto> getOrderItemList(Integer orderNo) {
+    public List<OrderItemDto> findOrderItems(Integer orderNo) {
         return orderDao.selectOrderItemList(orderNo);
     }
 
     @Override
-    public OrderDto getOrderDetail(Integer orderNo) {
+    public OrderDto findOrder(Integer orderNo) {
         return orderDao.selectOrder(orderNo);
     }
 
     @Override
-    public OrderItemDto getOrderItem(Integer orderNo, Integer productNo) {
+    public OrderItemDto findOrderItem(Integer orderNo, Integer productNo) {
         return orderDao.selectOrderItem(orderNo, productNo);
     }
 
     @Override
-    public List<OrderDto> getAdminOrderList(SearchCondition sc) {
+    public List<OrderDto> findAllOrders(SearchCondition sc) {
         return orderDao.selectOrderAll(sc);
     }
 
     @Override
-    public List<OrderDto> getOrderList(String userId) {
+    public List<OrderDto> findOrders(String userId) {
         List<OrderDto> orderDtoList = orderDao.selectAll(userId);
         return orderDao.getOrderDtoList(orderDtoList);
     }
 
     @Override
-    public int getUserRecentOrderNo() {
+    public int findOrderNo() {
         return orderDao.selectUserRecentOrderNo();
     }
 
     @Override
-    public int createOrder(String userId, OrderDto orderDto) {
+    public int addOrder(String userId, OrderDto orderDto) {
         // 1. 구매 제품 카트에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
         for (OrderItemDto orderItemDto : orderItemDtoList)

@@ -105,6 +105,6 @@
     <delete id="deleteOrder" parameterType="int">
         delete
         from orders
-        where orderNo = ${orderNo}
+        where orderNo = '${orderNo}'
     </delete>
 </mapper>

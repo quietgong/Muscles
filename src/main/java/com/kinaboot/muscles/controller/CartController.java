@@ -24,26 +24,25 @@ public class CartController {
     private static final Logger logger = LoggerFactory.getLogger(CartController.class);
     @Autowired
     CartService cartService;
-    @Autowired
-    UserService userService;
 
     @GetMapping("/")
-    public ResponseEntity<List<CartDto>> cart(HttpSession session) {
+    public ResponseEntity<List<CartDto>> cartList(HttpSession session) {
         logger.info("장바구니 페이지 진입");
         String userId = (String) session.getAttribute("id");
-        return new ResponseEntity<>(cartService.getCartItems(userId), HttpStatus.OK);
+        return new ResponseEntity<>(cartService.findCartItems(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<Integer> cartCount(@PathVariable String userId){
+        return new ResponseEntity<>(cartService.countCart(userId), HttpStatus.OK);
+    }
     @PostMapping("/")
-    public ResponseEntity<String> addCart(@RequestBody CartDto cartDto, HttpSession session) {
+    public ResponseEntity<String> cartAdd(@RequestBody CartDto cartDto, HttpSession session) {
         String userId = (String) session.getAttribute("id");
-        // 추가하고자 하는 아이템이 이미 장바구니에 있을 때
-        if(cartService.checkCartProduct(userId, cartDto.getProductNo())!=0)
+        if(cartService.addCartItem(userId, cartDto)!=0)
             return new ResponseEntity<>("ADD_FAIL", HttpStatus.OK);
-        cartService.addCartItem(userId, cartDto);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }
-
     @DeleteMapping("/{productNo}")
     public ResponseEntity<String> cartRemove(@PathVariable Integer productNo, HttpSession session) {
         logger.info("장바구니 상품 삭제");
@@ -52,5 +51,4 @@ public class CartController {
         cartService.removeCartItem((String) session.getAttribute("id"), productNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
-
 }

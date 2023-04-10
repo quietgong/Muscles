@@ -13,7 +13,7 @@ public class ReviewServiceImpl implements ReviewService{
     ReviewDao reviewDao;
 
     @Override
-    public ReviewDto getReviewOne(int orderNo, int productNo) {
+    public ReviewDto findReview(int orderNo, int productNo) {
         return reviewDao.selectReview(orderNo, productNo);
     }
 
@@ -28,22 +28,22 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public int createReview(ReviewDto reviewDto) {
+    public int addReview(ReviewDto reviewDto) {
         return reviewDao.insertReview(reviewDto);
     }
 
     @Override
-    public List<ReviewDto> getReviewListByProductNo(Integer productNo) {
+    public List<ReviewDto> findReviews(Integer productNo) {
         return reviewDao.selectReviewListByProductId(productNo);
     }
 
     @Override
-    public ReviewDto getReviewOne(Integer reviewNo) {
+    public ReviewDto findReview(Integer reviewNo) {
         return reviewDao.selectReview(reviewNo);
     }
 
     @Override
-    public List<ReviewDto> getReviewListById(String userId) {
+    public List<ReviewDto> findReviews(String userId) {
         return reviewDao.selectReviewListById(userId);
     }
 }

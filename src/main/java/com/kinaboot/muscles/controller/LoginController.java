@@ -2,6 +2,8 @@ package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.service.CartService;
+import com.kinaboot.muscles.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,32 +21,25 @@ import java.net.URLEncoder;
 
 @Controller
 public class LoginController {
-//    @Autowired
+    //    @Autowired
 //    private BCryptPasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
-    private final UserDao userDao;
-
-    LoginController(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    /* 로그인 화면 출력 */
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
+    @Autowired
+    UserService userService;
+    @Autowired
+    CartService cartService;
 
     @PostMapping("/login")
     public String login(String toURL, UserDto userDto, HttpServletResponse response, HttpServletRequest request, boolean rememberId) throws Exception {
         String msg = URLEncoder.encode("id 또는 pwd가 일치하지 않습니다.", "utf-8");
         if (!loginCheck(userDto.getUserId(), userDto.getPassword())) {
             // 로그인에 실패 : 가고자 했던 경로를 URL에 저장한다.
-            return "redirect:/login?msg=" + msg +"&toURL=" + toURL;
+            return "redirect:/login?msg=" + msg + "&toURL=" + toURL;
         }
         // 로그인 성공 : 세션, 쿠키 생성
         HttpSession session = request.getSession();
         session.setAttribute("id", userDto.getUserId());
+        session.setAttribute("cartNum", cartService.findCartItems(userDto.getUserId()).size());
         Cookie cookie = new Cookie("id", userDto.getUserId());
 
         // 아이디 저장이 체크 해제되어있으면 쿠키를 해제한다.
@@ -55,6 +50,7 @@ public class LoginController {
         toURL = toURL == null || toURL.equals("") ? "/" : toURL;
         return "redirect:" + toURL;
     }
+
     private boolean loginCheck(String id, String pw) {
         return true;
         // 암호화 로그인 체크
@@ -63,6 +59,7 @@ public class LoginController {
 //            return passwordEncoder.matches(pw, encodingPw);
 //        return false;
     }
+
     @GetMapping("/logout")
     @ResponseBody
     public void logout(HttpSession session) {

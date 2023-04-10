@@ -17,7 +17,7 @@ public class ProductDaoImplTest {
     ProductService productService;
     @Test
     public void getProduct(){
-        productService.getProduct(3);
+        productService.findProduct(3);
     }
     @Test
     public void insertTest() throws Exception {

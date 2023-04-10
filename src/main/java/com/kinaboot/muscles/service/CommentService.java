@@ -5,13 +5,8 @@ import com.kinaboot.muscles.domain.CommentDto;
 import java.util.List;
 
 public interface CommentService {
-    int getCount() throws Exception;
-
-    int write(CommentDto CommentDto) throws Exception;
-
-    int modify(CommentDto CommentDto) throws Exception;
-
-    int remove(Integer cno) throws Exception;
-
-    List<CommentDto> getList(Integer bno) throws Exception;
+    List<CommentDto> findComments(Integer bno) throws Exception;
+    int addComment(CommentDto CommentDto) throws Exception;
+    int modifyComment(CommentDto CommentDto) throws Exception;
+    int removeComment(Integer cno) throws Exception;
 }

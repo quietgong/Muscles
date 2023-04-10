@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping({"/community", "/notice"})
+@RequestMapping({"/community/", "/notice/"})
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
@@ -28,59 +28,57 @@ public class PostController {
         return request.getRequestURI().split("/")[2];
     }
 
-    // 글 목록
     @GetMapping("")
-    public String list(SearchCondition sc, HttpSession session, HttpServletRequest request, Model m) throws Exception {
+    public String postList(SearchCondition sc, HttpServletRequest request, Model m) throws Exception {
+        logger.info("글 목록 조회");
         String postCategory = parsingURL(request);
-        if (session.getAttribute("id") == null)
-            return "redirect:/login?toURL=" + request.getRequestURL();
         sc.setType(postCategory);
 
-        Integer totalCnt = postSerivce.getCountBySearch(sc);
+        Integer totalCnt = postSerivce.countPost(sc);
         m.addAttribute("postCategory", postCategory);
         m.addAttribute("totalCnt", totalCnt);
         m.addAttribute("ph", new PageHandler(totalCnt, sc));
-        m.addAttribute("list", postSerivce.getListBySearch(sc));
-        return "boardList";
+        m.addAttribute("list", postSerivce.findPosts(sc));
+        return "board/boardList";
     }
 
     // 글쓰기 페이지
-    @PostMapping("/add")
+    @PostMapping("add/")
     public String postForm(HttpServletRequest request, Model m) {
         m.addAttribute("postCategory", parsingURL(request));
-        return "boardForm";
+        return "board/boardForm";
     }
 
     // 글쓰기
     @PostMapping("")
-    public String post(PostDto postDto, String postCategory, HttpSession session) throws Exception {
+    public String postAdd(PostDto postDto, String postCategory, HttpSession session) throws Exception {
         postDto.setUserId((String) session.getAttribute("id"));
-        postSerivce.write(postDto, postCategory);
+        postSerivce.addPost(postDto, postCategory);
         return "redirect:/" + postCategory;
     }
 
     // 글읽기
-    @GetMapping("/{postNo}")
-    public String read(@PathVariable Integer postNo, Integer page, HttpServletRequest request, Model m) throws Exception {
-        m.addAttribute("postDto", postSerivce.read(postNo));
+    @GetMapping("{postNo}")
+    public String postDetails(@PathVariable Integer postNo, Integer page, HttpServletRequest request, Model m) throws Exception {
+        m.addAttribute("postDto", postSerivce.findPost(postNo));
         m.addAttribute(page);
         m.addAttribute("postCategory", parsingURL(request));
-        return "board";
+        return "board/board";
     }
 
     // 글 삭제
-    @DeleteMapping("/{postNo}")
+    @DeleteMapping("{postNo}")
     @ResponseBody
-    public ResponseEntity<String> remove(@PathVariable Integer postNo) throws Exception {
-        postSerivce.remove(postNo);
+    public ResponseEntity<String> postRemove(@PathVariable Integer postNo) throws Exception {
+        postSerivce.removePost(postNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
     // 글 수정
-    @PatchMapping("/{postNo}")
+    @PatchMapping("{postNo}")
     @ResponseBody
-    public ResponseEntity<String> modify(@RequestBody PostDto postDto) throws Exception {
-        postSerivce.modify(postDto);
+    public ResponseEntity<String> postModify(@RequestBody PostDto postDto) throws Exception {
+        postSerivce.modifyPost(postDto);
         return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
     }
 }

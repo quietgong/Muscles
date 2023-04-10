@@ -34,6 +34,8 @@ public interface PostDao {
     List<PostDto> searchResult(SearchCondition sc) throws Exception // List<E> selectList(String statement, Object parameter)
     ;
 
+    List<PostDto> searchResult(String userId, SearchCondition sc);
+
     Integer searchResultCnt(SearchCondition sc) throws Exception;
 
     int update(PostDto dto) throws Exception // int update(String statement, Object parameter)

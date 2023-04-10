@@ -3,9 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kinaboot.muscles.dao.cartMapper">
-    <select id="count" resultType="int">
+    <select id="count" resultType="int" parameterType="int">
         SELECT count(*)
         FROM cart
+        where userId = '${userId}'
     </select>
     <select id="countCartItem" resultType="int" parameterType="map">
         SELECT count(*)
@@ -14,14 +15,13 @@
           and productNo = #{productNo}
     </select>
     <select id="selectAll" resultType="CartDto" parameterType="String">
-        select p.productNo       as productNo,
-               p.productName     as productName,
-               c.productQty      as productQty,
-               p.productPrice    as productPrice,
-               p.productCategory as productCategory,
-               p.productImgPath  as productImgPath
-        from cart c,
-             product p
+        select p.productNo
+               p.productName
+               c.productQty
+               p.productPrice
+               p.productCategory
+               p.productImgPath
+        from cart c, product p
         where p.productNo = c.productNo
           and c.userId = '${userId}';
     </select>
@@ -41,5 +41,4 @@
         where userId = #{userId}
           and productNo = #{productNo};
     </delete>
-
 </mapper>

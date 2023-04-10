@@ -8,22 +8,13 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDto> productList(SearchCondition sc);
-    ProductDto getProductByNo(Integer productNo);
-
-    List<ProductDto> getAllProduct();
-
+    List<ProductDto> findAllProduct();
+    List<ProductDto> findProducts(SearchCondition sc);
+    ProductDto findProduct(Integer productNo);
     int removeProduct(Integer productNo);
-
     int modifyProduct(ProductDto productDto);
-
-    List<FaqDto> getFaqList(Integer productNo);
-
-    int registerFaq(FaqDto faqDto);
-
+    List<FaqDto> findFaqs(Integer productNo);
+    int addFaq(FaqDto faqDto);
     int getTotalCntByCategory(SearchCondition sc);
-
     List<ProductImgDto> getProductDetailImgList(Integer productNo);
-
-    ProductDto getProduct(Integer productNo);
 }

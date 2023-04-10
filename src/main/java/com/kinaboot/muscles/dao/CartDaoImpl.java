@@ -20,6 +20,11 @@ public class CartDaoImpl implements CartDao {
         return session.selectList(namespace + "selectAll", userId);
     }
 
+    @Override
+    public int count(String userId) {
+        return session.selectOne(namespace + "count", userId);
+    }
+
     private static String namespace = "com.kinaboot.muscles.dao.cartMapper.";
 
     @Override

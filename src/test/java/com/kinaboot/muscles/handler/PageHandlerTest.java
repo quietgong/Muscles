@@ -35,13 +35,13 @@ public class PageHandlerTest {
         SearchCondition sc = new SearchCondition(1,"lowPrice","");
         String category = "cardio";
         int totalCnt = productService.getTotalCntByCategory(sc);
-        List<ProductDto> productDtoList = calculateReviewScore(productService.productList(sc));
+        List<ProductDto> productDtoList = calculateReviewScore(productService.findProducts(sc));
         System.out.println("productDtoList = " + productDtoList);
 
     }
     public List<ProductDto> calculateReviewScore(List<ProductDto> productDtoList) {
         for(ProductDto productDto : productDtoList){
-            List<ReviewDto> reviewDtoList = reviewService.getReviewListByProductNo(productDto.getProductNo());
+            List<ReviewDto> reviewDtoList = reviewService.findReviews(productDto.getProductNo());
             double productScore=0.0;
             for(ReviewDto reviewDto : reviewDtoList)
                 productScore += reviewDto.getScore();

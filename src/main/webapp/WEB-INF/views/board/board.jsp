@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<%@ include file="nav.jsp" %>
+<%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5">
         <div class="col-md-12">
@@ -232,4 +232,4 @@
     }
 </script>
 <!-- footer -->
-<%@ include file="footer.jsp" %>
+<%@ include file="../footer.jsp" %>

@@ -4,96 +4,80 @@ import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
-import org.apache.ibatis.session.SqlSession;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
 
     @Override
-    public List<UserDto> getAllUser() {
+    public List<UserDto> findAllUser() {
         return userDao.selectAllUser();
     }
 
     @Override
-    public int modifyUserInfo(UserDto userDto) {
+    public int modifyUser(UserDto userDto) {
         return userDao.updateUser(userDto);
     }
-
     @Override
-    public int createQuit(Integer userNo) {
-        return userDao.insertQuit(userNo);
-    }
+    public int removeUser(Integer userNo, HttpServletRequest request, String removeType) {
+        int[] typeValue = new int[]{0, 0, 0};
+        String[] type = request.getParameterValues("type");
+        String opinion = request.getParameter("opinion");
+        for (String s : type)
+            typeValue[Integer.parseInt(s) - 1]++;
+        HashMap map = new HashMap<>();
+        map.put("userNo", userNo);
+        map.put("type1", typeValue[0]);
+        map.put("type2", typeValue[1]);
+        map.put("type3", typeValue[2]);
+        map.put("opinion", removeType.equals("admin") ? "관리자 탈퇴 처리" : opinion);
 
-    @Override
-    public int leaveUser(Integer userNo) {
-        userDao.insertLeave(userNo);
+        userDao.insertExit(map);
         return userDao.deleteUser(userNo);
     }
 
     @Override
-    public int modifyUserPassword(String userId, String newPassword) {
-        return userDao.updateUserPassword(userId, newPassword);
-    }
-
-    @Override
-    public List<UserDto> getList(Integer offset, Integer pageSize) throws Exception {
-        return null;
-    }
-
-    @Override
-    public UserDto read(String userId) throws Exception {
+    public UserDto findUser(String userId) {
         return userDao.selectUser(userId);
     }
 
     @Override
-    public int modifyUserCouponStatus(String userId, String couponName, String orderNo) {
+    public int addUser(UserDto userDto) throws Exception {
+        return userDao.insertUser(userDto);
+    }
+
+    @Override
+    public int modifyCoupon(String userId, String couponName, String orderNo) {
         return userDao.updateUserCouponStatus(userId, couponName, orderNo);
     }
 
     @Override
-    public int modifyUserPoint(String userId, int point, String orderNo) {
+    public int modifyPoint(String userId, int point, String orderNo) {
         return userDao.updateUserPoint(userId, point, orderNo);
     }
 
     @Override
-    public List<CouponDto> getCoupon(String userId) {
+    public List<CouponDto> findCoupons(String userId) {
         return userDao.selectUserCoupon(userId);
     }
 
+
     @Override
-    public List<PointDto> getPointList(String userId) {
+    public List<PointDto> findPoints(String userId) {
         return userDao.selectUserPoint(userId);
     }
 
     @Override
-    public int registerRecommendEventCoupon(String userId, String recommendId) {
+    public int addCoupon(String userId, String recommendId) {
         return userDao.insertRecommendEventCoupon(userId, recommendId);
     }
-
-    @Override
-    public int create(UserDto userDto) throws Exception {
-        return 0;
-    }
-
-    @Override
-    public int modify(UserDto userDto) throws Exception {
-        return 0;
-    }
-
-    @Override
-    public int removeUser(Integer userNo) throws Exception {
-        // 1. 유저 expiredDate 생성
-        userDao.insertQuit(userNo);
-        // 2. 회원탈퇴 데이터에 운영자에 의한 탈퇴임을 기록
-        return userDao.deleteUser(userNo);
-    }
-
 }

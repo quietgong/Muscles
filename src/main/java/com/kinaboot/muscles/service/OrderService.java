@@ -6,21 +6,30 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import java.util.List;
 
 public interface OrderService {
-    List<OrderDto> getOrderList(String userId);
+    // 전체 주문 조회
+    List<OrderDto> findAllOrders(SearchCondition sc);
 
-    int createOrder(String userId, OrderDto orderDto);
+    // 특정 유저 전체 주문 조회
+    List<OrderDto> findOrders(String userId);
 
+    // 단건 주문 생성
+    int addOrder(String userId, OrderDto orderDto);
+
+    // 단건 주문 승인
     int acceptOrder(Integer orderNo);
 
-    List<OrderDto> getAdminOrderList(SearchCondition sc);
+    // 특정 주문 상품 전체 조회
+    List<OrderItemDto> findOrderItems(Integer orderNo);
 
-    List<OrderItemDto> getOrderItemList(Integer orderNo);
+    // 특정 주문 상품 단건 조회
+    OrderItemDto findOrderItem(Integer orderNo, Integer productNo);
 
-    OrderItemDto getOrderItem(Integer orderNo, Integer productNo);
+    // 특정 주문 단건 조회
+    OrderDto findOrder(Integer orderNo);
 
-    OrderDto getOrderDetail(Integer orderNo);
-
+    // 특정 주문 삭제
     int removeOrder(String userId, Integer orderNo);
 
-    int getUserRecentOrderNo();
+    // 주문 번호
+    int findOrderNo();
 }

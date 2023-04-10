@@ -4,26 +4,27 @@
 
 <mapper namespace="com.kinaboot.muscles.dao.commentMapper">
     <select id="count" resultType="int">
-        SELECT count(*) FROM comment
+        SELECT count(*)
+        FROM comment
     </select>
 
     <select id="select" parameterType="int" resultType="CommentDto">
-        SELECT * from comment
-        where commentNo=#{commentNo}
+        SELECT *
+        from comment
+        where commentNo = #{commentNo}
         order by createdDate desc, commentNo desc
     </select>
 
     <select id="selectAll" parameterType="int" resultType="CommentDto">
         SELECT *
         from comment
-        where postNo=#{postNo}
+        where postNo = #{postNo}
     </select>
 
     <insert id="insert" parameterType="commentDto">
         insert into comment
-            (postNo, content,userId, createdDate, modDate)
-        values
-            (#{postNo},#{content}, #{userId}, now(), now())
+            (postNo, content, userId, createdDate, modDate)
+        values (#{postNo}, #{content}, #{userId}, now(), now())
     </insert>
 
     <update id="update" parameterType="CommentDto">
@@ -34,11 +35,13 @@
           and userId = #{userId}
     </update>
     <delete id="deleteAll">
-        DELETE from comment
+        DELETE
+        from comment
     </delete>
     <delete id="delete" parameterType="int">
-        DELETE from comment
-        where commentNo='${commentNo}'
+        DELETE
+        from comment
+        where commentNo = '${commentNo}'
     </delete>
 
 </mapper>

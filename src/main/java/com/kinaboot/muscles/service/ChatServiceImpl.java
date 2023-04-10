@@ -17,7 +17,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public List<ChatDto> getChat(String chatName) {
+    public List<ChatDto> findChat(String chatName) {
         return chatDao.selectChat(chatName);
     }
 }

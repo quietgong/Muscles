@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <!-- nav -->
-<%@ include file="nav.jsp" %>
+<%@ include file="../nav.jsp" %>
 <section>
     <div class="container py-5">
         <div class="row">
@@ -89,4 +89,4 @@
     }
 </script>
 <!-- footer -->
-<%@ include file="footer.jsp" %>
+<%@ include file="../footer.jsp" %>

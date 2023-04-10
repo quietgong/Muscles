@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
-<%@ include file="nav.jsp" %>
+<%@ include file="../nav.jsp" %>
 <!-- 본문 -->
 <input type="hidden" id="chatName" value="${chatName}">
 <input type="hidden" id="sessionId" value="">
@@ -177,4 +177,4 @@
     }
 </script>
 <!-- footer -->
-<%@ include file="footer.jsp" %>
+<%@ include file="../footer.jsp" %>

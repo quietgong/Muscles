@@ -7,12 +7,11 @@ import java.util.List;
 
 public interface CartService {
     int addCartItem(String userId, CartDto cartDto);
+    int findCartItem(String userId, Integer productNo);
 
-    List<CartDto> getCartItems(String userId);
-
-    int checkCartProduct(String userId, Integer productNo);
+    List<CartDto> findCartItems(String userId);
 
     int removeCartItem(String userId, Integer productNo);
 
-    CartDto getItem(Integer productNo);
+    int countCart(String userId);
 }

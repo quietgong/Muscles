@@ -41,7 +41,7 @@ public class SearchConditionTest {
     @Test
     public void dateConditionTest(){
         SearchCondition sc = new SearchCondition();
-        List<OrderDto> orderDtoList = orderService.getAdminOrderList(sc);
+        List<OrderDto> orderDtoList = orderService.findAllOrders(sc);
         System.out.println("sc = " + sc);
         System.out.println("orderDtoList = " + orderDtoList);
     }

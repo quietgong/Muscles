@@ -5,16 +5,11 @@ import com.kinaboot.muscles.domain.ReviewDto;
 import java.util.List;
 
 public interface ReviewService {
-    List<ReviewDto> getReviewListById(String userId);
-
-    int createReview(ReviewDto reviewDto);
-
-    List<ReviewDto> getReviewListByProductNo(Integer productNo);
-
-    ReviewDto getReviewOne(Integer reviewNo);
-    ReviewDto getReviewOne(int orderNo, int productNo);
-
+    List<ReviewDto> findReviews(String userId);
+    List<ReviewDto> findReviews(Integer productNo);
+    ReviewDto findReview(Integer reviewNo);
+    ReviewDto findReview(int orderNo, int productNo);
+    int addReview(ReviewDto reviewDto);
     int removeReview(Integer reviewNo);
-
     int modifyReview(ReviewDto reviewDto);
 }

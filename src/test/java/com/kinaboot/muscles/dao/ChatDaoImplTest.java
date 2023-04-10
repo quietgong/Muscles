@@ -23,7 +23,7 @@ public class ChatDaoImplTest {
     }
     @Test
     public void chatLoadTest() {
-        List<ChatDto> chatDtoList = chatService.getChat("test9");
+        List<ChatDto> chatDtoList = chatService.findChat("test9");
         System.out.println("chatDtoList = " + chatDtoList);
     }
 }

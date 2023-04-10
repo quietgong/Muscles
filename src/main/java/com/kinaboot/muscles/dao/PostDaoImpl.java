@@ -44,6 +44,13 @@ public class PostDaoImpl implements PostDao {
     public List<PostDto> searchResult(SearchCondition sc) {
         return session.selectList(namespace + "searchResult", sc);
     }
+    @Override
+    public List<PostDto> searchResult(String userId, SearchCondition sc) {
+        HashMap map = new HashMap();
+        map.put("userId", userId);
+        map.put("sc", sc);
+        return session.selectList(namespace + "searchResult", map);
+    }
 
     @Override
     public Integer searchResultCnt(SearchCondition sc) {

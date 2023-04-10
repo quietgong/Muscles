@@ -73,8 +73,8 @@
         values (#{userId}, #{password}, #{email}, #{phone}, now(), #{address1}, #{address2}, 0, now())
     </insert>
 
-    <insert id="insertQuit" parameterType="map">
-        INSERT INTO quit
+    <insert id="insertExit" parameterType="map">
+        INSERT INTO exit
             (userId, type1, type2, type3, opinion)
         values (#{userId}, #{type1}, #{type2}, #{type3}, #{opinion})
     </insert>

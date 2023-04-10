@@ -10,29 +10,28 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService{
     @Autowired
     CommentDao commentDao;
+    @Override
+    public List<CommentDto> findComments(Integer postNo) throws Exception {
+        return commentDao.selectAll(postNo);
+    }
 
     @Override
-    public int getCount() throws Exception {
+    public int countComment() throws Exception {
         return commentDao.count();
     }
 
     @Override
-    public int write(CommentDto commentDto) throws Exception {
+    public int addComment(CommentDto commentDto) throws Exception {
         return commentDao.insert(commentDto);
     }
 
     @Override
-    public int modify(CommentDto commentDto) throws Exception {
+    public int modifyComment(CommentDto commentDto) throws Exception {
         return commentDao.update(commentDto);
     }
 
     @Override
-    public int remove(Integer commentNo) throws Exception {
+    public int removeComment(Integer commentNo) throws Exception {
         return commentDao.delete(commentNo);
-    }
-
-    @Override
-    public List<CommentDto> getList(Integer postNo) throws Exception {
-        return commentDao.selectAll(postNo);
     }
 }

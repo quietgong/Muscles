@@ -51,8 +51,5 @@ public class UserDaoImplTest  {
     @Test
     public void getCouponTest(){
         String userId = "none";
-        System.out.println("userService.getCoupon(userId) = " + userService.getCoupon(userId));
-        System.out.println("userService.getCoupon(userId).getClass().getName() = " + userService.getCoupon(userId).getClass().getName());
-
     }
 }

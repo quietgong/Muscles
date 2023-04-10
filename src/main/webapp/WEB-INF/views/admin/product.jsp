@@ -141,7 +141,7 @@
             })
         }
 
-        // // 기존 상세 이미지 출력
+        // 기존 상세 이미지 출력
         // if (res.length !== 0) {
         //     let detailImg = []
         //     res.forEach(function (r) {
