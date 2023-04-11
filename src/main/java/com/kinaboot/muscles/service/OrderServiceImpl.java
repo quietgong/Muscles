@@ -1,5 +1,8 @@
 package com.kinaboot.muscles.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kinaboot.muscles.dao.CartDao;
 import com.kinaboot.muscles.dao.OrderDao;
 import com.kinaboot.muscles.dao.UserDao;
@@ -8,6 +11,7 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,8 @@ public class OrderServiceImpl implements OrderService {
     UserDao userDao;
     @Autowired
     CartDao cartDao;
+    @Autowired
+    UserService userService;
 
     @Override
     public int removeOrder(String userId, Integer orderNo) {
@@ -91,13 +97,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int addOrder(String userId, OrderDto orderDto) {
-        // 1. 구매 제품 카트에서 삭제
+    public int addOrder(String userId, String orderData, HttpServletRequest request) {
+        OrderDto orderDto = null;
+        try {
+            orderDto = JsonToJava(orderData);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        int point = Integer.parseInt(request.getParameter("point"));
+        String couponName = request.getParameter("couponName");
+
+        // 구매 제품 장바구니에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
         for (OrderItemDto orderItemDto : orderItemDtoList)
             cartDao.deleteCartItem(userId, orderItemDto.getProductNo());
 
-        // 2. 구매제품, 배송, 결제 정보 입력
+        // 쿠폰 상태 변경
+        userService.modifyCoupon(userId, couponName, String.valueOf(orderDto.getOrderNo()));
+
+        // 포인트 사용 적용
+        userService.modifyPoint(userId, point, String.valueOf(orderDto.getOrderNo()));
+
+        // 주문 정보 생성
         return orderDao.insertOrder(userId, orderDto);
+    }
+    public OrderDto JsonToJava(String rowData) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(rowData, new TypeReference<OrderDto>() {
+        });
     }
 }

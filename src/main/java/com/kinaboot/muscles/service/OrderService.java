@@ -3,6 +3,7 @@ package com.kinaboot.muscles.service;
 import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.handler.SearchCondition;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface OrderService {
@@ -13,7 +14,7 @@ public interface OrderService {
     List<OrderDto> findOrders(String userId);
 
     // 단건 주문 생성
-    int addOrder(String userId, OrderDto orderDto);
+    int addOrder(String userId, String orderData, HttpServletRequest request);
 
     // 단건 주문 승인
     int acceptOrder(Integer orderNo);

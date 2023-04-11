@@ -57,7 +57,7 @@
     <div class="row mt-5 justify-content-center">
         <div class="col-md-12">
             <c:if test="${totalCnt==null||totalCnt==0}">
-                <h1>게시물이 없습니다.</h1>
+                <h1 style="text-align: center">게시물이 없습니다.</h1>
             </c:if>
             <c:if test="${totalCnt!=null&&totalCnt!=0}">
                 <ul class="pagination pagination-lg justify-content-center">

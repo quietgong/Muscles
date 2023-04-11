@@ -29,7 +29,7 @@
         로그인
     </button>
     <button id="logout" type="button" class="me-md-2 btn btn-outline-primary">로그아웃</button>
-    <button id="register" onclick="location.href='<c:url value='/register'/>'" type="button"
+    <button id="register" onclick="location.href='<c:url value='/logout'/>'" type="button"
             class="me-md-2 btn btn-outline-primary">
         회원가입
     </button>
@@ -136,18 +136,6 @@
         }
     }
 
-    $("#logout").click(function () {
-        $.ajax({
-            type: "GET",
-            url: "/muscles/logout",
-            success: function () {
-                location.reload()
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
-        })
-    })
     function getCartItemsNum(){
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.

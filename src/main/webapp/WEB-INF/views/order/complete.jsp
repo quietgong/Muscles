@@ -11,7 +11,7 @@
                 <div class="invoice p-5">
                     <h5>주문이 완료되었습니다!</h5> <span class="font-weight-bold d-block mt-4">
                             안녕하세요, ${userDto.userId} 님</span>
-                    <span>주문 내역은 <strong>[마이 페이지 > 주문내역/배송조회]</strong> 에서 다시 확인할 수 있습니다.</span>
+                    <span>주문 내역은 <strong><a href="<c:url value='/mypage/order'/>">[마이 페이지 > 주문내역/배송조회]</a></strong> 에서 다시 확인할 수 있습니다.</span>
                     <div class="payment border-top mt-3 mb-3 border-bottom table-responsive">
                         <table class="table table-borderless">
                             <tbody>
@@ -33,7 +33,9 @@
                                 </td>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">배송지</span>
-                                        <span>${orderDto.deliveryDto.address}</span></div>
+                                        <span>${orderDto.deliveryDto.address1}</span>
+                                        <span>${orderDto.deliveryDto.address2}</span>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -47,11 +49,13 @@
                                 <tr>
                                     <td width="20%"><img src="${orderItemDto.productImgPath}" width="90"></td>
                                     <td width="60%"><span class="font-weight-bold">${orderItemDto.productName}</span>
-                                        <div class="product-qty"><span class="d-block">수량:${orderItemDto.productQty}</span>
+                                        <div class="product-qty"><span
+                                                class="d-block">수량:${orderItemDto.productQty}</span>
                                             <span>${orderItemDto.productCategory}</span></div>
                                     </td>
                                     <td width="20%">
-                                        <div class="text-right"><span class="font-weight-bold">${orderItemDto.productPrice}</span></div>
+                                        <div class="text-right"><span
+                                                class="font-weight-bold">${orderItemDto.productPrice}</span></div>
                                     </td>
                                 </tr>
                             </c:forEach>

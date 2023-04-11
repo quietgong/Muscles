@@ -38,10 +38,9 @@ public class CartController {
     }
     @PostMapping("/")
     public ResponseEntity<String> cartAdd(@RequestBody CartDto cartDto, HttpSession session) {
+        logger.info("장바구니 추가");
         String userId = (String) session.getAttribute("id");
-        if(cartService.addCartItem(userId, cartDto)!=0)
-            return new ResponseEntity<>("ADD_FAIL", HttpStatus.OK);
-        return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
+        return new ResponseEntity<>(cartService.addCartItem(userId, cartDto), HttpStatus.OK);
     }
     @DeleteMapping("/{productNo}")
     public ResponseEntity<String> cartRemove(@PathVariable Integer productNo, HttpSession session) {

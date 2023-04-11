@@ -17,4 +17,17 @@ public class UserServiceImplTest extends TestConfigure {
         int userCnt = userDao.selectAllUser().size();
         userService.removeUser("test1", null, "admin");
     }
+    @Test
+    public void registerTest(){
+
+    }
+    @Test
+    public void modifyUserTest(){
+
+    }
+    @Test
+    public void removeUserTest(){
+
+    }
+
 }

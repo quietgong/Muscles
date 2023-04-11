@@ -5,20 +5,9 @@ public class DeliveryDto {
     private int orderNo;
     private String receiver;
     private String phone;
-    private String address;
+    private String address1;
+    private String address2;
     private String message;
-
-    @Override
-    public String toString() {
-        return "DeliveryDto{" +
-                "orderNo=" + orderNo +
-                ", deliveryNo=" + deliveryNo +
-                ", receiver='" + receiver + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", message='" + message + '\'' +
-                '}';
-    }
 
     public int getOrderNo() {
         return orderNo;
@@ -29,15 +18,16 @@ public class DeliveryDto {
     }
 
 
-    public DeliveryDto(String receiver, String phone, String address, String message) {
+    public DeliveryDto() {
+    }
+    public DeliveryDto(String receiver, String phone, String address1,String address2, String message) {
         this.receiver = receiver;
         this.phone = phone;
-        this.address = address;
+        this.address1 = address1;
+        this.address2 = address2;
         this.message = message;
     }
 
-    public DeliveryDto() {
-    }
 
     public int getDeliveryNo() {
         return deliveryNo;
@@ -63,12 +53,20 @@ public class DeliveryDto {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddress1() {
+        return address1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
     }
 
     public String getMessage() {
@@ -77,5 +75,18 @@ public class DeliveryDto {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "DeliveryDto{" +
+                "deliveryNo=" + deliveryNo +
+                ", orderNo=" + orderNo +
+                ", receiver='" + receiver + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

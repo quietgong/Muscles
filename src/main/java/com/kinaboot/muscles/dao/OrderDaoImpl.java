@@ -97,7 +97,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public int insertOrder(String userId, OrderDto orderDto) {
         // 주문 정보 생성
-        session.insert(namespace + "insertOrder", orderDto);
+        session.insert(namespace + "insertOrder", userId);
 
         // 주문상품 정보 생성
         for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList())
@@ -108,6 +108,6 @@ public class OrderDaoImpl implements OrderDao {
 
         // 결제 정보 생성
         session.insert(namespace + "insertPayment", orderDto.getPaymentDto());
-        return 0;
+        return session.selectOne(namespace + "count");
     }
 }

@@ -56,9 +56,9 @@
     </select>
     <!-- orderNo로 배송정보 반환 -->
     <select id="selectDelivery" resultType="deliveryDto" parameterType="int">
-        select orderNo, receiver, PHONE, ADDRESS, MESSAGE
+        select orderNo, receiver, PHONE, ADDRESS1, ADDRESS2, MESSAGE
         from delivery
-        WHERE orderNo='${orderNo}'
+        WHERE orderNo = '${orderNo}'
     </select>
     <!-- orderNo로 결제정보 반환 -->
     <select id="selectPayment" resultType="paymentDto" parameterType="int">
@@ -70,9 +70,9 @@
     select IFNULL(max(orderNo)+1,1) as orderNo
     from orders
 </select>
-    <insert id="insertOrder" parameterType="orderDto">
-        insert into orders (orderNo, userId, status, createdDate)
-        values (#{orderNo}, #{userId},#{status},now());
+    <insert id="insertOrder" parameterType="String">
+        insert into orders (userId, status, createdDate)
+        values ('${userId}', 'pending', now());
     </insert>
 
     <insert id="insertOrderItem" parameterType="orderItemDto">
@@ -82,8 +82,8 @@
     </insert>
 
     <insert id="insertDelivery" parameterType="deliveryDto">
-        insert into delivery (orderNo, receiver, PHONE, ADDRESS, MESSAGE)
-        values ((select count(*) from orders), #{receiver},#{phone},#{address},#{message});
+        insert into delivery (orderNo, receiver, PHONE, ADDRESS1, ADDRESS2, MESSAGE)
+        values ((select count(*) from orders), #{receiver}, #{phone}, #{address1}, #{address2}, #{message});
     </insert>
 
     <insert id="insertPayment" parameterType="paymentDto">

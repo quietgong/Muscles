@@ -3,7 +3,6 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-<form id="orderForm" action="<c:url value='/order/complete'/>" method="post">
     <div class="container">
         <div class="py-5 text-center">
             <h2>주문 페이지</h2>
@@ -14,16 +13,8 @@
                     <span class="text-muted">구매 목록</span>
                     <span class="badge badge-secondary badge-pill"></span>
                 </h4>
-                <ul class="list-group mb-3">
-                    <c:forEach var="orderItemDto" items="${list}">
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <div>
-                                <h6 class="my-0">${orderItemDto.productName}</h6>
-                                <small class="text-muted">${orderItemDto.productCategory}</small>
-                            </div>
-                            <span class="text-muted">${orderItemDto.productPrice}</span>
-                        </li>
-                    </c:forEach>
+                <ul id="orderList" class="list-group mb-3">
+                    <!-- AJAX -->
                     <li class="list-group-item d-flex justify-content-between bg-light">
                         <div class="text-success">
                             <small>추천인 입력</small>
@@ -37,7 +28,7 @@
                     </li>
                 </ul>
                 <div class="input-group">
-                    <select class="form-select" name="couponName" id="selectEvent"
+                    <select class="form-select" id="selectEvent"
                             style="font-size: 1.2rem; text-align: center">
                         <option value="" selected>쿠폰 선택</option>
                         <c:forEach var="couponDto" items="${couponDtoList}">
@@ -49,7 +40,7 @@
                     </select>
                     <div class="row">
                         <label class="form-check-label" for="pointUse">포인트 사용</label>
-                        <input id="pointUse" type="number" name="point" value="0" min="0" max="${userDto.point}">
+                        <input id="pointUse" type="number" value="0" min="0" max="${userDto.point}">
                         <span>보유 포인트 : ${userDto.point}</span>
                         <button id="pointAll" type="button" class="btn btn-primary">모두 사용</button>
                     </div>
@@ -64,7 +55,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="receiver">수령인</label>
-                        <input type="text" class="form-control" id="receiver" placeholder=""
+                        <input type="text" class="delivery form-control" id="receiver" placeholder=""
                                value="${userDto.userId}" required>
                         <div class="invalid-feedback">
                             수령인을 입력해주세요.
@@ -72,7 +63,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="phone">연락처</label>
-                        <input type="text" class="form-control" id="phone" name="phone"
+                        <input type="text" class="delivery form-control" id="phone"
                                placeholder="- 를 제외하고 입력해주세요" value="${userDto.phone}" required>
                         <div class="invalid-feedback">
                             Valid phone number is required.
@@ -80,44 +71,39 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="address">주소</label>
+                    <label for="address1">주소</label>
                     <button type="button" class="btn btn-primary mb-2" onclick="execDaumPostcode()">우편번호 찾기</button>
-                    <div class="col-md-3">
-                        <input type="text" id="postcode" class="form-control mb-4" readonly placeholder="우편번호"/>
-                    </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <input id="address" class="address form-control" type="text" readonly name="address"
+                            <input id="address1" class="delivery address form-control" type="text" readonly
                                    placeholder="주소"/><br/>
                         </div>
                         <div class="col-md-6">
-                            <input class="delivery form-control" type="text" id="detailAddress"
+                            <input id="address2" class="delivery form-control" type="text" id="detailAddress"
                                    placeholder="상세주소"/>
                         </div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="message">배송 메세지 <span class="text-muted">(선택사항)</span></label>
-                    <input type="text" class="form-control" id="message" name="message"
-                           placeholder="(예 : 경비실에 맡겨 주세요.)">
+                    <input type="text" class="form-control" id="message" placeholder="(예 : 경비실에 맡겨 주세요.)">
                 </div>
                 <hr class="mb-4">
                 <h4 class="mb-3">결제 수단</h4>
                 <div class="d-block my-3">
                     <div class="custom-control custom-radio">
                         <input id="credit" name="paymentMethod" type="radio" class="custom-control-input"
-                               checked
-                               required>
+                               checked required value="네이버페이">
                         <label class="custom-control-label" for="credit">네이버페이</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input id="debit" name="paymentMethod" type="radio" class="custom-control-input"
-                               required>
+                               required value="카카오페이">
                         <label class="custom-control-label" for="debit">카카오페이</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input"
-                               required>
+                               required value="신용카드">
                         <label class="custom-control-label" for="paypal">신용카드</label>
                     </div>
                 </div>
@@ -147,12 +133,32 @@
                     </div>
                 </div>
                 <hr class="mb-8">
+                <form id="orderForm" action="<c:url value='/order/'/>" method="post">
                 <button id="submit" class="col-md-6 btn btn-primary btn-lg btn-block" type="submit">결제</button>
+                </form>
             </div>
         </div>
     </div>
-</form>
-
+<script>
+    loadItemList()
+    function loadItemList(){
+        let items = JSON.parse('${orderList}')
+        $("#orderList").prepend(appendItemList(items))
+        function appendItemList(items){
+            let tmp = "";
+            items.forEach(function (item) {
+                tmp+='<li class="list-group-item d-flex justify-content-between lh-condensed">'
+                tmp+='<div>'
+                tmp+='<h6 class="my-0">' + item.productName + '</h6>'
+                tmp+='<small class="text-muted">' + item.productCategory + '</small>'
+                tmp+='</div>'
+                tmp+='<span class="text-muted">' + item.productPrice + '</span>'
+                tmp+='</li>'
+            })
+            return tmp;
+        }
+    }
+</script>
 <script>
     // 쿠폰 및 포인트 사용
     let discount = 0
@@ -183,39 +189,50 @@
     }
 </script>
 <script>
-    // 결제 버튼 처리
+    // 결제 버튼
     $("#submit").on("click", function () {
         const form = $('#orderForm');
-        let orderJsonData = [];
-        // 상품 정보
-        let orderItemInfo = $("input[type='hidden'].order-item");
-        $(orderItemInfo).each(function () {
-            let data = {};
-            data.productNo = $(this).val()
-            data.productName = $(this).next().val()
-            data.productQty = $(this).next().next().val()
-            data.productPrice = $(this).next().next().next().val()
-            data.productCategory = $(this).next().next().next().val()
-            data.productImgPath = $(this).prev().attr("src")
-            orderJsonData.push(data);
-        });
+        // 주문 정보
+        let orderData = {};
+        // 주문 상품 정보
+        let orderItemDtoList = JSON.parse('${orderList}')
+        // 결제 정보
+        let payment = {};
+        payment.type = $("input[name='paymentMethod']:checked").val()
+        payment.price = $("#payPrice").html()
+        // 배송 정보
+        let delivery = {};
+        delivery.receiver = $("#receiver").val()
+        delivery.phone = $("#phone").val()
+        delivery.address1 = $("#address1").val()
+        delivery.address2 = $("#address2").val()
+        delivery.message = $("#message").val()
+
+        orderData.paymentDto = payment
+        orderData.deliveryDto = delivery
+        orderData.orderItemDtoList = orderItemDtoList
+
+        console.log(orderData)
 
         form.append($('<input>').attr({
             type: 'hidden',
-            name: 'orderJsonData',
-            value: JSON.stringify(orderJsonData)
+            name: 'orderData',
+            value: JSON.stringify(orderData)
+        }))
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: 'couponName',
+            value: $("#selectEvent").val()
+        }))
+        form.append($('<input>').attr({
+            type: 'hidden',
+            name: 'point',
+            value: $("#pointUse").val()
         }))
         form.submit();
     });
 </script>
 <script>
-    let sum = 0
-    $(".order-item-price").each(function () {
-        sum += Number($(this).html())
-    })
-    $("#payPrice").html(sum)
-    $("input[name='price']").val(sum)
-
     // 배송지 기본 정보로 설정 체크 여부
     const checkbox = document.getElementById('checkbox');
     const inputs = document.getElementsByClassName('delivery');
@@ -237,6 +254,15 @@
                 inputs[i].value = '';
         }
     })
+</script>
+<script>
+    // 가격 표시
+    let sum = 0
+    $(".order-item-price").each(function () {
+        sum += Number($(this).html())
+    })
+    $("#payPrice").html(sum)
+    $("input[name='price']").val(sum)
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -273,8 +299,7 @@
                     if (extraAddr !== '')
                         extraAddr = ' (' + extraAddr + ')';
                 }
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('postcode').value = data.zonecode;
+                // 주소 정보를 해당 필드에 넣는다.
                 document.getElementById("address").value = addr + extraAddr;
                 // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("detailAddress").focus();

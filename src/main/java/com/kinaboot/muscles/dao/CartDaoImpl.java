@@ -37,9 +37,9 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public int deleteCartItem(String userId, Integer productNo) {
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("productNo", productNo);
+        map.put("productNo", String.valueOf(productNo));
         return session.delete(namespace + "deleteItem", map);
     }
 

@@ -26,6 +26,8 @@
         <interceptor>
             <mapping path="/cart/**"/>
 <!--            <mapping path="/mypage/**"/>-->
+<!--            <mapping path="/community/**"/>-->
+<!--            <mapping path="/notice/**"/>-->
             <beans:bean id="LoginChkInterceptor" class="com.kinaboot.muscles.interceptor.LoginChkInterceptor"/>
         </interceptor>
         <!-- 관리자 권한 체크 -->
@@ -43,11 +45,13 @@
     <view-controller path="/" view-name="index"/>
     <view-controller path="/admin/product" view-name="admin/product"/>
     <view-controller path="/admin/user" view-name="admin/user"/>
+
     <view-controller path="/chatting" view-name="chatting/chatRoom"/>
     <view-controller path="/login" view-name="login"/>
     <view-controller path="/cart" view-name="cart"/>
     <view-controller path="/nav" view-name="nav"/>
     <view-controller path="/register" view-name="register"/>
+
     <view-controller path="/mypage/coupon" view-name="mypage/mycoupon"/>
     <view-controller path="/mypage/order" view-name="mypage/myorder"/>
     <view-controller path="/mypage/modify" view-name="mypage/myinfo"/>

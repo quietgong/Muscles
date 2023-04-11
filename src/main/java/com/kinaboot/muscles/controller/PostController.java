@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping({"/community/", "/notice/"})
+@RequestMapping({"/community", "/notice"})
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
@@ -42,14 +42,14 @@ public class PostController {
         return "board/boardList";
     }
 
-    // 글쓰기 페이지
-    @PostMapping("add/")
+    // 글 쓰기 폼
+    @GetMapping("/add")
     public String postForm(HttpServletRequest request, Model m) {
         m.addAttribute("postCategory", parsingURL(request));
         return "board/boardForm";
     }
 
-    // 글쓰기
+    // 글 쓰기
     @PostMapping("")
     public String postAdd(PostDto postDto, String postCategory, HttpSession session) throws Exception {
         postDto.setUserId((String) session.getAttribute("id"));
@@ -57,8 +57,8 @@ public class PostController {
         return "redirect:/" + postCategory;
     }
 
-    // 글읽기
-    @GetMapping("{postNo}")
+    // 글 읽기
+    @GetMapping("/{postNo}")
     public String postDetails(@PathVariable Integer postNo, Integer page, HttpServletRequest request, Model m) throws Exception {
         m.addAttribute("postDto", postSerivce.findPost(postNo));
         m.addAttribute(page);
@@ -67,7 +67,7 @@ public class PostController {
     }
 
     // 글 삭제
-    @DeleteMapping("{postNo}")
+    @DeleteMapping("/{postNo}")
     @ResponseBody
     public ResponseEntity<String> postRemove(@PathVariable Integer postNo) throws Exception {
         postSerivce.removePost(postNo);
@@ -75,7 +75,7 @@ public class PostController {
     }
 
     // 글 수정
-    @PatchMapping("{postNo}")
+    @PatchMapping("/{postNo}")
     @ResponseBody
     public ResponseEntity<String> postModify(@RequestBody PostDto postDto) throws Exception {
         postSerivce.modifyPost(postDto);

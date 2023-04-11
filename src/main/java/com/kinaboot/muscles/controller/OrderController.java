@@ -19,15 +19,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/order/")
+@RequestMapping("/order")
 public class OrderController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
-
     @Autowired
     OrderService orderService;
     @Autowired
@@ -35,7 +35,7 @@ public class OrderController {
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping("{orderNo}")
+    @GetMapping("/{orderNo}")
     public String orderDetails(@PathVariable Integer orderNo, Model m) {
         logger.info("상세 주문내역 진입");
         m.addAttribute("orderDto", orderService.findOrder(orderNo));
@@ -50,51 +50,33 @@ public class OrderController {
                 HttpStatus.OK);
     }
 
-    // 바로구매 또는 장바구니 주문
-    // 선택된 상품들의 정보를 주문 정보 페이지로 전달
-    @PostMapping("")
-    public String orderSave(String jsonData, Model m, HttpSession session) throws Exception {
-        logger.info("주문 페이지 진입");
+    @PostMapping("/checkout")
+    public String orderSave(String orderData, Model m, HttpSession session) throws Exception {
+        logger.info("결제 전 주문 페이지 진입");
         String userId = (String) session.getAttribute("id");
         if (userService.findCoupons(userId) != null)
             m.addAttribute("couponDtoList", userService.findCoupons(userId));
         m.addAttribute("userDto", userService.findUser(userId));
-        m.addAttribute("list", JsonToJava(jsonData));
+        m.addAttribute("orderList", orderData);
         return "order/checkout";
     }
 
-    // 주문취소
-    @DeleteMapping("{orderNo}")
-    public ResponseEntity<String> removeOrder(HttpSession session, @PathVariable Integer orderNo) {
+    @PostMapping("/")
+    public String orderAdd(String orderData, HttpServletRequest request, HttpSession session, Model m) throws Exception {
+        logger.info("결제 후 주문 처리");
         String userId = (String) session.getAttribute("id");
-        orderService.removeOrder(userId, orderNo);
-        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
-    }
+        int orderNo = orderService.addOrder(userId, orderData, request);
 
-    // 결제하기 버튼
-    @PostMapping("/complete")
-    public String orderAdd(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto,
-                            String couponName, Integer point, HttpSession session, Model m) throws Exception {
-        String userId = (String) session.getAttribute("id");
-        OrderDto orderDto = new OrderDto
-                (JsonToJava(orderJsonData), deliveryDto, paymentDto, userId, "대기중");
-        orderDto.setOrderNo(orderService.findOrderNo());
-        // 주문정보 생성
-        orderService.addOrder(userId, orderDto);
-        // 쿠폰 상태 변경
-        userService.modifyCoupon(userId, couponName, String.valueOf(orderDto.getOrderNo()));
-        // 포인트 사용 적용
-        if (point != 0)
-            userService.modifyPoint(userId, point, String.valueOf(orderDto.getOrderNo()));
-
-        m.addAttribute(orderDto);
+        m.addAttribute("orderDto", orderService.findOrder(orderNo));
         m.addAttribute("userDto", userService.findUser(userId));
         return "order/complete";
     }
 
-    public List<OrderItemDto> JsonToJava(String rowData) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(rowData, new TypeReference<List<OrderItemDto>>() {
-        });
+    @DeleteMapping("{orderNo}")
+    public ResponseEntity<String> removeOrder(HttpSession session, @PathVariable Integer orderNo) {
+        logger.info("[주문번호] : " + orderNo + " 주문취소");
+        String userId = (String) session.getAttribute("id");
+        orderService.removeOrder(userId, orderNo);
+        return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 }

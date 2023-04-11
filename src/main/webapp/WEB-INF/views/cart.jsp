@@ -12,7 +12,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
                         </div>
-                        <form id="cartForm" action="<c:url value='/order/'/>" method="post">
+                        <form id="cartForm" action="<c:url value='/order/checkout'/>" method="post">
                             <!-- 장바구니 상품 시작 -->
                             <div id="cartItemList" class="card rounded-3 mb-4">
                                 <!-- AJAX 동적 추가 -->
@@ -123,7 +123,6 @@
     $("#order").on("click", function () {
         const form = $("#cartForm");
         let data = []
-
         $("div[content='item']").each(function (index) {
             let tmp = {}
             tmp.productNo = $(this).attr("data-productNo")
@@ -134,14 +133,12 @@
             tmp.productImgPath = $(this).attr("data-productImgPath")
             data.push(tmp)
         });
-        console.log(JSON.stringify(data))
         form.append($('<input>').attr({
             type: 'hidden',
-            name: 'jsonData',
+            name: 'orderData',
             value: JSON.stringify(data)
         }))
         form.submit();
-
     });
 
     // 장바구니 상품 삭제
