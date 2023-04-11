@@ -48,5 +48,9 @@ public class PostServiceImpl implements PostSerivce{
     public int removePost(Integer postNo) throws Exception {
         return postDao.delete(postNo);
     }
+    @Override
+    public int removePost(String userId) throws Exception {
+        return postDao.delete(userId);
+    }
 
 }

@@ -11,6 +11,8 @@ import java.util.Map;
 
 @Repository
 public class CommentDaoImpl implements CommentDao {
+
+
     @Autowired
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.commentMapper.";
@@ -28,6 +30,10 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public int delete(Integer commentNo) throws Exception {
         return session.delete(namespace + "delete", commentNo);
+    }
+    @Override
+    public int delete(String userId) throws Exception {
+        return session.delete(namespace + "deleteComment", userId);
     }
 
     @Override

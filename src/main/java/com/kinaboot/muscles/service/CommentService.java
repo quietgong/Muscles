@@ -9,4 +9,5 @@ public interface CommentService {
     int addComment(CommentDto CommentDto) throws Exception;
     int modifyComment(CommentDto CommentDto) throws Exception;
     int removeComment(Integer cno) throws Exception;
+    int removeComment(String userId) throws Exception;
 }

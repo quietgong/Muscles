@@ -64,6 +64,9 @@
     <delete id="delete" parameterType="int">
         DELETE from post where postNo=${postNo}
     </delete>
+    <delete id="deletePost" parameterType="String">
+        DELETE from post where userId='${userId}'
+    </delete>
 
     <insert id="insert" parameterType="map">
         insert into post

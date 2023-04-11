@@ -7,14 +7,19 @@
         SELECT count(*)
         FROM user
     </select>
+    <select id="countUser" resultType="int" parameterType="String">
+        SELECT count(*)
+        FROM user
+        where userId = '${userId}'
+    </select>
     <select id="selectAllUser" resultType="UserDto">
         SELECT *
         FROM user
     </select>
-    <select id="selectUser" resultType="UserDto">
+    <select id="selectUser" parameterType="String" resultType="UserDto">
         SELECT *
         FROM user
-        where userId = #{userId}
+        where userId = '${userId}'
     </select>
     <select id="selectUserOne" resultType="String">
         SELECT *
@@ -34,8 +39,9 @@
     </select>
     <update id="updateUser" parameterType="UserDto">
         UPDATE USER
-        SET EMAIL = #{email}
-          , PHONE = #{phone}
+        SET EMAIL    = #{email}
+          , PHONE    = #{phone}
+          , PASSWORD = #{password}
         WHERE userId = #{userId}
     </update>
 
@@ -74,9 +80,9 @@
     </insert>
 
     <insert id="insertExit" parameterType="map">
-        INSERT INTO exit
-            (userId, type1, type2, type3, opinion)
-        values (#{userId}, #{type1}, #{type2}, #{type3}, #{opinion})
+        INSERT INTO `exit`
+            (userId, exitDate, type1, type2, type3, opinion)
+        values (#{userId}, now(), #{type1}, #{type2}, #{type3}, #{opinion})
     </insert>
 
     <delete id="deleteAllUser">
@@ -88,6 +94,19 @@
         SET expiredDate = now()
         where userNo = '${userNo}';
     </delete>
+    <delete id="deleteData" parameterType="String">
+        DELETE
+        POST
+        where userId = '${userId}';
+
+        DELETE
+        COMMENT
+        where userId = '${userId}';
+
+        UPDATE USER
+        SET point = 0
+        where userId = '${userId}';
+    </delete>
     <update id="updateExpiredDate" parameterType="String">
         UPDATE USER
         SET expiredDate = now();
@@ -98,4 +117,9 @@
         where userId = #{userId}
         and pointName = ${pointName};
     </delete>
+    <update id="modifyUserPoint" parameterType="String">
+        UPDATE USER
+        SET point = 0
+        where userId = '${userId}'
+    </update>
 </mapper>

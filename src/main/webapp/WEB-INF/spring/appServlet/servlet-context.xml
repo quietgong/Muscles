@@ -3,7 +3,6 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:context="http://www.springframework.org/schema/context"
-             xmlns:aop="http://www.springframework.org/schema/aop"
              xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
@@ -26,6 +25,7 @@
         <!-- 로그인 체크 -->
         <interceptor>
             <mapping path="/cart/**"/>
+<!--            <mapping path="/mypage/**"/>-->
             <beans:bean id="LoginChkInterceptor" class="com.kinaboot.muscles.interceptor.LoginChkInterceptor"/>
         </interceptor>
         <!-- 관리자 권한 체크 -->
@@ -38,7 +38,7 @@
     <beans:bean id="multipartResolver"
                 class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 
-    <context:component-scan base-package="com.kinaboot.muscles"/>
+    <context:component-scan base-package="com.kinaboot.muscles" name-generator="com.kinaboot.muscles.handler.FullBeanNameGenerator"/>
     <!-- View-Path 연결 -->
     <view-controller path="/" view-name="index"/>
     <view-controller path="/admin/product" view-name="admin/product"/>
@@ -48,4 +48,10 @@
     <view-controller path="/cart" view-name="cart"/>
     <view-controller path="/nav" view-name="nav"/>
     <view-controller path="/register" view-name="register"/>
+    <view-controller path="/mypage/coupon" view-name="mypage/mycoupon"/>
+    <view-controller path="/mypage/order" view-name="mypage/myorder"/>
+    <view-controller path="/mypage/modify" view-name="mypage/myinfo"/>
+    <view-controller path="/mypage/review" view-name="mypage/myreview"/>
+    <view-controller path="/mypage/post" view-name="mypage/mypost"/>
+    <view-controller path="/mypage/exit" view-name="mypage/exit"/>
 </beans:beans>

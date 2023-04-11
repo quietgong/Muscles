@@ -10,6 +10,7 @@ public interface CommentDao {
     int deleteAll();
 
     int delete(Integer commentNo) throws Exception;
+    int delete(String userId) throws Exception;
 
     int insert(CommentDto commentDto) throws Exception;
 

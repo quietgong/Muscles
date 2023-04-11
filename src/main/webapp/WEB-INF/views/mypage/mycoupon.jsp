@@ -73,13 +73,14 @@
 </div>
 
 <script>
-    let userId = '${userDto.userId}'
+    let userId = '${userId}'
     loadCoupon();
+    loadPoint();
 
     function loadCoupon() {
         $.ajax({
             type: "GET",
-            url: '/muscles/mypage/mycoupon/' + userId,
+            url: '/muscles/mypage/coupon/' + userId,
             success: function (res) {
                 $("#couponList").after(toHtml(res));
                 checkCouponList(res)
@@ -89,7 +90,6 @@
             }
         });
     }
-
     let toHtml = function (items) {
         let tmp = "";
         items.forEach(function (item) {
@@ -105,12 +105,10 @@
         })
         return tmp
     }
-    loadPoint();
-
     function loadPoint() {
         $.ajax({
             type: "GET",
-            url: '/muscles/mypage/mypoint/' + userId,
+            url: '/muscles/mypage/point/' + userId,
             success: function (res) {
                 $("#pointList").after(toHtmlPoint(res));
             },

@@ -71,28 +71,6 @@ public class OrderController {
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
-    @GetMapping("list")
-    public String orderList(HttpSession session, Model m) {
-        logger.info("유저 주문내역 진입");
-        String userId = (String) session.getAttribute("id");
-        List<OrderDto> orderDtoList = orderService.findOrders(userId);
-        if (orderDtoList != null) {
-            orderDtoList = verifyReviewExist(orderService.findOrders(userId));
-            m.addAttribute(orderDtoList);
-        }
-        logger.info("해당 유저 주문내역 : " + orderDtoList);
-        return "order/list";
-    }
-
-    private List<OrderDto> verifyReviewExist(List<OrderDto> orderDtoList) {
-        for (OrderDto orderDto : orderDtoList) {
-            for (OrderItemDto orderItemDto : orderService.findOrderItems(orderDto.getOrderNo()))
-                orderItemDto.setHasReview
-                        (reviewService.findReview
-                                (orderItemDto.getOrderNo(), orderItemDto.getProductNo()) != null);
-        }
-        return orderDtoList;
-    }
     // 결제하기 버튼
     @PostMapping("/complete")
     public String orderAdd(String orderJsonData, DeliveryDto deliveryDto, PaymentDto paymentDto,

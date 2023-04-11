@@ -1,10 +1,9 @@
 package com.kinaboot.muscles.service;
 
+import com.kinaboot.muscles.TestConfigure;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-public class OrderServiceImplTest {
+public class OrderServiceImplTest extends TestConfigure {
 
     @Test
     public void removeOrder() {

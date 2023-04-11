@@ -23,6 +23,7 @@
                     <p class="checkMsg" id="id_check">아이디를 입력해주세요</p>
                     <p class="checkMsg" id="id_length_check">ID는 4자 이상 20자 이하로 입력해주세요</p>
                     <p class="checkMsg" id="dup_id_check">이미 사용중인 아이디입니다.</p>
+                    <p class="checkMsg" style="color: #59ab6e" id="dup_id_check_ok">사용가능한 아이디입니다.</p>
                 </div>
                 <div class="mb-3">
                     <label>비밀번호</label>
@@ -78,7 +79,9 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="form-group col-md-6 mb-3">
-                        <button class="form-control mt-1 btn btn-primary" id="register" type="button">회원 가입</button>
+                        <button onclick="submitRegister()" class="form-control mt-1 btn btn-primary" id="register"
+                                type="button">회원 가입
+                        </button>
                     </div>
                 </div>
             </div>
@@ -143,240 +146,243 @@
     let emailVerifyCheck = false // 이메일 인증 체크
     let addressCheck = false // 주소 입력 체크
 
-    $(document).ready(function () {
-        $("#register").on("click", function () {
-            IdValidCheck()
-            PwValidCheck()
-            Pw1Pw2Check()
-            EmailValidCheck()
-            EmailVerifyCheck()
-            EmailFormCheck($("#email").val())
-            AddressValidCheck()
-            PhoneValidCheck()
-            /* 최종 유효성 검사 */
-            if (idCheck && dupIdCheck && idLengthCheck && pwCheck && pwLengthCheck && pw1pw2Check && phoneCheck && emailCheck && emailFormCheck && emailVerifyCheck && addressCheck) {
-                const form = $("#registerForm")
-                form.attr("action", "<c:url value="/register"/>")
-                form.submit()
-            }
-            return false;
-        })
+    function submitRegister() {
+        IdValidCheck()
+        PwValidCheck()
+        Pw1Pw2Check()
+        EmailValidCheck()
+        EmailVerifyCheck()
+        EmailFormCheck($("#email").val())
+        AddressValidCheck()
+        PhoneValidCheck()
+        /* 최종 유효성 검사 */
+        if (idCheck && dupIdCheck && idLengthCheck && pwCheck && pwLengthCheck && pw1pw2Check && phoneCheck && emailCheck && emailFormCheck && emailVerifyCheck && addressCheck) {
+            const form = $("#registerForm")
+            form.attr("action", "<c:url value="/register/"/>")
+            form.submit()
+            alert("회원가입이 완료되었습니다.")
+        }
+        return false;
+    }
 
-        /*
-        * ID 유효성 체크
-         */
-        function IdValidCheck() {
-            let id = $("input[name=userId]").val()
-            // 입력 여부 체크
-            if (id == "") {
-                $("#id_check").css("display", "block")
-                idCheck = false
-            } else {
-                $("#id_check").css("display", "none")
-                idCheck = true
-            }
-            // 아이디 길이 체크
-            if (id != "" && id.length < 4 || id.length > 20) {
-                $("#id_length_check").css("display", "block")
-                idLengthCheck = false
-            } else {
-                $("#id_length_check").css("display", "none")
-                idLengthCheck = true
-            }
-            // 아이디 중복체크 //
-            if (idCheck && idLengthCheck) {
-                $.ajax({
-                    type: "GET",            // HTTP method type(GET, POST) 형식이다.
-                    url: "/muscles/register/idDupCheck/" + id,      // 컨트롤러에서 대기중인 URL 주소이다.
-                    headers: {              // Http header
-                        "Content-Type": "application/json",
-                        "X-HTTP-Method-Override": "POST"
-                    },
-                    success: function (res) {
-                        if (res !== 0) {
-                            $("#dup_id_check").css("display", "block")
-                            dupIdCheck = false
-                        } else {
-                            $("#dup_id_check").css("display", "none")
-                            dupIdCheck = true
-                        }
-                    },
-                    error: function () {
-                        console.log("통신 실패")
+    /*
+    * ID 유효성 체크
+     */
+    function IdValidCheck() {
+        let id = $("input[name=userId]").val()
+        // 입력 여부 체크
+        if (id == "") {
+            $("#id_check").css("display", "block")
+            idCheck = false
+        } else {
+            $("#id_check").css("display", "none")
+            idCheck = true
+        }
+        // 아이디 길이 체크
+        if (id != "" && id.length < 4 || id.length > 20) {
+            $("#id_length_check").css("display", "block")
+            idLengthCheck = false
+        } else {
+            $("#id_length_check").css("display", "none")
+            idLengthCheck = true
+        }
+        // 아이디 중복체크 //
+        if (idCheck && idLengthCheck) {
+            $.ajax({
+                type: "GET",            // HTTP method type(GET, POST) 형식이다.
+                url: "/muscles/register/idDupCheck/" + id,      // 컨트롤러에서 대기중인 URL 주소이다.
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                    "X-HTTP-Method-Override": "POST"
+                },
+                success: function (res) {
+                    console.log(res)
+                    if (res !== 0) { // 중복일 때
+                        $("#dup_id_check_ok").css("display", "none")
+                        $("#dup_id_check").css("display", "block")
+                        dupIdCheck = false
+                    } else {
+                        $("#dup_id_check_ok").css("display", "block")
+                        $("#dup_id_check").css("display", "none")
+                        dupIdCheck = true
                     }
-                })
-            }
-        }
-
-        $("#inputId").on("keyup", function () {
-            IdValidCheck()
-        })
-
-        /*
-        * 비밀번호 유효성 체크
-         */
-        function PwValidCheck() {
-            let pw1 = $("#pw1").val()
-            // 입력 여부 체크
-            if (pw1 == "") {
-                $("#pw_check").css("display", "block")
-                pwCheck = false
-            } else {
-                $("#pw_check").css("display", "none")
-                pwCheck = true
-            }
-            // 비밀번호 길이 체크
-            if (pw1 != "" && pw1.length < 5) {
-                $("#pw_length_check").css("display", "block")
-                pwLengthCheck = false
-            } else {
-                $("#pw_length_check").css("display", "none")
-                pwLengthCheck = true
-            }
-        }
-
-        $("#pw1").on("keyup", function () {
-            PwValidCheck()
-        });
-
-        // 비밀번호1, 비밀번호2 일치 체크
-        function Pw1Pw2Check() {
-            let pw1 = $("#pw1").val()
-            let pw2 = $("#pw2").val()
-            if (pw2 != "") {
-                if (pw1 == pw2) {
-                    $("#pw2_check_ok").css("display", "block")
-                    $("#pw2_check_fail").css("display", "none")
-                    pw1pw2Check = true
-                } else {
-                    $("#pw2_check_ok").css("display", "none")
-                    $("#pw2_check_fail").css("display", "block")
-                    pw1pw2Check = false
+                },
+                error: function () {
+                    console.log("통신 실패")
                 }
-            }
+            })
+        } else {
+            $("#dup_id_check_ok").css("display", "none")
+            $("#dup_id_check").css("display", "none")
+            dupIdCheck = false
         }
+    }
 
-        $("#pw2").on("keyup", function () {
-            Pw1Pw2Check()
-        });
-
-        /*
-        * 이메일 유효성 체크
-         */
-        function EmailValidCheck() {
-            let email = $("#email").val()
-            // 입력 여부 체크
-            if (email == "") {
-                $("#email_check").css("display", "block")
-                emailCheck = false
-            } else {
-                $("#email_check").css("display", "none")
-                emailCheck = true
-            }
-        }
-
-        $("#email").on("keyup", function () {
-            EmailValidCheck()
-            if (emailCheck) {
-                if (EmailFormCheck($("#email").val())) {
-                    $("#email_form_check").css("display", "none")
-                    emailFormCheck = true
-                } else {
-                    $("#email_form_check").css("display", "block")
-                    emailFormCheck = false
-                }
-            }
-        })
-
-        function EmailFormCheck(email) {
-            var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-            return form.test(email)
-        }
-
-        // 이메일 인증 체크
-        function EmailVerifyCheck() {
-            if ($("#emailVerifyNumber").val() == verifyCode) {
-                emailVerifyCheck = true
-                $("#email_verify_check_ok").css("display", "block")
-                $("#email_verify_check_fail").css("display", "none")
-            } else {
-                emailVerifyCheck = false
-                $("#email_verify_check_ok").css("display", "none")
-                $("#email_verify_check_fail").css("display", "block")
-            }
-        }
-
-        $("#emailVerifyNumber").on("keyup", function () {
-            EmailVerifyCheck()
-        })
-        /* 이메일 인증코드 발송 */
-        let verifyCode;
-        $("#sendVerifyNumber").on("click", function () {
-            EmailValidCheck()
-            if (emailCheck) {
-                let email = $("#email").val()
-                $.ajax({
-                    type: "GET",            // HTTP method type(GET, POST) 형식이다.
-                    url: "/muscles/register/mailCheck?email=" + email,
-                    headers: {              // Http header
-                        "Content-Type": "application/json",
-                    },
-                    success: function (verifyNum) {
-                        console.log("인증번호 : " + verifyNum)
-                        verifyCode = verifyNum
-                        $("#emailVerifyNumber").attr("readonly", false)
-                        $("#emailVerifyNumber").css("background-color", "#fff")
-                        $("#emailVerifyNumber").focus()
-                    },
-                    error: function () {
-                        console.log("통신 실패")
-                    }
-                })
-            }
-        })
-
-        /*
-        * 주소 유효성 체크
-         */
-        function AddressValidCheck() {
-            let address = $("#address").val()
-            // 입력 여부 체크
-            if (address == "") {
-                $("#address_check").css("display", "block")
-                addressCheck = false
-            } else {
-                $("#address_check").css("display", "none")
-                addressCheck = true
-            }
-        }
-
-        $("#address").on("keyup", function () {
-            AddressValidCheck()
-        })
-
-        /*
-        * 연락처 유효성 체크
-         */
-        function PhoneValidCheck() {
-            $("#phone").val($("#phone").val().replaceAll("-", ""))
-            let phone = $("#phone").val()
-            // 입력 여부 체크
-            if (phone == "") {
-                $("#phone_check").css("display", "block")
-                phoneCheck = false
-            } else {
-                $("#phone_check").css("display", "none")
-                phoneCheck = true
-            }
-        }
-
-        $("#phone").on("keyup", function () {
-            PhoneValidCheck()
-        })
+    $("#inputId").on("keyup", function () {
+        IdValidCheck()
     })
-</script>
-<script>
 
+    /*
+    * 비밀번호 유효성 체크
+     */
+    function PwValidCheck() {
+        let pw1 = $("#pw1").val()
+        // 입력 여부 체크
+        if (pw1 == "") {
+            $("#pw_check").css("display", "block")
+            pwCheck = false
+        } else {
+            $("#pw_check").css("display", "none")
+            pwCheck = true
+        }
+        // 비밀번호 길이 체크
+        if (pw1 != "" && pw1.length < 5) {
+            $("#pw_length_check").css("display", "block")
+            pwLengthCheck = false
+        } else {
+            $("#pw_length_check").css("display", "none")
+            pwLengthCheck = true
+        }
+    }
+
+    $("#pw1").on("keyup", function () {
+        PwValidCheck()
+    });
+
+    // 비밀번호1, 비밀번호2 일치 체크
+    function Pw1Pw2Check() {
+        let pw1 = $("#pw1").val()
+        let pw2 = $("#pw2").val()
+        if (pw2 != "") {
+            if (pw1 == pw2) {
+                $("#pw2_check_ok").css("display", "block")
+                $("#pw2_check_fail").css("display", "none")
+                pw1pw2Check = true
+            } else {
+                $("#pw2_check_ok").css("display", "none")
+                $("#pw2_check_fail").css("display", "block")
+                pw1pw2Check = false
+            }
+        }
+    }
+
+    $("#pw2").on("keyup", function () {
+        Pw1Pw2Check()
+    });
+
+    /*
+    * 이메일 유효성 체크
+     */
+    function EmailValidCheck() {
+        let email = $("#email").val()
+        // 입력 여부 체크
+        if (email == "") {
+            $("#email_check").css("display", "block")
+            emailCheck = false
+        } else {
+            $("#email_check").css("display", "none")
+            emailCheck = true
+        }
+    }
+
+    $("#email").on("keyup", function () {
+        EmailValidCheck()
+        if (emailCheck) {
+            if (EmailFormCheck($("#email").val())) {
+                $("#email_form_check").css("display", "none")
+                emailFormCheck = true
+            } else {
+                $("#email_form_check").css("display", "block")
+                emailFormCheck = false
+            }
+        }
+    })
+
+    function EmailFormCheck(email) {
+        var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return form.test(email)
+    }
+
+    // 이메일 인증 체크
+    function EmailVerifyCheck() {
+        if ($("#emailVerifyNumber").val() == verifyCode) {
+            emailVerifyCheck = true
+            $("#email_verify_check_ok").css("display", "block")
+            $("#email_verify_check_fail").css("display", "none")
+        } else {
+            emailVerifyCheck = false
+            $("#email_verify_check_ok").css("display", "none")
+            $("#email_verify_check_fail").css("display", "block")
+        }
+    }
+
+    $("#emailVerifyNumber").on("keyup", function () {
+        EmailVerifyCheck()
+    })
+    /* 이메일 인증코드 발송 */
+    let verifyCode;
+    $("#sendVerifyNumber").on("click", function () {
+        EmailValidCheck()
+        if (emailCheck) {
+            let email = $("#email").val()
+            $.ajax({
+                type: "GET",            // HTTP method type(GET, POST) 형식이다.
+                url: "/muscles/register/mailCheck?email=" + email,
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                },
+                success: function (verifyNum) {
+                    console.log("인증번호 : " + verifyNum)
+                    verifyCode = verifyNum
+                    $("#emailVerifyNumber").attr("readonly", false)
+                    $("#emailVerifyNumber").css("background-color", "#fff")
+                    $("#emailVerifyNumber").focus()
+                },
+                error: function () {
+                    console.log("통신 실패")
+                }
+            })
+        }
+    })
+
+    /*
+    * 주소 유효성 체크
+     */
+    function AddressValidCheck() {
+        let address = $("#address").val()
+        // 입력 여부 체크
+        if (address == "") {
+            $("#address_check").css("display", "block")
+            addressCheck = false
+        } else {
+            $("#address_check").css("display", "none")
+            addressCheck = true
+        }
+    }
+
+    $("#address").on("keyup", function () {
+        AddressValidCheck()
+    })
+
+    /*
+    * 연락처 유효성 체크
+     */
+    function PhoneValidCheck() {
+        $("#phone").val($("#phone").val().replaceAll("-", ""))
+        let phone = $("#phone").val()
+        // 입력 여부 체크
+        if (phone == "") {
+            $("#phone_check").css("display", "block")
+            phoneCheck = false
+        } else {
+            $("#phone_check").css("display", "none")
+            phoneCheck = true
+        }
+    }
+
+    $("#phone").on("keyup", function () {
+        PhoneValidCheck()
+    })
 </script>
 <!-- footer -->
 <%@ include file="footer.jsp" %>

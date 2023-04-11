@@ -18,6 +18,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    PostSerivce postSerivce;
+
+    @Autowired
+    CommentService commentService;
     @Override
     public List<UserDto> findAllUser() {
         return userDao.selectAllUser();
@@ -27,22 +32,37 @@ public class UserServiceImpl implements UserService {
     public int modifyUser(UserDto userDto) {
         return userDao.updateUser(userDto);
     }
+
     @Override
-    public int removeUser(Integer userNo, HttpServletRequest request, String removeType) {
+    public int removeUser(String userId, HttpServletRequest request, String removeType) throws Exception {
         int[] typeValue = new int[]{0, 0, 0};
-        String[] type = request.getParameterValues("type");
-        String opinion = request.getParameter("opinion");
-        for (String s : type)
-            typeValue[Integer.parseInt(s) - 1]++;
-        HashMap map = new HashMap<>();
-        map.put("userNo", userNo);
-        map.put("type1", typeValue[0]);
-        map.put("type2", typeValue[1]);
-        map.put("type3", typeValue[2]);
+        String opinion = "";
+        HashMap<String,String> map = new HashMap<>();
+        map.put("userId", userId);
+        if (request != null) {
+            String[] type = request.getParameterValues("type");
+            opinion = request.getParameter("opinion");
+            for (String s : type)
+                typeValue[Integer.parseInt(s) - 1]++;
+            map.put("type1", String.valueOf(typeValue[0]));
+            map.put("type2", String.valueOf(typeValue[1]));
+            map.put("type3", String.valueOf(typeValue[2]));
+        }
         map.put("opinion", removeType.equals("admin") ? "관리자 탈퇴 처리" : opinion);
 
+        // 탈퇴유저 사용기록(게시물, 댓글, 포인트) 삭제
+        userDao.removePoint(userId);
+        postSerivce.removePost(userId);
+        commentService.removeComment(userId);
+        // 탈퇴 기록 저장
         userDao.insertExit(map);
-        return userDao.deleteUser(userNo);
+        // user ExpiredDate 변경
+        return userDao.deleteUser(userDao.selectUser(userId).getUserNo());
+    }
+
+    @Override
+    public int countUser(String userId) {
+        return userDao.countUser(userId);
     }
 
     @Override
@@ -51,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int addUser(UserDto userDto) throws Exception {
+    public int addUser(UserDto userDto) {
         return userDao.insertUser(userDto);
     }
 

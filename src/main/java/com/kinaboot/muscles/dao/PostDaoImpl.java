@@ -33,6 +33,11 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
+    public int delete(String userId) throws Exception {
+        return session.delete(namespace + "deletePost", userId);
+    }
+
+    @Override
     public int insert(PostDto postDto, String type) throws Exception {
         Map<Object, Object> map = new HashMap<>();
         map.put("postDto", postDto);

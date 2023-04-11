@@ -88,10 +88,9 @@
                     <span id="cartNum"
                           class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
                         <!-- 장바구니 아이템 개수 -->
-                        ${cartNum}
                     </span>
                 </a>
-                <a class="nav-icon position-relative text-decoration-none" href="<c:url value='/order/list'/>">
+                <a class="nav-icon position-relative text-decoration-none" href="<c:url value='/mypage/order'/>">
                     <i class="fa fa-fw fa-user text-dark mr-3 fa-2x"></i>
                 </a>
             </div>
@@ -126,6 +125,7 @@
             $("#chatting").css("display", "none")
             // $("#admin").css("display", "none")
             $("#logout").css("display", "none")
+            $("#cartNum").html("0")
         } else {
             getCartItemsNum()
             $("#login").css("display", "none")

@@ -15,4 +15,5 @@ public interface PostSerivce {
     int addPost(PostDto postDto, String type) throws Exception;
     int modifyPost(PostDto postDto) throws Exception;
     int removePost(Integer postNo) throws Exception;
+    int removePost(String userId) throws Exception;
 }

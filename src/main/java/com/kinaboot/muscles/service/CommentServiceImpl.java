@@ -16,8 +16,12 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public int countComment() throws Exception {
-        return commentDao.count();
+    public int removeComment(String userId) throws Exception {
+        return commentDao.delete(userId);
+    }
+    @Override
+    public int removeComment(Integer commentNo) throws Exception {
+        return commentDao.delete(commentNo);
     }
 
     @Override
@@ -30,8 +34,4 @@ public class CommentServiceImpl implements CommentService{
         return commentDao.update(commentDto);
     }
 
-    @Override
-    public int removeComment(Integer commentNo) throws Exception {
-        return commentDao.delete(commentNo);
-    }
 }

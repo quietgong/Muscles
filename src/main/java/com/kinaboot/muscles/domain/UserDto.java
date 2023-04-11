@@ -29,12 +29,13 @@ public class UserDto {
         this.address1 = address1;
     }
 
-    public UserDto(String userId, String password, String email, String phone, String address1, int point) {
+    public UserDto(String userId, String password, String email, String phone, String address1, String address2, int point) {
         this.userId = userId;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.address1 = address1;
+        this.address2 = address2;
         this.point = point;
     }
 

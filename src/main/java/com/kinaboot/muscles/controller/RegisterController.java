@@ -20,15 +20,15 @@ import java.net.URLEncoder;
 import java.util.Random;
 
 @Controller
-@RequestMapping("/register")
+@RequestMapping("/register/")
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
     @Autowired
     private JavaMailSender mailSender;
 
-//    @Autowired
-//    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     UserService userService;
 
@@ -42,7 +42,7 @@ public class RegisterController {
         String encodingPw = "";
 
         originPw = userDto.getPassword();
-//        encodingPw = passwordEncoder.encode(originPw);
+        encodingPw = passwordEncoder.encode(originPw);
         userDto.setPassword(encodingPw);
 
         userService.addUser(userDto);
@@ -51,24 +51,17 @@ public class RegisterController {
         return "redirect:/";
     }
 
-    @GetMapping("/idDupCheck/{id}")
+    @GetMapping("idDupCheck/{userId}")
     @ResponseBody
-    public int idDupCheck(@PathVariable String id) {
-        logger.info("ID 중복검사 [id] : " + id);
-        try {
-            userService.findUser(id);
-            return 1;
-        } catch (Exception e) {
-            return 0;
-        }
+    public int idDupCheck(@PathVariable String userId) {
+        logger.info("ID 중복검사 [id] : " + userId);
+        return userService.countUser(userId);
     }
 
-    @GetMapping("/mailCheck")
+    @GetMapping("mailCheck")
     @ResponseBody
     public String emailCheck(String email) {
-        logger.info("인증번호 전송 진입");
-        logger.info("전달받은 email : " + email);
-
+        logger.info("인증번호 전송 진입 [email] : " + email);
         /* 인증번호 생성 */
         Random random = new Random();
         int verifyNum = random.nextInt(888888) + 111111;
@@ -79,8 +72,8 @@ public class RegisterController {
         String title = "머슬스 회원가입 인증 이메일 입니다.";
         String content =
                 "머슬스 회원가입을 환영합니다."
-                +"<br><br>"
-                +"인증 번호는 " + "<strong>" + verifyNum + "</strong> 입니다.";
+                        + "<br><br>"
+                        + "인증 번호는 " + "<strong>" + verifyNum + "</strong> 입니다.";
 
         /* 발송 */
         try {
@@ -89,12 +82,11 @@ public class RegisterController {
             helper.setFrom(setFrom);
             helper.setTo(toMail);
             helper.setSubject(title);
-            helper.setText(content,true);
+            helper.setText(content, true);
             mailSender.send(message);
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         return String.valueOf(verifyNum);
     }
 }

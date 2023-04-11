@@ -14,10 +14,12 @@ public interface UserService {
     UserDto findUser(String userId) throws Exception;
     int addUser(UserDto userDto) throws Exception;
     int modifyUser(UserDto userDto) throws Exception;
-    int removeUser(Integer userNo, HttpServletRequest request, String removeType) throws Exception;
+    int removeUser(String userId, HttpServletRequest request, String removeType) throws Exception;
     List<CouponDto> findCoupons(String userId);
     int addCoupon(String userId, String recommendId);
     int modifyCoupon(String userId, String couponName, String orderNo);
     List<PointDto> findPoints(String userId);
     int modifyPoint(String userId, int point, String orderNo);
+
+    int countUser(String userId);
 }

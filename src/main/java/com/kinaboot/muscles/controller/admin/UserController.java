@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,22 +18,22 @@ public class UserController {
     UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    // 유저 목록 출력
+    // 유저 전체 목록 조회
     @GetMapping("")
-    @ResponseBody
     public ResponseEntity<List<UserDto>> userList() {
         logger.info("유저 목록 조회");
         return new ResponseEntity<>(userService.findAllUser(), HttpStatus.OK);
     }
 
+
+
     // 유저 탈퇴 처리
-    @DeleteMapping("{userNo}")
-    @ResponseBody
-    public ResponseEntity<String> userRemove(@PathVariable Integer userNo) {
+    @DeleteMapping("{userId}")
+    public ResponseEntity<String> userRemove(@PathVariable String userId) {
         logger.info("유저 탈퇴 처리");
         try {
-            userService.removeUser(userNo, null, "admin");
-            logger.info("고객번호 : " + userNo + " 탈퇴 처리");
+            userService.removeUser(userId, null, "admin");
+            logger.info("[id] : " + userId + " 탈퇴 처리");
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("DEL_FAIL", HttpStatus.BAD_REQUEST);

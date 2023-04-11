@@ -33,8 +33,11 @@
     <div class="card mb-3">
         <div class="row g-0 d-flex align-items-center justify-content-center">
             <div class="col-lg-4">
-                <form action="<c:url value="/login"/>" name="loginForm" method="post">
+                <form action="<c:url value="/login/"/>" name="loginForm" method="post">
                     <div class="card-body py-5 px-md-5">
+                        <div class="form-outline mb-4">
+                            <h5 style="font-weight: bold; text-align: center; color: red">${param.msg}</h5>
+                        </div>
                         <div class="form-outline mb-4">
                             <label class="form-label" for="userId">아이디</label>
                             <input id="userId" type="text" name="userId" value="${cookie.id.value}" class="form-control"
@@ -42,7 +45,7 @@
                         </div>
                         <div class="form-outline mb-4">
                             <label class="form-label" for="password">패스워드</label>
-                            <input type="password" id="password" name="password" class="form-control" value="12345"
+                            <input type="password" id="password" name="password" class="form-control" value="1234"
                                    placeholder="비밀번호를 입력해주세요"/>
                         </div>
                         <div class="row mb-4">

@@ -21,15 +21,15 @@ import java.net.URLEncoder;
 
 @Controller
 public class LoginController {
-    //    @Autowired
-//    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     UserService userService;
     @Autowired
     CartService cartService;
 
-    @PostMapping("/login")
+    @PostMapping("/login/")
     public String login(String toURL, UserDto userDto, HttpServletResponse response, HttpServletRequest request, boolean rememberId) throws Exception {
         String msg = URLEncoder.encode("id 또는 pwd가 일치하지 않습니다.", "utf-8");
         if (!loginCheck(userDto.getUserId(), userDto.getPassword())) {
@@ -51,20 +51,21 @@ public class LoginController {
         return "redirect:" + toURL;
     }
 
-    private boolean loginCheck(String id, String pw) {
-        return true;
-        // 암호화 로그인 체크
-//        String encodingPw = userDao.selectUser(id).getPassword();
-//        if (userDao.selectUser(id) != null)
-//            return passwordEncoder.matches(pw, encodingPw);
-//        return false;
+    private boolean loginCheck(String id, String pw) throws Exception {
+        UserDto userDto = null;
+        try {
+            userDto = userService.findUser(id);
+            String encodingPw = userDto.getPassword();
+            return passwordEncoder.matches(pw, encodingPw) && userService.findUser(id).getExpiredDate()==null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @GetMapping("/logout")
     @ResponseBody
     public void logout(HttpSession session) {
         logger.info("로그아웃 진입");
-
         session.invalidate();
     }
 }

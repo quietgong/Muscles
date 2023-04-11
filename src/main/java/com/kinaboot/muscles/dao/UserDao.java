@@ -12,7 +12,7 @@ import java.util.Map;
 public interface UserDao {
     int count();
     List<UserDto> selectAllUser();
-    UserDto selectUser(String id);
+    UserDto selectUser(String userId);
     List<PointDto> selectUserPoint(String userId);
     List<CouponDto> selectUserCoupon(String userId);
     int insertUser(UserDto userDto);
@@ -26,4 +26,7 @@ public interface UserDao {
     int deleteAll();
     int deleteUser(Integer userNo);
     int deleteUserPoint(String userId, String pointName);
+    int removePoint(String userId);
+
+    int countUser(String userId);
 }

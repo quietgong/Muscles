@@ -43,5 +43,10 @@
         from comment
         where commentNo = '${commentNo}'
     </delete>
+    <delete id="deleteComment" parameterType="String">
+        DELETE
+        from comment
+        where userId = '${userId}'
+    </delete>
 
 </mapper>
