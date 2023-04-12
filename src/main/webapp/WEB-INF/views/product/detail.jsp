@@ -8,72 +8,72 @@
 <%@ include file="../nav.jsp" %>
 
 <!-- 상품 정보 시작 -->
-<form id="orderForm" method="post" action="<c:url value='/order'/>">
-    <section class="bg-light">
-        <div class="container pb-5">
-            <div class="row">
-                <div class="col-lg-5 mt-5">
-                    <div class="card mb-3">
-                        <c:choose>
-                            <c:when test="${productDto.productImgPath eq null}">
-                                <img class="card-img img-fluid" src="<c:url value='/img/logo.jpg'/>"
-                                     alt="Card image cap" id="product-detail">
-                            </c:when>
-                            <c:otherwise>
-                                <img class="card-img img-fluid" src="${productDto.productImgPath}" alt="Card image cap"
-                                     id="product-detail">
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-3">
+                    <c:choose>
+                        <c:when test="${productDto.productImgPath eq null}">
+                            <img class="card-img img-fluid" src="<c:url value='/img/logo.jpg'/>"
+                                 alt="Card image cap" id="product-detail">
+                        </c:when>
+                        <c:otherwise>
+                            <img class="card-img img-fluid" src="${productDto.productImgPath}" alt="Card image cap"
+                                 id="product-detail">
+                        </c:otherwise>
+                    </c:choose>
                 </div>
-                <!-- col end -->
-                <div class="col-lg-7 mt-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <h1 class="h2">${productDto.productName}</h1>
-                            <p id="price" class="h3 py-2">${productDto.productPrice}</p>
-                            <ul class="list-inline pb-3">
-                                <li class="list-inline-item text-right">
-                                    <div class="star-ratings">
-                                        <div class="fill-ratings" style="width: ${productDto.productReviewScore}%;">
-                                            <span style="font-size: 1.8rem;">★★★★★</span>
-                                        </div>
-                                        <div class="empty-ratings">
-                                            <span style="font-size: 1.8rem;">★★★★★</span>
-                                        </div>
+            </div>
+            <!-- col end -->
+            <div class="col-lg-7 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h2">${productDto.productName}</h1>
+                        <p id="price" class="h3 py-2">${productDto.productPrice}</p>
+                        <ul class="list-inline pb-3">
+                            <li class="list-inline-item text-right">
+                                <div class="star-ratings">
+                                    <div class="fill-ratings" style="width: ${productDto.productReviewScore}%;">
+                                        <span style="font-size: 1.8rem;">★★★★★</span>
                                     </div>
-                                </li>
-                            </ul>
-                            <p class="py-2">
+                                    <div class="empty-ratings">
+                                        <span style="font-size: 1.8rem;">★★★★★</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="py-2">
                                 <span class="list-inline-item text-dark">
                                 평점 : ${productDto.productReviewScore} | 리뷰 (${productDto.reviewDtoList.size()})
                                 </span>
-                            </p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt
-                                ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum
-                                convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
-                            <input type="hidden" name="product-title" value="Activewear">
-                            <div class="row">
-                                <div class="col-auto">
-                                    <ul class="list-inline pb-3">
-                                        <li class="list-inline-item text-right">
-                                            수량
-                                            <input type="hidden" name="product-quanity" id="product-quanity" value="1">
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <c:if test="${productDto.productStock<10}">
-                                                <span>${productDto.productStock}개 남음</span>
-                                            </c:if>
-                                        </li>
-                                        <li class="list-inline-item"><span class="btn btn-success"
-                                                                           id="btn-minus">-</span></li>
-                                        <li class="list-inline-item"><span class="badge bg-secondary"
-                                                                           id="var-value">1</span></li>
-                                        <li class="list-inline-item"><span class="btn btn-success"
-                                                                           id="btn-plus">+</span></li>
-                                    </ul>
-                                </div>
+                        </p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt
+                            ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum
+                            convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
+                        <input type="hidden" name="product-title" value="Activewear">
+                        <div class="row">
+                            <div class="col-auto">
+                                <ul class="list-inline pb-3">
+                                    <li class="list-inline-item text-right">
+                                        수량
+                                        <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <c:if test="${productDto.productStock<10}">
+                                            <span>${productDto.productStock}개 남음</span>
+                                        </c:if>
+                                    </li>
+                                    <li class="list-inline-item"><span class="btn btn-success"
+                                                                       id="btn-minus">-</span></li>
+                                    <li class="list-inline-item"><span class="badge bg-secondary"
+                                                                       id="var-value">1</span></li>
+                                    <li class="list-inline-item"><span class="btn btn-success"
+                                                                       id="btn-plus">+</span></li>
+                                </ul>
                             </div>
+                        </div>
+                        <form id="orderForm" method="post" action="<c:url value='/order/checkout'/>">
                             <div class="row pb-3">
                                 <div class="col d-grid">
                                     <button id="directOrder" type="submit" class="btn btn-success btn-lg"
@@ -81,18 +81,17 @@
                                     </button>
                                 </div>
                                 <div class="col d-grid">
-                                    <button onclick="addCart()" type="button" class="btn btn-success btn-lg"
-                                            name="submit" value="addtocard">장바구니 추가
+                                    <button onclick="addCart()" type="button" class="btn btn-success btn-lg">장바구니 추가
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-</form>
+    </div>
+</section>
 <!-- 상품 정보 끝 -->
 
 <!-- 상품 상세 시작 -->
@@ -103,7 +102,9 @@
         </div>
         <c:forEach var="productImgDto" items="${productImgDtoList}">
             <div class="row">
-                <img src="${productImgDto.uploadPath}"/>
+                <div class="col-md-12 mt-3">
+                    <img class="img-fluid" src="${productImgDto.uploadPath}"/>
+                </div>
             </div>
         </c:forEach>
     </div>
@@ -152,7 +153,8 @@
         <div class="row text-left p-2 pb-3">
             <div class="col-md-12">
                 <h4 style="display: inline;">상품 문의</h4>
-                <button style="float: right;" class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                <button style="float: right;" class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
                         onclick="registerContent('question')">문의하기
                 </button>
             </div>
@@ -212,7 +214,8 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <textarea id="content" class="form-control mt-1" rows="6" cols="40" placeholder="개인정보가 포함되지 않도록 유의해주세요."></textarea>
+                    <textarea id="content" class="form-control mt-1" rows="6" cols="40"
+                              placeholder="개인정보가 포함되지 않도록 유의해주세요."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -226,29 +229,27 @@
 
 <script>
     let productNo = ${productDto.productNo};
-    let productName = '${productDto.productNo}';
+    let productName = '${productDto.productName}';
     let productPrice = '${productDto.productPrice}';
     let productCategory = '${productDto.productNo}';
     let productStock = ${productDto.productStock};
     let productImgPath = '${productDto.productImgPath}';
 
     $("#directOrder").on("click", function () {
-        alert("구매 클릭")
-        let data = []
-        let tmp = {}
-        tmp.productNo = productNo
-        tmp.productName = productName
-        tmp.productCategory = productCategory
-        tmp.productQty = $("#var-value").html()
-        tmp.productPrice = productPrice * parseInt($("#var-value").html())
-        tmp.productImgPath = productImgPath
-        data.push(tmp);
-
+        let orderData = []
+        let data = {}
+        data.productNo = productNo
+        data.productName = productName
+        data.productCategory = productCategory
+        data.productQty = $("#var-value").html()
+        data.productPrice = productPrice * parseInt($("#var-value").html())
+        data.productImgPath = productImgPath
+        orderData.push(data)
         const form = $("#orderForm")
         form.append($('<input>').attr({
             type: 'hidden',
-            name: 'jsonData',
-            value: JSON.stringify(data)
+            name: 'orderData',
+            value: JSON.stringify(orderData)
         }))
         form.submit()
     })
