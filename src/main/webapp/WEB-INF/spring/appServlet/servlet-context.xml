@@ -21,21 +21,21 @@
         <beans:property name="suffix" value=".jsp"/>
     </beans:bean>
     <!-- 인터셉터 -->
-    <interceptors>
-        <!-- 로그인 체크 -->
-        <interceptor>
-            <mapping path="/cart/**"/>
+<!--    <interceptors>-->
+<!--        &lt;!&ndash; 로그인 체크 &ndash;&gt;-->
+<!--        <interceptor>-->
+<!--            <mapping path="/cart/**"/>-->
 <!--            <mapping path="/mypage/**"/>-->
 <!--            <mapping path="/community/**"/>-->
 <!--            <mapping path="/notice/**"/>-->
-            <beans:bean id="LoginChkInterceptor" class="com.kinaboot.muscles.interceptor.LoginChkInterceptor"/>
-        </interceptor>
-        <!-- 관리자 권한 체크 -->
-        <interceptor>
-            <mapping path="/admin/**"/>
-            <beans:bean id="AdminInterceptor" class="com.kinaboot.muscles.interceptor.AdminInterceptor"/>
-        </interceptor>
-    </interceptors>
+<!--            <beans:bean id="LoginChkInterceptor" class="com.kinaboot.muscles.interceptor.LoginChkInterceptor"/>-->
+<!--        </interceptor>-->
+<!--        &lt;!&ndash; 관리자 권한 체크 &ndash;&gt;-->
+<!--        <interceptor>-->
+<!--            <mapping path="/admin/**"/>-->
+<!--            <beans:bean id="AdminInterceptor" class="com.kinaboot.muscles.interceptor.AdminInterceptor"/>-->
+<!--        </interceptor>-->
+<!--    </interceptors>-->
     <!-- 업로드 관련 빈 -->
     <beans:bean id="multipartResolver"
                 class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>

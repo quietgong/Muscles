@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.controller.admin;
 
+import com.kinaboot.muscles.domain.OrderDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
 import org.slf4j.Logger;
@@ -7,11 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/admin/order/")
+import java.util.List;
+
+@Controller
+@RequestMapping("/admin/order")
 public class OrderController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     @Autowired
@@ -23,7 +27,7 @@ public class OrderController {
         return "admin/order";
     }
 
-    @PostMapping("{orderNo}")
+    @PostMapping("/{orderNo}")
     @ResponseBody
     public ResponseEntity<String> orderAccept(@PathVariable Integer orderNo) {
         logger.info("주문번호 : " +orderNo + " 승인");

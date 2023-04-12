@@ -44,7 +44,7 @@
                                 <tr id="couponList">
                                     <th>이벤트</th>
                                     <th>쿠폰 코드</th>
-                                    <th>할인율</th>
+                                    <th>할인가 </th>
                                     <th>상태</th>
                                 </tr>
                                 <!-- 동적 추가-->
@@ -53,14 +53,14 @@
                     </div>
                     <hr class="mt-5">
                     <div class="row mt-5 text-left p-2 pb-3">
-                        <h4>포인트 내역</h4>
+                        <h4>포인트 내역 (보유 포인트 : )</h4>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <table style="text-align: center;" class="table table-hover">
                                 <tr id="pointList">
-                                    <th>적립 구분</th>
-                                    <th>적립 포인트</th>
+                                    <th>구분</th>
+                                    <th>포인트</th>
                                 </tr>
                                 <!-- 동적 추가-->
                             </table>

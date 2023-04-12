@@ -29,7 +29,7 @@
         로그인
     </button>
     <button id="logout" onclick="location.href='<c:url value='/logout'/>'" type="button" class="me-md-2 btn btn-outline-primary">로그아웃</button>
-    <button id="register" onclick="location.href='<c:url value='/logout'/>'" type="button"
+    <button id="register" onclick="location.href='<c:url value='/register'/>'" type="button"
             class="me-md-2 btn btn-outline-primary">
         회원가입
     </button>
@@ -60,13 +60,13 @@
                         <a class="nav-link" href="<c:url value='/'/>">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<c:url value='/community'/>">커뮤니티</a>
+                        <a class="nav-link" href="<c:url value='/notice'/>">공지사항</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value='/goods/list'/>">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<c:url value='/notice'/>">공지사항</a>
+                        <a class="nav-link" href="<c:url value='/community'/>">커뮤니티</a>
                     </li>
                 </ul>
             </div>

@@ -14,14 +14,6 @@
         <div class="col-md-10">
             <!-- 검색 조건 -->
             <div class="row mt-5 justify-content-center">
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <span class="input-group-text">상품명</span>
-                        <input type="text" class="form-control" id="name" name="lastname"/>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                </div>
                 <div class="col-md-6">
                     <div class="input-group gap-3">
                         <label class="form-label mt-2" for="startDate">주문일자</label>
@@ -31,7 +23,6 @@
                         <button class="btn btn-primary" type="button">검색</button>
                     </div>
                 </div>
-            </div>
             <!-- 검색 조건 -->
             <!-- 주문 내역 -->
             <div class="row mt-5 justify-content-center">

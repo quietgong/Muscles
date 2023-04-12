@@ -37,8 +37,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 주문상품 반복 -->
                     </c:forEach>
+                    <!-- 주문상품 반복 -->
                     <div class="col-md-12 mt-5">
                         <i class="fas fa-truck fa-2x fa-fw me-3"></i>
                         <span style="font-weight: bold" class="card-title"> 배송 정보</span>
@@ -54,7 +54,7 @@
                             <tbody>
                             <tr>
                                 <td style="word-break: break-all">${orderDto.deliveryDto.receiver}</td>
-                                <td style="word-break: break-all">${orderDto.deliveryDto.address}</td>
+                                <td style="word-break: break-all">${orderDto.deliveryDto.address1} ${orderDto.deliveryDto.address2}</td>
                                 <td style="word-break: break-all">${orderDto.deliveryDto.phone}</td>
                                 <td style="word-break: break-all">${orderDto.deliveryDto.message}</td>
                             </tr>

@@ -67,8 +67,17 @@
                                             <c:forEach var="orderDto" items="${orderDtoList}">
                                                 <tr>
                                                     <td class="cell">${orderDto.orderNo}</td>
-                                                    <td class="cell"><span
-                                                            class="truncate">${orderDto.orderItemDtoList.size()}</span>
+                                                    <td class="cell">
+                                                        <span class="truncate">
+                                                            <c:choose>
+                                                                <c:when test="${orderDto.orderItemDtoList.size()>1}">
+                                                                    ${orderDto.orderItemDtoList[0].goodsName} 외 ${orderDto.orderItemDtoList.size()-1}개
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    ${orderDto.orderItemDtoList[0].goodsName}
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </span>
                                                     </td>
                                                     <td class="cell">${orderDto.userId}</td>
                                                     <td class="cell"><span class="note">${orderDto.createdDate}</span>
@@ -76,11 +85,13 @@
                                                     <td class="cell"><span
                                                             class="badge bg-success">${orderDto.status}</span></td>
                                                     <td class="cell">${orderDto.paymentDto.price}</td>
-                                                    <td class="cell"><a class="btn-sm app-btn-secondary" href="<c:url value='/order/${orderDto.orderNo}'/>">상세
+                                                    <td class="cell"><a class="btn-sm app-btn-secondary"
+                                                                        href="<c:url value='/order/${orderDto.orderNo}'/>">상세
                                                         보기</a>
                                                     </td>
                                                     <c:if test="${orderDto.status == '대기중'}">
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">승인</a>
+                                                        <td class="cell"><a class="btn-sm app-btn-secondary"
+                                                                            href="#">승인</a>
                                                         </td>
                                                     </c:if>
                                                 </tr>
@@ -112,21 +123,22 @@
                                             <tbody>
                                             <c:forEach var="orderDto" items="${orderDtoList}">
                                                 <c:if test="${orderDto.status == '대기중'}">
-                                                <tr>
-                                                    <td class="cell">${orderDto.orderNo}</td>
-                                                    <td class="cell"><span
-                                                            class="truncate">${orderDto.orderItemDtoList.size()}</span>
-                                                    </td>
-                                                    <td class="cell">${orderDto.userId}</td>
-                                                    <td class="cell"><span class="note">${orderDto.createdDate}</span>
-                                                    </td>
-                                                    <td class="cell"><span
-                                                            class="badge bg-success">${orderDto.status}</span></td>
-                                                    <td class="cell">${orderDto.paymentDto.price}</td>
-                                                    <td class="cell"><a class="btn-sm app-btn-secondary" href="#">상세
-                                                        보기</a>
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td class="cell">${orderDto.orderNo}</td>
+                                                        <td class="cell"><span
+                                                                class="truncate">${orderDto.orderItemDtoList.size()}</span>
+                                                        </td>
+                                                        <td class="cell">${orderDto.userId}</td>
+                                                        <td class="cell"><span
+                                                                class="note">${orderDto.createdDate}</span>
+                                                        </td>
+                                                        <td class="cell"><span
+                                                                class="badge bg-success">${orderDto.status}</span></td>
+                                                        <td class="cell">${orderDto.paymentDto.price}</td>
+                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">상세
+                                                            보기</a>
+                                                        </td>
+                                                    </tr>
                                                 </c:if>
                                             </c:forEach>
                                             </tbody>
@@ -162,7 +174,8 @@
                                                                 class="truncate">${orderDto.orderItemDtoList.size()}</span>
                                                         </td>
                                                         <td class="cell">${orderDto.userId}</td>
-                                                        <td class="cell"><span class="note">${orderDto.createdDate}</span>
+                                                        <td class="cell"><span
+                                                                class="note">${orderDto.createdDate}</span>
                                                         </td>
                                                         <td class="cell"><span
                                                                 class="badge bg-success">${orderDto.status}</span></td>
@@ -205,7 +218,8 @@
                                                                 class="truncate">${orderDto.orderItemDtoList.size()}</span>
                                                         </td>
                                                         <td class="cell">${orderDto.userId}</td>
-                                                        <td class="cell"><span class="note">${orderDto.createdDate}</span>
+                                                        <td class="cell"><span
+                                                                class="note">${orderDto.createdDate}</span>
                                                         </td>
                                                         <td class="cell"><span
                                                                 class="badge bg-success">${orderDto.status}</span></td>

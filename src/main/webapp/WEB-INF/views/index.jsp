@@ -82,30 +82,30 @@
     </div>
     <div class="row">
         <div class="col-12 col-md-4 p-5 mt-3">
-            <a href="<c:url value='/product/list?category=cardio'/>">
+            <a href="<c:url value='/goods/list?category=유산소'/>">
                 <img src="<c:url value='/img/cardio.jpg'/>" class="rounded-circle img-fluid border" alt="">
             </a>
             <h5 class="text-center mt-3 mb-3">유산소</h5>
             <p class="text-center">
-                <a href="<c:url value='/product/list?category=cardio'/>" class="btn btn-success">상품보기</a>
+                <a href="<c:url value='/goods/list?category=유산소'/>" class="btn btn-success">상품보기</a>
             </p>
         </div>
         <div class="col-12 col-md-4 p-5 mt-3">
-            <a href="<c:url value='/product/list?category=strength'/>">
+            <a href="<c:url value='/goods/list?category=근력'/>">
                 <img src="<c:url value='/img/strength.jpg'/>" class="rounded-circle img-fluid border" alt="">
             </a>
             <h2 class="h5 text-center mt-3 mb-3">근력</h2>
             <p class="text-center">
-                <a href="<c:url value='/product/list?category=strength'/>" class="btn btn-success">상품보기</a>
+                <a href="<c:url value='/goods/list?category=근력'/>" class="btn btn-success">상품보기</a>
             </p>
         </div>
         <div class="col-12 col-md-4 p-5 mt-3">
-            <a href="<c:url value='/product/list?category=etc'/>">
+            <a href="<c:url value='/goods/list?category=기타'/>">
                 <img src="<c:url value='/img/etc.jpg'/>" class="rounded-circle img-fluid border" alt="">
             </a>
-            <h2 class="h5 text-center mt-3 mb-3">기타 용품</h2>
+            <h2 class="h5 text-center mt-3 mb-3">기타</h2>
             <p class="text-center">
-                <a href="<c:url value='/product/list?category=etc'/>" class="btn btn-success">상품보기</a>
+                <a href="<c:url value='/goods/list?category=기타'/>" class="btn btn-success">상품보기</a>
             </p>
         </div>
     </div>
