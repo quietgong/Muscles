@@ -23,7 +23,7 @@
                                 <div class="card-body p-5">
                                     <div class="float-end">
                                         <p class="mb-0 me-5 d-flex align-items-center">
-                                            <span class="small text-muted me-2">총 주문금액 : $</span>
+                                            <span class="small text-muted me-2">총 주문금액 : ₩</span>
                                             <span id="totalPrice" class="lead fw-normal"></span>
                                         </p>
                                     </div>
@@ -32,7 +32,7 @@
                             <!-- 요약 정보 끝 -->
                             <div class="d-flex justify-content-end">
                                 <button type="button"
-                                        onclick="location.href='<c:url value='/product/list?category=cardio'/>'"
+                                        onclick="location.href='<c:url value='/goods/list?category=cardio'/>'"
                                         class="btn btn-light btn-lg me-2">계속 쇼핑하기
                                 </button>
                                 <button id="order" type="submit" class="btn btn-primary btn-lg">주문하기</button>
@@ -70,33 +70,33 @@
     let toHtml = function (items) {
         let tmp = "";
         items.forEach(function (item) {
-            tmp += '<div content="item" class="card-body p-4" data-productNo=' + item.productNo +
-                ' data-productName=' + item.productName + ' data-productCategory=' + item.productCategory +
-                ' data-productPrice=' + item.productPrice + ' data-productImgPath=' + item.productImgPath + '>'
+            tmp += '<div content="item" class="card-body p-4" data-goodsNo=' + item.goodsNo +
+                ' data-goodsName=' + item.goodsName + ' data-goodsCategory=' + item.goodsCategory +
+                ' data-goodsPrice=' + item.goodsPrice + ' data-goodsImgPath=' + item.goodsImgPath + '>'
             tmp += '<div class="row d-flex justify-content-between align-items-center">'
             tmp += '<div class="col-md-2 col-lg-2 col-xl-2">'
-            if (item.productImgPath == null)
-                item.productImgPath = "/muscles/img/logo.jpg"
-            tmp += '<img src=\"' + item.productImgPath + '\" class="img-fluid rounded-3">'
+            if (item.goodsImgPath == null)
+                item.goodsImgPath = "/muscles/img/logo.jpg"
+            tmp += '<img src=\"' + item.goodsImgPath + '\" class="img-fluid rounded-3">'
             tmp += '</div>'
             tmp += '<div class="col-md-3 col-lg-3 col-xl-3">'
-            tmp += '<p class="lead fw-normal mb-2">' + item.productCategory + '</p>'
-            tmp += '<p>' + item.productName + '</p>'
+            tmp += '<p class="lead fw-normal mb-2">' + item.goodsCategory + '</p>'
+            tmp += '<p>' + item.goodsName + '</p>'
             tmp += '</div>'
-            tmp += '<div class="col-md-3 col-lg-3 col-xl-2 d-flex" data-productPrice=' + item.productPrice + '>'
+            tmp += '<div class="col-md-3 col-lg-3 col-xl-2 d-flex" data-goodsPrice=' + item.goodsPrice + '>'
             tmp += '<button type="button" class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepDown(); qtyChange(this)">'
             tmp += '<i class="fas fa-minus"></i>'
             tmp += '</button>'
-            tmp += '<input style="text-align: center" min="1" name="quantity" value=' + item.productQty + ' type="number" class="form-control form-control-sm" />'
+            tmp += '<input style="text-align: center" min="1" name="quantity" value=' + item.goodsQty + ' type="number" class="form-control form-control-sm" />'
             tmp += '<button type="button" class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepUp(); qtyChange(this)">'
             tmp += '<i class="fas fa-plus"></i>'
             tmp += '</button>'
             tmp += '</div>'
             tmp += '<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">'
-            tmp += '<h5 class="mb-0 nowPrice">' + item.productPrice * item.productQty + '</h5>'
+            tmp += '<h5 class="mb-0 nowPrice">' + item.goodsPrice * item.goodsQty + '</h5>'
             tmp += '</div>'
             tmp += '<div class="col-md-1 col-lg-1 col-xl-1 text-end">'
-            tmp += '<a style="cursor: pointer" onclick="deleteItem(' + item.productNo + ')" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>'
+            tmp += '<a style="cursor: pointer" onclick="deleteItem(' + item.goodsNo + ')" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>'
             tmp += '</div>'
             tmp += '</div>'
             tmp += '</div>'
@@ -105,9 +105,9 @@
     }
 
     function qtyChange(elem) {
-        let productPrice = parseInt($(elem).parent().attr("data-productPrice"))
+        let goodsPrice = parseInt($(elem).parent().attr("data-goodsPrice"))
         let nowQty = parseInt($(elem).siblings('input').val())
-        $(elem).parent().next().children().html(productPrice * nowQty)
+        $(elem).parent().next().children().html(goodsPrice * nowQty)
         calculateTotalPrice()
     }
 
@@ -125,12 +125,12 @@
         let data = []
         $("div[content='item']").each(function (index) {
             let tmp = {}
-            tmp.productNo = $(this).attr("data-productNo")
-            tmp.productName = $(this).attr("data-productname")
-            tmp.productCategory = $(this).attr("data-productcategory")
-            tmp.productQty = $("input[name='quantity']").eq(index).val()
-            tmp.productPrice = parseInt($(this).attr("data-productprice")) * parseInt(tmp.productQty)
-            tmp.productImgPath = $(this).attr("data-productImgPath")
+            tmp.goodsNo = $(this).attr("data-goodsNo")
+            tmp.goodsName = $(this).attr("data-goodsname")
+            tmp.goodsCategory = $(this).attr("data-goodscategory")
+            tmp.goodsQty = $("input[name='quantity']").eq(index).val()
+            tmp.goodsPrice = parseInt($(this).attr("data-goodsprice")) * parseInt(tmp.goodsQty)
+            tmp.goodsImgPath = $(this).attr("data-goodsimgpath")
             data.push(tmp)
         });
         form.append($('<input>').attr({
@@ -142,10 +142,10 @@
     });
 
     // 장바구니 상품 삭제
-    function deleteItem(productNo) {
+    function deleteItem(goodsNo) {
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/" + productNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/cart/" + goodsNo, // 컨트롤러에서 대기중인 URL 주소이다.
             success: function (res) {
                 if (res == "DEL_OK")
                     alert("장바구니에서 삭제하였습니다.")

@@ -28,7 +28,7 @@
     <button id="login" onclick="location.href='<c:url value='/login'/>'" type="button" class="me-md-2 btn btn-outline-primary">
         로그인
     </button>
-    <button id="logout" type="button" class="me-md-2 btn btn-outline-primary">로그아웃</button>
+    <button id="logout" onclick="location.href='<c:url value='/logout'/>'" type="button" class="me-md-2 btn btn-outline-primary">로그아웃</button>
     <button id="register" onclick="location.href='<c:url value='/logout'/>'" type="button"
             class="me-md-2 btn btn-outline-primary">
         회원가입
@@ -63,7 +63,7 @@
                         <a class="nav-link" href="<c:url value='/community'/>">커뮤니티</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<c:url value='/product/list?category=cardio'/>">Shop</a>
+                        <a class="nav-link" href="<c:url value='/goods/list'/>">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value='/notice'/>">공지사항</a>
@@ -105,7 +105,7 @@
         <div class="w-100 pt-1 mb-5 text-right">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="<c:url value='/product/list'/>" class="modal-content modal-body border-0 p-0">
+        <form action="<c:url value='/goods/list'/>" class="modal-content modal-body border-0 p-0">
             <div class="input-group mb-2">
                 <input type="text" class="form-control" id="inputModalSearch" name="keyword" placeholder="상품을 검색해보세요">
                 <button type="submit" class="input-group-text bg-success text-light">
@@ -142,7 +142,6 @@
             url: "/muscles/cart/" + '${userId}', // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {"Content-Type": "application/json"},
             success: function (res) {
-                console.log(res)
                 $("#cartNum").html(res)
             },
             error: function () {

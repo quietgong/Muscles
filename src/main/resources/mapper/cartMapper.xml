@@ -12,33 +12,33 @@
         SELECT count(*)
         FROM cart
         where userId = #{userId}
-          and productNo = #{productNo}
+          and goodsNo = #{goodsNo}
     </select>
     <select id="selectAll" resultType="CartDto" parameterType="String">
-        select p.productNo as productNo
-               ,p.productName as productName
-               ,c.productQty as productQty
-               ,p.productPrice as productPrice
-               ,p.productCategory as productCategory
-               ,p.productImgPath as productImgPath
-        from cart c, product p
-        where p.productNo = c.productNo
+        select p.goodsNo as goodsNo
+               ,p.goodsName as goodsName
+               ,c.goodsQty as goodsQty
+               ,p.goodsPrice as goodsPrice
+               ,p.goodsCategory as goodsCategory
+               ,p.goodsImgPath as goodsImgPath
+        from cart c, goods p
+        where p.goodsNo = c.goodsNo
           and c.userId = '${userId}';
     </select>
     <select id="selectItem" resultType="CartDto" parameterType="int">
-        select productName,
-               productPrice
-        from product
-        where p.productNo = '${productNo}';
+        select goodsName,
+               goodsPrice
+        from goods
+        where p.goodsNo = '${goodsNo}';
     </select>
     <insert id="insert" parameterType="map">
-        insert into cart (userId, productNo, productName, productCategory, productPrice, productQty)
-        values (#{userId}, #{productNo}, #{productName}, #{productCategory}, #{productPrice}, #{productQty});
+        insert into cart (userId, goodsNo, goodsName, goodsCategory, goodsPrice, goodsQty)
+        values (#{userId}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsPrice}, #{goodsQty});
     </insert>
     <delete id="deleteItem" parameterType="map">
         delete
         from cart
         where userId = #{userId}
-          and productNo = #{productNo};
+          and goodsNo = #{goodsNo};
     </delete>
 </mapper>

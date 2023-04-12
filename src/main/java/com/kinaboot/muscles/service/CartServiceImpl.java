@@ -13,8 +13,8 @@ public class CartServiceImpl implements CartService{
     CartDao cartDao;
 
     @Override
-    public int findCartItem(String userId, Integer productNo) {
-        return cartDao.select(userId, productNo);
+    public int findCartItem(String userId, Integer goodsNo) {
+        return cartDao.select(userId, goodsNo);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public String addCartItem(String userId, CartDto cartDto) {
         // 추가하고자 하는 아이템이 이미 장바구니에 있을 때 추가 실패
-        if(cartDao.select(userId, cartDto.getProductNo())!=0)
+        if(cartDao.select(userId, cartDto.getGoodsNo())!=0)
             return "ADD_FAIL";
         cartDao.add(userId, cartDto);
         return "ADD_OK";
@@ -38,7 +38,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public int removeCartItem(String userId, Integer productNo) {
-        return cartDao.deleteCartItem(userId, productNo);
+    public int removeCartItem(String userId, Integer goodsNo) {
+        return cartDao.deleteCartItem(userId, goodsNo);
     }
 }

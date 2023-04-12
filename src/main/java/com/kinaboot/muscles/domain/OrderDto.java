@@ -10,6 +10,7 @@ public class OrderDto {
     private DeliveryDto deliveryDto;
     private PaymentDto paymentDto;
     private int orderNo;
+    private int discount;
     private String userId;
     private String status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -82,12 +83,21 @@ public class OrderDto {
         this.createdDate = createdDate;
     }
 
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
     @Override
     public String toString() {
         return "OrderDto{" +
                 "orderItemDtoList=" + orderItemDtoList +
                 ", deliveryDto=" + deliveryDto +
                 ", paymentDto=" + paymentDto +
+                ", discount=" + discount +
                 ", orderNo=" + orderNo +
                 ", userId='" + userId + '\'' +
                 ", status='" + status + '\'' +

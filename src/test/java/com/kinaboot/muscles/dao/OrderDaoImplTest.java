@@ -20,6 +20,8 @@ public class OrderDaoImplTest {
     @Autowired
     OrderService orderService;
     @Autowired
+    OrderDao orderDao;
+    @Autowired
     private SqlSession session;
     private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
     @Test
@@ -30,7 +32,6 @@ public class OrderDaoImplTest {
         map.put("productQty", 10);
         session.update(namespace + "updateStock", map);
         // 변경 재고
-
     }
 
     @Test
@@ -81,5 +82,8 @@ public class OrderDaoImplTest {
     public void getOrderAll(){
         SearchCondition sc = new SearchCondition();
         orderService.findAllOrders(sc);
+    }
+    @Test
+    public void removeOrderAll(){
     }
 }

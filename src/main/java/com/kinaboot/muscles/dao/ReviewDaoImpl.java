@@ -12,8 +12,8 @@ import java.util.Map;
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
     @Override
-    public List<ReviewDto> selectReviewListByProductId(Integer productNo) {
-        return session.selectList(namespace + "selectReviewByProductNo", productNo);
+    public List<ReviewDto> selectReviewListByProductId(Integer goodsNo) {
+        return session.selectList(namespace + "selectReviewByProductNo", goodsNo);
     }
 
     @Override
@@ -27,10 +27,10 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public ReviewDto selectReview(int orderNo, int productNo) {
+    public ReviewDto selectReview(int orderNo, int goodsNo) {
         Map map = new HashMap();
         map.put("orderNo", orderNo);
-        map.put("productNo", productNo);
+        map.put("goodsNo", goodsNo);
         return session.selectOne(namespace + "selectReview", map);
     }
 

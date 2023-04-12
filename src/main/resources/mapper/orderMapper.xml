@@ -41,16 +41,16 @@
         FROM orders
         WHERE orderNo = '${orderNo}'
     </select>
-    <!-- orderNo, prodcutNo로 주문상품 반환 -->
+    <!-- orderNo, goodsNo 로 주문상품 반환 -->
     <select id="selectOrderItem" resultType="orderItemDto" parameterType="map">
-        select orderNo, productNo, productName, productCategory, productQty, productPrice
+        select orderNo, goodsNo, goodsName, goodsCategory, goodsQty, goodsPrice
         from orderitem
         WHERE orderNo = #{orderNo}
-          AND productNo = #{productNo}
+          AND goodsNo = #{goodsNo}
     </select>
     <!-- orderNo로 주문상품 목록 반환 -->
     <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
-        select orderNo, productNo, productName, productCategory, productQty, productPrice
+        select *
         from orderitem
         WHERE orderNo='${orderNo}'
     </select>
@@ -70,15 +70,15 @@
     select IFNULL(max(orderNo)+1,1) as orderNo
     from orders
 </select>
-    <insert id="insertOrder" parameterType="String">
-        insert into orders (userId, status, createdDate)
-        values ('${userId}', 'pending', now());
+    <insert id="insertOrder" parameterType="orderDto">
+        insert into orders (userId, status, discount, createdDate)
+        values (#{userId}, 'pending', #{discount}, now());
     </insert>
 
     <insert id="insertOrderItem" parameterType="orderItemDto">
-        insert into orderitem (orderNo, productNo, productName, productCategory, productQty, productPrice)
-        values ((select count(*) from orders), #{productNo}, #{productName}, #{productCategory}, #{productQty},
-                #{productPrice});
+        insert into orderitem (orderNo, goodsNo, goodsName, goodsCategory, goodsQty, goodsPrice, goodsImgPath)
+        values ((select count(*) from orders), #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsQty},
+                #{goodsPrice}, #{goodsImgPath});
     </insert>
 
     <insert id="insertDelivery" parameterType="deliveryDto">
@@ -92,9 +92,9 @@
     </insert>
 
     <update id="updateStock" parameterType="map">
-        update product
-        set productStock = productStock - #{productQty}
-        where productNo = #{productNo};
+        update goods
+        set goodsStock = goodsStock - #{goodsQty}
+        where goodsNo = #{goodsNo};
     </update>
     <update id="updateOrderStatus" parameterType="int">
         update orders

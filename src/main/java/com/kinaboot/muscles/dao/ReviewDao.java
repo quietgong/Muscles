@@ -9,9 +9,9 @@ public interface ReviewDao {
 
     int insertReview(ReviewDto reviewDto);
 
-    List<ReviewDto> selectReviewListByProductId(Integer productNo);
+    List<ReviewDto> selectReviewListByProductId(Integer goodsNo);
 
-    ReviewDto selectReview(int orderNo, int productNo);
+    ReviewDto selectReview(int orderNo, int goodsNo);
     ReviewDto selectReview(Integer reviewNo);
 
     int deleteReview(Integer reviewNo);

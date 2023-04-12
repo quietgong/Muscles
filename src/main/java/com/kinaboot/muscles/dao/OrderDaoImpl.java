@@ -35,8 +35,8 @@ public class OrderDaoImpl implements OrderDao {
     public int updateStock(List<OrderItemDto> orderItemDtoList) {
         HashMap<String, Integer> map = new HashMap<>();
         for (OrderItemDto orderItemDto : orderItemDtoList) {
-            map.put("productNo", orderItemDto.getProductNo());
-            map.put("productQty", orderItemDto.getProductQty());
+            map.put("goodsNo", orderItemDto.getGoodsNo());
+            map.put("goodsQty", orderItemDto.getGoodsQty());
             session.update(namespace + "updateStock", map);
         }
         return 0;
@@ -62,6 +62,7 @@ public class OrderDaoImpl implements OrderDao {
         return session.selectList(namespace + "selectOrderItemList", orderNo);
     }
 
+
     @Override
     public OrderDto selectOrder(Integer orderNo) {
         OrderDto orderDto = session.selectOne(namespace + "selectOrder", orderNo);
@@ -77,10 +78,10 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public OrderItemDto selectOrderItem(Integer orderNo, Integer productNo) {
+    public OrderItemDto selectOrderItem(Integer orderNo, Integer goodsNo) {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("orderNo", orderNo);
-        map.put("productNo", productNo);
+        map.put("goodsNo", goodsNo);
         return session.selectOne(namespace + "selectOrderItem", map);
     }
 
@@ -95,9 +96,9 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int insertOrder(String userId, OrderDto orderDto) {
+    public int insertOrder(OrderDto orderDto) {
         // 주문 정보 생성
-        session.insert(namespace + "insertOrder", userId);
+        session.insert(namespace + "insertOrder", orderDto);
 
         // 주문상품 정보 생성
         for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList())

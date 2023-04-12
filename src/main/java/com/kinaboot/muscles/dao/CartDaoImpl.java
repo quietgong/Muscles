@@ -1,7 +1,6 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.CartDto;
-import com.kinaboot.muscles.domain.ProductDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,35 +27,36 @@ public class CartDaoImpl implements CartDao {
     private static String namespace = "com.kinaboot.muscles.dao.cartMapper.";
 
     @Override
-    public int select(String userId, Integer productNo) {
-        Map map = new HashMap();
+    public int select(String userId, Integer goodsNo) {
+        Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("productNo", productNo);
+        map.put("goodsNo", String.valueOf(goodsNo));
         return session.selectOne(namespace + "countCartItem", map);
     }
 
     @Override
-    public int deleteCartItem(String userId, Integer productNo) {
+    public int deleteCartItem(String userId, Integer goodsNo) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("productNo", String.valueOf(productNo));
+        map.put("goodsNo", String.valueOf(goodsNo));
         return session.delete(namespace + "deleteItem", map);
     }
 
     @Override
-    public CartDto selectItem(Integer productNo) {
-        return session.selectOne(namespace + "selectItem", productNo);
+    public CartDto selectItem(Integer goodsNo) {
+        return session.selectOne(namespace + "selectItem", goodsNo);
     }
 
     @Override
     public int add(String userId, CartDto cartDto) {
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("productNo", cartDto.getProductNo());
-        map.put("productName", cartDto.getProductName());
-        map.put("productCategory", cartDto.getProductCategory());
-        map.put("productPrice", cartDto.getProductPrice());
-        map.put("productQty", cartDto.getProductQty());
+        map.put("goodsNo", String.valueOf(cartDto.getGoodsNo()));
+        map.put("goodsName", cartDto.getGoodsName());
+        map.put("goodsCategory", cartDto.getGoodsCategory());
+        map.put("goodsCategoryDetail", cartDto.getGoodsCategoryDetail());
+        map.put("goodsPrice", String.valueOf(cartDto.getGoodsPrice()));
+        map.put("goodsQty", String.valueOf(cartDto.getGoodsQty()));
         return session.insert(namespace + "insert", map);
     }
 }

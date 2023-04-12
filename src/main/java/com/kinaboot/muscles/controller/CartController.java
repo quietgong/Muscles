@@ -42,12 +42,12 @@ public class CartController {
         String userId = (String) session.getAttribute("id");
         return new ResponseEntity<>(cartService.addCartItem(userId, cartDto), HttpStatus.OK);
     }
-    @DeleteMapping("/{productNo}")
-    public ResponseEntity<String> cartRemove(@PathVariable Integer productNo, HttpSession session) {
+    @DeleteMapping("/{goodsNo}")
+    public ResponseEntity<String> cartRemove(@PathVariable Integer goodsNo, HttpSession session) {
         logger.info("장바구니 상품 삭제");
-        logger.info("삭제된 상품 번호 : " + productNo);
+        logger.info("삭제된 상품 번호 : " + goodsNo);
 
-        cartService.removeCartItem((String) session.getAttribute("id"), productNo);
+        cartService.removeCartItem((String) session.getAttribute("id"), goodsNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 }

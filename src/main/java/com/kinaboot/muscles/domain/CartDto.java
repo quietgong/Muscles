@@ -3,65 +3,13 @@ package com.kinaboot.muscles.domain;
 public class CartDto {
     private int cartNo;
     private String userId;
-    private String productName;
-    private String productCategory;
-    private String productImgPath;
-    private int productNo;
-    private int productPrice;
-    private int productQty;
-
-    public String getProductImgPath() {
-        return productImgPath;
-    }
-
-    public void setProductImgPath(String productImgPath) {
-        this.productImgPath = productImgPath;
-    }
-
-    public String getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
-    }
-
-    public int getProductNo() {
-        return productNo;
-    }
-    public void setProductNo(int productNo) {
-        this.productNo = productNo;
-    }
-
-
-    public CartDto(int cartNo, String userId, String productName, int productPrice, int productQty) {
-        this.cartNo = cartNo;
-        this.userId = userId;
-        this.productPrice = productPrice;
-        this.productQty = productQty;
-        this.productName = productName;
-    }
-
-    public CartDto(String productName, int productPrice, int productQty) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productQty = productQty;
-    }
-
-    public CartDto() {
-    }
-
-    @Override
-    public String toString() {
-        return "CartDto{" +
-                "cartNo=" + cartNo +
-                ", userId='" + userId + '\'' +
-                ", productName='" + productName + '\'' +
-                ", productNo=" + productNo +
-                ", productPrice=" + productPrice +
-                ", productQty=" + productQty +
-                '}';
-    }
+    private String goodsName;
+    private String goodsCategory;
+    private String goodsCategoryDetail;
+    private String goodsImgPath;
+    private int goodsNo;
+    private int goodsPrice;
+    private int goodsQty;
 
     public int getCartNo() {
         return cartNo;
@@ -79,27 +27,73 @@ public class CartDto {
         this.userId = userId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getGoodsName() {
+        return goodsName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 
-    public int getProductPrice() {
-        return productPrice;
+    public String getGoodsCategory() {
+        return goodsCategory;
     }
 
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
+    public String getGoodsCategoryDetail() {
+        return goodsCategoryDetail;
     }
 
-    public int getProductQty() {
-        return productQty;
+    public void setGoodsCategoryDetail(String goodsCategoryDetail) {
+        this.goodsCategoryDetail = goodsCategoryDetail;
     }
 
-    public void setProductQty(int productQty) {
-        this.productQty = productQty;
+    public void setGoodsCategory(String goodsCategory) {
+        this.goodsCategory = goodsCategory;
+    }
+
+    public String getGoodsImgPath() {
+        return goodsImgPath;
+    }
+
+    public void setGoodsImgPath(String goodsImgPath) {
+        this.goodsImgPath = goodsImgPath;
+    }
+
+    public int getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(int goodsNo) {
+        this.goodsNo = goodsNo;
+    }
+
+    public int getGoodsPrice() {
+        return goodsPrice;
+    }
+
+    public void setGoodsPrice(int goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
+
+    public int getGoodsQty() {
+        return goodsQty;
+    }
+
+    public void setGoodsQty(int goodsQty) {
+        this.goodsQty = goodsQty;
+    }
+
+    @Override
+    public String toString() {
+        return "CartDto{" +
+                "cartNo=" + cartNo +
+                ", userId='" + userId + '\'' +
+                ", goodsName='" + goodsName + '\'' +
+                ", goodsCategory='" + goodsCategory + '\'' +
+                ", goodsImgPath='" + goodsImgPath + '\'' +
+                ", goodsNo=" + goodsNo +
+                ", goodsPrice=" + goodsPrice +
+                ", goodsQty=" + goodsQty +
+                '}';
     }
 }

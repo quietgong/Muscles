@@ -14,13 +14,13 @@
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
                     <c:choose>
-                        <c:when test="${productDto.productImgPath eq null}">
+                        <c:when test="${goodsDto.goodsImgPath eq null}">
                             <img class="card-img img-fluid" src="<c:url value='/img/logo.jpg'/>"
-                                 alt="Card image cap" id="product-detail">
+                                 alt="Card image cap" id="goods-detail">
                         </c:when>
                         <c:otherwise>
-                            <img class="card-img img-fluid" src="${productDto.productImgPath}" alt="Card image cap"
-                                 id="product-detail">
+                            <img class="card-img img-fluid" src="${goodsDto.goodsImgPath}" alt="Card image cap"
+                                 id="goods-detail">
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -29,12 +29,12 @@
             <div class="col-lg-7 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        <h1 class="h2">${productDto.productName}</h1>
-                        <p id="price" class="h3 py-2">${productDto.productPrice}</p>
+                        <h1 class="h2">${goodsDto.goodsName}</h1>
+                        <p id="price" class="h3 py-2">${goodsDto.goodsPrice}</p>
                         <ul class="list-inline pb-3">
                             <li class="list-inline-item text-right">
                                 <div class="star-ratings">
-                                    <div class="fill-ratings" style="width: ${productDto.productReviewScore}%;">
+                                    <div class="fill-ratings" style="width: ${goodsDto.goodsReviewScore}%;">
                                         <span style="font-size: 1.8rem;">★★★★★</span>
                                     </div>
                                     <div class="empty-ratings">
@@ -45,23 +45,23 @@
                         </ul>
                         <p class="py-2">
                                 <span class="list-inline-item text-dark">
-                                평점 : ${productDto.productReviewScore} | 리뷰 (${productDto.reviewDtoList.size()})
+                                평점 : ${goodsDto.goodsReviewScore} | 리뷰 (${goodsDto.reviewDtoList.size()})
                                 </span>
                         </p>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt
                             ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum
                             convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
-                        <input type="hidden" name="product-title" value="Activewear">
+                        <input type="hidden" name="goods-title" value="Activewear">
                         <div class="row">
                             <div class="col-auto">
                                 <ul class="list-inline pb-3">
                                     <li class="list-inline-item text-right">
                                         수량
-                                        <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                                        <input type="hidden" name="goods-quanity" id="goods-quanity" value="1">
                                     </li>
                                     <li class="list-inline-item">
-                                        <c:if test="${productDto.productStock<10}">
-                                            <span>${productDto.productStock}개 남음</span>
+                                        <c:if test="${goodsDto.goodsStock<10}">
+                                            <span>${goodsDto.goodsStock}개 남음</span>
                                         </c:if>
                                     </li>
                                     <li class="list-inline-item"><span class="btn btn-success"
@@ -100,10 +100,10 @@
         <div class="row text-left p-2 pb-3">
             <h4>상품 설명</h4>
         </div>
-        <c:forEach var="productImgDto" items="${productImgDtoList}">
+        <c:forEach var="goodsImgDto" items="${goodsImgDtoList}">
             <div class="row">
                 <div class="col-md-12 mt-3">
-                    <img class="img-fluid" src="${productImgDto.uploadPath}"/>
+                    <img class="img-fluid" src="${goodsImgDto.uploadPath}"/>
                 </div>
             </div>
         </c:forEach>
@@ -134,7 +134,7 @@
                 </ul>
             </div>
             <div class="col-md-12">
-                <h3>${reviewDto.productName}</h3>
+                <h3>${reviewDto.goodsName}</h3>
             </div>
             <div class="col-md-12">
                 <span>${reviewDto.content}</span>
@@ -228,22 +228,22 @@
 <!-- Modal -->
 
 <script>
-    let productNo = ${productDto.productNo};
-    let productName = '${productDto.productName}';
-    let productPrice = '${productDto.productPrice}';
-    let productCategory = '${productDto.productNo}';
-    let productStock = ${productDto.productStock};
-    let productImgPath = '${productDto.productImgPath}';
+    let goodsNo = ${goodsDto.goodsNo};
+    let goodsName = '${goodsDto.goodsName}';
+    let goodsPrice = '${goodsDto.goodsPrice}';
+    let goodsCategory = '${goodsDto.goodsCategory}';
+    let goodsStock = ${goodsDto.goodsStock};
+    let goodsImgPath = '${goodsDto.goodsImgPath}';
 
     $("#directOrder").on("click", function () {
         let orderData = []
         let data = {}
-        data.productNo = productNo
-        data.productName = productName
-        data.productCategory = productCategory
-        data.productQty = $("#var-value").html()
-        data.productPrice = productPrice * parseInt($("#var-value").html())
-        data.productImgPath = productImgPath
+        data.goodsNo = goodsNo
+        data.goodsName = goodsName
+        data.goodsCategory = goodsCategory
+        data.goodsQty = $("#var-value").html()
+        data.goodsPrice = goodsPrice * parseInt($("#var-value").html())
+        data.goodsImgPath = goodsImgPath
         orderData.push(data)
         const form = $("#orderForm")
         form.append($('<input>').attr({
@@ -256,11 +256,11 @@
 
     function addCart() {
         let data = {}
-        data.productNo = productNo
-        data.productName = productName
-        data.productCategory = productCategory
-        data.productQty = $("#var-value").html()
-        data.productPrice = productPrice * parseInt($("#var-value").html())
+        data.goodsNo = goodsNo
+        data.goodsName = goodsName
+        data.goodsCategory = goodsCategory
+        data.goodsQty = $("#var-value").html()
+        data.goodsPrice = goodsPrice * parseInt($("#var-value").html())
         console.log(JSON.stringify(data))
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
@@ -295,7 +295,7 @@
         $("#registerBtn").on("click", function () {
             let jsonData = {};
             jsonData.userId = loginUser
-            jsonData.productNo = productNo
+            jsonData.goodsNo = goodsNo
             if (type == 'question')
                 jsonData.question = $("#content").val()
             else {
@@ -305,7 +305,7 @@
             console.log(JSON.stringify(jsonData))
             $.ajax({
                 type: "POST",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/product/faq/", // 컨트롤러에서 대기중인 URL 주소이다.
+                url: "/muscles/goods/faq/", // 컨트롤러에서 대기중인 URL 주소이다.
                 headers: {              // Http header
                     "Content-Type": "application/json",
                 },
@@ -328,7 +328,7 @@
     function loadFaqData() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/product/faq/" + productNo,
+            url: "/muscles/goods/faq/" + goodsNo,
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
@@ -347,11 +347,11 @@
                 tmp += '<input type="button" value="질문"/>'
                 if (item.answer == null && loginUser == 'admin')
                     tmp += '<input onclick="registerContent(\'answer\'' + ',' + item.faqNo + ')" type="button" value="답변 등록하기"/><br/></div>'
-                tmp += '<div class="product-detail-faq-container">'
-                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<div class="goods-detail-faq-container">'
+                tmp += '<div class="goods-detail-faq-item">'
                 tmp += '<span>' + item.question + '</span>'
                 tmp += '</div>'
-                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<div class="goods-detail-faq-item">'
                 tmp += '<p>' + '작성자 : ' + item.userId + '</p>'
                 tmp += '<p>' + '작성일자 : ' + item.createdDate + '</p>'
                 tmp += '</div></div></div>'
@@ -360,11 +360,11 @@
                 else
                     tmp += '<div>'
                 tmp += '<input type="button" value="답변"/><br/>'
-                tmp += '<div class="product-detail-faq-container">'
-                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<div class="goods-detail-faq-container">'
+                tmp += '<div class="goods-detail-faq-item">'
                 tmp += '<span>' + item.answer + '</span>'
                 tmp += '</div>'
-                tmp += '<div class="product-detail-faq-item">'
+                tmp += '<div class="goods-detail-faq-item">'
                 tmp += '<p>' + '작성자 : 관리자</p>'
                 tmp += '<p>' + '작성일자 : ' + item.replyDate + '</p>'
                 tmp += '</div></div></div>'

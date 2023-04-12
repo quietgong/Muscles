@@ -2,11 +2,15 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.TestConfigure;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class OrderServiceImplTest extends TestConfigure {
+    @Autowired
+    OrderService orderService;
 
     @Test
     public void removeOrder() {
+
     }
 
     @Test

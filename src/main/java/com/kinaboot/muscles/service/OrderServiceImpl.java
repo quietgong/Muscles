@@ -27,29 +27,23 @@ public class OrderServiceImpl implements OrderService {
     UserService userService;
 
     @Override
-    public int removeOrder(String userId, Integer orderNo) {
-        // 해당 주문에 쿠폰이 사용된 경우, 쿠폰 상태를 사용가능으로 변경
-        List<CouponDto> couponDtoList = userDao.selectUserCoupon(userId);
-        for (CouponDto couponDto : couponDtoList) {
-            if (couponDto.getStatus().equals(String.valueOf(orderNo))) {
-                userDao.updateUserCouponStatus(userId, couponDto.getCouponName(), "사용가능");
-                break;
-            }
-        }
-        // 포인트 환불
-        List<PointDto> pointDtoList = userDao.selectUserPoint(userId);
-        for (PointDto pointDto : pointDtoList) {
-            if (pointDto.getPointName().equals(String.valueOf(orderNo))) {
-                userDao.updateUserPoint(userId, pointDto.getPoint(), String.valueOf(orderNo));
-                userDao.deleteUserPoint(userId, pointDto.getPointName());
-                break;
-            }
-        }
+    public int removeOrder(int orderNo) {
+        String userId = orderDao.selectOrder(orderNo).getUserId();
+        int point =userService.findPoints(userId).get(0).getPoint();
+        // 쿠폰 사용 취소 처리
+        userDao.updateUserCouponStatus(orderNo);
+        // 포인트 사용 취소 처리
+        // 1. 포인트 환불
+        userDao.updateUserPoint(userId, point, orderNo);
+        // 2. 포인트 사용내역 삭제
+        userDao.deleteUserPoint(orderNo);
+
+        // 주문 취소 처리
         return orderDao.deleteOrder(orderNo);
     }
 
     @Override
-    public int acceptOrder(Integer orderNo) {
+    public int acceptOrder(int orderNo) {
         // 구매 제품 재고 수량 변경
         orderDao.updateStock(orderDao.selectOrderItemList(orderNo));
 
@@ -76,8 +70,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderItemDto findOrderItem(Integer orderNo, Integer productNo) {
-        return orderDao.selectOrderItem(orderNo, productNo);
+    public OrderItemDto findOrderItem(Integer orderNo, Integer goodsNo) {
+        return orderDao.selectOrderItem(orderNo, goodsNo);
     }
 
     @Override
@@ -97,29 +91,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int addOrder(String userId, String orderData, HttpServletRequest request) {
+    public int addOrder(String orderData, int couponNo, int point) {
         OrderDto orderDto = null;
         try {
             orderDto = JsonToJava(orderData);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        int point = Integer.parseInt(request.getParameter("point"));
-        String couponName = request.getParameter("couponName");
-
+        String userId = orderDto.getUserId();
         // 구매 제품 장바구니에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
         for (OrderItemDto orderItemDto : orderItemDtoList)
-            cartDao.deleteCartItem(userId, orderItemDto.getProductNo());
-
+            cartDao.deleteCartItem(userId, orderItemDto.getGoodsNo());
         // 쿠폰 상태 변경
-        userService.modifyCoupon(userId, couponName, String.valueOf(orderDto.getOrderNo()));
-
+        if(couponNo!=0)
+            userService.modifyCoupon(userId, couponNo);
         // 포인트 사용 적용
-        userService.modifyPoint(userId, point, String.valueOf(orderDto.getOrderNo()));
-
+        if(point!=0)
+            userService.modifyPoint(userId, -point, orderDto.getOrderNo());
         // 주문 정보 생성
-        return orderDao.insertOrder(userId, orderDto);
+        return orderDao.insertOrder(orderDto);
     }
     public OrderDto JsonToJava(String rowData) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

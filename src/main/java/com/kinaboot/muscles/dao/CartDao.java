@@ -9,11 +9,11 @@ public interface CartDao {
 
     List<CartDto> selectAll(String userId);
 
-    int select(String userId, Integer productNo);
+    int select(String userId, Integer goodsNo);
 
-    int deleteCartItem(String userId, Integer productNo);
+    int deleteCartItem(String userId, Integer goodsNo);
 
-    CartDto selectItem(Integer productNo);
+    CartDto selectItem(Integer goodsNo);
 
     int count(String userId);
 }

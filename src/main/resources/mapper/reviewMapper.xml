@@ -7,7 +7,7 @@
         select *
         from review
         where orderNo = #{orderNo}
-          and productNo = #{productNo}
+          and goodsNo = #{goodsNo}
     </select>
     <select id="selectReviewOne" parameterType="int" resultType="reviewDto">
         select *
@@ -24,13 +24,13 @@
     <select id="selectReviewByProductNo" parameterType="int" resultType="reviewDto">
         select *
         from review
-        where productNo = '${productNo}'
+        where goodsNo = '${goodsNo}'
                     and expiredDate is null;
     </select>
 
     <insert id="insertReview" parameterType="reviewDto">
-        insert into review (score, content, userId, productNo, productName, createdDate, orderNo)
-        values (#{score}, #{content}, #{userId}, #{productNo}, #{productName}, now(), #{orderNo});
+        insert into review (score, content, userId, goodsNo, goodsName, createdDate, orderNo)
+        values (#{score}, #{content}, #{userId}, #{goodsNo}, #{goodsName}, now(), #{orderNo});
     </insert>
 <update id="updateReview" parameterType="reviewDto">
     UPDATE review

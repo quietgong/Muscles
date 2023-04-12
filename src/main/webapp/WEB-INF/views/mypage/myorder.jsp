@@ -17,7 +17,7 @@
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-text">상품명</span>
-                        <input type="text" class="form-control" id="name" name="lastname" />
+                        <input type="text" class="form-control" id="name" name="lastname"/>
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -25,16 +25,16 @@
                 <div class="col-md-6">
                     <div class="input-group gap-3">
                         <label class="form-label mt-2" for="startDate">주문일자</label>
-                        <input id="startDate" class="form-control" type="date" name="startDate" />
+                        <input id="startDate" class="form-control" type="date" name="startDate"/>
                         <label class="form-label mt-2">~</label>
-                        <input class="form-control" type="date" name="endDate" />
+                        <input class="form-control" type="date" name="endDate"/>
                         <button class="btn btn-primary" type="button">검색</button>
                     </div>
                 </div>
             </div>
             <!-- 검색 조건 -->
             <!-- 주문 내역 -->
-            <div class="row mt-5">
+            <div class="row mt-5 justify-content-center">
                 <!-- 주문 반복 -->
                 <c:forEach var="orderDto" items="${orderDtoList}">
                     <div class="col-md-8 mt-5">
@@ -49,8 +49,7 @@
                                        href="<c:url value='/order/${orderDto.orderNo}'/>">상세내역 확인</a>
                                 </div>
                                 <div class="col-md-12">
-                                    <span>${orderDto.status}</span>
-                                    <c:set var="accept" value="${orderDto.status=='대기중' ? 'inline' : 'none'}"/>
+                                    <c:set var="accept" value="${orderDto.status=='pending' ? 'inline' : 'none'}"/>
                                     <button style="display: ${accept}" type="button" class="btn btn-outline-danger"
                                             onclick="orderCancel(this)">주문 취소
                                     </button>
@@ -62,29 +61,30 @@
                                         <div class="card-body">
                                             <div class="row mt-2">
                                                 <h5 style="font-weight: bold; display: block;"
-                                                    class="card-text">${orderDto.status}</h5>
+                                                    class="card-text">${orderDto.status=='pending' ? '배송준비' : '배송완료'}</h5>
                                             </div>
                                             <div class="row mt-2 gx-4">
                                                 <div class="col-md-3">
                                                     <!-- 상품 이미지 -->
                                                     <img class="card-img rounded-0 img-fluid"
-                                                         src="${orderItemDto.productImgPath}">
+                                                         src="${orderItemDto.goodsImgPath}">
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3 justify-content-center">
                                                     <!-- 상품 이름 -->
-                                                    <p class="card-text">${orderItemDto.productName}</p>
+                                                    <p class="card-text">${orderItemDto.goodsName}</p>
                                                     <!-- 상품 단가 -->
-                                                    <span class="card-text">${orderItemDto.productPrice}원</span>
+                                                    <span class="card-text">${orderItemDto.goodsPrice}원</span>
                                                     <span class="card-text"> · </span>
                                                     <!-- 주문 개수 -->
-                                                    <span class="card-text">${orderItemDto.productQty} 개</span><br>
-                                                    <button type="button" class="btn btn-outline-primary mt-4">장바구니 담기
-                                                    </button>
-                                                    <br>
-                                                    <button type="button" class="btn btn-outline-primary mt-4">상품 페이지
-                                                        이동
-                                                    </button>
-                                                    <br>
+                                                    <span class="card-text">${orderItemDto.goodsQty} 개</span><br>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="d-flex justify-content-center gap-2">
+                                                        <button type="button"
+                                                                onclick='location.href="<c:url value='/goods/detail?goodsNo=${orderItemDto.goodsNo}'/>"' class="btn btn-outline-primary">
+                                                            상품 페이지 이동
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,7 +92,7 @@
                                                value="${orderDto.status == '배송완료' && orderItemDto.hasReview == false ? 'inline' : 'hidden'}"/>
                                         <button style="display: ${hasReview}" type=button class="btn btn-primary"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                onclick="createReview(${orderDto.orderNo}, ${orderItemDto.productNo})">
+                                                onclick="createReview(${orderDto.orderNo}, ${orderItemDto.goodsNo})">
                                             리뷰 작성
                                         </button>
                                     </div>
@@ -123,7 +123,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 id="productName" class="productName">상품 이름</h3>
+                            <h3 id="goodsName" class="goodsName">상품 이름</h3>
                         </div>
                     </div>
                     <div class="row">
@@ -189,10 +189,10 @@
     }
 
     // 해당 주문에 대한 정보를 모달창에 입력
-    function createReview(orderNo, productNo) {
+    function createReview(orderNo, goodsNo) {
         $.ajax({
             type: "GET",
-            url: "/muscles/order?orderNo=" + orderNo + "&productNo=" + productNo,
+            url: "/muscles/order?orderNo=" + orderNo + "&goodsNo=" + goodsNo,
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
@@ -206,10 +206,10 @@
     }
 
     function insertModalData(item) {
-        $("#productName").html(item.productName) // 상품 이름 입력
+        $("#goodsName").html(item.goodsName) // 상품 이름 입력
         $("#modal-footer").attr("data-orderNo", item.orderNo)
-        $("#modal-footer").attr("data-productNo", item.productNo)
-        $("#modal-footer").attr("data-productName", item.productName)
+        $("#modal-footer").attr("data-goodsNo", item.goodsNo)
+        $("#modal-footer").attr("data-goodsName", item.goodsName)
     }
 
     // 모달 내용 등록
@@ -217,8 +217,8 @@
         let data = {};
         data.userId = '${userId}'
         data.orderNo = $(e).parent().attr("data-orderNo")
-        data.productNo = $(e).parent().attr("data-productNo")
-        data.productName = $(e).parent().attr("data-productName")
+        data.goodsNo = $(e).parent().attr("data-goodsNo")
+        data.goodsName = $(e).parent().attr("data-goodsName")
         data.score = $('#starRange').val()
         data.content = $('#reviewContent').val()
         $.ajax({

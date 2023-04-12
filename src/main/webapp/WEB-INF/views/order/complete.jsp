@@ -1,24 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
+<style>
+    td {
+        vertical-align: middle;
+    }
+
+    td span {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+</style>
 <%@ include file="../nav.jsp" %>
 <div class="container mt-5 mb-5">
     <div class="row d-flex justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="text-left logo p-2 px-5"><img src="<c:url value='/img/logo.jpg'/>" width="50"></div>
+                <div class="text-left logo p-2 px-5"><img class="img-fluid" src="<c:url value='/img/logo.jpg'/>"
+                                                          width="80"></div>
                 <div class="invoice p-5">
                     <h5>주문이 완료되었습니다!</h5> <span class="font-weight-bold d-block mt-4">
-                            안녕하세요, ${userDto.userId} 님</span>
+                            안녕하세요, ${userId} 님</span>
                     <span>주문 내역은 <strong><a href="<c:url value='/mypage/order'/>">[마이 페이지 > 주문내역/배송조회]</a></strong> 에서 다시 확인할 수 있습니다.</span>
                     <div class="payment border-top mt-3 mb-3 border-bottom table-responsive">
-                        <table class="table table-borderless">
+                        <table class="table table-borderless" style="text-align: center">
                             <tbody>
                             <tr>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">주문일자</span>
-                                        <span>${orderDto.createdDate}</span></div>
+                                        <span><fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd"
+                                                              type="date"/></span></div>
                                 </td>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">주문번호</span>
@@ -47,15 +60,13 @@
                             <!-- 상품 목록 -->
                             <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
                                 <tr>
-                                    <td width="20%"><img src="${orderItemDto.productImgPath}" width="90"></td>
-                                    <td width="60%"><span class="font-weight-bold">${orderItemDto.productName}</span>
-                                        <div class="product-qty"><span
-                                                class="d-block">수량:${orderItemDto.productQty}</span>
-                                            <span>${orderItemDto.productCategory}</span></div>
+                                    <td width="30%"><img class="img-fluid" src="${orderItemDto.goodsImgPath}"></td>
+                                    <td width="25%"><span class="font-weight-bold">${orderItemDto.goodsName}</span>
                                     </td>
+                                    <td width="20%"><span>수량:${orderItemDto.goodsQty}</span></td>
                                     <td width="20%">
                                         <div class="text-right"><span
-                                                class="font-weight-bold">${orderItemDto.productPrice}</span></div>
+                                                class="font-weight-bold">${orderItemDto.goodsPrice}</span></div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -63,7 +74,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row d-flex justify-content-end">
+                    <div class="row d-flex justify-content-center">
                         <div class="col-md-5">
                             <table class="table table-borderless">
                                 <tbody class="totals">
@@ -75,13 +86,12 @@
                                         <div class="text-right"><span>${orderDto.paymentDto.price}</span></div>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <div class="text-left"><span class="text-muted">할인 적용</span></div>
                                     </td>
                                     <td>
-                                        <div class="text-right"><span class="text-success">$168.50</span>
+                                        <div class="text-right"><span class="text-success">₩${orderDto.discount}</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -92,7 +102,7 @@
                                     </td>
                                     <td>
                                         <div class="text-right"><span
-                                                class="font-weight-bold">${orderDto.paymentDto.price}</span>
+                                                class="font-weight-bold">${orderDto.paymentDto.price - orderDto.discount}</span>
                                         </div>
                                     </td>
                                 </tr>

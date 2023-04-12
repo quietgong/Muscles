@@ -8,7 +8,7 @@ import java.util.List;
 public interface OrderDao {
     int updateStock(List<OrderItemDto> orderItemDtoList);
 
-    int insertOrder(String userId, OrderDto orderDto);
+    int insertOrder(OrderDto orderDto);
 
     List<OrderDto> selectOrderAllByUser();
 
@@ -22,7 +22,7 @@ public interface OrderDao {
 
     List<OrderItemDto> selectOrderItemList(Integer orderNo);
 
-    OrderItemDto selectOrderItem(Integer orderNo, Integer productNo);
+    OrderItemDto selectOrderItem(Integer orderNo, Integer goodsNo);
 
     int deleteOrder(Integer orderNo);
 

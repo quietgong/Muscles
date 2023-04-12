@@ -1,10 +1,8 @@
 package com.kinaboot.muscles.handler;
 
-import com.kinaboot.muscles.domain.ProductDto;
+import com.kinaboot.muscles.domain.GoodsDto;
 import com.kinaboot.muscles.domain.ReviewDto;
-import com.kinaboot.muscles.handler.PageHandler;
-import com.kinaboot.muscles.handler.SearchCondition;
-import com.kinaboot.muscles.service.ProductService;
+import com.kinaboot.muscles.service.GoodsService;
 import com.kinaboot.muscles.service.ReviewService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +16,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class PageHandlerTest {
     @Autowired
-    ProductService productService;
+    GoodsService goodsService;
     @Autowired
     ReviewService reviewService;
     @Test
@@ -34,21 +32,21 @@ public class PageHandlerTest {
     public void productListPagingTest() {
         SearchCondition sc = new SearchCondition(1,"lowPrice","");
         String category = "cardio";
-        int totalCnt = productService.getTotalCntByCategory(sc);
-        List<ProductDto> productDtoList = calculateReviewScore(productService.findProducts(sc));
-        System.out.println("productDtoList = " + productDtoList);
+        int totalCnt = goodsService.getTotalCntByCategory(sc);
+        List<GoodsDto> goodsDtoList = calculateReviewScore(goodsService.findGoods(sc));
+        System.out.println("productDtoList = " + goodsDtoList);
 
     }
-    public List<ProductDto> calculateReviewScore(List<ProductDto> productDtoList) {
-        for(ProductDto productDto : productDtoList){
-            List<ReviewDto> reviewDtoList = reviewService.findReviews(productDto.getProductNo());
+    public List<GoodsDto> calculateReviewScore(List<GoodsDto> goodsDtoList) {
+        for(GoodsDto goodsDto : goodsDtoList){
+            List<ReviewDto> reviewDtoList = reviewService.findReviews(goodsDto.getGoodsNo());
             double productScore=0.0;
             for(ReviewDto reviewDto : reviewDtoList)
                 productScore += reviewDto.getScore();
             productScore = productScore / reviewDtoList.size();
-            productDto.setProductReviewScore(productScore);
-            productDto.setReviewDtoList(reviewDtoList);
+            goodsDto.setGoodsReviewScore(productScore);
+            goodsDto.setReviewDtoList(reviewDtoList);
         }
-        return productDtoList;
+        return goodsDtoList;
     }
 }

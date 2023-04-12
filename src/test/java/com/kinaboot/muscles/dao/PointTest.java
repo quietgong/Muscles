@@ -35,24 +35,11 @@ public class PointTest {
     }
     @Test
     public void refundCouponPointTest(){
-        String userId = "admin";
-        String orderNo = "5";
+        int orderNo = 5;
         // 포인트 환불
-        List<PointDto> pointDtoList = userDao.selectUserPoint(userId);
-        for(PointDto pointDto : pointDtoList){
-            if(pointDto.getPointName().equals(orderNo)){
-                userDao.updateUserPoint(userId, pointDto.getPoint(), orderNo);
-                userDao.deleteUserPoint(userId, pointDto.getPointName());
-                break;
-            }
-        }
+//        userDao.updateUserPoint(orderNo);
+        userDao.deleteUserPoint(orderNo);
         // 해당 주문에 쿠폰이 사용된 경우, 쿠폰 상태를 사용가능으로 변경
-        List<CouponDto> couponDtoList = userDao.selectUserCoupon(userId);
-        for(CouponDto couponDto : couponDtoList){
-            if(couponDto.getStatus().equals(orderNo)){
-                userDao.updateUserCouponStatus(userId, couponDto.getCouponName(), "사용가능");
-                break;
-            }
-        }
+        userDao.updateUserCouponStatus(orderNo);
     }
 }

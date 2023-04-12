@@ -77,16 +77,21 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int updateUserCouponStatus(String userId, String couponName, String orderNo) {
+    public int updateUserCouponStatus(int couponNo) {
+        return session.update(namespace + "updateCouponStatus", couponNo);
+    }
+    @Override
+    public int updateUserPoint(String userId, int point, int orderNo) {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("couponName", couponName);
-        map.put("orderNo", orderNo);
-        return session.update(namespace + "updateCouponStatus", map);
+        map.put("point", String.valueOf(point));
+        map.put("orderNo", String.valueOf(orderNo));
+        session.update(namespace + "updateUserPoint", map);
+        session.insert(namespace + "insertPoint", map);
+        return 0;
     }
-
     @Override
-    public int updateUserGetPoint(String userId, int point, Integer orderNo){
+    public int updateUserGetPoint(String userId, int point, int orderNo){
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("orderNo", String.valueOf(orderNo));
@@ -98,29 +103,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int deleteUserPoint(String userId, String pointName) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("pointName", pointName);
-        return session.delete(namespace + "deleteUserPoint", map);
+    public int deleteUserPoint(int orderNo) {
+        return session.delete(namespace + "deleteUserPoint", orderNo);
     }
 
     @Override
     public int removePoint(String userId) {
         return session.update(namespace + "modifyUserPoint", userId);
-    }
-
-    @Override
-    public int updateUserPoint(String userId, int point, String orderNo) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("orderNo", orderNo);
-        // 포인트 차감
-        map.put("point", String.valueOf(-point));
-        session.update(namespace + "updateUserPoint", map);
-        // 포인트 사용내역 추가
-        session.insert(namespace + "insertPoint", map);
-        return 0;
     }
 
     @Override

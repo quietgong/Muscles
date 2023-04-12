@@ -2,20 +2,86 @@ package com.kinaboot.muscles.domain;
 
 public class OrderItemDto {
     private int orderNo;
-    private int productNo;
-    private String productName;
-    private String productCategory;
-    private String productImgPath;
-    private int productQty;
-    private int productPrice;
+    private int goodsNo;
+    private String goodsName;
+    private String goodsCategory;
+    private String goodsCategoryDetail;
+    private String goodsImgPath;
+    private int goodsQty;
+    private int goodsPrice;
     private boolean hasReview;
 
-    public String getProductCategory() {
-        return productCategory;
+    public OrderItemDto() {
     }
 
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
+    public OrderItemDto(int orderNo, int goodsNo, String goodsName, int goodsQty, int goodsPrice) {
+        this.orderNo = orderNo;
+        this.goodsNo = goodsNo;
+        this.goodsName = goodsName;
+        this.goodsQty = goodsQty;
+        this.goodsPrice = goodsPrice;
+    }
+    public String getGoodsCategoryDetail() {
+        return goodsCategoryDetail;
+    }
+
+    public void setGoodsCategoryDetail(String goodsCategoryDetail) {
+        this.goodsCategoryDetail = goodsCategoryDetail;
+    }
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public int getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(int goodsNo) {
+        this.goodsNo = goodsNo;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public String getGoodsCategory() {
+        return goodsCategory;
+    }
+
+    public void setGoodsCategory(String goodsCategory) {
+        this.goodsCategory = goodsCategory;
+    }
+
+    public String getGoodsImgPath() {
+        return goodsImgPath;
+    }
+
+    public void setGoodsImgPath(String goodsImgPath) {
+        this.goodsImgPath = goodsImgPath;
+    }
+
+    public int getGoodsQty() {
+        return goodsQty;
+    }
+
+    public void setGoodsQty(int goodsQty) {
+        this.goodsQty = goodsQty;
+    }
+
+    public int getGoodsPrice() {
+        return goodsPrice;
+    }
+
+    public void setGoodsPrice(int goodsPrice) {
+        this.goodsPrice = goodsPrice;
     }
 
     public boolean isHasReview() {
@@ -26,74 +92,17 @@ public class OrderItemDto {
         this.hasReview = hasReview;
     }
 
-    public OrderItemDto() {
-    }
-
-    public String getProductImgPath() {
-        return productImgPath;
-    }
-
-    public void setProductImgPath(String productImgPath) {
-        this.productImgPath = productImgPath;
-    }
-
-    public int getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public int getProductNo() {
-        return productNo;
-    }
-
-    public void setProductNo(int productNo) {
-        this.productNo = productNo;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public int getProductQty() {
-        return productQty;
-    }
-
-    public void setProductQty(int productQty) {
-        this.productQty = productQty;
-    }
-
-    public int getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public OrderItemDto(int orderNo, int productNo, String productName, int productQty, int productPrice) {
-        this.orderNo = orderNo;
-        this.productNo = productNo;
-        this.productName = productName;
-        this.productQty = productQty;
-        this.productPrice = productPrice;
-    }
-
     @Override
     public String toString() {
         return "OrderItemDto{" +
                 "orderNo=" + orderNo +
-                ", productNo=" + productNo +
-                ", productName='" + productName + '\'' +
-                ", productCategory='" + productCategory + '\'' +
-                ", productQty=" + productQty +
-                ", productPrice=" + productPrice +
+                ", goodsNo=" + goodsNo +
+                ", goodsName='" + goodsName + '\'' +
+                ", goodsCategory='" + goodsCategory + '\'' +
+                ", goodsImgPath='" + goodsImgPath + '\'' +
+                ", goodsQty=" + goodsQty +
+                ", goodsPrice=" + goodsPrice +
+                ", hasReview=" + hasReview +
                 '}';
     }
 }

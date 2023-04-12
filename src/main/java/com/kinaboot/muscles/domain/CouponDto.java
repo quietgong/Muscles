@@ -6,7 +6,7 @@ public class CouponDto {
     String couponCode;
     String userId;
     int discount;
-    String status;
+    int orderNo;
 
     public CouponDto() {
     }
@@ -16,7 +16,7 @@ public class CouponDto {
         this.couponCode = couponCode;
         this.userId = userId;
         this.discount = discount;
-        this.status = status;
+        this.orderNo = orderNo;
     }
 
     public int getCouponNo() {
@@ -59,12 +59,12 @@ public class CouponDto {
         this.discount = discount;
     }
 
-    public String getStatus() {
-        return status;
+    public int getOrderNo() {
+        return orderNo;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class CouponDto {
                 ", couponCode='" + couponCode + '\'' +
                 ", userId='" + userId + '\'' +
                 ", discount=" + discount +
-                ", status='" + status + '\'' +
+                ", orderNo='" + orderNo + '\'' +
                 '}';
     }
 }

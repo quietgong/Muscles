@@ -114,7 +114,6 @@
     let postNo = ${postDto.postNo};
     // 댓글 불러오기
     loadComments()
-
     function loadComments() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
@@ -130,7 +129,6 @@
             }
         })
     }
-
     // 댓글 생성
     $("#createComment").on("click", function () {
         let userId = '${userId}';

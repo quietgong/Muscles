@@ -28,12 +28,12 @@
     </select>
 
     <select id="selectUserCoupon" resultType="CouponDto" parameterType="String">
-        select couponName, couponCode, userId, discount, status
+        select *
         from coupon
         where userId = '${userId}';
     </select>
     <select id="selectUserPoint" resultType="PointDto" parameterType="String">
-        select pointName, point
+        select *
         from point
         where userId = '${userId}';
     </select>
@@ -52,13 +52,13 @@
     </update>
     <update id="updateCouponStatus" parameterType="map">
         update coupon
-        set status = #{orderNo}
+        set status = "사용완료"
         where userId = #{userId}
         and couponName = #{couponName}
     </update>
     <insert id="insertRecommendEventCoupon" parameterType="map">
         insert into coupon (couponName, couponCode, userId, discount, status)
-        values ("추천인 이벤트", #{recommendId}, #{userId}, 10, "사용가능");
+        values ("추천인 이벤트", #{recommendId}, #{userId}, 10000, "사용가능");
     </insert>
     <update id="updateUserPoint" parameterType="map">
         update user
@@ -66,8 +66,8 @@
         where userId = #{userId};
     </update>
     <insert id="insertPoint" parameterType="map">
-        insert into point (userId, point, pointName)
-        values (#{userId}, #{point}, #{orderNo});
+        insert into point (userId, point)
+        values (#{userId}, #{point};
     </insert>
     <insert id="insertRecommendPoint" parameterType="map">
         insert into point (userId, point, pointName)

@@ -43,7 +43,7 @@
     <context:component-scan base-package="com.kinaboot.muscles" name-generator="com.kinaboot.muscles.handler.FullBeanNameGenerator"/>
     <!-- View-Path 연결 -->
     <view-controller path="/" view-name="index"/>
-    <view-controller path="/admin/product" view-name="admin/product"/>
+    <view-controller path="/admin/goods" view-name="admin/goods"/>
     <view-controller path="/admin/user" view-name="admin/user"/>
 
     <view-controller path="/chatting" view-name="chatting/chatRoom"/>
@@ -53,7 +53,6 @@
     <view-controller path="/register" view-name="register"/>
 
     <view-controller path="/mypage/coupon" view-name="mypage/mycoupon"/>
-    <view-controller path="/mypage/order" view-name="mypage/myorder"/>
     <view-controller path="/mypage/modify" view-name="mypage/myinfo"/>
     <view-controller path="/mypage/review" view-name="mypage/myreview"/>
     <view-controller path="/mypage/post" view-name="mypage/mypost"/>

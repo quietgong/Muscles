@@ -3,9 +3,8 @@ package com.kinaboot.muscles.handler;
 import com.kinaboot.muscles.dao.PostDao;
 import com.kinaboot.muscles.domain.OrderDto;
 import com.kinaboot.muscles.domain.PostDto;
-import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
-import com.kinaboot.muscles.service.ProductService;
+import com.kinaboot.muscles.service.GoodsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,14 @@ public class SearchConditionTest {
     @Autowired
     PostDao postDao;
     @Autowired
-    ProductService productService;
+    GoodsService goodsService;
     @Autowired
     OrderService orderService;
     @Test
     public void searchResultCntTest() throws Exception {
         // title1 : 12
         SearchCondition sc = new SearchCondition(1, "t2");
-        int totalCnt = productService.getTotalCntByCategory(sc);
+        int totalCnt = goodsService.getTotalCntByCategory(sc);
         System.out.println("sc = " + sc);
         System.out.println("totalCnt = " + totalCnt);
     }

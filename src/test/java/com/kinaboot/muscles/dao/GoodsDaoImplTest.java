@@ -1,7 +1,7 @@
 package com.kinaboot.muscles.dao;
 
-import com.kinaboot.muscles.domain.ProductDto;
-import com.kinaboot.muscles.service.ProductService;
+import com.kinaboot.muscles.domain.GoodsDto;
+import com.kinaboot.muscles.service.GoodsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +10,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
-public class ProductDaoImplTest {
+public class GoodsDaoImplTest {
     @Autowired
-    ProductDao productDao;
+    GoodsDao goodsDao;
     @Autowired
-    ProductService productService;
+    GoodsService goodsService;
     @Test
     public void getProduct(){
-        productService.findProduct(3);
+        goodsService.findGoods(3);
     }
     @Test
     public void insertTest() throws Exception {
@@ -25,9 +25,9 @@ public class ProductDaoImplTest {
 
         for (int i = 0; i < 50; i++) {
             int randomPrice = (int) (Math.random() * 10000) + 90000;
-            ProductDto productDto = new ProductDto
+            GoodsDto goodsDto = new GoodsDto
                     ("treadmil", "product" + i, randomPrice, 100);
-            productDao.insert(productDto);
+            goodsDao.insert(goodsDto);
         }
     }
 
@@ -47,6 +47,6 @@ public class ProductDaoImplTest {
 
     @Test
     public void deleteAll() {
-        productDao.deleteAll();
+        goodsDao.deleteAll();
     }
 }

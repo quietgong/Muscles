@@ -15,13 +15,13 @@
                         <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul class="collapse show list-unstyled pl-3">
-                        <li><a class="text-decoration-none" href="#">러닝머신</a></li>
+                        <li><a class="text-decoration-none" href="#">런닝머신</a></li>
                         <li><a class="text-decoration-none" href="#">줄넘기</a></li>
                     </ul>
                 </li>
                 <li class="pb-3">
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
-                       href="<c:url value='/product/list?category=strength'/>">
+                       href="<c:url value='/goods/list?category=strength'/>">
                         근력
                         <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
@@ -68,39 +68,39 @@
                 </div>
             </div>
             <div class="row">
-                <c:forEach var="productDto" items="${list}">
+                <c:forEach var="goodsDto" items="${list}">
                     <!-- 상품 카드 -->
                     <div class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
                             <div class="card rounded-0">
                                 <c:choose>
-                                    <c:when test="${productDto.productImgPath eq null}">
+                                    <c:when test="${goodsDto.goodsImgPath eq null}">
                                         <img class="card-img rounded-0 img-fluid"
                                              src="<c:url value='/img/cardio.jpg'/>">
                                     </c:when>
                                     <c:otherwise>
-                                        <img class="card-img rounded-0 img-fluid" src="${productDto.productImgPath}">
+                                        <img class="card-img rounded-0 img-fluid" src="${goodsDto.goodsImgPath}">
                                     </c:otherwise>
                                 </c:choose>
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
                                         <li><a class="btn btn-success text-white mt-2"
-                                               href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>"><i
+                                               href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"><i
                                                 class="far fa-eye"></i></a></li>
-                                        <li><a class="btn btn-success text-white mt-2" onclick="addCart(${productDto.productNo},'${productDto.productName}','${productDto.productCategory}',${productDto.productPrice})"><i
+                                        <li><a class="btn btn-success text-white mt-2" onclick="addCart(${goodsDto.goodsNo},'${goodsDto.goodsName}','${goodsDto.goodsCategory}',${goodsDto.goodsPrice})"><i
                                                 class="fas fa-cart-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <a href="<c:url value='/product/detail?productNo=${productDto.productNo}'/>" class="h3 text-decoration-none">상품 카테고리</a>
+                                <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>" class="h3 text-decoration-none">상품 카테고리</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                    <li>${productDto.productName}</li>
-                                    <li>리뷰개수 : ${productDto.reviewDtoList.size()}</li>
+                                    <li>${goodsDto.goodsName}</li>
+                                    <li>리뷰개수 : ${goodsDto.reviewDtoList.size()}</li>
                                 </ul>
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <div class="star-ratings">
-                                        <div class="fill-ratings" style="width: ${productDto.productReviewScore}%;">
+                                        <div class="fill-ratings" style="width: ${goodsDto.goodsReviewScore}%;">
                                             <span style="font-size: 1.8rem;">★★★★★</span>
                                         </div>
                                         <div class="empty-ratings">
@@ -108,7 +108,7 @@
                                         </div>
                                     </div>
                                 </ul>
-                                <p class="text-center mb-0">${productDto.productPrice}</p>
+                                <p class="text-center mb-0">${goodsDto.goodsPrice}</p>
                             </div>
                         </div>
                     </div>
@@ -121,19 +121,19 @@
                             <c:if test="${ph.showPrev}">
                                 <li class="page-item">
                                     <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
-                                       href="<c:url value='/product/list${ph.sc.getQueryString(ph.beginPage-1)}'/>"><<</a>
+                                       href="<c:url value='/goods/list${ph.sc.getQueryString(ph.beginPage-1)}'/>"><<</a>
                                 </li>
                             </c:if>
                             <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
                                 <li>
                                     <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
-                                       href="<c:url value='/product/list${ph.sc.getQueryString(i)}'/>">${i}</a>
+                                       href="<c:url value='/goods/list${ph.sc.getQueryString(i)}'/>">${i}</a>
                                 </li>
                             </c:forEach>
                             <c:if test="${ph.showNext}">
                                 <li class="page-item">
                                     <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
-                                       href="<c:url value='/product/list${ph.sc.getQueryString(ph.endPage+1)}'/>">>></a>
+                                       href="<c:url value='/goods/list${ph.sc.getQueryString(ph.endPage+1)}'/>">>></a>
                                 </li>
                             </c:if>
                         </ul>
@@ -144,13 +144,13 @@
     </div>
 </div>
 <script>
-    function addCart(productNo, productName, productCategory, productPrice) {
+    function addCart(goodsNo, goodsName, goodsCategory, goodsPrice) {
         let data={}
-        data.productNo = productNo
-        data.productName = productName
-        data.productCategory = productCategory
-        data.productQty = 1
-        data.productPrice = productPrice
+        data.goodsNo = goodsNo
+        data.goodsName = goodsName
+        data.goodsCategory = goodsCategory
+        data.goodsQty = 1
+        data.goodsPrice = goodsPrice
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/cart/",

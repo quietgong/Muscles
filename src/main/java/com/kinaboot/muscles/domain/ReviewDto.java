@@ -10,8 +10,8 @@ public class ReviewDto {
     private int score;
     private String content;
     private String userId;
-    private int productNo;
-    private String productName;
+    private int goodsNo;
+    private String goodsName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -22,19 +22,11 @@ public class ReviewDto {
     public ReviewDto() {
     }
 
-    public ReviewDto(int productNo, int score, String content, String productName) {
-        this.productNo = productNo;
+    public ReviewDto(int goodsNo, int score, String content, String goodsName) {
+        this.goodsNo = goodsNo;
         this.score = score;
         this.content = content;
-        this.productName = productName;
-    }
-
-    public Date getExpiredDate() {
-        return expiredDate;
-    }
-
-    public void setExpiredDate(Date expiredDate) {
-        this.expiredDate = expiredDate;
+        this.goodsName = goodsName;
     }
 
     public int getReviewNo() {
@@ -77,20 +69,20 @@ public class ReviewDto {
         this.userId = userId;
     }
 
-    public int getProductNo() {
-        return productNo;
+    public int getGoodsNo() {
+        return goodsNo;
     }
 
-    public void setProductNo(int productNo) {
-        this.productNo = productNo;
+    public void setGoodsNo(int goodsNo) {
+        this.goodsNo = goodsNo;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getGoodsName() {
+        return goodsName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 
     public Date getCreatedDate() {
@@ -99,6 +91,14 @@ public class ReviewDto {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
     }
 
     public Date getModDate() {
@@ -117,8 +117,8 @@ public class ReviewDto {
                 ", score=" + score +
                 ", content='" + content + '\'' +
                 ", userId='" + userId + '\'' +
-                ", productNo=" + productNo +
-                ", productName='" + productName + '\'' +
+                ", goodsNo=" + goodsNo +
+                ", goodsName='" + goodsName + '\'' +
                 ", createdDate=" + createdDate +
                 ", expiredDate=" + expiredDate +
                 ", modDate=" + modDate +

@@ -1,17 +1,16 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.domain.CartDto;
-import com.kinaboot.muscles.domain.ProductDto;
 
 import java.util.List;
 
 public interface CartService {
     String addCartItem(String userId, CartDto cartDto);
-    int findCartItem(String userId, Integer productNo);
+    int findCartItem(String userId, Integer goodsNo);
 
     List<CartDto> findCartItems(String userId);
 
-    int removeCartItem(String userId, Integer productNo);
+    int removeCartItem(String userId, Integer goodsNo);
 
     int countCart(String userId);
 }

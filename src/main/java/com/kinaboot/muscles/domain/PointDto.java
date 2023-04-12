@@ -2,16 +2,16 @@ package com.kinaboot.muscles.domain;
 
 public class PointDto {
     int pointNo;
-    String pointName;
+    int orderNo;
     String userId;
     int point;
 
     public PointDto() {
     }
 
-    public PointDto(String pointName, String userId, int point) {
-        this.pointName = pointName;
+    public PointDto(String userId, int orderNo, int point) {
         this.userId = userId;
+        this.orderNo = orderNo;
         this.point = point;
     }
 
@@ -21,14 +21,6 @@ public class PointDto {
 
     public void setPointNo(int pointNo) {
         this.pointNo = pointNo;
-    }
-
-    public String getPointName() {
-        return pointName;
-    }
-
-    public void setPointName(String pointName) {
-        this.pointName = pointName;
     }
 
     public String getUserId() {
@@ -47,11 +39,19 @@ public class PointDto {
         this.point = point;
     }
 
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
     @Override
     public String toString() {
         return "PointDto{" +
                 "pointNo=" + pointNo +
-                ", pointName='" + pointName + '\'' +
+                ", orderNo=" + orderNo +
                 ", userId='" + userId + '\'' +
                 ", point=" + point +
                 '}';

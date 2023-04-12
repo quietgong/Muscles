@@ -62,21 +62,20 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public String orderAdd(String orderData, HttpServletRequest request, HttpSession session, Model m) throws Exception {
+    public String orderAdd(String orderData, int couponNo, int point, Model m) {
+        System.out.println("orderData = " + orderData);
         logger.info("결제 후 주문 처리");
-        String userId = (String) session.getAttribute("id");
-        int orderNo = orderService.addOrder(userId, orderData, request);
-
+        int orderNo = orderService.addOrder(orderData, couponNo, point); // 주문 생성
+        OrderDto orderDto = orderService.findOrder(orderNo);
+        System.out.println("orderDto.getOrderItemDtoList() = " + orderDto.getOrderItemDtoList());
         m.addAttribute("orderDto", orderService.findOrder(orderNo));
-        m.addAttribute("userDto", userService.findUser(userId));
         return "order/complete";
     }
 
     @DeleteMapping("{orderNo}")
-    public ResponseEntity<String> removeOrder(HttpSession session, @PathVariable Integer orderNo) {
+    public ResponseEntity<String> removeOrder(@PathVariable Integer orderNo) {
         logger.info("[주문번호] : " + orderNo + " 주문취소");
-        String userId = (String) session.getAttribute("id");
-        orderService.removeOrder(userId, orderNo);
+        orderService.removeOrder(orderNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 }

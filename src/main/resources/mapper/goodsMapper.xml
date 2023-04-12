@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kinaboot.muscles.dao.goodsMapper">
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM GOODS
+    </select>
+    <select id="selectAll" resultType="goodsDto">
+        select goodsNo,goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath
+        FROM GOODS
+    </select>
+    <select id="select" parameterType="int" resultType="goodsDto">
+        select goodsNo,
+               goodsCategory,
+               goodsCategoryDetail,
+               goodsName,
+               goodsPrice,
+               goodsStock,
+               goodsImgPath
+        FROM GOODS
+        where goodsNo = #{goodsNo}
+    </select>
+    <select id="selectByCategoryCnt" parameterType="SearchCondition" resultType="int">
+        select count(*)
+        FROM GOODS
+        where 1=1
+        <if test="keyword!=''">
+            and goodsName = like concat('%',#{keyword},'%')
+        </if>
+        <if test="category!=''">
+            and goodsCategory = #{category}
+        </if>
+    </select>
+    <select id="selectByCategory" parameterType="SearchCondition" resultType="goodsDto">
+        select g.goodsNo as goodsNo
+        ,g.goodsCategory as goodsCategory
+        ,g.goodsCategoryDetail as goodsCategoryDetail
+        ,g.goodsName as goodsName
+        ,g.goodsPrice as goodsPrice
+        ,g.goodsStock as goodsStock
+        ,g.goodsImgPath as goodsImgPath
+        ,IFNULL(r.score,0) as goodsReviewScore
+        from goods g,
+        (select g.goodsNo, avg(r.score) score
+        from goods g LEFT JOIN review r
+        ON g.goodsNo = r.goodsNo
+        group by g.goodsNo) r
+        where g.goodsNo = r.goodsNo
+        <if test="category!=''">
+            and goodsCategory = #{category}
+        </if>
+        <if test="keyword!=''">
+            and goodsName like concat('%',#{keyword},'%')
+        </if>
+        <include refid="optionCondition"/>
+        LIMIT #{offset}, 9;
+    </select>
+    <sql id="optionCondition">
+        <choose>
+            <when test='option=="lowPrice"'>
+                order by goodsPrice asc
+            </when>
+            <when test='option=="highPrice"'>
+                order by goodsPrice desc
+            </when>
+            <when test='option=="review"'>
+                order by score desc
+            </when>
+        </choose>
+    </sql>
+    <select id="selectFaqList" parameterType="int" resultType="faqDto">
+        SELECT *
+        FROM faq
+        where goodsNo = ${goodsNo}
+    </select>
+    <insert id="insert" parameterType="goodsDto">
+        insert into goods
+            (goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock)
+        values (#{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice}, #{goodsStock})
+    </insert>
+    <insert id="insertFaqQuestion" parameterType="faqDto">
+        insert into faq (userId, goodsNo, question, createdDate)
+        values (#{userId}, #{goodsNo}, #{question}, now());
+    </insert>
+    <insert id="insertFaqAnswer" parameterType="faqDto">
+        update faq
+        set answer    = #{answer},
+            replyDate = now()
+        where faqNo = #{faqNo};
+    </insert>
+    <select id="selectGoodsImg" parameterType="int" resultType="goodsImgDto">
+        select filePath as uploadPath
+        FROM goodsImg
+        where goodsNo = '${goodsNo}'
+        order by goodsImgNo
+    </select>
+    <!-- 상품상세 이미지 경로 입력 -->
+    <insert id="insertGoodsImg" parameterType="map">
+        insert into goodsImg (goodsNo, filePath)
+        values (#{goodsNo},#{filePath});
+    </insert>
+    <update id="updateGoods" parameterType="goodsDto">
+        update goods
+        set goodsName  = #{goodsName},
+            goodsPrice = #{goodsPrice},
+            goodsCategory = #{goodsCategory},
+            goodsCategoryDetail = #{goodsCategoryDetail},
+            goodsStock = #{goodsStock},
+            goodsImgPath = #{goodsImgPath}
+        where goodsNo = #{goodsNo};
+    </update>
+    <delete id="deleteAll">
+        DELETE
+        FROM GOODS
+    </delete>
+    <delete id="delete" parameterType="map">
+        DELETE
+        FROM GOODS
+        where goodsNo = #{goodsNo}
+    </delete>
+    <delete id="deleteGoods" parameterType="int">
+        DELETE
+        FROM GOODS
+        where goodsNo = #{goodsNo}
+    </delete>
+</mapper>

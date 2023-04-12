@@ -38,7 +38,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 id="productName" class="productName">상품 이름</h3>
+                            <h3 id="goodsName" class="goodsName">상품 이름</h3>
                         </div>
                     </div>
                     <div class="row">
@@ -99,7 +99,7 @@
             tmp += '<div data-reviewNo=' + item.reviewNo + ' class="col-md-12">'
             tmp += '<button style="float: right;" type="button" onclick="delReview(this)" class="btn btn-space btn-outline-primary">삭제</button>'
             tmp += '<button style="float: right;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="modReview(this)" class="delBtn btn btn-space btn-outline-primary">수정</button>'
-            tmp += '<h3>' + item.productName + '</h3>'
+            tmp += '<h3>' + item.goodsName + '</h3>'
             tmp += '</div>'
             tmp += '<div class="col-md-12">'
             tmp += '<ul class="list-unstyled d-flex mb-1">'
@@ -125,7 +125,7 @@
 
     // 모달 내용 적용
     function insertModalData(item) {
-        $("#productName").html(item.productName) // 상품명 입력
+        $("#goodsName").html(item.goodsName) // 상품명 입력
         $("#reviewContent").val(item.content) // 상품후기 입력
         $(".fill-ratings").css("width", item.score + '%') // 상품점수 입력
         $("#reviewNo").val(item.reviewNo)

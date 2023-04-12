@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comments/")
+@RequestMapping("/comments")
 public class CommentController {
     private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
 

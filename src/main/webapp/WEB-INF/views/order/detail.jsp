@@ -23,16 +23,16 @@
                                 <div class="row mt-2 gx-4">
                                     <div class="col-md-2">
                                         <!-- 상품 이미지 -->
-                                        <img class="card-img rounded-0 img-fluid" src="${orderItemDto.productImgPath}">
+                                        <img class="card-img rounded-0 img-fluid" src="${orderItemDto.goodsImgPath}">
                                     </div>
                                     <div class="col-md-8">
                                         <!-- 상품 이름 -->
-                                        <p class="card-text">${orderItemDto.productName}</p>
+                                        <p class="card-text">${orderItemDto.goodsName}</p>
                                         <!-- 상품 단가 -->
-                                        <span class="card-text">${orderItemDto.productPrice}원</span>
+                                        <span class="card-text">${orderItemDto.goodsPrice}원</span>
                                         <span class="card-text"> · </span>
                                         <!-- 주문 개수 -->
-                                        <span class="card-text">${orderItemDto.productQty} 개</span><br>
+                                        <span class="card-text">${orderItemDto.goodsQty} 개</span><br>
                                     </div>
                                 </div>
                             </div>
