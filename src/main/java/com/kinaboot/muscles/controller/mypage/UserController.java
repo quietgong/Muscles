@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.controller.mypage;
 
+import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.ReviewDto;
 import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.handler.SearchCondition;
@@ -40,7 +41,12 @@ public class UserController {
         logger.info("유저 단건 조회");
         return new ResponseEntity<>(userService.findUser(userId), HttpStatus.OK);
     }
-
+    @GetMapping("/post/{userId}")
+    @ResponseBody
+    public ResponseEntity<List<PostDto>> postList(@PathVariable String userId) throws Exception {
+        logger.info("내가 쓴 글 조회");
+        return new ResponseEntity<>(postSerivce.findPosts(userId), HttpStatus.OK);
+    }
     @GetMapping("/review/{userId}")
     @ResponseBody
     public ResponseEntity<List<ReviewDto>> reviewList(@PathVariable String userId) {
@@ -48,12 +54,6 @@ public class UserController {
         return new ResponseEntity<>(reviewService.findReviews(userId), HttpStatus.OK);
     }
 
-    @PostMapping("/post/{userId}")
-    public String postList(Model m, @PathVariable String userId) throws Exception {
-        logger.info("내가 쓴 글 조회");
-        m.addAttribute("list", postSerivce.findPosts(userId, new SearchCondition()));
-        return "mypage/mypost";
-    }
 
     @PostMapping("/modify/")
     public String userModify(UserDto newUserDto, HttpSession session, HttpServletRequest request) throws Exception {

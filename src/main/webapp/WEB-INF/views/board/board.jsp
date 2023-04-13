@@ -40,9 +40,18 @@
     <!-- 댓글 -->
     <div class="row mt-5">
         <div class="col-md-12" style="text-align: right">
-            <button class="btn btn-lg btn-outline-primary" type="button" onclick='location.href="<c:url
-                    value='/${postCategory}?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>"'>목록
-            </button>
+            <c:choose>
+                <c:when test="${param.page eq null}">
+                    <button class="btn btn-lg btn-outline-primary" type="button" onclick='location.href="<c:url
+                            value='/${postCategory}?page=1&option=${param.option}&keyword=${param.keyword}'/>"'>목록
+                    </button>
+                </c:when>
+                <c:otherwise>
+                    <button class="btn btn-lg btn-outline-primary" type="button" onclick='location.href="<c:url
+                            value='/${postCategory}?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>"'>목록
+                    </button>
+                </c:otherwise>
+            </c:choose>
             <c:if test="${userId == postDto.userId}">
                 <button id="modify" class="btn btn-lg btn-primary" type="button">수정</button>
                 <button id="remove" class="btn btn-lg btn-primary" type="button">삭제</button>

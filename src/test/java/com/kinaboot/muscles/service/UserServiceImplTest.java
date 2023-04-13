@@ -3,6 +3,7 @@ package com.kinaboot.muscles.service;
 import com.kinaboot.muscles.TestConfigure;
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,6 +49,11 @@ public class UserServiceImplTest extends TestConfigure {
 
         // user ExpiredDate 변경, 포인트 초기화
        userDao.deleteUser(userDao.selectUser(userId).getUserNo());
+    }
+    @Test
+    public void getUserPosts() throws Exception{
+        String userId = "admin";
+        postSerivce.findPosts(userId);
     }
 
 }

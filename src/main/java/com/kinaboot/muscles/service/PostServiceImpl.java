@@ -53,6 +53,15 @@ public class PostServiceImpl implements PostSerivce{
     }
 
     @Override
+    public List<PostDto> findPosts(String userId) throws Exception {
+        List<PostDto> postDtoList = postDao.selectAllByUser(userId);
+        // 해당 게시물에 대한 댓글 리스트
+        for(PostDto postDto : postDtoList)
+            postDto.setCommentDtoList(commentDao.selectAll(postDto.getPostNo()));
+        return postDtoList;
+    }
+
+    @Override
     public int removePost(Integer postNo) throws Exception {
         commentDao.deletePost(postNo);
         return postDao.delete(postNo);

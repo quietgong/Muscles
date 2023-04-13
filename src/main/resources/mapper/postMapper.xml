@@ -42,7 +42,7 @@
         WHERE type=#{type}
         <include refid="optionCondition"/>
         order by createdDate desc
-        LIMIT #{offset}, 10;
+        LIMIT 0, 10;
     </select>
 
     <sql id="optionCondition">

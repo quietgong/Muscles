@@ -9,6 +9,7 @@ import java.util.List;
 @Service
 public interface PostSerivce {
     List<PostDto> findPosts(SearchCondition sc) throws Exception;
+    List<PostDto> findPosts(String userId) throws Exception;
     List<PostDto> findPosts(String userId, SearchCondition sc) throws Exception;
     Integer countPost(SearchCondition sc) throws Exception;
     PostDto findPost(Integer postNo) throws Exception;

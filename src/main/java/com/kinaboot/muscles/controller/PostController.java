@@ -62,6 +62,8 @@ public class PostController {
     // 글 읽기
     @GetMapping("/{postNo}")
     public String postDetails(@PathVariable Integer postNo, Integer page, HttpServletRequest request, Model m) throws Exception {
+        logger.info("글읽기 진입");
+        page = page == null ? 1 : page;
         m.addAttribute("postDto", postSerivce.findPost(postNo));
         m.addAttribute(page);
         m.addAttribute("postCategory", parsingURL(request));
