@@ -6,6 +6,7 @@ import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     CommentService commentService;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
     @Override
     public List<UserDto> findAllUser() {
         return userDao.selectAllUser();
@@ -30,6 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int modifyUser(UserDto userDto) {
+        if(!userDto.getPassword().equals("")){
+            String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
+            userDto.setPassword(encryptedPassword);
+        }
+        else
+            userDto.setPassword(userDao.selectUser(userDto.getUserId()).getPassword());
         return userDao.updateUser(userDto);
     }
 

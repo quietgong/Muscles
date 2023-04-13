@@ -14,8 +14,6 @@ public class UserDto {
     private String address2;
     private int point;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private Date birth;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date expiredDate;
@@ -108,14 +106,6 @@ public class UserDto {
         this.point = point;
     }
 
-    public Date getBirth() {
-        return birth;
-    }
-
-    public void setBirth(Date birth) {
-        this.birth = birth;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -143,7 +133,6 @@ public class UserDto {
                 ", address1='" + address1 + '\'' +
                 ", address2='" + address2 + '\'' +
                 ", point=" + point +
-                ", birth=" + birth +
                 ", createdDate=" + createdDate +
                 ", expiredDate=" + expiredDate +
                 '}';

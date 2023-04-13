@@ -28,7 +28,7 @@
                 <div class="mb-3">
                     <label>비밀번호</label>
                     <input type="text" class="form-control mt-1" id="pw1" name="password"
-                           placeholder="영문+숫자 조합의 5자 이상 20자 이하"><br>
+                           placeholder="※ 영문, 숫자를 조합하여 5~20자 이내로 입력해주세요"><br>
                     <p class="checkMsg" id="pw_check">비밀번호를 입력해주세요</p>
                     <p class="checkMsg" id="pw_length_check">비밀번호는 5자 이상으로 입력해주세요</p>
                 </div>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="mb-3">
                     <label>이메일</label>
-                    <input type="text" class="form-control mt-1" id="email" name="email">
+                    <input type="text" placeholder="이메일을 입력해주세요" class="form-control mt-1" id="email" name="email">
                     <p class="checkMsg" id="email_check">이메일을 입력해주세요</p>
                     <p class="checkMsg" id="email_form_check">올바른 이메일 형식을 입력해주세요</p>
                 </div>

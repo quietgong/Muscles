@@ -4,10 +4,15 @@ import com.kinaboot.muscles.TestConfigure;
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.handler.SearchCondition;
+import org.apache.catalina.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class UserServiceImplTest extends TestConfigure {
@@ -20,6 +25,8 @@ public class UserServiceImplTest extends TestConfigure {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
     @Test
     public void adminUserOutTest() throws Exception {
         int userCnt = userDao.selectAllUser().size();
@@ -48,12 +55,24 @@ public class UserServiceImplTest extends TestConfigure {
         userDao.insertExit(map);
 
         // user ExpiredDate 변경, 포인트 초기화
-       userDao.deleteUser(userDao.selectUser(userId).getUserNo());
+        userDao.deleteUser(userDao.selectUser(userId).getUserNo());
     }
+
     @Test
-    public void getUserPosts() throws Exception{
+    public void getUserPosts() throws Exception {
         String userId = "admin";
         postSerivce.findPosts(userId);
+    }
+
+    @Test
+    public void modifyUserTest() throws Exception{
+        String userId = "test10";
+        UserDto originUserDto = userService.findUser(userId);
+        UserDto newUserDto = userService.findUser(userId);
+
+        String originPassword = userService.findUser(userId).getPassword();
+
+        userService.modifyUser(originUserDto);
     }
 
 }

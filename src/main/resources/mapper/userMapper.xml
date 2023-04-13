@@ -42,6 +42,8 @@
         SET EMAIL    = #{email}
           , PHONE    = #{phone}
           , PASSWORD = #{password}
+          , address1 = #{address1}
+          , address2 = #{address2}
         WHERE userId = #{userId}
     </update>
 
@@ -75,8 +77,8 @@
     </insert>
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user
-        (userId, password, email, phone, birth, address1, address2, point, createdDate)
-        values (#{userId}, #{password}, #{email}, #{phone}, now(), #{address1}, #{address2}, 0, now())
+        (userId, password, email, phone, address1, address2, point, createdDate)
+        values (#{userId}, #{password}, #{email}, #{phone}, #{address1}, #{address2}, 0, now())
     </insert>
 
     <insert id="insertExit" parameterType="map">
