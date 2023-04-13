@@ -35,7 +35,17 @@
                 <c:forEach var="postDto" items="${list}">
                     <tr>
                         <td class="title">
-                            <a href="<c:url value="/${postCategory}/${postDto.postNo}${ph.sc.queryString}"/>">${postDto.title}</a>
+                            <a style="text-decoration: none"
+                               href="<c:url value="/${postCategory}/${postDto.postNo}${ph.sc.queryString}"/>">
+                                <c:choose>
+                                    <c:when test="${postDto.commentDtoList.size() > 0}">
+                                        ${postDto.title} [${postDto.commentDtoList.size()}]
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${postDto.title}
+                                    </c:otherwise>
+                                </c:choose>
+                            </a>
                         </td>
                         <td class="writer">${postDto.userId}</td>
                         <td class="viewCnt">${postDto.viewCnt}</td>
@@ -49,9 +59,9 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-10" style="text-align: right">
-            <form method="post" action="<c:url value='/${postCategory}/add'/>">
-                <button type="submit" class="btn btn-lg btn-primary">글쓰기</button>
-            </form>
+            <button type="submit" onclick='location.href="<c:url value='/${postCategory}/'/>"'
+                    class="btn btn-lg btn-primary">글쓰기
+            </button>
         </div>
     </div>
     <div class="row mt-5 justify-content-center">

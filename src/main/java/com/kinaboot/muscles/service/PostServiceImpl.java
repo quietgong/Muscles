@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.service;
 
+import com.kinaboot.muscles.dao.CommentDao;
 import com.kinaboot.muscles.dao.PostDao;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.handler.SearchCondition;
@@ -12,6 +13,9 @@ import java.util.List;
 public class PostServiceImpl implements PostSerivce{
     @Autowired
     PostDao postDao;
+
+    @Autowired
+    CommentDao commentDao;
 
     @Override
     public PostDto findPost(Integer postNo) throws Exception {
@@ -37,7 +41,11 @@ public class PostServiceImpl implements PostSerivce{
 
     @Override
     public List<PostDto> findPosts(SearchCondition sc) throws Exception {
-        return postDao.searchResult(sc);
+        List<PostDto> postDtoList = postDao.searchResult(sc);
+        // 해당 게시물에 대한 댓글 리스트
+        for(PostDto postDto : postDtoList)
+            postDto.setCommentDtoList(commentDao.selectAll(postDto.getPostNo()));
+        return postDtoList;
     }
     @Override
     public List<PostDto> findPosts(String userId, SearchCondition sc) {
@@ -46,6 +54,7 @@ public class PostServiceImpl implements PostSerivce{
 
     @Override
     public int removePost(Integer postNo) throws Exception {
+        commentDao.deletePost(postNo);
         return postDao.delete(postNo);
     }
     @Override

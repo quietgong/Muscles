@@ -6,17 +6,12 @@ import java.util.List;
 
 public interface CommentDao {
     int count() throws Exception;
-
+    List<CommentDto> selectAll(Integer postNo) throws Exception;
+    CommentDto select(Integer commentNo) throws Exception;
+    int insert(CommentDto commentDto) throws Exception;
+    int update(CommentDto commentDto) throws Exception;
     int deleteAll();
-
     int delete(Integer commentNo) throws Exception;
     int delete(String userId) throws Exception;
-
-    int insert(CommentDto commentDto) throws Exception;
-
-    CommentDto select(Integer commentNo) throws Exception;
-
-    List<CommentDto> selectAll(Integer postNo) throws Exception;
-
-    int update(CommentDto commentDto) throws Exception;
+    int deletePost(Integer postNo);
 }

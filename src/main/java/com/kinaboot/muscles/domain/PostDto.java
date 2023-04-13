@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class PostDto {
+    private List<CommentDto> commentDtoList;
     private Integer postNo;
     private String type;
     private String title;
@@ -94,10 +96,19 @@ public class PostDto {
         this.viewCnt = viewCnt;
     }
 
+    public List<CommentDto> getCommentDtoList() {
+        return commentDtoList;
+    }
+
+    public void setCommentDtoList(List<CommentDto> commentDtoList) {
+        this.commentDtoList = commentDtoList;
+    }
+
     @Override
     public String toString() {
         return "PostDto{" +
-                "postNo=" + postNo +
+                "commentDtoList=" + commentDtoList +
+                ", postNo=" + postNo +
                 ", type='" + type + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +

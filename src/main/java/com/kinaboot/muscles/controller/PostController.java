@@ -33,7 +33,6 @@ public class PostController {
         logger.info("글 목록 조회");
         String postCategory = parsingURL(request);
         sc.setType(postCategory);
-
         Integer totalCnt = postSerivce.countPost(sc);
         m.addAttribute("postCategory", postCategory);
         m.addAttribute("totalCnt", totalCnt);
@@ -43,16 +42,19 @@ public class PostController {
     }
 
     // 글 쓰기 폼
-    @GetMapping("/add")
+    @GetMapping("/")
     public String postForm(HttpServletRequest request, Model m) {
+        logger.info("글작성 폼 진입");
         m.addAttribute("postCategory", parsingURL(request));
+        logger.info("카테고리 : " + parsingURL(request));
         return "board/boardForm";
     }
 
     // 글 쓰기
-    @PostMapping("")
-    public String postAdd(PostDto postDto, String postCategory, HttpSession session) throws Exception {
-        postDto.setUserId((String) session.getAttribute("id"));
+    @PostMapping("/")
+    public String postAdd(PostDto postDto, String postCategory) throws Exception {
+        logger.info("글작성 완료");
+        logger.info("카테고리 : " + postCategory);
         postSerivce.addPost(postDto, postCategory);
         return "redirect:/" + postCategory;
     }

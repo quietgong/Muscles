@@ -32,7 +32,6 @@
         set content = #{content}
           , modDate = now()
         where commentNo = #{commentNo}
-          and userId = #{userId}
     </update>
     <delete id="deleteAll">
         DELETE
@@ -47,6 +46,9 @@
         DELETE
         from comment
         where userId = '${userId}'
+    </delete>
+    <delete id="deletePost" parameterType="int">
+        DELETE from comment where postNo='${postNo}'
     </delete>
 
 </mapper>

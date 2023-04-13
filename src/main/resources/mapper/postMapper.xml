@@ -41,6 +41,7 @@
         FROM POST
         WHERE type=#{type}
         <include refid="optionCondition"/>
+        order by createdDate desc
         LIMIT #{offset}, 10;
     </select>
 

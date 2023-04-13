@@ -26,23 +26,33 @@ public class CommentController {
         logger.info("댓글 목록 출력");
         return new ResponseEntity<>(commentService.findComments(postNo), HttpStatus.OK);
     }
+
     @PostMapping("")
     public ResponseEntity<String> commentAdd(@RequestBody CommentDto commentDto) throws Exception {
+        logger.info("댓글 작성");
         commentService.addComment(commentDto);
         return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
     }
+
+    @PatchMapping("")
+    public ResponseEntity<String> commentModify(@RequestBody CommentDto commentDto) {
+        logger.info("댓글 수정");
+        try {
+            commentService.modifyComment(commentDto);
+            return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("MOD_FAIL", HttpStatus.OK);
+        }
+    }
+
     @DeleteMapping("{commentNo}")
-    public ResponseEntity<String> commentRemove(@PathVariable Integer commentNo) throws Exception {
+    public ResponseEntity<String> commentRemove(@PathVariable Integer commentNo) {
+        logger.info("댓글 삭제");
         try {
             commentService.removeComment(commentNo);
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("DEL_FAIL", HttpStatus.OK);
         }
-    }
-    @PatchMapping("")
-    public ResponseEntity<String> commentModify(@RequestBody CommentDto commentDto) throws Exception {
-        commentService.modifyComment(commentDto);
-        return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
     }
 }
