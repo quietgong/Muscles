@@ -22,4 +22,6 @@ public interface UserService {
     int modifyPoint(String userId, int point, int orderNo);
 
     int countUser(String userId);
+
+    int removeCoupon(String userId);
 }

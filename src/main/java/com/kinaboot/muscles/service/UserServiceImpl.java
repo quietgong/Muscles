@@ -50,19 +50,26 @@ public class UserServiceImpl implements UserService {
         }
         map.put("opinion", removeType.equals("admin") ? "관리자 탈퇴 처리" : opinion);
 
-        // 탈퇴유저 사용기록(게시물, 댓글, 포인트) 삭제
-        userDao.removePoint(userId);
-        postSerivce.removePost(userId);
-        commentService.removeComment(userId);
+        // 탈퇴유저 사용기록 삭제
+        postSerivce.removePost(userId); // 게시물 삭제
+        commentService.removeComment(userId); // 댓글 삭제
+        userDao.deleteCoupon(userId); // 쿠폰 삭제
+
         // 탈퇴 기록 저장
         userDao.insertExit(map);
-        // user ExpiredDate 변경
+
+        // user ExpiredDate 변경, 포인트 초기화
         return userDao.deleteUser(userDao.selectUser(userId).getUserNo());
     }
 
     @Override
     public int countUser(String userId) {
         return userDao.countUser(userId);
+    }
+
+    @Override
+    public int removeCoupon(String userId) {
+        return userDao.deleteCoupon(userId);
     }
 
     @Override

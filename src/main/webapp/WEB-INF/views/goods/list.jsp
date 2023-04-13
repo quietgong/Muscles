@@ -47,11 +47,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <ul class="list-inline shop-top-menu pb-3 pt-1">
+                        <c:if test="${param.keyword ne null}">
                         <li class="list-inline-item">
                             <p class="h3 text-dark text-decoration-none mr-3">
-                                ${param.keyword}
+                                키워드 <strong>${param.keyword}</strong> 검색 결과
                             </p>
                         </li>
+                        </c:if>
                         <li class="list-inline-item">
                             <p class="h3 text-dark text-decoration-none">총 ${totalCnt} 개의 상품이 존재합니다.</p>
                         </li>

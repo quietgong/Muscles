@@ -18,16 +18,11 @@ public class UserController {
     UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    // 유저 전체 목록 조회
     @GetMapping("")
     public ResponseEntity<List<UserDto>> userList() {
-        logger.info("유저 목록 조회");
+        logger.info("유저 전체 목록 조회");
         return new ResponseEntity<>(userService.findAllUser(), HttpStatus.OK);
     }
-
-
-
-    // 유저 탈퇴 처리
     @DeleteMapping("{userId}")
     public ResponseEntity<String> userRemove(@PathVariable String userId) {
         logger.info("유저 탈퇴 처리");

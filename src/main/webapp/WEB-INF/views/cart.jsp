@@ -12,32 +12,32 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
                         </div>
-                        <form id="cartForm" action="<c:url value='/order/checkout'/>" method="post">
-                            <!-- 장바구니 상품 시작 -->
-                            <div id="cartItemList" class="card rounded-3 mb-4">
-                                <!-- AJAX 동적 추가 -->
-                            </div>
-                            <!-- 장바구니 상품 끝 -->
-                            <!-- 요약 정보 시작 -->
-                            <div class="card mb-5">
-                                <div class="card-body p-5">
-                                    <div class="float-end">
-                                        <p class="mb-0 me-5 d-flex align-items-center">
-                                            <span class="small text-muted me-2">총 주문금액 : ₩</span>
-                                            <span id="totalPrice" class="lead fw-normal"></span>
-                                        </p>
-                                    </div>
+                        <!-- 장바구니 상품 시작 -->
+                        <div id="cartItemList" class="card rounded-3 mb-4">
+                            <!-- AJAX 동적 추가 -->
+                        </div>
+                        <!-- 장바구니 상품 끝 -->
+                        <!-- 요약 정보 시작 -->
+                        <div class="card mb-5">
+                            <div class="card-body p-5">
+                                <div class="float-end">
+                                    <p class="mb-0 me-5 d-flex align-items-center">
+                                        <span class="small text-muted me-2">총 주문금액 : ₩</span>
+                                        <span id="totalPrice" class="lead fw-normal"></span>
+                                    </p>
                                 </div>
                             </div>
-                            <!-- 요약 정보 끝 -->
-                            <div class="d-flex justify-content-end">
-                                <button type="button"
-                                        onclick="location.href='<c:url value='/goods/list?category=cardio'/>'"
-                                        class="btn btn-light btn-lg me-2">계속 쇼핑하기
-                                </button>
-                                <button id="order" type="submit" class="btn btn-primary btn-lg">주문하기</button>
-                            </div>
-                        </form>
+                        </div>
+                        <!-- 요약 정보 끝 -->
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                    onclick="location.href='<c:url value='/goods/list'/>'"
+                                    class="btn btn-light btn-lg me-2">계속 쇼핑하기
+                            </button>
+                            <form id="cartForm" action="<c:url value='/order/checkout'/>" method="post">
+                            </form>
+                            <button id="order" type="button" class="btn btn-primary btn-lg">주문하기</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
             tmp += '<button type="button" class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepDown(); qtyChange(this)">'
             tmp += '<i class="fas fa-minus"></i>'
             tmp += '</button>'
-            tmp += '<input style="text-align: center" min="1" name="quantity" value=' + item.goodsQty + ' type="number" class="form-control form-control-sm" />'
+            tmp += '<input style="text-align: center" min="1" max="10" name="quantity" readonly value=' + item.goodsQty + ' type="number" class="form-control" />'
             tmp += '<button type="button" class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepUp(); qtyChange(this)">'
             tmp += '<i class="fas fa-plus"></i>'
             tmp += '</button>'

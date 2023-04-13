@@ -27,7 +27,7 @@
         FROM GOODS
         where 1=1
         <if test="keyword!=''">
-            and goodsName = like concat('%',#{keyword},'%')
+            and goodsName like concat('%',#{keyword},'%')
         </if>
         <if test="category!=''">
             and goodsCategory = #{category}

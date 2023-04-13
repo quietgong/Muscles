@@ -92,6 +92,7 @@
     <delete id="deleteUser" parameterType="int">
         UPDATE USER
         SET expiredDate = now()
+            ,point = 0
         where userNo = '${userNo}';
     </delete>
     <delete id="deleteData" parameterType="String">
@@ -117,9 +118,9 @@
         where userId = #{userId}
         and pointName = ${pointName};
     </delete>
-    <update id="modifyUserPoint" parameterType="String">
-        UPDATE USER
-        SET point = 0
-        where userId = '${userId}'
-    </update>
+    <delete id="deleteCoupon" parameterType="String">
+        delete
+        from coupon
+        where userId = '${userId}';
+    </delete>
 </mapper>

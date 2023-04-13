@@ -2,8 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<c:set var="isAdmin"
-       value="${pageContext.request.session.getAttribute('id')=='admin' ? 'hidden' : 'button'}"/>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 
@@ -175,8 +173,10 @@
             <!-- 질문 -->
             <div class="col-md-12">
                 <button class="btn btn-secondary disabled" type="button">질문</button>
-                <!-- admin이 접속해있으면 type=hidden 그렇지 않으면 button -->
-                <button class="btn btn-primary" type="${isAdmin}">답변 작성</button>
+                <!-- 관리자만 답변 작성 가능 -->
+                <c:if test="${isAdmin == 'true'}">
+                    <button class="btn btn-primary" type="button">답변 작성</button>
+                </c:if>
                 <p style="float: right;">작성 날짜</p>
             </div>
             <div class="col-md-12 mt-4">

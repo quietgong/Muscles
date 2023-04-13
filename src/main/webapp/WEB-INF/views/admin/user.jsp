@@ -163,7 +163,6 @@
     // tr 데이터 삽입
     function insertData(items, condition) {
         let tmp = "";
-
         function makeTmp(item) {
             tmp = "";
             tmp += '<tr>'
@@ -173,12 +172,12 @@
             return tmp;
         }
 
-        if (condition == 'active') {
+        if (condition === 'active') {
             items.filter(item => item.expiredDate == null).forEach(function (item) {
                 tmp += makeTmp(item)
-                tmp += '<td class="cell"><button type="button" class="btn btn-outline-primary" onclick="expireUser(' + item.userNo + ')">탈퇴처리</button></td>'
+                tmp += '<td class="cell"><button type="button" class="btn btn-outline-primary" onclick="expireUser(\'' + item.userId + '\')">탈퇴처리</button></td>'
             })
-        } else if (condition == 'inactive') {
+        } else if (condition === 'inactive') {
             items.filter(item => item.expiredDate != null).forEach(function (item) {
                 tmp += makeTmp(item)
                 tmp += '<td class="cell"><button type="button" class="btn btn-danger disabled">탈퇴 회원</button></td>'
@@ -186,8 +185,8 @@
         } else {
             items.forEach(function (item) {
                 tmp += makeTmp(item)
-                if (item.expiredDate != null)
-                    tmp += '<td class="cell"><button type="button" class="btn btn-outline-primary" onclick="expireUser(' + item.userNo + ')">탈퇴처리</button></td>'
+                if (item.expiredDate == null)
+                    tmp += '<td class="cell"><button type="button" class="btn btn-outline-primary" onclick="expireUser(\'' + item.userId + '\')">탈퇴처리</button></td>'
                 else
                     tmp += '<td class="cell"><button type="button" class="btn btn-danger disabled">탈퇴 회원</button></td>'
             })
@@ -218,10 +217,10 @@
     }
 
     // 고객 탈퇴 처리
-    function expireUser(userNo){
+    function expireUser(userId){
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/user/" + userNo, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/admin/user/" + userId, // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {              // Http header
                 "Content-Type": "application/json",
             },

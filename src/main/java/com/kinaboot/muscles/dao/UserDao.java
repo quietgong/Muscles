@@ -29,4 +29,6 @@ public interface UserDao {
     int removePoint(String userId);
 
     int countUser(String userId);
+
+    int deleteCoupon(String userId);
 }

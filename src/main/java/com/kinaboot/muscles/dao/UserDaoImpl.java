@@ -108,6 +108,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public int deleteCoupon(String userId) {
+        return session.delete(namespace + "deleteCoupon", userId);
+    }
+
+    @Override
     public int removePoint(String userId) {
         return session.update(namespace + "modifyUserPoint", userId);
     }

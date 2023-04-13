@@ -33,7 +33,7 @@ public class CommentDaoImpl implements CommentDao {
     }
     @Override
     public int delete(String userId) throws Exception {
-        return session.delete(namespace + "deleteUser", userId);
+        return session.delete(namespace + "deleteComment", userId);
     }
     @Override
     public int deletePost(Integer postNo) {

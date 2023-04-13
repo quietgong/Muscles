@@ -35,7 +35,6 @@ public class UserController {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
-    // 유저 단건 조회
     @GetMapping("/user/{userId}")
     public ResponseEntity<UserDto> userDetails(@PathVariable String userId) throws Exception {
         logger.info("유저 단건 조회");

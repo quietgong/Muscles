@@ -3,6 +3,8 @@
 <%@ page session="false" %>
 <c:set var="userId"
        value="${pageContext.request.getSession(false)==null ? '' : pageContext.request.session.getAttribute('id')}"/>
+<c:set var="isAdmin"
+       value="${pageContext.request.session.getAttribute('id')=='admin' ? 'true' : 'false'}"/>
 <html>
 <head>
     <title>Muscles</title>
@@ -21,6 +23,7 @@
 </head>
 <body>
 <div class="mt-3 container d-grid gap-2 d-md-flex justify-content-md-end">
+    <h1>접속ID : ${userId}</h1>
     <button id="admin" onclick="location.href='<c:url value='/admin/user'/>'" type="button"
             class="me-md-2 btn btn-outline-primary" style="float: left">
         관리자 페이지
@@ -119,7 +122,7 @@
     checkLoginStatus()
     function checkLoginStatus() {
         let userId = '${userId}'
-        if (userId == "") { // 로그아웃 상태
+        if (userId === "") { // 로그아웃 상태
             $("#login").css("display", "inline-block")
             $("#register").css("display", "inline-block")
             $("#chatting").css("display", "none")
