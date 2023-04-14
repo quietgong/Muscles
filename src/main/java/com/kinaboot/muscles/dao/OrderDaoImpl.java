@@ -16,17 +16,6 @@ public class OrderDaoImpl implements OrderDao {
     private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
 
     @Override
-    public List<OrderDto> getOrderDtoList(List<OrderDto> orderDtoList) {
-        for (OrderDto orderDto : orderDtoList) {
-            // 해당 주문정보의 orderNo를 통해 주문상품 정보, 배송정보, 결제정보를 가져온다.
-            int orderNo = orderDto.getOrderNo();
-            orderDto.setOrderItemDtoList(session.selectList(namespace + "selectOrderItemList", orderNo));
-            orderDto.setDeliveryDto(session.selectOne(namespace + "selectDelivery", orderNo));
-            orderDto.setPaymentDto(session.selectOne(namespace + "selectPayment", orderNo));
-        }
-        return orderDtoList;
-    }
-    @Override
     public List<OrderDto> selectAll(String userId) {
         return session.selectList(namespace + "selectOrderList", userId);
     }
@@ -52,9 +41,10 @@ public class OrderDaoImpl implements OrderDao {
         return session.update(namespace + "updateOrderStatus", orderNo);
     }
 
+
     @Override
     public List<OrderDto> selectOrderAll(SearchCondition sc) {
-        return getOrderDtoList(session.selectList(namespace + "selectOrderAllList", sc));
+        return session.selectList(namespace + "selectOrderAllList", sc);
     }
 
     @Override
@@ -62,6 +52,15 @@ public class OrderDaoImpl implements OrderDao {
         return session.selectList(namespace + "selectOrderItemList", orderNo);
     }
 
+    @Override
+    public DeliveryDto selectDelivery(int orderNo) {
+        return session.selectOne(namespace + "selectDelivery", orderNo);
+    }
+
+    @Override
+    public PaymentDto selectPayment(int orderNo) {
+        return session.selectOne(namespace + "selectPayment", orderNo);
+    }
 
     @Override
     public OrderDto selectOrder(Integer orderNo) {
@@ -84,31 +83,40 @@ public class OrderDaoImpl implements OrderDao {
         map.put("goodsNo", goodsNo);
         return session.selectOne(namespace + "selectOrderItem", map);
     }
-
-    @Override
-    public int selectUserRecentOrderNo() {
-        return session.selectOne(namespace + "selectUserRecentOrderNo");
-    }
-
     @Override
     public List<OrderDto> selectOrderAllByUser() {
         return session.selectList(namespace + "selectAllByUser");
     }
 
     @Override
-    public int insertOrder(OrderDto orderDto) {
+    public OrderDto insertOrder(OrderDto orderDto) {
         // 주문 정보 생성
         session.insert(namespace + "insertOrder", orderDto);
 
-        // 주문상품 정보 생성
-        for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList())
-            session.insert(namespace + "insertOrderItem", orderItemDto);
+        // 생성한 주문 번호 반환
+        int orderNo = session.selectOne(namespace+"newOrderNo");
 
+        // 주문상품 정보 생성
+        List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
+        for (OrderItemDto orderItemDto : orderItemDtoList) {
+            orderItemDto.setOrderNo(orderNo);
+            session.insert(namespace + "insertOrderItem", orderItemDto);
+        }
         // 배송 정보 생성
-        session.insert(namespace + "insertDelivery", orderDto.getDeliveryDto());
+        DeliveryDto deliveryDto = orderDto.getDeliveryDto();
+        deliveryDto.setOrderNo(orderNo);
+        session.insert(namespace + "insertDelivery", deliveryDto);
 
         // 결제 정보 생성
-        session.insert(namespace + "insertPayment", orderDto.getPaymentDto());
-        return session.selectOne(namespace + "count");
+        PaymentDto paymentDto = orderDto.getPaymentDto();
+        paymentDto.setOrderNo(orderNo);
+        session.insert(namespace + "insertPayment", paymentDto);
+
+        OrderDto newOrderDto = session.selectOne(namespace + "selectOrder", orderNo);
+        newOrderDto.setOrderItemDtoList(orderItemDtoList);
+        newOrderDto.setDeliveryDto(deliveryDto);
+        newOrderDto.setPaymentDto(paymentDto);
+
+        return newOrderDto;
     }
 }

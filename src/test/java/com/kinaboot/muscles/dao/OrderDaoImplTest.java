@@ -58,8 +58,6 @@ public class OrderDaoImplTest {
     @Test
     public void getRecentOrder(){
         OrderDto orderDto = new OrderDto();
-        orderDto.setOrderNo(orderService.findOrderNo());
-        System.out.println("orderDto.getOrderNo() = " + orderDto.getOrderNo());
     }
 
     @Test
@@ -75,7 +73,6 @@ public class OrderDaoImplTest {
     }
     @Test
     public void getOrder(){
-        System.out.println("orderService.getUserRecentOrderNo() = " + orderService.findOrderNo());
     }
 
     @Test

@@ -14,7 +14,7 @@ public interface OrderService {
     List<OrderDto> findOrders(String userId);
 
     // 단건 주문 생성
-    int addOrder(String orderData, int couponNo, int point);
+    OrderDto addOrder(String orderData, int couponNo, int point);
 
     // 단건 주문 승인
     int acceptOrder(int orderNo);
@@ -30,7 +30,4 @@ public interface OrderService {
 
     // 특정 주문 삭제
     int removeOrder(int orderNo);
-
-    // 주문 번호
-    int findOrderNo();
 }

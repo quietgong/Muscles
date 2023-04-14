@@ -68,8 +68,8 @@
         where userId = #{userId};
     </update>
     <insert id="insertPoint" parameterType="map">
-        insert into point (userId, point)
-        values (#{userId}, #{point};
+        insert into point (userId, point, orderNo)
+        values (#{userId}, #{point}, #{orderNo});
     </insert>
     <insert id="insertRecommendPoint" parameterType="map">
         insert into point (userId, point, pointName)

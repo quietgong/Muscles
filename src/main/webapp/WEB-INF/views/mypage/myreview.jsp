@@ -80,8 +80,8 @@
 
     function loadReviewData() {
         $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/mypage/myreview/get", // 컨트롤러에서 대기중인 URL 주소이다.
+            type: "GET",
+            url: "/muscles/mypage/review/" + '${userId}',
             success: function (res) {
                 $("#reviewList").after(toHtml(res))
                 console.log("Get All Review Item!")
@@ -127,7 +127,8 @@
     function insertModalData(item) {
         $("#goodsName").html(item.goodsName) // 상품명 입력
         $("#reviewContent").val(item.content) // 상품후기 입력
-        $(".fill-ratings").css("width", item.score + '%') // 상품점수 입력
+        $(".starRange").val(item.score) // 상품점수 입력
+        $(".fill-ratings").css("width", item.score + '%') // 상품점수에 따른 별점 입력
         $("#reviewNo").val(item.reviewNo)
     }
 
@@ -149,10 +150,11 @@
         })
     }
 
-    function reviewRegister(e) {
+    function reviewRegister() {
         let reviewNo = $("#reviewNo").val()
         let score = $(".starRange").val()
         let content = $('#reviewContent').val()
+        console.log(score)
         $.ajax({
             type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/review/", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -176,14 +178,12 @@
 
     // 리뷰 삭제
     function delReview(e) {
-        alert("삭제 동작")
+        if (!confirm("정말로 삭제하시겠습니까?")) return;
         let reviewNo = $(e).parent().attr("data-reviewNo")
         $.ajax({
             type: "DELETE",
             url: "/muscles/review/" + reviewNo,
             success: function () {
-                console.log("Delete Review Item!")
-                alert("삭제되었습니다.")
                 location.reload()
             },
             error: function () {

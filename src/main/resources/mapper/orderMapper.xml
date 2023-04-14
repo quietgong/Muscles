@@ -7,6 +7,10 @@
         SELECT count(*)
         FROM orders
     </select>
+    <select id="newOrderNo" resultType="int">
+        SELECT max(orderNo) as orderNo
+        FROM ORDERS
+    </select>
     <!-- 전체 주문목록 반환 -->
     <select id="selectOrderAllList" parameterType="SearchCondition" resultType="orderDto">
         select orderNo, userId, status, createdDate
@@ -66,29 +70,29 @@
         from payment
         WHERE orderNo='${orderNo}'
     </select>
-<select id="selectUserRecentOrderNo" resultType="int">
-    select IFNULL(max(orderNo)+1,1) as orderNo
-    from orders
-</select>
+    <select id="selectUserRecentOrderNo" resultType="int">
+        select IFNULL(max(orderNo)+1,1) as orderNo
+        from orders
+    </select>
     <insert id="insertOrder" parameterType="orderDto">
         insert into orders (userId, status, discount, createdDate)
-        values (#{userId}, 'pending', #{discount}, now());
+        values (#{userId}, '주문대기', #{discount}, now());
     </insert>
 
     <insert id="insertOrderItem" parameterType="orderItemDto">
         insert into orderitem (orderNo, goodsNo, goodsName, goodsCategory, goodsQty, goodsPrice, goodsImgPath)
-        values ((select count(*) from orders), #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsQty},
+        values (#{orderNo}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsQty},
                 #{goodsPrice}, #{goodsImgPath});
     </insert>
 
     <insert id="insertDelivery" parameterType="deliveryDto">
         insert into delivery (orderNo, receiver, PHONE, ADDRESS1, ADDRESS2, MESSAGE)
-        values ((select count(*) from orders), #{receiver}, #{phone}, #{address1}, #{address2}, #{message});
+        values (#{orderNo}, #{receiver}, #{phone}, #{address1}, #{address2}, #{message});
     </insert>
 
     <insert id="insertPayment" parameterType="paymentDto">
         insert into payment (orderNo, PRICE, TYPE)
-        values ((select count(*) from orders), #{price},#{type});
+        values (#{orderNo}, #{price},#{type});
     </insert>
 
     <update id="updateStock" parameterType="map">
@@ -98,13 +102,13 @@
     </update>
     <update id="updateOrderStatus" parameterType="int">
         update orders
-        set status = '배송완료'
+        set status = '주문완료'
         where orderNo = '${orderNo}'
     </update>
 
     <delete id="deleteOrder" parameterType="int">
-        delete
-        from orders
+        update orders
+        set status = '주문취소'
         where orderNo = '${orderNo}'
     </delete>
 </mapper>

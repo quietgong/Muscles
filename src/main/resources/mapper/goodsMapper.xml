@@ -35,16 +35,18 @@
     </select>
     <select id="selectByCategory" parameterType="SearchCondition" resultType="goodsDto">
         select g.goodsNo as goodsNo
-        ,g.goodsCategory as goodsCategory
-        ,g.goodsCategoryDetail as goodsCategoryDetail
-        ,g.goodsName as goodsName
-        ,g.goodsPrice as goodsPrice
-        ,g.goodsStock as goodsStock
-        ,g.goodsImgPath as goodsImgPath
-        ,IFNULL(r.score,0) as goodsReviewScore
+        , g.goodsCategory as goodsCategory
+        , g.goodsCategoryDetail as goodsCategoryDetail
+        , g.goodsName as goodsName
+        , g.goodsPrice as goodsPrice
+        , g.goodsStock as goodsStock
+        , g.goodsImgPath as goodsImgPath
+        , IFNULL(r.score, 0) as goodsReviewScore
         from goods g,
         (select g.goodsNo, avg(r.score) score
-        from goods g LEFT JOIN review r
+        from goods g
+        LEFT JOIN
+        (select * from review where expiredDate is null) r
         ON g.goodsNo = r.goodsNo
         group by g.goodsNo) r
         where g.goodsNo = r.goodsNo

@@ -22,7 +22,6 @@ public class ReviewController {
     @PostMapping("")
     public ResponseEntity<String> reviewAdd(@RequestBody ReviewDto reviewDto) {
         logger.info("리뷰 등록 진입");
-
         reviewService.addReview(reviewDto);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }

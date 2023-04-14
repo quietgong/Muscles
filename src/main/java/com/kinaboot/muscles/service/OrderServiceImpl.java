@@ -52,7 +52,8 @@ public class OrderServiceImpl implements OrderService {
         String userId = orderDto.getUserId();
 
         // 적립 포인트 = 주문금액의 1%
-        int point = (int) (orderDto.getPaymentDto().getPrice() * 0.01);
+        int pointPolicy = 1;
+        int point = (int) (orderDto.getPaymentDto().getPrice() * 0.01 * pointPolicy);
         userDao.updateUserGetPoint(userId, point, orderNo);
 
         // 주문상태 변경
@@ -76,22 +77,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> findAllOrders(SearchCondition sc) {
-        return orderDao.selectOrderAll(sc);
+        List<OrderDto> orderDtoList = orderDao.selectOrderAll(sc);
+        return getOrderDetail(orderDtoList);
     }
 
     @Override
     public List<OrderDto> findOrders(String userId) {
         List<OrderDto> orderDtoList = orderDao.selectAll(userId);
-        return orderDao.getOrderDtoList(orderDtoList);
+        return getOrderDetail(orderDtoList);
     }
 
     @Override
-    public int findOrderNo() {
-        return orderDao.selectUserRecentOrderNo();
-    }
-
-    @Override
-    public int addOrder(String orderData, int couponNo, int point) {
+    public OrderDto addOrder(String orderData, int couponNo, int point) {
         OrderDto orderDto = null;
         try {
             orderDto = JsonToJava(orderData);
@@ -99,18 +96,30 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException(e);
         }
         String userId = orderDto.getUserId();
+
         // 구매 제품 장바구니에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
         for (OrderItemDto orderItemDto : orderItemDtoList)
             cartDao.deleteCartItem(userId, orderItemDto.getGoodsNo());
+
         // 쿠폰 상태 변경
         if(couponNo!=0)
             userService.modifyCoupon(userId, couponNo);
+
         // 포인트 사용 적용
         if(point!=0)
             userService.modifyPoint(userId, -point, orderDto.getOrderNo());
+
         // 주문 정보 생성
         return orderDao.insertOrder(orderDto);
+    }
+    private List<OrderDto> getOrderDetail(List<OrderDto> orderDtoList){
+        for(OrderDto orderDto : orderDtoList){
+            orderDto.setOrderItemDtoList(orderDao.selectOrderItemList(orderDto.getOrderNo()));
+            orderDto.setDeliveryDto(orderDao.selectDelivery(orderDto.getOrderNo()));
+            orderDto.setPaymentDto(orderDao.selectPayment(orderDto.getOrderNo()));
+        }
+        return orderDtoList;
     }
     public OrderDto JsonToJava(String rowData) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

@@ -2,6 +2,7 @@ package com.kinaboot.muscles.controller.mypage;
 
 import com.kinaboot.muscles.domain.OrderDto;
 import com.kinaboot.muscles.domain.OrderItemDto;
+import com.kinaboot.muscles.domain.ReviewDto;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.ReviewService;
 import org.slf4j.Logger;
@@ -31,19 +32,19 @@ public class OrderController {
         logger.info("유저 주문내역 진입");
         String userId = (String) session.getAttribute("id");
         List<OrderDto> orderDtoList = orderService.findOrders(userId);
-        if (orderDtoList != null) {
-            orderDtoList = verifyReviewExist(orderService.findOrders(userId));
-            m.addAttribute(orderDtoList);
-        }
+        if (orderDtoList != null)
+            m.addAttribute("orderDtoList", verifyReviewExist(orderDtoList));
         logger.info("해당 유저 주문내역 : " + orderDtoList);
         return "mypage/myorder";
     }
+
     private List<OrderDto> verifyReviewExist(List<OrderDto> orderDtoList) {
         for (OrderDto orderDto : orderDtoList) {
-            for (OrderItemDto orderItemDto : orderService.findOrderItems(orderDto.getOrderNo()))
-                orderItemDto.setHasReview
-                        (reviewService.findReview
-                                (orderItemDto.getOrderNo(), orderItemDto.getGoodsNo()) != null);
+            for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()){
+                ReviewDto reviewDto = reviewService.findReview(orderItemDto.getOrderNo(), orderItemDto.getGoodsNo());
+                boolean hasReview = reviewDto != null;
+                orderItemDto.setHasReview(hasReview);
+            }
         }
         return orderDtoList;
     }

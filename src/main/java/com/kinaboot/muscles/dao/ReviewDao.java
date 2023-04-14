@@ -17,4 +17,8 @@ public interface ReviewDao {
     int deleteReview(Integer reviewNo);
 
     int updateReview(ReviewDto reviewDto);
+
+    int deleteGoodsReview(Integer goodsNo);
+
+    List<ReviewDto> selectGoodsReview(Integer goodsNo);
 }

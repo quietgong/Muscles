@@ -44,9 +44,9 @@ public class OrderController {
 
     @GetMapping("")
     @ResponseBody
-    public ResponseEntity<OrderItemDto> orderItemList(Integer orderNo, Integer productNo) {
+    public ResponseEntity<OrderItemDto> orderItemList(Integer orderNo, Integer goodsNo) {
         logger.info("주문상품 목록 가져오기");
-        return new ResponseEntity<>(orderService.findOrderItem(orderNo, productNo),
+        return new ResponseEntity<>(orderService.findOrderItem(orderNo, goodsNo),
                 HttpStatus.OK);
     }
 
@@ -63,12 +63,8 @@ public class OrderController {
 
     @PostMapping("/")
     public String orderAdd(String orderData, int couponNo, int point, Model m) {
-        System.out.println("orderData = " + orderData);
         logger.info("결제 후 주문 처리");
-        int orderNo = orderService.addOrder(orderData, couponNo, point); // 주문 생성
-        OrderDto orderDto = orderService.findOrder(orderNo);
-        System.out.println("orderDto.getOrderItemDtoList() = " + orderDto.getOrderItemDtoList());
-        m.addAttribute("orderDto", orderService.findOrder(orderNo));
+        m.addAttribute(orderService.addOrder(orderData, couponNo, point)); // 생성된 주문 데이터 반환
         return "order/complete";
     }
 

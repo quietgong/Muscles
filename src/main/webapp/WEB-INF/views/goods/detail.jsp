@@ -43,7 +43,7 @@
                         </ul>
                         <p class="py-2">
                                 <span class="list-inline-item text-dark">
-                                평점 : ${goodsDto.goodsReviewScore} | 리뷰 (${goodsDto.reviewDtoList.size()})
+                                평점 : ${goodsDto.goodsReviewScore/20} | 리뷰 (${goodsDto.reviewDtoList.size()})
                                 </span>
                         </p>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt
@@ -99,8 +99,8 @@
             <h4>상품 설명</h4>
         </div>
         <c:forEach var="goodsImgDto" items="${goodsImgDtoList}">
-            <div class="row">
-                <div class="col-md-12 mt-3">
+            <div class="row justify-content-center">
+                <div class="col-md-8 mt-5">
                     <img class="img-fluid" src="${goodsImgDto.uploadPath}"/>
                 </div>
             </div>

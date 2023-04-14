@@ -4,6 +4,14 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
+<style>
+    tr{
+        vertical-align: middle;
+    }
+    td{
+        vertical-align: middle;
+    }
+</style>
 <div class="container">
     <div class="row mt-3">
         <!-- 사이드바 -->
@@ -40,7 +48,7 @@
                                        href="<c:url value='/order/${orderDto.orderNo}'/>">상세내역 확인</a>
                                 </div>
                                 <div class="col-md-12">
-                                    <c:set var="accept" value="${orderDto.status=='pending' ? 'inline' : 'none'}"/>
+                                    <c:set var="accept" value="${orderDto.status=='주문대기' ? 'inline' : 'none'}"/>
                                     <button style="display: ${accept}" type="button" class="btn btn-outline-danger"
                                             onclick="orderCancel(this)">주문 취소
                                     </button>
@@ -52,7 +60,7 @@
                                         <div class="card-body">
                                             <div class="row mt-2">
                                                 <h5 style="font-weight: bold; display: block;"
-                                                    class="card-text">${orderDto.status=='pending' ? '배송준비' : '배송완료'}</h5>
+                                                    class="card-text">${orderDto.status}</h5>
                                             </div>
                                             <div class="row mt-2 gx-4">
                                                 <div class="col-md-3">
@@ -80,7 +88,7 @@
                                             </div>
                                         </div>
                                         <c:set var="hasReview"
-                                               value="${orderDto.status == '배송완료' && orderItemDto.hasReview == false ? 'inline' : 'hidden'}"/>
+                                               value="${orderDto.status == '주문완료' && orderItemDto.hasReview == false ? 'inline' : 'none'}"/>
                                         <button style="display: ${hasReview}" type=button class="btn btn-primary"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                 onclick="createReview(${orderDto.orderNo}, ${orderItemDto.goodsNo})">
@@ -188,6 +196,7 @@
                 "Content-Type": "application/json",
             },
             success: function (res) {
+                console.log(res)
                 insertModalData(res)
             },
             error: function () {

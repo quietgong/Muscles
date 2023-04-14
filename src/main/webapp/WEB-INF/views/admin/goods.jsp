@@ -296,6 +296,7 @@
 <script>
     // 상품 정보 삭제
     function removeProduct(goodsNo) {
+        if (!confirm("정말로 삭제하시겠습니까?")) return;
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/admin/goods/" + goodsNo, // 컨트롤러에서 대기중인 URL 주소이다.

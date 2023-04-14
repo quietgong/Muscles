@@ -1,6 +1,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../nav.jsp" %>
+<style>
+    tr{
+        vertical-align: middle;
+    }
+    td{
+        vertical-align: middle;
+    }
+</style>
 <div class="container">
     <div class="row mt-5">
         <div class="col-md-2">
@@ -35,13 +43,11 @@
                         <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab"
                            href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">전체 주문</a>
                         <a class="flex-sm-fill text-sm-center nav-link" id="orders-paid-tab" data-bs-toggle="tab"
-                           href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">배송 대기</a>
+                           href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">대기 주문</a>
                         <a class="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab"
-                           href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">배송
-                            완료</a>
+                           href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">완료 주문</a>
                         <a class="flex-sm-fill text-sm-center nav-link" id="orders-cancelled-tab" data-bs-toggle="tab"
-                           href="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">취소
-                            주문</a>
+                           href="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">취소 주문</a>
                     </nav>
                 </div>
                 <div class="col-md-12">
@@ -60,6 +66,7 @@
                                                 <th class="cell">주문일자</th>
                                                 <th class="cell">상태</th>
                                                 <th class="cell">주문가격</th>
+                                                <th class="cell"></th>
                                                 <th class="cell"></th>
                                             </tr>
                                             </thead>
@@ -85,13 +92,22 @@
                                                     <td class="cell"><span
                                                             class="badge bg-success">${orderDto.status}</span></td>
                                                     <td class="cell">${orderDto.paymentDto.price}</td>
-                                                    <td class="cell"><a class="btn-sm app-btn-secondary"
+                                                    <td class="cell"><a style="text-decoration: none" class="btn-sm app-btn-secondary"
                                                                         href="<c:url value='/order/${orderDto.orderNo}'/>">상세
                                                         보기</a>
                                                     </td>
-                                                    <c:if test="${orderDto.status == '대기중'}">
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary"
-                                                                            href="#">승인</a>
+                                                    <c:if test="${orderDto.status == '주문대기'}">
+                                                        <td class="cell">
+                                                            <button type="button"
+                                                                    class="orderAccept btn btn-outline-primary">승인
+                                                            </button>
+                                                        </td>
+                                                    </c:if>
+                                                    <c:if test="${orderDto.status == '주문대기'}">
+                                                        <td class="cell">
+                                                            <button type="button"
+                                                                    class="orderCancel btn btn-outline-danger">주문취소
+                                                            </button>
                                                         </td>
                                                     </c:if>
                                                 </tr>
@@ -244,17 +260,18 @@
 </div>
 
 <script>
-    // 주문 취소
-    $(".orderCancel").on("click", function () {
-        let orderNo = $(this).prev().prev().val()
+    // 주문 승인
+    $(".orderAccept").on("click", function () {
+        let orderNo = $(this).parent().parent().children().html()
         $.ajax({
-            type: "DELETE", // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/order/" + orderNo,
+            type: "POST",
+            url: "/muscles/admin/order/" + orderNo,
             headers: { // Http header
                 "Content-Type": "application/json",
             },
-            success: function () {
-                alert("주문이 취소되었습니다.")
+            success: function (res) {
+                if (res === 'ACCEPT_OK')
+                    alert("주문을 승인하였습니다.")
                 location.replace("")
             },
             error: function () {
@@ -262,27 +279,25 @@
             }
         })
     })
-    // 주문 승인
-    $(".orderAccept").on("click", function () {
-        if ($(this).val() !== '') {
-            let orderNo = $(this).next().val();
-            console.log(orderNo)
-            $.ajax({
-                type: "POST", // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/admin/order/" + orderNo, // 컨트롤러에서 대기중인 URL 주소이다.
-                headers: { // Http header
-                    "Content-Type": "application/json",
-                },
-                success: function (res) {
-                    if (res === 'ACCEPT_OK')
-                        alert("주문을 승인하였습니다.")
-                    location.replace("")
-                },
-                error: function () {
-                    console.log("통신 실패")
-                }
-            })
-        }
+
+    // 주문 취소
+    $(".orderCancel").on("click", function () {
+        let orderNo = $(this).parent().parent().children().html()
+        $.ajax({
+            type: "DELETE", // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/admin/order/" + orderNo,
+            headers: { // Http header
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                if(res === 'CANCEL_OK')
+                    alert("주문이 취소되었습니다.")
+                location.replace("")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
     })
 </script>
 <!-- footer -->

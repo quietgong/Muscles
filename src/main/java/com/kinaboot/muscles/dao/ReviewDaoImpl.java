@@ -27,8 +27,18 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
+    public List<ReviewDto> selectGoodsReview(Integer goodsNo) {
+        return session.selectList(namespace + "selectGoodsReview", goodsNo);
+    }
+
+    @Override
+    public int deleteGoodsReview(Integer goodsNo) {
+        return session.delete(namespace + "deleteGoodsReview", goodsNo);
+    }
+
+    @Override
     public ReviewDto selectReview(int orderNo, int goodsNo) {
-        Map map = new HashMap();
+        Map<String, Integer> map = new HashMap<>();
         map.put("orderNo", orderNo);
         map.put("goodsNo", goodsNo);
         return session.selectOne(namespace + "selectReview", map);

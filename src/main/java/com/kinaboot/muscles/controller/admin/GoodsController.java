@@ -25,6 +25,7 @@ public class GoodsController {
     GoodsService goodsService;
 
     private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
+
     @GetMapping("")
     @ResponseBody
     public ResponseEntity<List<GoodsDto>> goodsList() {
