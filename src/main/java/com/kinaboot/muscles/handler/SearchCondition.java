@@ -18,13 +18,38 @@ public class SearchCondition {
     private String subCategory = "";
     private String userId = "";
     private String period = "";
+    private String minPrice = "";
+    private String maxPrice = "";
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date startDate;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date endDate;
 
+    public String getQueryString() {
+        return getQueryString(this.page);
+    }
+
+    public String getQueryString(int page) {
+        return UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("keyword", keyword)
+                .queryParam("option", option)
+                .build().toString();
+    }
+    public SearchCondition() {
+    }
+    public SearchCondition(Integer page) {
+        this(page, "", "");
+    }
+
     public SearchCondition(int page, String keyword) {
         this.page = page;
+        this.keyword = keyword;
+    }
+
+    public SearchCondition(Integer page, String option, String keyword) {
+        this.page=page;
+        this.option = option;
         this.keyword = keyword;
     }
 
@@ -81,6 +106,21 @@ public class SearchCondition {
         this.endDate = endDate;
     }
 
+    public String getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(String minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public String getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(String maxPrice) {
+        this.maxPrice = maxPrice;
+    }
 
     public Integer getOffset() {
         return (page - 1) * 10;
@@ -102,33 +142,6 @@ public class SearchCondition {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "SearchCondition{" +
-                "page=" + page +
-                ", option='" + option + '\'' +
-                ", keyword='" + keyword + '\'' +
-                ", type='" + type + '\'' +
-                ", category='" + category + '\'' +
-                ", subCategory='" + subCategory + '\'' +
-                ", userId='" + userId + '\'' +
-                ", period='" + period + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
-    }
-
-    public SearchCondition() {
-    }
-    public SearchCondition(Integer page) {
-        this(page, "", "");
-    }
-    public SearchCondition(Integer page, String option, String keyword) {
-        this.page=page;
-        this.option = option;
-        this.keyword = keyword;
-    }
-
     public String getOption() {
         return option;
     }
@@ -145,16 +158,21 @@ public class SearchCondition {
         this.keyword = keyword;
     }
 
-    public String getQueryString() {
-        return getQueryString(this.page);
-    }
-
-    public String getQueryString(int page) {
-        //list?page=1&option=A&keyword=test
-        return UriComponentsBuilder.newInstance()
-                .queryParam("page", page)
-                .queryParam("option", option)
-                .queryParam("keyword", keyword)
-                .build().toString();
+    @Override
+    public String toString() {
+        return "SearchCondition{" +
+                "page=" + page +
+                ", option='" + option + '\'' +
+                ", keyword='" + keyword + '\'' +
+                ", type='" + type + '\'' +
+                ", category='" + category + '\'' +
+                ", subCategory='" + subCategory + '\'' +
+                ", userId='" + userId + '\'' +
+                ", period='" + period + '\'' +
+                ", minPrice='" + minPrice + '\'' +
+                ", maxPrice='" + maxPrice + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 }

@@ -3,15 +3,16 @@
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
-
+<form id="conditionForm">
+</form>
 <div class="container py-5">
     <div class="row">
         <div class="col-lg-3">
-            <h1 class="h2 pb-4">Categories</h1>
+            <h1 class="h2 pb-4" style="font-weight: bold">Categories</h1>
             <ul class="list-unstyled templatemo-accordion">
                 <li class="pb-3">
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
-                       href="<c:url value='/goods/list?category=유산소'/>">
+                       href="">
                         유산소
                         <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
@@ -20,8 +21,7 @@
                 </li>
                 <li class="pb-3">
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
-                       href="<c:url value='/goods/list?category=근력'/>">
-                        근력
+                       href="">근력
                         <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul id="collapseTwo" class="collapse list-unstyled pl-3">
@@ -29,20 +29,30 @@
                 </li>
                 <li class="pb-3">
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
-                       href="<c:url value='/goods/list?category=기타'/>">
-                        기타 용품
+                       href="">기타 용품
                         <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul id="collapseThree" class="collapse list-unstyled pl-3">
                     </ul>
                 </li>
             </ul>
+            <div class="form-control mt-5">
+                <span class="h4 pb-3 mt-2" style="font-weight: bold">가격 범위</span>
+                <button class="btn btn-primary" style="float: right;" type="button" onclick="priceSearch()">검색</button>
+                <div class="input-group gap-3">
+                    <input id="minPrice" style="text-align: center;" placeholder="최소 가격" value="${param.minPrice}"
+                           class="form-control" type="number"/>
+                    <label class="form-label mt-2">~</label>
+                    <input id="maxPrice" style="text-align: center;" placeholder="최대 가격" value="${param.maxPrice}"
+                           class="form-control" type="number"/>
+                </div>
+            </div>
         </div>
         <div class="col-lg-9">
             <div class="row">
                 <div class="col-md-6">
                     <ul class="list-inline shop-top-menu pb-3 pt-1">
-                        <c:if test="${param.keyword ne null}">
+                        <c:if test="${param.keyword ne ''}">
                             <li class="list-inline-item">
                                 <p class="h3 text-dark text-decoration-none mr-3">
                                     키워드 <strong>${param.keyword}</strong> 검색 결과
@@ -50,17 +60,21 @@
                             </li>
                         </c:if>
                         <li class="list-inline-item">
-                            <p class="h3 text-dark text-decoration-none">총 ${totalCnt} 개의 상품이 존재합니다.</p>
+                            <p class="h3 text-dark text-decoration-none">총 ${ph.totalCnt} 개의 상품이 존재합니다.</p>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-6 pb-4">
                     <div class="d-flex justify-content-end gap-2">
-                        <form action="" id="conditionSearch">
-                            <button type="button" class="btn btn-primary" name="condition">낮은가격 순</button>
-                            <button type="button" class="btn btn-primary" name="condition">높은가격 순</button>
-                            <button type="button" class="btn btn-primary" name="condition">리뷰 점수 순</button>
-                        </form>
+                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="lowPrice">낮은가격
+                            순
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="highPrice">
+                            높은가격 순
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="review">리뷰 점수
+                            순
+                        </button>
                     </div>
                 </div>
             </div>
@@ -114,7 +128,7 @@
                     <!-- 상품 카드 -->
                 </c:forEach>
                 <!-- 페이징 -->
-                <c:if test="${totalCnt!=null&&totalCnt!=0}">
+                <c:if test="${ph.totalCnt!=null&&ph.totalCnt!=0}">
                     <div class="row">
                         <ul class="pagination pagination-lg justify-content-center">
                             <c:if test="${ph.showPrev}">
@@ -143,6 +157,7 @@
     </div>
 </div>
 <script>
+    // 장바구니 추가
     function addCart(goodsNo, goodsName, goodsCategory, goodsPrice) {
         let data = {}
         data.goodsNo = goodsNo
@@ -158,7 +173,7 @@
             },
             data: JSON.stringify(data),
             success: function (res) {
-                if (res == "ADD_OK")
+                if (res === "ADD_OK")
                     alert("장바구니에 추가하였습니다.")
                 else
                     alert("장바구니에 이미 존재합니다.")
@@ -174,40 +189,6 @@
     $(document).ready(function () {
         let star_rating_width = $('.fill-ratings span').width();
         $('.star-ratings').width(star_rating_width);
-    })
-</script>
-<script>
-    $("button[name='condition']").click(function () {
-        let option = "";
-        if ($(this).html() == "낮은가격 순")
-            option = 'lowPrice'
-        else if ($(this).html() == "높은가격 순")
-            option = 'highPrice'
-        else
-            option = 'review'
-
-        const form = $("#conditionSearch")
-        form.append($('<input>').attr({
-            type: 'hidden',
-            name: 'page',
-            value: ${ph.sc.page}
-        }))
-        form.append($('<input>').attr({
-            type: 'hidden',
-            name: 'category',
-            value: '${ph.sc.category}'
-        }))
-        form.append($('<input>').attr({
-            type: 'hidden',
-            name: 'option',
-            value: option
-        }))
-        form.append($('<input>').attr({
-            type: 'hidden',
-            name: 'keyword',
-            value: '${ph.sc.keyword}'
-        }))
-        form.submit()
     })
 </script>
 <script>
@@ -233,7 +214,7 @@
 
     function addCategoryList(items) {
         items.forEach(function (item) {
-            let link = "<li><a class=\"text-decoration-none\" href=\"<c:url value='/goods/list?category=" + item.category + "&subCategory=" + item.subCategory + "'/>\">" + item.subCategory + "</a></li>";
+            let link = "<li><a style='cursor: pointer' class=\"text-decoration-none\" onclick=\"subCategorySearch(this)\">" + item.subCategory + "</a></li>";
             if (item.category === '유산소')
                 $("#cardioList").append(link)
             else if (item.category === '근력')
@@ -241,6 +222,49 @@
             else
                 $("#collapseThree").append(link)
         })
+    }
+</script>
+<script>
+    // 조건 검색
+    let conditions = {
+        page: '${ph.sc.page}',
+        category: '${ph.sc.category}',
+        option: '${ph.sc.option}',
+        subCategory: '${ph.sc.subCategory}',
+        keyword: '${ph.sc.keyword}',
+        minPrice: '${ph.sc.minPrice}',
+        maxPrice: '${ph.sc.maxPrice}',
+    }
+
+    function priceSearch() {
+        conditions.minPrice = $("#minPrice").val()
+        conditions.maxPrice = $("#maxPrice").val()
+        appendForm(conditions)
+    }
+
+    function keywordSearch(e) {
+        conditions.keyword = $(e).prev().val()
+        appendForm(conditions)
+    }
+
+    function optionSearch(e) {
+        conditions.option = $(e).val()
+        appendForm(conditions)
+    }
+
+    function subCategorySearch(e) {
+        conditions.subCategory = $(e).html()
+        appendForm(conditions)
+    }
+
+    function appendForm(conditions) {
+        const form = $("#conditionForm")
+        Object.keys(conditions).forEach(function (key) {
+            form.append($('<input>').attr({
+                type: 'hidden', name: key, value: conditions[key]
+            }))
+        })
+        form.submit()
     }
 </script>
 <!-- footer -->

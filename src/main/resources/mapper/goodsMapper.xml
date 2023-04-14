@@ -27,6 +27,7 @@
         select count(*)
         FROM GOODS
         where 1=1
+        <include refid="priceCondition"/>
         <include refid="goodsCondition"/>
     </select>
     <select id="selectByCategory" parameterType="SearchCondition" resultType="goodsDto">
@@ -47,19 +48,29 @@
         ON g.goodsNo = r.goodsNo
         group by g.goodsNo) r
         where g.goodsNo = r.goodsNo
-        <if test="keyword!=''">
-            and goodsName like concat('%',#{keyword},'%')
-        </if>
-        <if test="category!=''">
-            and goodsCategory = #{category}
-        </if>
-        <if test="subCategory!=''">
-            and goodsCategoryDetail = #{subCategory}
-        </if>
+        <include refid="priceCondition"/>
         <include refid="goodsCondition"/>
         <include refid="optionCondition"/>
         LIMIT #{offset}, 9;
     </select>
+    <sql id="priceCondition">
+        <choose>
+            <when test='minPrice == "" and maxPrice == ""'>
+                and 1=1
+            </when>
+            <when test='minPrice==""'>
+                <![CDATA[and goodsPrice <= #{maxPrice}]]>
+            </when>
+            <when test='maxPrice==""'>
+                <![CDATA[and goodsPrice >= #{minPrice}]]>
+            </when>
+            <otherwise>
+                <![CDATA[and goodsPrice >= #{minPrice}]]>
+                <![CDATA[and goodsPrice <= #{maxPrice}]]>
+            </otherwise>
+        </choose>
+    </sql>
+
     <sql id="goodsCondition">
         <if test="keyword!=''">
             and goodsName like concat('%',#{keyword},'%')
@@ -71,6 +82,7 @@
             and goodsCategoryDetail = #{subCategory}
         </if>
     </sql>
+
     <sql id="optionCondition">
         <choose>
             <when test='option=="lowPrice"'>

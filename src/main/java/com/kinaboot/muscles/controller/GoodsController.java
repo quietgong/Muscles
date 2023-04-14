@@ -70,12 +70,12 @@ public class GoodsController {
 
     @GetMapping("/list")
     public String goodsList(SearchCondition sc, Model m) {
+        System.out.println("sc = " + sc);
         logger.info("상품 목록 진입");
         int totalCnt = goodsService.getTotalCntByCategory(sc);
         PageHandler ph = new PageHandler(totalCnt, sc);
         m.addAttribute("list", goodsService.findGoods(sc));
         m.addAttribute("ph", ph);
-        m.addAttribute("totalCnt", totalCnt);
         return "goods/list";
     }
 

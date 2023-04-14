@@ -111,7 +111,7 @@
         <form action="<c:url value='/goods/list'/>" class="modal-content modal-body border-0 p-0">
             <div class="input-group mb-2">
                 <input type="text" class="form-control" id="inputModalSearch" name="keyword" placeholder="상품을 검색해보세요">
-                <button type="submit" class="input-group-text bg-success text-light">
+                <button type="button" onclick="keywordSearch(this)" class="input-group-text bg-success text-light">
                     <i class="fa fa-fw fa-search text-white"></i>
                 </button>
             </div>
