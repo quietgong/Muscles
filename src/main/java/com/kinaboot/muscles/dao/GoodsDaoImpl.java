@@ -54,6 +54,11 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
+    public List<GoodsCategoryDto> selectAllCategories() {
+        return session.selectList(namespace + "selectAllCategories");
+    }
+
+    @Override
     public List<GoodsDto> selectAll() {
         return session.selectList(namespace + "selectAll");
     }

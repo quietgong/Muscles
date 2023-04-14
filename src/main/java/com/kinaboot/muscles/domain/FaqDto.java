@@ -7,13 +7,23 @@ import java.util.Date;
 public class FaqDto {
     private Integer faqNo;
     private String userId;
-    private Integer productNo;
+    private Integer goodsNo;
     private String question;
     private String answer;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date replyDate;
+
+    public FaqDto() {
+    }
+
+    public FaqDto(String userId, Integer goodsNo, String question, String answer) {
+        this.userId = userId;
+        this.goodsNo = goodsNo;
+        this.question = question;
+        this.answer = answer;
+    }
 
     public Integer getFaqNo() {
         return faqNo;
@@ -31,12 +41,12 @@ public class FaqDto {
         this.userId = userId;
     }
 
-    public Integer getProductNo() {
-        return productNo;
+    public Integer getGoodsNo() {
+        return goodsNo;
     }
 
-    public void setProductNo(Integer productNo) {
-        this.productNo = productNo;
+    public void setGoodsNo(Integer goodsNo) {
+        this.goodsNo = goodsNo;
     }
 
     public String getQuestion() {
@@ -76,7 +86,7 @@ public class FaqDto {
         return "FaqDto{" +
                 "faqNo=" + faqNo +
                 ", userId='" + userId + '\'' +
-                ", productNo=" + productNo +
+                ", goodsNo=" + goodsNo +
                 ", question='" + question + '\'' +
                 ", answer='" + answer + '\'' +
                 ", createdDate=" + createdDate +

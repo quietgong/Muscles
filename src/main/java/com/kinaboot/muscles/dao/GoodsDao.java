@@ -26,4 +26,6 @@ public interface GoodsDao {
     int selectByCategoryCnt(SearchCondition sc);
 
     List<GoodsImgDto> selectGoodsDetailImg(Integer GoodsNo);
+
+    List<GoodsCategoryDto> selectAllCategories();
 }

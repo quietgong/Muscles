@@ -46,9 +46,7 @@
                                 평점 : ${goodsDto.goodsReviewScore/20} | 리뷰 (${goodsDto.reviewDtoList.size()})
                                 </span>
                         </p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temp incididunt
-                            ut labore et dolore magna aliqua. Quis ipsum suspendisse. Donec condimentum elementum
-                            convallis. Nunc sed orci a diam ultrices aliquet interdum quis nulla.</p>
+                        <p>${goodsDto.goodsDescription}</p>
                         <input type="hidden" name="goods-title" value="Activewear">
                         <div class="row">
                             <div class="col-auto">
@@ -151,10 +149,11 @@
         <div class="row text-left p-2 pb-3">
             <div class="col-md-12">
                 <h4 style="display: inline;">상품 문의</h4>
-                <button style="float: right;" class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        onclick="registerContent('question')">문의하기
-                </button>
+                <c:if test="${userId ne null && userId != 'admin'}">
+                    <button style="float: right;" class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal" onclick="registerQuestion()">문의하기
+                    </button>
+                </c:if>
             </div>
         </div>
         <div class="row p-2 pb-3">
@@ -169,38 +168,11 @@
         </div>
         <hr style="border: 2px solid black;">
         <!-- 상품문의 문답 -->
-        <div class="row mt-4">
-            <!-- 질문 -->
-            <div class="col-md-12">
-                <button class="btn btn-secondary disabled" type="button">질문</button>
-                <!-- 관리자만 답변 작성 가능 -->
-                <c:if test="${isAdmin == 'true'}">
-                    <button class="btn btn-primary" type="button">답변 작성</button>
-                </c:if>
-                <p style="float: right;">작성 날짜</p>
-            </div>
-            <div class="col-md-12 mt-4">
-                <span>질문입니다.</span>
-            </div>
-        </div>
-        <div class="row mt-4">
-            <!-- 답변 -->
-            <div class="col-md-12 mt-4">
-                <span>  </span>
-                <button class="btn btn-outline-primary disabled" type="button">답변</button>
-                <p style="float: right;">작성 날짜</p>
-            </div>
-            <div class="col-md-12 mt-4">
-                <span>  </span>
-                <span>답변입니다</span>
-            </div>
-        </div>
-
-        <div id="faqList" class="col-md-12">
+        <div id="faqList" class="row mt-4 justify-content-center">
             <!-- AJAX 동적 추가 -->
         </div>
+        <!-- 상품문의 문답 -->
     </div>
-    <!-- 상품문의 문답 -->
 </section>
 <!-- 상품 문의 끝 -->
 
@@ -210,7 +182,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">상품문의 등록</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div>
@@ -220,7 +193,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="registerBtn" type="button" class="btn btn-primary">등록</button>
+                <button id="registerBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">등록</button>
+                <input type="hidden" id="type">
+                <input type="hidden" id="faqNo">
             </div>
         </div>
     </div>
@@ -284,45 +259,6 @@
 </script>
 <script>
     // FAQ
-    let loginUser = '${userId}'
-    $("#closeBtn").on("click", function () {
-        $("#myModal").css("display", "none")
-    })
-
-    function registerContent(type, faqNo) {
-        // 모달창 출력
-        $("#myModal").css("display", "block")
-        $("#registerBtn").on("click", function () {
-            let jsonData = {};
-            jsonData.userId = loginUser
-            jsonData.goodsNo = goodsNo
-            if (type == 'question')
-                jsonData.question = $("#content").val()
-            else {
-                jsonData.answer = $("#content").val()
-                jsonData.faqNo = faqNo
-            }
-            console.log(JSON.stringify(jsonData))
-            $.ajax({
-                type: "POST",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/goods/faq/", // 컨트롤러에서 대기중인 URL 주소이다.
-                headers: {              // Http header
-                    "Content-Type": "application/json",
-                },
-                data: JSON.stringify(jsonData),
-                success: function () {
-                    alert("내용이 등록되었습니다.")
-                    $("#myModal").css("display", "none")
-                    // 2. 문의내용을 작성 -> 등록 -> faq 데이터가 생성되고 데이터를 다시 불러온다.
-                    loadFaqData()
-                },
-                error: function () {
-                    console.log("통신 실패")
-                }
-            })
-        })
-    }
-
     loadFaqData()
 
     function loadFaqData() {
@@ -333,7 +269,8 @@
                 "Content-Type": "application/json",
             },
             success: function (res) {
-                $("#faqList").html(toHtml(res))
+                $("#faqList").empty()
+                $("#faqList").append(toHtml(res))
             },
             error: function () {
                 alert("AJAX 통신 실패")
@@ -342,36 +279,69 @@
         let toHtml = function (items) {
             let tmp = "";
             items.forEach(function (item) {
-                tmp += '<hr>'
-                tmp += '<div>'
-                tmp += '<input type="button" value="질문"/>'
-                if (item.answer == null && loginUser == 'admin')
-                    tmp += '<input onclick="registerContent(\'answer\'' + ',' + item.faqNo + ')" type="button" value="답변 등록하기"/><br/></div>'
-                tmp += '<div class="goods-detail-faq-container">'
-                tmp += '<div class="goods-detail-faq-item">'
-                tmp += '<span>' + item.question + '</span>'
+                /* 질문 */
+                tmp += '<div class="col-md-10 mt-2">'
+                tmp += '<button class="btn btn-secondary disabled" type="button">문의</button>'
+                tmp += '<span class="px-3" style="font-size: 1.2rem">' + item.question + '</span>'
+                tmp += '<span class="px-3" style="float:right;font-style: italic; text-align: right;">' + item.createdDate + '</span>'
+                // 관리자만 답변 작성 가능
+                if ('${userId}' === 'admin' && item.answer == null)
+                    tmp += '<button onclick="registerAnswer(' + item.faqNo + ')" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: right">답변 등록</button>'
                 tmp += '</div>'
-                tmp += '<div class="goods-detail-faq-item">'
-                tmp += '<p>' + '작성자 : ' + item.userId + '</p>'
-                tmp += '<p>' + '작성일자 : ' + item.createdDate + '</p>'
-                tmp += '</div></div></div>'
-                if (item.answer == null)
-                    tmp += '<div style="display:none;">'
-                else
-                    tmp += '<div>'
-                tmp += '<input type="button" value="답변"/><br/>'
-                tmp += '<div class="goods-detail-faq-container">'
-                tmp += '<div class="goods-detail-faq-item">'
-                tmp += '<span>' + item.answer + '</span>'
-                tmp += '</div>'
-                tmp += '<div class="goods-detail-faq-item">'
-                tmp += '<p>' + '작성자 : 관리자</p>'
-                tmp += '<p>' + '작성일자 : ' + item.replyDate + '</p>'
-                tmp += '</div></div></div>'
+
+                /* 답변 */
+                if (item.answer !== null) {
+                    tmp += '<div class="col-md-10 mt-2" style="background-color: aliceblue">'
+                    tmp += '<button class="btn btn-outline-primary disabled" type="button">답변</button>'
+                    tmp += '<span class="px-3" style="font-size: 1.2rem">' + item.answer + '</span>'
+                    tmp += '<span class="px-3" style="float:right;font-style: italic; text-align: right;">' + item.createdDate + '</span>'
+                    tmp += '</div>'
+                }
             })
             return tmp;
         }
     }
+
+    function registerQuestion() {
+        $("#type").val('question')
+    }
+
+    function registerAnswer(faqNo) {
+        $("#type").val('answer')
+        $("#faqNo").val(faqNo)
+    }
+
+    $("#registerBtn").on("click", function () {
+        if ($("#content").val() === '') {
+            alert("문의 내용을 입력해주세요")
+            return false
+        }
+        let type = $("#type").val()
+        let data = {userId: '${userId}', goodsNo: goodsNo};
+        if (type === 'question')
+            data.question = $("#content").val()
+        else {
+            data.answer = $("#content").val()
+            data.faqNo = $("#faqNo").val()
+        }
+
+        $.ajax({
+            type: "POST",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/goods/faq/", // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            data: JSON.stringify(data),
+            success: function () {
+                alert("등록되었습니다.")
+                loadFaqData()
+                $("#content").val("")
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    })
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

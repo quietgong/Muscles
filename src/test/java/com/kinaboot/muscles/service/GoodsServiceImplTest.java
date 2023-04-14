@@ -41,5 +41,9 @@ public class GoodsServiceImplTest extends TestConfigure {
         List<FaqDto> faqDtoList = goodsService.findFaqs(goodsNo);
         System.out.println("faqDtoList = " + faqDtoList);
     }
-
+    @Test
+    public void registerFaq(){
+        FaqDto faqDto = new FaqDto("test1",3,"질문 테스트",null);
+        goodsService.addFaq(faqDto);
+    }
 }

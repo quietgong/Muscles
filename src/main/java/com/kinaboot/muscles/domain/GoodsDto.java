@@ -6,6 +6,7 @@ public class GoodsDto {
     private List<ReviewDto> reviewDtoList;
     private List<GoodsImgDto> goodsImgDtoList;
     private Integer goodsNo;
+    private String goodsDescription;
     private String goodsCategory;
     private String goodsCategoryDetail;
     private String goodsName;
@@ -112,13 +113,23 @@ public class GoodsDto {
         this.goodsReviewScore = goodsReviewScore;
     }
 
+    public String getGoodsDescription() {
+        return goodsDescription;
+    }
+
+    public void setGoodsDescription(String goodsDescription) {
+        this.goodsDescription = goodsDescription;
+    }
+
     @Override
     public String toString() {
         return "GoodsDto{" +
                 "reviewDtoList=" + reviewDtoList +
                 ", goodsImgDtoList=" + goodsImgDtoList +
                 ", goodsNo=" + goodsNo +
+                ", goodsDescription='" + goodsDescription + '\'' +
                 ", goodsCategory='" + goodsCategory + '\'' +
+                ", goodsCategoryDetail='" + goodsCategoryDetail + '\'' +
                 ", goodsName='" + goodsName + '\'' +
                 ", goodsImgPath='" + goodsImgPath + '\'' +
                 ", goodsPrice=" + goodsPrice +

@@ -2,10 +2,7 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.GoodsDao;
 import com.kinaboot.muscles.dao.ReviewDao;
-import com.kinaboot.muscles.domain.FaqDto;
-import com.kinaboot.muscles.domain.GoodsDto;
-import com.kinaboot.muscles.domain.GoodsImgDto;
-import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +37,14 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public List<GoodsCategoryDto> findAllCategories() {
+        return goodsDao.selectAllCategories();
+    }
+
+    @Override
     public int removeGoods(Integer GoodsNo) {
         reviewDao.deleteGoodsReview(GoodsNo); // 해당 상품에 대한 리뷰 데이터를 모두 삭제
+        reviewDao.deleteGoodsFaq(GoodsNo); // 해당 상품에 대한 문의 데이터를 모두 삭제
         return goodsDao.deleteGoods(GoodsNo);
     }
 

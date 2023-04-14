@@ -62,6 +62,11 @@ public class GoodsController {
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }
 
+    @GetMapping("/category")
+    @ResponseBody
+    public ResponseEntity<List<GoodsCategoryDto>> categoriesList() {
+        return new ResponseEntity<>(goodsService.findAllCategories(), HttpStatus.OK);
+    }
 
     @GetMapping("/list")
     public String goodsList(SearchCondition sc, Model m) {
@@ -80,7 +85,7 @@ public class GoodsController {
         List<ReviewDto> reviewDtoList = reviewService.findReviews(goodsNo);
         List<GoodsImgDto> goodsImgDtoList = goodsService.getGoodsDetailImgList(goodsNo);
         double goodsScore = 0.0;
-        if(reviewDtoList.size()!=0){
+        if (reviewDtoList.size() != 0) {
             for (ReviewDto reviewDto : reviewDtoList)
                 goodsScore += reviewDto.getScore();
             goodsScore = goodsScore / reviewDtoList.size();

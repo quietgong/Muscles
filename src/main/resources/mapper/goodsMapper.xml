@@ -13,6 +13,7 @@
     </select>
     <select id="select" parameterType="int" resultType="goodsDto">
         select goodsNo,
+               goodsDescription,
                goodsCategory,
                goodsCategoryDetail,
                goodsName,
@@ -26,15 +27,11 @@
         select count(*)
         FROM GOODS
         where 1=1
-        <if test="keyword!=''">
-            and goodsName like concat('%',#{keyword},'%')
-        </if>
-        <if test="category!=''">
-            and goodsCategory = #{category}
-        </if>
+        <include refid="goodsCondition"/>
     </select>
     <select id="selectByCategory" parameterType="SearchCondition" resultType="goodsDto">
         select g.goodsNo as goodsNo
+        ,g.goodsDescription as goodsDescription
         , g.goodsCategory as goodsCategory
         , g.goodsCategoryDetail as goodsCategoryDetail
         , g.goodsName as goodsName
@@ -50,15 +47,30 @@
         ON g.goodsNo = r.goodsNo
         group by g.goodsNo) r
         where g.goodsNo = r.goodsNo
-        <if test="category!=''">
-            and goodsCategory = #{category}
-        </if>
         <if test="keyword!=''">
             and goodsName like concat('%',#{keyword},'%')
         </if>
+        <if test="category!=''">
+            and goodsCategory = #{category}
+        </if>
+        <if test="subCategory!=''">
+            and goodsCategoryDetail = #{subCategory}
+        </if>
+        <include refid="goodsCondition"/>
         <include refid="optionCondition"/>
         LIMIT #{offset}, 9;
     </select>
+    <sql id="goodsCondition">
+        <if test="keyword!=''">
+            and goodsName like concat('%',#{keyword},'%')
+        </if>
+        <if test="category!=''">
+            and goodsCategory = #{category}
+        </if>
+        <if test="subCategory!=''">
+            and goodsCategoryDetail = #{subCategory}
+        </if>
+    </sql>
     <sql id="optionCondition">
         <choose>
             <when test='option=="lowPrice"'>
@@ -76,11 +88,19 @@
         SELECT *
         FROM faq
         where goodsNo = ${goodsNo}
+        order by createdDate
+    </select>
+    <select id="selectAllCategories" resultType="goodsCategoryDto">
+        select goodsCategory as category
+               ,goodsCategoryDetail as subCategory
+        from goods
+        group by goodsCategory, goodsCategoryDetail;
     </select>
     <insert id="insert" parameterType="goodsDto">
         insert into goods
-            (goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock)
-        values (#{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice}, #{goodsStock})
+        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock)
+        values (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice},
+                #{goodsStock})
     </insert>
     <insert id="insertFaqQuestion" parameterType="faqDto">
         insert into faq (userId, goodsNo, question, createdDate)
@@ -105,12 +125,13 @@
     </insert>
     <update id="updateGoods" parameterType="goodsDto">
         update goods
-        set goodsName  = #{goodsName},
-            goodsPrice = #{goodsPrice},
-            goodsCategory = #{goodsCategory},
+        set goodsName           = #{goodsName},
+            goodsDescription    = #{goodsDescription},
+            goodsPrice          = #{goodsPrice},
+            goodsCategory       = #{goodsCategory},
             goodsCategoryDetail = #{goodsCategoryDetail},
-            goodsStock = #{goodsStock},
-            goodsImgPath = #{goodsImgPath}
+            goodsStock          = #{goodsStock},
+            goodsImgPath        = #{goodsImgPath}
         where goodsNo = #{goodsNo};
     </update>
     <delete id="deleteAll">
@@ -125,6 +146,11 @@
     <delete id="deleteGoods" parameterType="int">
         DELETE
         FROM GOODS
-        where goodsNo = #{goodsNo}
+        where goodsNo = ${goodsNo}
+    </delete>
+    <delete id="deleteGoodsFaq" parameterType="int">
+        delete
+        from faq
+        where goodsNo = ${goodsNo}
     </delete>
 </mapper>

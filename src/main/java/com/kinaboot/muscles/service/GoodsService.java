@@ -3,6 +3,7 @@ package com.kinaboot.muscles.service;
 import com.kinaboot.muscles.domain.FaqDto;
 import com.kinaboot.muscles.domain.GoodsDto;
 import com.kinaboot.muscles.domain.GoodsImgDto;
+import com.kinaboot.muscles.domain.GoodsCategoryDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface GoodsService {
     int addFaq(FaqDto faqDto);
     int getTotalCntByCategory(SearchCondition sc);
     List<GoodsImgDto> getGoodsDetailImgList(Integer GoodsNo);
+
+    List<GoodsCategoryDto> findAllCategories();
 }

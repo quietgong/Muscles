@@ -15,6 +15,7 @@ public class SearchCondition {
     private String keyword = "";
     private String type = "";
     private String category = "";
+    private String subCategory = "";
     private String userId = "";
     private String period = "";
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -32,19 +33,12 @@ public class SearchCondition {
         this.endDate = endDate;
     }
 
-    @Override
-    public String toString() {
-        return "SearchCondition{" +
-                "page=" + page +
-                ", option='" + option + '\'' +
-                ", keyword='" + keyword + '\'' +
-                ", type='" + type + '\'' +
-                ", category='" + category + '\'' +
-                ", userId='" + userId + '\'' +
-                ", period='" + period + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
+    public String getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
     }
 
     public String getPeriod() {
@@ -106,6 +100,22 @@ public class SearchCondition {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchCondition{" +
+                "page=" + page +
+                ", option='" + option + '\'' +
+                ", keyword='" + keyword + '\'' +
+                ", type='" + type + '\'' +
+                ", category='" + category + '\'' +
+                ", subCategory='" + subCategory + '\'' +
+                ", userId='" + userId + '\'' +
+                ", period='" + period + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 
     public SearchCondition() {

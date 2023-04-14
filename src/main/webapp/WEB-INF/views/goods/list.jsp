@@ -10,35 +10,30 @@
             <h1 class="h2 pb-4">Categories</h1>
             <ul class="list-unstyled templatemo-accordion">
                 <li class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                       href="<c:url value='/goods/list?category=유산소'/>">
                         유산소
                         <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
-                    <ul class="collapse show list-unstyled pl-3">
-                        <li><a class="text-decoration-none" href="#">런닝머신</a></li>
-                        <li><a class="text-decoration-none" href="#">줄넘기</a></li>
+                    <ul id="cardioList" class="collapse show list-unstyled pl-3">
                     </ul>
                 </li>
                 <li class="pb-3">
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
-                       href="<c:url value='/goods/list?category=strength'/>">
+                       href="<c:url value='/goods/list?category=근력'/>">
                         근력
                         <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul id="collapseTwo" class="collapse list-unstyled pl-3">
-                        <li><a class="text-decoration-none" href="#">Sport</a></li>
-                        <li><a class="text-decoration-none" href="#">Luxury</a></li>
                     </ul>
                 </li>
                 <li class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                       href="<c:url value='/goods/list?category=기타'/>">
                         기타 용품
                         <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                        <li><a class="text-decoration-none" href="#">Bag</a></li>
-                        <li><a class="text-decoration-none" href="#">Sweather</a></li>
-                        <li><a class="text-decoration-none" href="#">Sunglass</a></li>
                     </ul>
                 </li>
             </ul>
@@ -48,11 +43,11 @@
                 <div class="col-md-6">
                     <ul class="list-inline shop-top-menu pb-3 pt-1">
                         <c:if test="${param.keyword ne null}">
-                        <li class="list-inline-item">
-                            <p class="h3 text-dark text-decoration-none mr-3">
-                                키워드 <strong>${param.keyword}</strong> 검색 결과
-                            </p>
-                        </li>
+                            <li class="list-inline-item">
+                                <p class="h3 text-dark text-decoration-none mr-3">
+                                    키워드 <strong>${param.keyword}</strong> 검색 결과
+                                </p>
+                            </li>
                         </c:if>
                         <li class="list-inline-item">
                             <p class="h3 text-dark text-decoration-none">총 ${totalCnt} 개의 상품이 존재합니다.</p>
@@ -89,13 +84,15 @@
                                         <li><a class="btn btn-success text-white mt-2"
                                                href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"><i
                                                 class="far fa-eye"></i></a></li>
-                                        <li><a class="btn btn-success text-white mt-2" onclick="addCart(${goodsDto.goodsNo},'${goodsDto.goodsName}','${goodsDto.goodsCategory}',${goodsDto.goodsPrice})"><i
+                                        <li><a class="btn btn-success text-white mt-2"
+                                               onclick="addCart(${goodsDto.goodsNo},'${goodsDto.goodsName}','${goodsDto.goodsCategory}',${goodsDto.goodsPrice})"><i
                                                 class="fas fa-cart-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>" class="h3 text-decoration-none">상품 카테고리</a>
+                                <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"
+                                   class="h3 text-decoration-none">상품 카테고리</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>${goodsDto.goodsName}</li>
                                     <li>리뷰개수 : ${goodsDto.reviewDtoList.size()}</li>
@@ -147,7 +144,7 @@
 </div>
 <script>
     function addCart(goodsNo, goodsName, goodsCategory, goodsPrice) {
-        let data={}
+        let data = {}
         data.goodsNo = goodsNo
         data.goodsName = goodsName
         data.goodsCategory = goodsCategory
@@ -212,6 +209,39 @@
         }))
         form.submit()
     })
+</script>
+<script>
+    // 카테고리 불러오기
+    loadGoodsCategories()
+
+    function loadGoodsCategories() {
+        $.ajax({
+            type: "GET",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/goods/category", // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                console.log(res)
+                addCategoryList(res)
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    }
+
+    function addCategoryList(items) {
+        items.forEach(function (item) {
+            let link = "<li><a class=\"text-decoration-none\" href=\"<c:url value='/goods/list?category=" + item.category + "&subCategory=" + item.subCategory + "'/>\">" + item.subCategory + "</a></li>";
+            if (item.category === '유산소')
+                $("#cardioList").append(link)
+            else if (item.category === '근력')
+                $("#collapseTwo").append(link)
+            else
+                $("#collapseThree").append(link)
+        })
+    }
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
