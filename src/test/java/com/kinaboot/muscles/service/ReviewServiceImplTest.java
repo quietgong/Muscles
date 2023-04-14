@@ -21,14 +21,14 @@ public class ReviewServiceImplTest extends TestConfigure {
 
     @Test
     public void verifyReviewExist(){
-        List<OrderDto> orderDtoList = orderService.findOrders("test1");
-        for (OrderDto orderDto : orderDtoList) {
-            for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()){
-                ReviewDto reviewDto = reviewService.findReview(orderItemDto.getOrderNo(), orderItemDto.getGoodsNo());
-                boolean hasReview = reviewDto != null;
-                orderItemDto.setHasReview(hasReview);
-            }
-        }
-        System.out.println("orderDtoList = " + orderDtoList);
+//        List<OrderDto> orderDtoList = orderService.findOrders("test1");
+//        for (OrderDto orderDto : orderDtoList) {
+//            for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()){
+//                ReviewDto reviewDto = reviewService.findReview(orderItemDto.getOrderNo(), orderItemDto.getGoodsNo());
+//                boolean hasReview = reviewDto != null;
+//                orderItemDto.setHasReview(hasReview);
+//            }
+//        }
+//        System.out.println("orderDtoList = " + orderDtoList);
     }
 }

@@ -2,8 +2,11 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.TestConfigure;
 import com.kinaboot.muscles.handler.SearchCondition;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Calendar;
+import java.util.Date;
 
 public class OrderServiceImplTest extends TestConfigure {
     @Autowired
@@ -51,5 +54,14 @@ public class OrderServiceImplTest extends TestConfigure {
 
     @Test
     public void addOrder() {
+    }
+    @Test
+    public void CalculateDate(){
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        calendar.add(Calendar.DATE, -7);
+        Date oneWeekAgo = calendar.getTime();
+        System.out.println("오늘 날짜: " + today);
+        System.out.println("1주일 전 날짜: " + oneWeekAgo);
     }
 }

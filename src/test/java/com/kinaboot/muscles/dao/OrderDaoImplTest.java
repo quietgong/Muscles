@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.TestConfigure;
 import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
@@ -10,13 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
-public class OrderDaoImplTest {
+public class OrderDaoImplTest extends TestConfigure {
     @Autowired
     OrderService orderService;
     @Autowired
@@ -51,8 +51,6 @@ public class OrderDaoImplTest {
     @Test
     public void getOrderTest() {
         String userId = "test8";
-        List<OrderDto> orderDtoList = orderService.findOrders(userId);
-        System.out.println("orderDtoList = " + orderDtoList);
     }
 
     @Test
@@ -73,11 +71,17 @@ public class OrderDaoImplTest {
     }
     @Test
     public void getOrder(){
+        Date today = new Date();
+        SearchCondition sc = new SearchCondition();
+        System.out.println("sc = " + sc);
+        orderDao.selectAll("test1", sc);
     }
 
     @Test
     public void getOrderAll(){
-        SearchCondition sc = new SearchCondition();
+        Date today = new Date();
+        SearchCondition sc = new SearchCondition(null, today);
+        System.out.println("sc = " + sc);
         orderService.findAllOrders(sc);
     }
     @Test

@@ -5,10 +5,11 @@
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
 <style>
-    tr{
+    tr {
         vertical-align: middle;
     }
-    td{
+
+    td {
         vertical-align: middle;
     }
 </style>
@@ -23,87 +24,93 @@
             <!-- 검색 조건 -->
             <div class="row mt-5 justify-content-center">
                 <div class="col-md-6">
-                    <div class="input-group gap-3">
-                        <label class="form-label mt-2" for="startDate">주문일자</label>
-                        <input id="startDate" class="form-control" type="date" name="startDate"/>
-                        <label class="form-label mt-2">~</label>
-                        <input class="form-control" type="date" name="endDate"/>
-                        <button class="btn btn-primary" type="button">검색</button>
-                    </div>
+                    <form>
+                        <div class="input-group gap-3">
+                            <label class="form-label mt-2" for="startDate">주문일자</label>
+                            <input id="startDate" class="form-control" type="date" name="startDate"
+                                   value="${param.startDate}"/>
+                            <label class="form-label mt-2">~</label>
+                            <input class="form-control" type="date" name="endDate" value="${param.endDate}"/>
+                            <button class="btn btn-primary" type="submit">검색</button>
+                        </div>
+                    </form>
                 </div>
-            <!-- 검색 조건 -->
-            <!-- 주문 내역 -->
-            <div class="row mt-5 justify-content-center">
-                <!-- 주문 반복 -->
-                <c:forEach var="orderDto" items="${orderDtoList}">
-                    <div class="col-md-8 mt-5">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="col-md-12">
+                <!-- 검색 조건 -->
+                <!-- 주문 내역 -->
+                <div class="row mt-5 justify-content-center">
+                    <!-- 주문 반복 -->
+                    <c:forEach var="orderDto" items="${orderDtoList}">
+                        <div class="col-md-8 mt-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="col-md-12">
                                     <span style="font-size: 1.6rem; font-weight: bold;"
                                           class="card-title"><fmt:formatDate value="${orderDto.createdDate}"
                                                                              pattern="yyyy-MM-dd"
                                                                              type="date"/> 주문</span>
-                                    <a style="float: right; text-decoration: none;" class="card-title"
-                                       href="<c:url value='/order/${orderDto.orderNo}'/>">상세내역 확인</a>
-                                </div>
-                                <div class="col-md-12">
-                                    <c:set var="accept" value="${orderDto.status=='주문대기' ? 'inline' : 'none'}"/>
-                                    <button style="display: ${accept}" type="button" class="btn btn-outline-danger"
-                                            onclick="orderCancel(this)">주문 취소
-                                    </button>
-                                    <input type="hidden" value="${orderDto.orderNo}">
-                                </div>
-                                <!-- 주문상품 반복 -->
-                                <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
-                                    <div class="card mt-3">
-                                        <div class="card-body">
-                                            <div class="row mt-2">
-                                                <h5 style="font-weight: bold; display: block;"
-                                                    class="card-text">${orderDto.status}</h5>
-                                            </div>
-                                            <div class="row mt-2 gx-4">
-                                                <div class="col-md-3">
-                                                    <!-- 상품 이미지 -->
-                                                    <img class="card-img rounded-0 img-fluid"
-                                                         src="${orderItemDto.goodsImgPath}">
+                                        <a style="float: right; text-decoration: none;" class="card-title"
+                                           href="<c:url value='/order/${orderDto.orderNo}'/>">상세내역 확인</a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <c:set var="accept" value="${orderDto.status=='주문대기' ? 'inline' : 'none'}"/>
+                                        <button style="display: ${accept}" type="button" class="btn btn-outline-danger"
+                                                onclick="orderCancel(this)">주문 취소
+                                        </button>
+                                        <input type="hidden" value="${orderDto.orderNo}">
+                                    </div>
+                                    <!-- 주문상품 반복 -->
+                                    <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
+                                        <div class="card mt-3">
+                                            <div class="card-body">
+                                                <div class="row mt-2">
+                                                    <h5 style="font-weight: bold; display: block;"
+                                                        class="card-text">${orderDto.status}</h5>
                                                 </div>
-                                                <div class="col-md-3 justify-content-center">
-                                                    <!-- 상품 이름 -->
-                                                    <p class="card-text">${orderItemDto.goodsName}</p>
-                                                    <!-- 상품 단가 -->
-                                                    <span class="card-text">${orderItemDto.goodsPrice}원</span>
-                                                    <span class="card-text"> · </span>
-                                                    <!-- 주문 개수 -->
-                                                    <span class="card-text">${orderItemDto.goodsQty} 개</span><br>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="d-flex justify-content-center gap-2">
-                                                        <button type="button"
-                                                                onclick='location.href="<c:url value='/goods/detail?goodsNo=${orderItemDto.goodsNo}'/>"' class="btn btn-outline-primary">
-                                                            상품 페이지 이동
-                                                        </button>
+                                                <div class="row mt-2 gx-4">
+                                                    <div class="col-md-3">
+                                                        <!-- 상품 이미지 -->
+                                                        <img class="card-img rounded-0 img-fluid"
+                                                             src="${orderItemDto.goodsImgPath}">
+                                                    </div>
+                                                    <div class="col-md-3 justify-content-center">
+                                                        <!-- 상품 이름 -->
+                                                        <p class="card-text">${orderItemDto.goodsName}</p>
+                                                        <!-- 상품 단가 -->
+                                                        <span class="card-text">${orderItemDto.goodsPrice}원</span>
+                                                        <span class="card-text"> · </span>
+                                                        <!-- 주문 개수 -->
+                                                        <span class="card-text">${orderItemDto.goodsQty} 개</span><br>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="d-flex justify-content-center gap-2">
+                                                            <button type="button"
+                                                                    onclick='location.href="<c:url
+                                                                            value='/goods/detail?goodsNo=${orderItemDto.goodsNo}'/>"'
+                                                                    class="btn btn-outline-primary">
+                                                                상품 페이지 이동
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <c:set var="hasReview"
+                                                   value="${orderDto.status == '주문완료' && orderItemDto.hasReview == false ? 'inline' : 'none'}"/>
+                                            <button style="display: ${hasReview}" type=button class="btn btn-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                    onclick="createReview(${orderDto.orderNo}, ${orderItemDto.goodsNo})">
+                                                리뷰 작성
+                                            </button>
                                         </div>
-                                        <c:set var="hasReview"
-                                               value="${orderDto.status == '주문완료' && orderItemDto.hasReview == false ? 'inline' : 'none'}"/>
-                                        <button style="display: ${hasReview}" type=button class="btn btn-primary"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                onclick="createReview(${orderDto.orderNo}, ${orderItemDto.goodsNo})">
-                                            리뷰 작성
-                                        </button>
-                                    </div>
-                                </c:forEach>
-                                <!-- 주문상품 반복 -->
+                                    </c:forEach>
+                                    <!-- 주문상품 반복 -->
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </c:forEach>
-                <!-- 주문 반복 -->
+                    </c:forEach>
+                    <!-- 주문 반복 -->
+                </div>
+                <!-- 주문 내역 -->
             </div>
-            <!-- 주문 내역 -->
         </div>
     </div>
 </div>

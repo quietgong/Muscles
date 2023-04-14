@@ -3,6 +3,7 @@ package com.kinaboot.muscles.controller.mypage;
 import com.kinaboot.muscles.domain.OrderDto;
 import com.kinaboot.muscles.domain.OrderItemDto;
 import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.ReviewService;
 import org.slf4j.Logger;
@@ -28,13 +29,12 @@ public class OrderController {
     ReviewService reviewService;
 
     @GetMapping("")
-    public String orderList(HttpSession session, Model m) {
+    public String orderList(HttpSession session, Model m, SearchCondition sc) {
         logger.info("유저 주문내역 진입");
         String userId = (String) session.getAttribute("id");
-        List<OrderDto> orderDtoList = orderService.findOrders(userId);
+        List<OrderDto> orderDtoList = orderService.findOrders(userId, sc);
         if (orderDtoList != null)
             m.addAttribute("orderDtoList", verifyReviewExist(orderDtoList));
-        logger.info("해당 유저 주문내역 : " + orderDtoList);
         return "mypage/myorder";
     }
 

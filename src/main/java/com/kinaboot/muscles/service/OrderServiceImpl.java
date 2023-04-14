@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int removeOrder(int orderNo) {
         String userId = orderDao.selectOrder(orderNo).getUserId();
-        int point =userService.findPoints(userId).get(0).getPoint();
+        int point = userService.findPoints(userId).get(0).getPoint();
         // 쿠폰 사용 취소 처리
         userDao.updateUserCouponStatus(orderNo);
         // 포인트 사용 취소 처리
@@ -77,13 +79,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> findAllOrders(SearchCondition sc) {
+        String option = sc.getPeriod();
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        sc.setEndDate(today); // 종료 날짜는 현재를 기준
+
+        if (option.equals("week")) // 이번주
+            calendar.add(Calendar.DATE, -7);
+        else if (option.equals("month")) // 이번달
+            calendar.add(Calendar.MONTH, -1);
+        else if (option.equals("3months")) // 지난 3개월
+            calendar.add(Calendar.MONTH, -3);
+
+        if(!option.equals("all"))
+            sc.setStartDate(calendar.getTime()); // 시작 날짜
         List<OrderDto> orderDtoList = orderDao.selectOrderAll(sc);
         return getOrderDetail(orderDtoList);
     }
 
     @Override
-    public List<OrderDto> findOrders(String userId) {
-        List<OrderDto> orderDtoList = orderDao.selectAll(userId);
+    public List<OrderDto> findOrders(String userId, SearchCondition sc) {
+        List<OrderDto> orderDtoList = orderDao.selectAll(userId, sc);
         return getOrderDetail(orderDtoList);
     }
 
@@ -103,24 +119,26 @@ public class OrderServiceImpl implements OrderService {
             cartDao.deleteCartItem(userId, orderItemDto.getGoodsNo());
 
         // 쿠폰 상태 변경
-        if(couponNo!=0)
+        if (couponNo != 0)
             userService.modifyCoupon(userId, couponNo);
 
         // 포인트 사용 적용
-        if(point!=0)
+        if (point != 0)
             userService.modifyPoint(userId, -point, orderDto.getOrderNo());
 
         // 주문 정보 생성
         return orderDao.insertOrder(orderDto);
     }
-    private List<OrderDto> getOrderDetail(List<OrderDto> orderDtoList){
-        for(OrderDto orderDto : orderDtoList){
+
+    private List<OrderDto> getOrderDetail(List<OrderDto> orderDtoList) {
+        for (OrderDto orderDto : orderDtoList) {
             orderDto.setOrderItemDtoList(orderDao.selectOrderItemList(orderDto.getOrderNo()));
             orderDto.setDeliveryDto(orderDao.selectDelivery(orderDto.getOrderNo()));
             orderDto.setPaymentDto(orderDao.selectPayment(orderDto.getOrderNo()));
         }
         return orderDtoList;
     }
+
     public OrderDto JsonToJava(String rowData) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(rowData, new TypeReference<OrderDto>() {

@@ -18,7 +18,7 @@ public interface OrderDao {
 
     List<OrderDto> selectOrderAll(SearchCondition sc);
 
-    List<OrderDto> selectAll(String userId);
+    List<OrderDto> selectAll(String userId, SearchCondition sc);
 
     List<OrderItemDto> selectOrderItemList(Integer orderNo);
 

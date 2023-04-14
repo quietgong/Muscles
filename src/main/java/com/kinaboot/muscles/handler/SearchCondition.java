@@ -15,9 +15,11 @@ public class SearchCondition {
     private String keyword = "";
     private String type = "";
     private String category = "";
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private String userId = "";
+    private String period = "";
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date startDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date endDate;
 
     public SearchCondition(int page, String keyword) {
@@ -25,8 +27,9 @@ public class SearchCondition {
         this.keyword = keyword;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public SearchCondition(Date startDate, Date endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @Override
@@ -37,9 +40,31 @@ public class SearchCondition {
                 ", keyword='" + keyword + '\'' +
                 ", type='" + type + '\'' +
                 ", category='" + category + '\'' +
+                ", userId='" + userId + '\'' +
+                ", period='" + period + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 '}';
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Date getStartDate() {
+        return startDate;
     }
 
     public String getCategory() {

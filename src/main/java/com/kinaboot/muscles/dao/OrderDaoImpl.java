@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -16,8 +17,9 @@ public class OrderDaoImpl implements OrderDao {
     private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
 
     @Override
-    public List<OrderDto> selectAll(String userId) {
-        return session.selectList(namespace + "selectOrderList", userId);
+    public List<OrderDto> selectAll(String userId, SearchCondition sc) {
+        sc.setUserId(userId);
+        return session.selectList(namespace + "selectOrderList", sc);
     }
 
     @Override

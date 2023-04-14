@@ -24,11 +24,11 @@
                     <form>
                         <div class="input-group flex-nowrap">
                             <span class="input-group-text" id="addon-wrapping">기간</span>
-                            <select class="form-select">
-                                <option selected value="option-1">All</option>
-                                <option value="option-2">This week</option>
-                                <option value="option-3">This month</option>
-                                <option value="option-4">Last 3 months</option>
+                            <select name="period" class="form-select">
+                                <option selected value="all">전체</option>
+                                <option value="week">이번주</option>
+                                <option value="month">이번달</option>
+                                <option value="3months">지난 3개월</option>
                             </select>
                             <button type="submit" class="btn btn-primary">검색</button>
                         </div>
