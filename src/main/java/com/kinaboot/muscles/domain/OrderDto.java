@@ -12,6 +12,7 @@ public class OrderDto {
     private int orderNo;
     private int discount;
     private String userId;
+    private String cancelReason;
     private String status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
@@ -25,6 +26,14 @@ public class OrderDto {
         this.paymentDto = paymentDto;
         this.userId = userId;
         this.status = status;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
     }
 
     public List<OrderItemDto> getOrderItemDtoList() {
@@ -97,9 +106,10 @@ public class OrderDto {
                 "orderItemDtoList=" + orderItemDtoList +
                 ", deliveryDto=" + deliveryDto +
                 ", paymentDto=" + paymentDto +
-                ", discount=" + discount +
                 ", orderNo=" + orderNo +
+                ", discount=" + discount +
                 ", userId='" + userId + '\'' +
+                ", cancelReason='" + cancelReason + '\'' +
                 ", status='" + status + '\'' +
                 ", createdDate=" + createdDate +
                 '}';

@@ -85,6 +85,9 @@ public class OrderDaoImplTest extends TestConfigure {
         orderService.findAllOrders(sc);
     }
     @Test
-    public void removeOrderAll(){
+    public void removeOrder(){
+        int orderNo=18;
+        String cancelReason = "테스트 삭제입니다.";
+        orderDao.deleteOrder(orderNo, cancelReason);
     }
 }

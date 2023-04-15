@@ -54,9 +54,9 @@
                                     <div class="col-md-12">
                                         <c:set var="accept" value="${orderDto.status=='주문대기' ? 'inline' : 'none'}"/>
                                         <button style="display: ${accept}" type="button" class="btn btn-outline-danger"
-                                                onclick="orderCancel(this)">주문 취소
+                                                data-bs-toggle="modal" data-bs-target="#orderCancelModal"
+                                                onclick="$('#orderCancelNum').val(${orderDto.orderNo})">주문 취소
                                         </button>
-                                        <input type="hidden" value="${orderDto.orderNo}">
                                     </div>
                                     <!-- 주문상품 반복 -->
                                     <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
@@ -115,13 +115,78 @@
     </div>
 </div>
 <%@ include file="../footer.jsp" %>
-<!-- Modal -->
+<!-- 주문 취소 Modal -->
+<div class="modal fade" id="orderCancelModal" tabindex="-1" aria-labelledby="orderCancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderCancelModalLabel">주문 취소 사유</h5>
+                <button type="button" onclick="initOrderCancelModal()" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 구성 요소 -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- 모달 구성 -->
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="orderCancelOption" value="단순 변심"
+                                       checked>
+                                <label class="form-check-label">단순 변심</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="orderCancelOption" value="배송 지연">
+                                <label class="form-check-label">배송 지연</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="orderCancelOption" value="주문 실수">
+                                <label class="form-check-label">주문 실수</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="orderCancelOption" value="서비스 불만족">
+                                <label class="form-check-label">서비스 불만족</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="orderCancelOption" value="etc">
+                                <label class="form-check-label">기타 사유</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: none" id="orderCancelDetail" class="row mt-5">
+                        <div class="col-md-12">
+                                <textarea id="orderCancelContent" class="form-control mt-1"
+                                          placeholder="500자 이내로 주문취소 사유를 작성해주시기 바랍니다."
+                                          rows="5"
+                                          cols="50"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 모달 구성 요소 -->
+            <div class="modal-footer">
+                <button type="button" onclick="initOrderCancelModal()" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close
+                </button>
+                <button onclick="orderCancel(this)" type="button" class="btn btn-primary">완료</button>
+                <input type="hidden" id="orderCancelNum" value="">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 주문 취소 Modal -->
+
+<!-- 리뷰 작성 Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">리뷰 작성</h5>
-                <button type="button" onclick="initModal()" class="btn-close" data-bs-dismiss="modal"
+                <button type="button" onclick="initReviewModal()" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -157,25 +222,49 @@
             </div>
             <!-- 모달 구성 요소 -->
             <div id="modal-footer" class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="initModal()" data-bs-dismiss="modal">Close
+                <button type="button" class="btn btn-secondary" onclick="initReviewModal()" data-bs-dismiss="modal">
+                    Close
                 </button>
                 <button onclick="reviewRegister(this)" type="button" class="btn btn-primary">등록</button>
-                <input id="reviewNo" value="" type="hidden">
             </div>
         </div>
     </div>
 </div>
-<!-- Modal -->
+<!-- 리뷰 작성 Modal -->
 <script>
+    /* 주문 취소 모달창 처리 */
+
+    // 기타 사유 선택시 textarea 출력, 그렇지 않으면 미출력
+    $("input[name='orderCancelOption']").change(function () {
+        if ($("input[name='orderCancelOption']:checked").val() === 'etc') {
+            $("#orderCancelDetail").show()
+        } else
+            $("#orderCancelDetail").hide()
+    });
+    $("#etcReason:checked")
+
+    // 주문 취소 모달창이 닫혔을 때 모달 내용 초기화
+    function initOrderCancelModal() {
+        $("#orderCancelDetail").val("")
+    }
+
     // 주문 취소
     function orderCancel(e) {
         let orderNo = $(e).next().val()
+        let cancelReason;
+        if ($("input[name='orderCancelOption']:checked").val() === 'etc')
+            cancelReason = $("#orderCancelContent").val()
+        else
+            cancelReason = $("input[name='orderCancelOption']:checked").val()
+
+        console.log(cancelReason)
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/order/" + orderNo,
             headers: {              // Http header
                 "Content-Type": "application/json",
             },
+            data: cancelReason,
             success: function () {
                 alert("주문이 취소되었습니다.")
                 location.replace("")
@@ -187,8 +276,10 @@
     }
 </script>
 <script>
-    // 모달창이 닫혔을 때 모달 내용 초기화
-    function initModal() {
+    /* 리뷰 작성 모달창 처리 */
+
+    // 리뷰 작성 모달창이 닫혔을 때 모달 내용 초기화
+    function initReviewModal() {
         $("#reviewContent").val("")
         $("#starRange").val("")
         $("#starRange").next().css("width", "100%")
@@ -204,7 +295,7 @@
             },
             success: function (res) {
                 console.log(res)
-                insertModalData(res)
+                insertReviewModalData(res)
             },
             error: function () {
                 console.log("통신 실패")
@@ -212,14 +303,14 @@
         })
     }
 
-    function insertModalData(item) {
+    function insertReviewModalData(item) {
         $("#goodsName").html(item.goodsName) // 상품 이름 입력
         $("#modal-footer").attr("data-orderNo", item.orderNo)
         $("#modal-footer").attr("data-goodsNo", item.goodsNo)
         $("#modal-footer").attr("data-goodsName", item.goodsName)
     }
 
-    // 모달 내용 등록
+    // 리뷰 작성 모달 내용 등록
     function reviewRegister(e) {
         let data = {};
         data.userId = '${userId}'

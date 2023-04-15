@@ -11,6 +11,11 @@ import java.util.Map;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
+    @Autowired
+    private SqlSession session;
+
+    private static String namespace = "com.kinaboot.muscles.dao.reviewMapper.";
+
     @Override
     public List<ReviewDto> selectReviewListByProductId(Integer goodsNo) {
         return session.selectList(namespace + "selectReviewByProductNo", goodsNo);
@@ -59,9 +64,6 @@ public class ReviewDaoImpl implements ReviewDao {
         return session.insert(namespace + "insertReview", reviewDto);
     }
 
-    @Autowired
-    private SqlSession session;
-    private static String namespace = "com.kinaboot.muscles.dao.reviewMapper.";
 
     @Override
     public List<ReviewDto> selectReviewListById(String userId) {

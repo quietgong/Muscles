@@ -27,6 +27,6 @@ public interface OrderDao {
     DeliveryDto selectDelivery(int orderNo);
 
     PaymentDto selectPayment(int orderNo);
-    int deleteOrder(Integer orderNo);
+    int deleteOrder(Integer orderNo, String cancelReason);
 
 }

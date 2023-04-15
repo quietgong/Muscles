@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     UserService userService;
 
     @Override
-    public int removeOrder(int orderNo) {
+    public int removeOrder(int orderNo, String cancelReason) {
         String userId = orderDao.selectOrder(orderNo).getUserId();
         int point = userService.findPoints(userId).get(0).getPoint();
         // 쿠폰 사용 취소 처리
@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         userDao.deleteUserPoint(orderNo);
 
         // 주문 취소 처리
-        return orderDao.deleteOrder(orderNo);
+        return orderDao.deleteOrder(orderNo, cancelReason);
     }
 
     @Override

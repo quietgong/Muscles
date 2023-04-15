@@ -98,7 +98,7 @@
             tmp += '<div class="row">'
             tmp += '<div data-reviewNo=' + item.reviewNo + ' class="col-md-12">'
             tmp += '<button style="float: right;" type="button" onclick="delReview(this)" class="btn btn-space btn-outline-primary">삭제</button>'
-            tmp += '<button style="float: right;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="modReview(this)" class="delBtn btn btn-space btn-outline-primary">수정</button>'
+            tmp += '<button style="float: right; margin-right: 10px" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="modReview(this)" class="delBtn btn btn-space btn-outline-primary">수정</button>'
             tmp += '<h3>' + item.goodsName + '</h3>'
             tmp += '</div>'
             tmp += '<div class="col-md-12">'

@@ -34,8 +34,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int deleteOrder(Integer orderNo) {
-        return session.delete(namespace + "deleteOrder", orderNo);
+    public int deleteOrder(Integer orderNo, String cancelReason) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("orderNo", String.valueOf(orderNo));
+        map.put("cancelReason", cancelReason);
+        return session.delete(namespace + "deleteOrder", map);
     }
 
     @Override

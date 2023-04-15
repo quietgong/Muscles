@@ -68,10 +68,12 @@ public class OrderController {
         return "order/complete";
     }
 
-    @DeleteMapping("{orderNo}")
-    public ResponseEntity<String> removeOrder(@PathVariable Integer orderNo) {
+    @DeleteMapping("/{orderNo}")
+    public ResponseEntity<String> removeOrder(@PathVariable Integer orderNo, @RequestBody String cancelReason) {
         logger.info("[주문번호] : " + orderNo + " 주문취소");
-        orderService.removeOrder(orderNo);
+        logger.info("[취소사유] : " + cancelReason);
+
+        orderService.removeOrder(orderNo, cancelReason);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 }

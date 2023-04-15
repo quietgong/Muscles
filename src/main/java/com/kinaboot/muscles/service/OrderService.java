@@ -29,5 +29,5 @@ public interface OrderService {
     OrderDto findOrder(Integer orderNo);
 
     // 특정 주문 삭제
-    int removeOrder(int orderNo);
+    int removeOrder(int orderNo, String cancelReason);
 }

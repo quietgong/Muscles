@@ -34,12 +34,4 @@ public class OrderController {
         orderService.acceptOrder(orderNo);
         return new ResponseEntity<>("ACCEPT_OK", HttpStatus.OK);
     }
-
-    // 주문 취소
-    @DeleteMapping("/{orderNo}")
-    @ResponseBody
-    public ResponseEntity<String> orderCancel(@PathVariable Integer orderNo) {
-        logger.info("주문번호 : " +orderNo + " 취소");
-        return new ResponseEntity<>("CANCEL_OK", HttpStatus.OK);
-    }
 }
