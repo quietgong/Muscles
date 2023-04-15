@@ -137,11 +137,8 @@ public class UserDaoImpl implements UserDao {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("recommendId", recommendId);
-        map.put("point", String.valueOf(100));
-        session.insert(namespace + "insertRecommendPoint", map);
-        session.insert(namespace + "insertRecommendEventCoupon", map);
-        map.put("userId", recommendId);
-        return session.update(namespace + "updateUserPoint", map);
+        map.put("discount", String.valueOf(10000));
+        return session.insert(namespace + "insertRecommendEventCoupon", map);
     }
 
     @Override

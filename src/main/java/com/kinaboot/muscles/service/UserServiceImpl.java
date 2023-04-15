@@ -119,6 +119,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int addCoupon(String userId, String recommendId) {
-        return userDao.insertRecommendEventCoupon(userId, recommendId);
+        return userDao.countUser(recommendId) != 0 ? userDao.insertRecommendEventCoupon(userId, recommendId) : 0;
     }
 }
