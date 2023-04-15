@@ -43,7 +43,7 @@
     </sql>
     <!-- orderNo로 주문정보 반환 -->
     <select id="selectOrder" parameterType="int" resultType="OrderDto">
-        select orderNo, userId, status, cancelReason, createdDate
+        select orderNo, userId, status, cancelReason, discount, createdDate
         FROM orders
         WHERE orderNo = '${orderNo}'
     </select>

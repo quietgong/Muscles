@@ -1,6 +1,9 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.TestConfigure;
+import com.kinaboot.muscles.dao.OrderDao;
+import com.kinaboot.muscles.dao.UserDao;
+import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.Test;
@@ -12,9 +15,34 @@ public class OrderServiceImplTest extends TestConfigure {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    OrderDao orderDao;
+
+    @Autowired
+    UserDao userDao;
+
+    @Autowired
+    UserService userService;
+
     @Test
     public void removeOrder() {
+        int orderNo = 31;
+        String cancelReason = "주문취소 테스트";
+        String userId = orderDao.selectOrder(orderNo).getUserId();
 
+        PointDto pointDto = userService.findPoint(orderNo);
+        if(pointDto!=null){
+            int point = userService.findPoint(orderNo).getPoint();
+            // 1. 포인트 환불
+            userDao.updateUserPoint(userId, -point, orderNo);
+            // 2. 포인트 사용내역 삭제
+            userDao.deleteUserPoint(orderNo);
+        }
+        // 쿠폰 사용 취소 처리
+        userDao.updateCoupon(orderNo);
+
+        // 주문 취소 처리
+        orderDao.deleteOrder(orderNo, cancelReason);
     }
 
     @Test

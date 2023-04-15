@@ -37,6 +37,11 @@
         from point
         where userId = '${userId}';
     </select>
+    <select id="selectUserOrderPoint" resultType="PointDto" parameterType="int">
+        select *
+        from point
+        where orderNo = '${orderNo}';
+    </select>
     <update id="updateUser" parameterType="UserDto">
         UPDATE USER
         SET EMAIL    = #{email}
@@ -52,21 +57,10 @@
         SET PASSWORD = #{newPassword}
         WHERE userId = #{userId}
     </update>
-    <update id="updateCouponStatus" parameterType="map">
-        update coupon
-        set status = "사용완료"
-        where userId = #{userId}
-        and couponName = #{couponName}
-    </update>
     <insert id="insertRecommendEventCoupon" parameterType="map">
         insert into coupon (couponName, couponCode, userId, discount, status)
         values ("추천인 이벤트", #{recommendId}, #{userId}, 10000, "사용가능");
     </insert>
-    <update id="updateUserPoint" parameterType="map">
-        update user
-        set point = point + #{point}
-        where userId = #{userId};
-    </update>
     <insert id="insertPoint" parameterType="map">
         insert into point (userId, point, orderNo)
         values (#{userId}, #{point}, #{orderNo});
@@ -114,13 +108,27 @@
         UPDATE USER
         SET expiredDate = now();
     </update>
-    <delete id="deleteUserPoint" parameterType="map">
+    <update id="updateUserPoint" parameterType="map">
+        update user
+        set point = point + #{point}
+        where userId = #{userId};
+    </update>
+    <update id="updateCoupon" parameterType="int">
+        update coupon
+        set orderNo = 0
+        where orderNo = ${orderNo}
+    </update>
+    <delete id="deleteCoupon" parameterType="map">
+        update coupon
+        set orderNo = #{orderNo}
+        where couponNo = #{couponNo}
+    </delete>
+    <delete id="deleteUserPoint" parameterType="int">
         delete
         from point
-        where userId = #{userId}
-        and pointName = ${pointName};
+        where orderNo = ${orderNo};
     </delete>
-    <delete id="deleteCoupon" parameterType="String">
+    <delete id="deleteUserCoupon" parameterType="String">
         delete
         from coupon
         where userId = '${userId}';

@@ -17,11 +17,10 @@ public interface UserService {
     int removeUser(String userId, HttpServletRequest request, String removeType) throws Exception;
     List<CouponDto> findCoupons(String userId);
     int addCoupon(String userId, String recommendId);
-    int modifyCoupon(String userId, int couponNo);
     List<PointDto> findPoints(String userId);
+    PointDto findPoint(int orderNo);
     int modifyPoint(String userId, int point, int orderNo);
-
     int countUser(String userId);
-
+    int removeCoupon(int couponNo, int orderNo);
     int removeCoupon(String userId);
 }

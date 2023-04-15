@@ -83,7 +83,7 @@
                                         <div class="text-left"><span class="text-muted">주문 금액</span></div>
                                     </td>
                                     <td>
-                                        <div class="text-right"><span>${orderDto.paymentDto.price}</span></div>
+                                        <div class="text-right"><span>${orderDto.paymentDto.price + orderDto.discount}</span></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -102,7 +102,7 @@
                                     </td>
                                     <td>
                                         <div class="text-right"><span
-                                                class="font-weight-bold">${orderDto.paymentDto.price - orderDto.discount}</span>
+                                                class="font-weight-bold">${orderDto.paymentDto.price}</span>
                                         </div>
                                     </td>
                                 </tr>

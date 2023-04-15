@@ -64,7 +64,7 @@ public class OrderController {
     @PostMapping("/")
     public String orderAdd(String orderData, int couponNo, int point, Model m) {
         logger.info("결제 후 주문 처리");
-        m.addAttribute(orderService.addOrder(orderData, couponNo, point)); // 생성된 주문 데이터 반환
+        m.addAttribute("orderDto", orderService.addOrder(orderData, couponNo, point)); // 생성된 주문 데이터 반환
         return "order/complete";
     }
 

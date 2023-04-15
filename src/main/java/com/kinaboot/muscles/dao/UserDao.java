@@ -18,17 +18,21 @@ public interface UserDao {
     int insertUser(UserDto userDto);
     int insertRecommendEventCoupon(String userId, String recommendId);
     int insertExit(HashMap map);
-    int updateUserCouponStatus(int couponNo);
     int updateUserPoint(String userId, int point, int orderNo);
     int updateUserGetPoint(String userId, int point, int orderNo);
     int updateUser(UserDto userDto);
     int updateUserPassword(String userId, String newPassword);
     int deleteAll();
     int deleteUser(Integer userNo);
+    int deleteUserCoupon(String userId);
     int deleteUserPoint(int orderNo);
-    int removePoint(String userId);
+    int deletePoint(String userId);
 
     int countUser(String userId);
 
-    int deleteCoupon(String userId);
+    int deleteCoupon(int couponNo, int orderNo);
+
+    PointDto selectUserOrderPoint(int orderNo);
+
+    int updateCoupon(int orderNo);
 }

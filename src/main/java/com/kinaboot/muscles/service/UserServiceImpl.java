@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         // 탈퇴유저 사용기록 삭제
         postSerivce.removePost(userId); // 게시물 삭제
         commentService.removeComment(userId); // 댓글 삭제
-        userDao.deleteCoupon(userId); // 쿠폰 삭제
+        userDao.deleteUserCoupon(userId); // 쿠폰 삭제
 
         // 탈퇴 기록 저장
         userDao.insertExit(map);
@@ -78,7 +78,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int removeCoupon(String userId) {
-        return userDao.deleteCoupon(userId);
+        return userDao.deleteUserCoupon(userId);
+    }
+
+    @Override
+    public int removeCoupon(int couponNo, int orderNo) {
+        return userDao.deleteCoupon(couponNo, orderNo);
     }
 
     @Override
@@ -89,11 +94,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUser(UserDto userDto) {
         return userDao.insertUser(userDto);
-    }
-
-    @Override
-    public int modifyCoupon(String userId, int couponNo) {
-        return userDao.updateUserCouponStatus(couponNo);
     }
 
     @Override
@@ -111,6 +111,11 @@ public class UserServiceImpl implements UserService {
     public List<PointDto> findPoints(String userId) {
         return userDao.selectUserPoint(userId);
     }
+    @Override
+    public PointDto findPoint(int orderNo) {
+        return userDao.selectUserOrderPoint(orderNo);
+    }
+
 
     @Override
     public int addCoupon(String userId, String recommendId) {

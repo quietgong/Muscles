@@ -40,6 +40,6 @@ public class PointTest {
 //        userDao.updateUserPoint(orderNo);
         userDao.deleteUserPoint(orderNo);
         // 해당 주문에 쿠폰이 사용된 경우, 쿠폰 상태를 사용가능으로 변경
-        userDao.updateUserCouponStatus(orderNo);
+        userDao.updateCoupon(orderNo);
     }
 }

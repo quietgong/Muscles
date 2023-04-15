@@ -77,9 +77,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int updateUserCouponStatus(int couponNo) {
-        return session.update(namespace + "updateCouponStatus", couponNo);
+    public PointDto selectUserOrderPoint(int orderNo) {
+        return session.selectOne(namespace + "selectUserOrderPoint", orderNo);
     }
+
     @Override
     public int updateUserPoint(String userId, int point, int orderNo) {
         HashMap<String, String> map = new HashMap<>();
@@ -90,8 +91,14 @@ public class UserDaoImpl implements UserDao {
         session.insert(namespace + "insertPoint", map);
         return 0;
     }
+
     @Override
-    public int updateUserGetPoint(String userId, int point, int orderNo){
+    public int updateCoupon(int orderNo) {
+        return session.update(namespace + "updateCoupon", orderNo);
+    }
+
+    @Override
+    public int updateUserGetPoint(String userId, int point, int orderNo) {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("orderNo", String.valueOf(orderNo));
@@ -108,12 +115,20 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int deleteCoupon(String userId) {
-        return session.delete(namespace + "deleteCoupon", userId);
+    public int deleteUserCoupon(String userId) {
+        return session.delete(namespace + "deleteUserCoupon", userId);
     }
 
     @Override
-    public int removePoint(String userId) {
+    public int deleteCoupon(int couponNo, int orderNo) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("couponNo", couponNo);
+        map.put("orderNo", orderNo);
+        return session.delete(namespace + "deleteCoupon", map);
+    }
+
+    @Override
+    public int deletePoint(String userId) {
         return session.update(namespace + "modifyUserPoint", userId);
     }
 

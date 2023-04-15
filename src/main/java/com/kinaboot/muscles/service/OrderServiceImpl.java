@@ -31,14 +31,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int removeOrder(int orderNo, String cancelReason) {
         String userId = orderDao.selectOrder(orderNo).getUserId();
-        int point = userService.findPoints(userId).get(0).getPoint();
-        // 쿠폰 사용 취소 처리
-        userDao.updateUserCouponStatus(orderNo);
+
         // 포인트 사용 취소 처리
-        // 1. 포인트 환불
-        userDao.updateUserPoint(userId, point, orderNo);
-        // 2. 포인트 사용내역 삭제
-        userDao.deleteUserPoint(orderNo);
+        PointDto pointDto = userService.findPoint(orderNo);
+        if(pointDto!=null){
+            int point = userService.findPoint(orderNo).getPoint();
+            // 1. 포인트 환불
+            userDao.updateUserPoint(userId, -point, orderNo);
+            // 2. 포인트 사용내역 삭제
+            userDao.deleteUserPoint(orderNo);
+        }
+        // 쿠폰 사용 취소 처리
+        userDao.updateCoupon(orderNo);
 
         // 주문 취소 처리
         return orderDao.deleteOrder(orderNo, cancelReason);
@@ -113,6 +117,9 @@ public class OrderServiceImpl implements OrderService {
         }
         String userId = orderDto.getUserId();
 
+        // 주문 정보 생성
+        OrderDto newOrderDto = orderDao.insertOrder(orderDto);
+
         // 구매 제품 장바구니에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
         for (OrderItemDto orderItemDto : orderItemDtoList)
@@ -120,14 +127,14 @@ public class OrderServiceImpl implements OrderService {
 
         // 쿠폰 상태 변경
         if (couponNo != 0)
-            userService.modifyCoupon(userId, couponNo);
+            userService.removeCoupon(couponNo, newOrderDto.getOrderNo());
 
         // 포인트 사용 적용
         if (point != 0)
-            userService.modifyPoint(userId, -point, orderDto.getOrderNo());
+            userService.modifyPoint(userId, -point, newOrderDto.getOrderNo());
 
         // 주문 정보 생성
-        return orderDao.insertOrder(orderDto);
+        return newOrderDto;
     }
 
     private List<OrderDto> getOrderDetail(List<OrderDto> orderDtoList) {

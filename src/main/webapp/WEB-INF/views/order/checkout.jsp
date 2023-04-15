@@ -15,12 +15,11 @@
             </h4>
             <ul id="orderList" class="list-group mb-3">
                 <!-- AJAX -->
-                <li class="list-group-item d-flex justify-content-between bg-light">
+                <li id="event" class="list-group-item d-flex justify-content-between bg-light">
                     <div class="text-success">
-                        <small>추천인 입력</small>
-                        <h6 class="my-0">이벤트 적용</h6>
+                        <small id="eventName"></small>
                     </div>
-                    <span class="text-success">-₩</span>
+                    <span id="eventDiscount" class="text-success"></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (KRW)</span>
@@ -31,8 +30,9 @@
                 <select class="form-select" id="selectEvent" style="font-size: 1.2rem; text-align: center">
                     <option value="" selected>쿠폰 선택</option>
                     <c:forEach var="couponDto" items="${couponDtoList}">
-                        <c:if test="${couponDto.orderNo eq null}">
-                            <option value="${couponDto.couponName}" data-no=${couponDto.couponNo} data-sub=${couponDto.discount}>
+                        <c:if test="${couponDto.orderNo eq 0}">
+                            <option value="${couponDto.couponName}"
+                                    data-no=${couponDto.couponNo} data-sub=${couponDto.discount}>
                                     ${couponDto.couponName}(${couponDto.discount}원 할인)
                             </option>
                         </c:if>
@@ -162,36 +162,46 @@
     }
 </script>
 <script>
-    // 주문 가격 계산
-    let discount = 0
     let point = 0
     let couponNo = 0;
+    let couponName = "";
+    let couponDiscount = 0;
+    // 최종 주문 가격 계산
     calculateFinalPrice()
+
     // 포인트 사용
     $("#pointUse").keyup(function () {
-        if ($("#pointUse").val() === '')
-            point = 0
-        else
-            point = parseInt($("#pointUse").val())
+        point = $("#pointUse").val() === '' ? 0 : parseInt($("#pointUse").val())
         calculateFinalPrice()
     })
     // 포인트 모두 사용
     $("#pointAll").on("click", function () {
-        $("#userPoint").val("${userDto.point}")
+        $("#pointUse").val("${userDto.point}")
         point = parseInt($("#pointUse").val())
         calculateFinalPrice()
     })
     // 셀렉트박스 선택
     $("#selectEvent").on("change", function () {
-        couponNo = $(this).find("option:selected").data("no")
-        if (this.value !== '쿠폰 선택')
-            discount = $(this).find("option:selected").data("sub")
+        if (this.value !== '') {
+            couponNo = $(this).find("option:selected").data("no")
+            couponName = $(this).find("option:selected").val()
+            couponDiscount = $(this).find("option:selected").data("sub")
+            $("#eventName").html(couponName)
+            $("#eventDiscount").html("-" + couponDiscount + "₩")
+        } else {
+            couponNo = 0
+            couponName = ""
+            couponDiscount = 0
+            $("#eventName").html("")
+            $("#eventDiscount").html("")
+        }
         calculateFinalPrice()
     })
+
     // 최종 결제 금액 계산
     function calculateFinalPrice() {
         let orderPrice = 0
-        let totalDiscount = discount + point
+        let totalDiscount = couponDiscount + point
         // 현재 주문 가격 표시
         $(".order-item-price").each(function () {
             orderPrice += Number($(this).html())
@@ -220,7 +230,7 @@
         delivery.message = $("#message").val()
 
         orderData.userId = '${userId}'
-        orderData.discount = discount + point
+        orderData.discount = couponDiscount + point
         orderData.paymentDto = payment
         orderData.deliveryDto = delivery
         orderData.orderItemDtoList = orderItemDtoList
@@ -233,12 +243,12 @@
         form.append($('<input>').attr({
             type: 'hidden',
             name: 'couponNo',
-            value: couponNo.toString()
+            value: couponNo
         }))
         form.append($('<input>').attr({
             type: 'hidden',
             name: 'point',
-            value: point.toString()
+            value: point
         }))
         form.submit();
     });
