@@ -212,5 +212,10 @@
         FROM goodsimg
         where filePath = '${imgPath}'
     </delete>
+    <delete id="deleteAllGoodsDetail" parameterType="int">
+        DELETE
+        FROM goodsimg
+        where goodsNo = '${goodsNo}'
+    </delete>
 
 </mapper>

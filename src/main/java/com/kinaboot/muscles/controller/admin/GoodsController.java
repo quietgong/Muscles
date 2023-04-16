@@ -46,6 +46,7 @@ public class GoodsController {
     @PatchMapping("")
     public ResponseEntity<String> goodsModify(@RequestBody GoodsDto goodsDto) {
         logger.info("단 건 상품 수정");
+        System.out.println("goodsDto = " + goodsDto);
         goodsService.modifyGoods(goodsDto);
         return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
     }

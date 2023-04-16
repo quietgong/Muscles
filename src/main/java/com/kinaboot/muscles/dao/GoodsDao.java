@@ -39,4 +39,6 @@ public interface GoodsDao {
     int insertGoodsImg(Map<String, String> map);
 
     int selectGoodsNo();
+
+    int deleteAllGoodsDetail(int goodsNo);
 }

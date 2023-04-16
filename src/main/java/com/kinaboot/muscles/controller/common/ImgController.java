@@ -31,7 +31,7 @@ public class ImgController {
     @PostMapping(value = "/{category}/{type}/{goodsNo}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<?>> imgAdd(MultipartFile[] uploadFile, @PathVariable String category, @PathVariable String type, @PathVariable Integer goodsNo) {
         logger.info("[goodsNo : " + goodsNo + "] 이미지 데이터 생성");
-        // 서버 단에서 이미지 파일 체크 구현 필요
+        // 서버 단 이미지 파일 체크 구현 필요
         List<GoodsImgDto> goodsImgDtoList = new ArrayList<>();
         String uploadPath = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\" + category + "\\" + type;
         for (MultipartFile file : uploadFile) {

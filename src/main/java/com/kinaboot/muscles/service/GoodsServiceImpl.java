@@ -7,6 +7,7 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<GoodsDto> findBestGoods() {
         List<GoodsDto> goodsDtoList = goodsDao.selectBestGoods();
-        for(GoodsDto goodsDto : goodsDtoList)
+        for (GoodsDto goodsDto : goodsDtoList)
             goodsDto.setReviewDtoList(reviewDao.selectGoodsReview(goodsDto.getGoodsNo()));
         return goodsDtoList;
     }
@@ -35,20 +36,52 @@ public class GoodsServiceImpl implements GoodsService {
     public int addGoods(GoodsDto goodsDto) {
         int goodsNo = goodsDao.selectGoodsNo();
         goodsDto.setGoodsNo(goodsNo);
-
         saveGoodsImgs(goodsDto);
         return goodsDao.insert(goodsDto);
     }
-
     private void saveGoodsImgs(GoodsDto goodsDto) {
+        goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
         for(GoodsImgDto goodsImgDto : goodsImgDtoList){
             Map<String, String> map = new HashMap<>();
-            map.put("goodsNo", String.valueOf(goodsDto.getGoodsNo()));
+            map.put("goodsNo", String.valueOf(goodsImgDto.getGoodsNo()));
             map.put("filePath", goodsImgDto.getUploadPath());
             goodsDao.insertGoodsImg(map);
         }
     }
+//    private void saveGoodsImgs(GoodsDto goodsDto) {
+//        List<GoodsImgDto> newImgDtoList = goodsDto.getGoodsImgDtoList();
+//        List<GoodsImgDto> goodsImgDtoList = goodsDao.selectGoodsDetailImg(goodsDto.getGoodsNo());
+//        for (GoodsImgDto newImgDto : newImgDtoList) {
+//            boolean alreadyExists = goodsImgDtoList.stream()
+//                    .anyMatch(goodsImgDto -> goodsImgDto.getUploadPath().equals(newImgDto.getUploadPath()));
+//            if (!alreadyExists) {
+//                Map<String, String> map = new HashMap<>();
+//                map.put("goodsNo", String.valueOf(newImgDto.getGoodsNo()));
+//                map.put("filePath", newImgDto.getUploadPath());
+//                goodsDao.insertGoodsImg(map);
+//            }
+//        }
+//        if (goodsImgDtoList.size() == 0) {
+//            for (GoodsImgDto newImgDto : newImgDtoList) {
+//                Map<String, String> map = new HashMap<>();
+//                map.put("goodsNo", String.valueOf(newImgDto.getGoodsNo()));
+//                map.put("filePath", newImgDto.getUploadPath());
+//                goodsDao.insertGoodsImg(map);
+//            }
+//        } else {
+//            for (GoodsImgDto newImgDto : newImgDtoList) {
+//                for (GoodsImgDto goodsImgDto : goodsImgDtoList) {
+//                    if (!newImgDto.getUploadPath().equals(goodsImgDto.getUploadPath())) {
+//                        Map<String, String> map = new HashMap<>();
+//                        map.put("goodsNo", String.valueOf(newImgDto.getGoodsNo()));
+//                        map.put("filePath", newImgDto.getUploadPath());
+//                        goodsDao.insertGoodsImg(map);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public int modifyGoods(GoodsDto goodsDto) {
@@ -104,7 +137,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<GoodsDto> findGoods(SearchCondition sc) {
         List<GoodsDto> goodsDtoList = goodsDao.selectByCategory(sc);
-        for(GoodsDto goodsDto : goodsDtoList)
+        for (GoodsDto goodsDto : goodsDtoList)
             goodsDto.setReviewDtoList(reviewDao.selectGoodsReview(goodsDto.getGoodsNo()));
         return goodsDtoList;
     }

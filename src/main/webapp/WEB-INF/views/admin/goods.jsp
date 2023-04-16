@@ -27,7 +27,8 @@
             <div class="row mt-5">
                 <div class="col-md-12">
                     <button style="float: right" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                            name="modBtn" onclick="$('#staticBackdropLabel').html('상품정보 등록');$('#goodsNo').val(0);" class="btn btn-outline-primary btn-lg">상품 등록
+                            name="modBtn" onclick="$('#staticBackdropLabel').html('상품정보 등록');$('#goodsNo').val(0);"
+                            class="btn btn-outline-primary btn-lg">상품 등록
                     </button>
                     <table class="table table-hover">
                         <thead>
@@ -184,7 +185,7 @@
         })
     }
 
-    function modifyGoods(data){
+    function modifyGoods(data) {
         $.ajax({
             type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -202,7 +203,8 @@
             }
         })
     }
-    function registerGoods(data){
+
+    function registerGoods(data) {
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -211,12 +213,11 @@
             },
             data: JSON.stringify(data),
             success: function (res) {
-                if(res==="ADD_OK"){
+                if (res === "ADD_OK") {
                     alert("등록 완료")
                     loadProductData()
                     initModal()
-                }
-                else{
+                } else {
                     alert("등록 실패")
                 }
             },
@@ -225,6 +226,7 @@
             }
         })
     }
+
     // 모달창 내부에서 "등록(수정완료)" 버튼 클릭
     function submit() {
         let data = {};
@@ -232,6 +234,7 @@
 
         $('.newDetail').each(function () {
             let tmp = {}
+            tmp.goodsNo = $("#goodsNo").val()
             tmp.uploadPath = $(this).attr("src")
             goodsImgDtoList.push(tmp)
         });
@@ -287,18 +290,54 @@
         let tmp = "";
         items.forEach(function (item) {
             let addr = "/muscles/goods/display?type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div data-type=' + type + ' data-url=' + item.uploadName + '>'
+            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
             tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
             if (type === 'thumbnail')
                 tmp += '<img class="img-fluid" id="newThumbnail" src="' + addr + '">'
-            else
+            else {
+                tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
+                tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
                 tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
+            }
             tmp += '</div>'
         });
         if (type === "detail")
             $("#detailPreview").append(tmp)
         else
             $("#thumbnailPreview").append(tmp)
+        test()
+    }
+
+    function subtest() {
+        // 첫번째 div Up 버튼 숨기기
+        $("button:contains('↑')").show()
+        $('.detail:first-child button:contains("↑")').hide();
+
+        // 마지막 div Down 버튼 숨기기
+        $("button:contains('↓')").show()
+        $('.detail:last-child button:contains("↓")').hide();
+    }
+
+    function test() {
+        subtest()
+        // Up 버튼 클릭 시 이전 div와 위치 변경
+        $('.detail button:contains("↑")').click(function () {
+            let currentDiv = $(this).parent();
+            let prevDiv = currentDiv.prev('.detail');
+
+            if (prevDiv.length !== 0)
+                currentDiv.insertBefore(prevDiv);
+            subtest()
+        });
+        // Down 버튼 클릭 시 다음 div와 위치 변경
+        $('.detail button:contains("↓")').click(function () {
+            let currentDiv = $(this).parent();
+            let nextDiv = currentDiv.next('.detail');
+
+            if (nextDiv.length !== 0)
+                currentDiv.insertAfter(nextDiv);
+            subtest()
+        });
     }
 
     function deleteImg(target, type, fileName) {
@@ -380,21 +419,25 @@
     }
 </script>
 <script>
-    $.ajax({
-        type: "GET",
-        url: "/muscles/goods/category",
-        success: function (items) {
-            let tmp = "";
-            items.forEach(function (item) {
-                tmp += '<option class="subCategory" style="display:none;" name=' + item.category + ' value=\"' + item.subCategory + '">' + item.subCategory + '</option>'
-            })
-            tmp += '<option class="subCategory" style="display: none" name="new" value="new">신규 카테고리 생성</option>'
-            $("#categoryDetailSelect").append(tmp)
-        },
-        error: function () {
-            alert("AJAX 통신 실패")
-        }
-    })
+    loadCategory()
+
+    function loadCategory() {
+        $.ajax({
+            type: "GET",
+            url: "/muscles/goods/category",
+            success: function (items) {
+                let tmp = "";
+                items.forEach(function (item) {
+                    tmp += '<option class="subCategory" style="display:none" name=' + item.category + ' value="' + item.subCategory + '">' + item.subCategory + '</option>'
+                })
+                tmp += '<option class="subCategory" style="display: none" name="new" value="new">신규 카테고리 생성</option>'
+                $("#categoryDetailSelect").append(tmp)
+            },
+            error: function () {
+                alert("AJAX 통신 실패")
+            }
+        })
+    }
 
     function categoryDetailDisplay(value) {
         $(".subCategory").hide()

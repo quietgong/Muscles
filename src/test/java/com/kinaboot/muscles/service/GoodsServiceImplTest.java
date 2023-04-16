@@ -10,7 +10,10 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -75,7 +78,35 @@ public class GoodsServiceImplTest extends TestConfigure {
         int goodsNo = goodsDao.selectGoodsNo();
         goodsDto.setGoodsNo(goodsNo);
 
+        List<GoodsImgDto> goodsImgDtoList = goodsDao.selectGoodsDetailImg(goodsDto.getGoodsNo());
+        System.out.println("goodsImgDtoList = " + goodsImgDtoList);
 //        goodsService.saveGoodsImgs(goodsDto);
         goodsDao.insert(goodsDto);
+    }
+
+    @Test
+    public void saveImgs(){
+        List<GoodsImgDto> goodsImgDtoList = goodsDao.selectGoodsDetailImg(3);
+        if(goodsImgDtoList.size()==0){
+            System.out.println("NULL");
+            goodsImgDtoList = new ArrayList<>();
+        }
+        for(GoodsImgDto goodsImgDto : goodsImgDtoList){
+            System.out.println("goodsImgDto.getUploadPath() = " + goodsImgDto.getUploadPath());
+        }
+//        GoodsDto goodsDto = new GoodsDto();
+//        goodsDto.setGoodsNo(3);
+//        List<GoodsImgDto> newImgDtoList = goodsDto.getGoodsImgDtoList();
+//
+//        for (GoodsImgDto newImgDto : newImgDtoList) {
+//            for (GoodsImgDto goodsImgDto : goodsImgDtoList) {
+//                if (!newImgDto.getUploadPath().equals(goodsImgDto.getUploadPath()) || goodsImgDto.getUploadPath()==null){
+//                    Map<String, String> map = new HashMap<>();
+//                    map.put("goodsNo", String.valueOf(newImgDto.getGoodsNo()));
+//                    map.put("filePath", newImgDto.getUploadPath());
+//                    goodsDao.insertGoodsImg(map);
+//                }
+//            }
+//        }
     }
 }
