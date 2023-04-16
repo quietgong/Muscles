@@ -23,5 +23,7 @@ public interface GoodsService {
 
     List<GoodsDto> findBestGoods();
 
-    int removeGoodsImg(String type, String fileName);
+    int removeGoodsImg(String type, String imgPath);
+
+    int addGoods(GoodsDto goodsDto);
 }

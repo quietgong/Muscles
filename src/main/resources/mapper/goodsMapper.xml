@@ -140,6 +140,10 @@
         where goodsNo = ${goodsNo}
         order by createdDate
     </select>
+    <select id="selectGoodsNo" resultType="int">
+        select max(goodsNo) + 1
+        from goods
+    </select>
     <select id="selectAllCategories" resultType="goodsCategoryDto">
         select goodsCategory as category
                ,goodsCategoryDetail as subCategory
@@ -148,9 +152,9 @@
     </select>
     <insert id="insert" parameterType="goodsDto">
         insert into goods
-        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock)
+        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath)
         values (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice},
-                #{goodsStock})
+                #{goodsStock}, #{goodsImgPath})
     </insert>
     <insert id="insertFaqQuestion" parameterType="faqDto">
         insert into faq (userId, goodsNo, question, createdDate)
@@ -201,12 +205,12 @@
     <delete id="deleteGoodsThumbnail" parameterType="String">
         UPDATE GOODS
         SET goodsImgPath = null
-        where fileName = '${fileName}'
+        where goodsImgPath = '${imgPath}'
     </delete>
     <delete id="deleteGoodsDetail" parameterType="String">
-        UPDATE goodsimg
-        SET filePath = null
-        where filePath = '${fileName}'
+        DELETE
+        FROM goodsimg
+        where filePath = '${imgPath}'
     </delete>
 
 </mapper>

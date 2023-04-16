@@ -27,7 +27,7 @@
             <div class="row mt-5">
                 <div class="col-md-12">
                     <button style="float: right" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                            name="modBtn" class="btn btn-outline-primary btn-lg">상품 등록
+                            name="modBtn" onclick="$('#staticBackdropLabel').html('상품정보 등록');$('#goodsNo').val(0);" class="btn btn-outline-primary btn-lg">상품 등록
                     </button>
                     <table class="table table-hover">
                         <thead>
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="modifyProduct()" type="button" id="registerBtn" class="btn btn-secondary"
+                    <button onclick="submit()" type="button" id="registerBtn" class="btn btn-secondary"
                             data-bs-dismiss="modal">등록
                     </button>
                     <button type="button" onclick="initModal()" id="closeBtn" class="btn btn-primary"
@@ -146,12 +146,11 @@
         $("#goodsDescription").val("")
         $("#thumbnailPreview").html("")
         $("#detailPreview").html("")
-        $("input[name='uploadFile']").val("")
-        $("input[name='uploadFiles']").val("")
     }
 
     // 수정 버튼 클릭 시 해당 상품 정보 모달창에 입력
     function insertModal(goodsNo) {
+        $('#staticBackdropLabel').html('상품정보 변경');
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/admin/goods/" + goodsNo, // 컨트롤러에서 대기중인 URL 주소이다.
@@ -167,12 +166,12 @@
                 $("#goodsPrice").val(res.goodsPrice)
                 $("#goodsStock").val(res.goodsStock)
                 $("#goodsDescription").val(res.goodsDescription)
-                if(res.goodsImgPath!=null)
+                if (res.goodsImgPath != null)
                     showPreview([{uploadName: res.goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]}], 'thumbnail')
-                if(res.goodsImgDtoList.length!==0){
-                    let items=[]
-                    res.goodsImgDtoList.forEach(function (r){
-                        let tmp={}
+                if (res.goodsImgDtoList.length !== 0) {
+                    let items = []
+                    res.goodsImgDtoList.forEach(function (r) {
+                        let tmp = {}
                         tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
                         items.push(tmp)
                     })
@@ -185,25 +184,7 @@
         })
     }
 
-    // 모달창 내부에서 "등록(수정완료)" 버튼 클릭
-    function modifyProduct() {
-        let data = {};
-        let goodsImgDtoList = []
-
-        $('.newDetail').each(function() {
-            let tmp = {}
-            tmp.uploadPath = $(this).attr("src")
-            goodsImgDtoList.push(tmp)
-        });
-        data.goodsNo = $("#goodsNo").val();
-        data.goodsName = $("#goodsName").val()
-        data.goodsCategory = $('#categorySelect option:selected').val()
-        data.goodsCategoryDetail = $('#categoryDetailSelect option:selected').val() === 'new' ? $("#newCategory").val() : $('#categoryDetailSelect option:selected').val()
-        data.goodsDescription = $("#goodsDescription").val()
-        data.goodsPrice = $("#goodsPrice").val()
-        data.goodsStock = $("#goodsStock").val()
-        data.goodsImgPath = $("#newThumbnail").attr("src")
-        data.goodsImgDtoList = goodsImgDtoList
+    function modifyGoods(data){
         $.ajax({
             type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -221,20 +202,76 @@
             }
         })
     }
+    function registerGoods(data){
+        $.ajax({
+            type: "POST",            // HTTP method type(GET, POST) 형식이다.
+            url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
+            headers: {              // Http header
+                "Content-Type": "application/json",
+            },
+            data: JSON.stringify(data),
+            success: function (res) {
+                if(res==="ADD_OK"){
+                    alert("등록 완료")
+                    loadProductData()
+                    initModal()
+                }
+                else{
+                    alert("등록 실패")
+                }
+            },
+            error: function () {
+                alert("AJAX 통신 실패")
+            }
+        })
+    }
+    // 모달창 내부에서 "등록(수정완료)" 버튼 클릭
+    function submit() {
+        let data = {};
+        let goodsImgDtoList = []
+
+        $('.newDetail').each(function () {
+            let tmp = {}
+            tmp.uploadPath = $(this).attr("src")
+            goodsImgDtoList.push(tmp)
+        });
+        data.goodsNo = $("#goodsNo").val();
+        data.goodsName = $("#goodsName").val()
+        data.goodsCategory = $('#categorySelect option:selected').val()
+        data.goodsCategoryDetail = $('#categoryDetailSelect option:selected').val() === 'new' ? $("#newCategory").val() : $('#categoryDetailSelect option:selected').val()
+        data.goodsDescription = $("#goodsDescription").val()
+        data.goodsPrice = $("#goodsPrice").val()
+        data.goodsStock = $("#goodsStock").val()
+        data.goodsImgPath = $("#newThumbnail").attr("src")
+        data.goodsImgDtoList = goodsImgDtoList
+        // 상품 등록
+        if (data.goodsNo === '0')
+            registerGoods(data)
+        // 상품 수정
+        else
+            modifyGoods(data)
+    }
 
 </script>
 <script>
     // 이미지 업로드
-    $("input[type='file']").on("change", function (e) {
-        let formData = new FormData();
+    $("input[type='file']").on("change", function () {
         let type = $(this).attr("id");
         let fileList = $(this)[0].files;
+        if (type === 'thumbnail') {
+            if (fileList.length > 1) {
+                deleteImg($(this).next().children(), "thumbnail", $(this).next().children().attr("data-url"))
+            }
+        }
+        let formData = new FormData();
+        console.log(type)
+        console.log(fileList)
         for (let i = 0; i < fileList.length; i++)
             formData.append("uploadFile", fileList[i]);
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "/muscles/admin/goods/file/" + type + "/" + $("#goodsNo").val(), // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/img/goods/" + type + "/" + $("#goodsNo").val(), // 컨트롤러에서 대기중인 URL 주소이다.
             processData: false,
             contentType: false,
             data: formData,
@@ -246,12 +283,12 @@
     });
 
     function showPreview(items, type) {
+        console.log(items)
         let tmp = "";
         items.forEach(function (item) {
-            console.log(item)
             let addr = "/muscles/goods/display?type=" + type + "&fileName=" + item.uploadName
             tmp += '<div data-type=' + type + ' data-url=' + item.uploadName + '>'
-            tmp += '<input class="delPreview" type="button" value="X">'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
             if (type === 'thumbnail')
                 tmp += '<img class="img-fluid" id="newThumbnail" src="' + addr + '">'
             else
@@ -264,24 +301,28 @@
             $("#thumbnailPreview").append(tmp)
     }
 
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let type = $(this).parent().attr("data-type")
-        let target = $(this)
+    function deleteImg(target, type, fileName) {
+        let targetDiv = target
         $.ajax({
-            type: "POST",
+            type: "DELETE",
             enctype: 'multipart/form-data',
-            url: "/muscles/admin/goods/file/delete?type=" + type + "&fileName=" + fileName,
+            url: "/muscles/img/delete/goods/" + type + "?fileName=" + fileName,
             success: function (res) {
                 console.log(res)
                 // 파일 삭제가 성공적으로 이루어지면
                 if (res === "DEL_OK") {
-                    target.next().remove();
-                    target.remove();
+                    targetDiv.empty();
                 }
             }
         })
+    }
+
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        let fileName = $(this).parent().attr("data-url")
+        let type = $(this).parent().attr("data-type")
+        let target = $(this).parent()
+        deleteImg(target, type, fileName)
     });
 
 </script>
@@ -356,6 +397,7 @@
     })
 
     function categoryDetailDisplay(value) {
+        $(".subCategory").hide()
         if (value !== '') {
             if (value === '유산소')
                 $("option[name='유산소']").show()
@@ -366,7 +408,6 @@
             $("option[name='new']").show()
         } else {
             $('#categoryDetailSelect option').eq(0).prop('selected', true)
-            $(".subCategory").hide()
         }
     }
 

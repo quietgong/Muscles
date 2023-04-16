@@ -4,6 +4,7 @@ import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.handler.SearchCondition;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GoodsDao {
     List<GoodsDto> selectByCategory(SearchCondition sc);
@@ -31,7 +32,11 @@ public interface GoodsDao {
 
     List<GoodsDto> selectBestGoods();
 
-    int deleteGoodsThumbnail(String fileName);
+    int deleteGoodsThumbnail(String imgPath);
 
-    int deleteGoodsDetail(String fileName);
+    int deleteGoodsDetail(String imgPath);
+
+    int insertGoodsImg(Map<String, String> map);
+
+    int selectGoodsNo();
 }

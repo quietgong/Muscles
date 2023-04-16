@@ -37,6 +37,12 @@ public class GoodsController {
         logger.info("단 건 상품 조회");
         return new ResponseEntity<>(goodsService.findGoods(goodsNo), HttpStatus.OK);
     }
+    @PostMapping("")
+    public ResponseEntity<String> goodsAdd(@RequestBody GoodsDto goodsDto) {
+        logger.info("단 건 상품 등록");
+        goodsService.addGoods(goodsDto);
+        return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
+    }
     @PatchMapping("")
     public ResponseEntity<String> goodsModify(@RequestBody GoodsDto goodsDto) {
         logger.info("단 건 상품 수정");

@@ -20,6 +20,11 @@ public class GoodsDaoImpl implements GoodsDao {
     private static String namespace = "com.kinaboot.muscles.dao.goodsMapper.";
 
     @Override
+    public int selectGoodsNo() {
+        return session.selectOne(namespace + "selectGoodsNo");
+    }
+
+    @Override
     public List<GoodsDto> selectBestGoods() {
         return session.selectList(namespace + "selectBestGoods");
     }
@@ -36,13 +41,6 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public int updateGoods(GoodsDto goodsDto) {
-        List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
-        for(GoodsImgDto goodsImgDto : goodsImgDtoList){
-            Map<String, String> map = new HashMap<>();
-            map.put("goodsNo", String.valueOf(goodsDto.getGoodsNo()));
-            map.put("filePath", goodsImgDto.getUploadPath());
-            session.insert(namespace + "insertGoodsImg", map);
-        }
         return session.update(namespace + "updateGoods", goodsDto);
     }
 
@@ -83,6 +81,11 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
+    public int insertGoodsImg(Map<String, String> map) {
+        return session.insert(namespace + "insertGoodsImg", map);
+    }
+
+    @Override
     public int deleteAll() {
         return session.delete(namespace + "deleteAll");
     }
@@ -98,12 +101,12 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int deleteGoodsThumbnail(String fileName) {
-        return session.delete(namespace + "deleteGoodsThumbnail", fileName);
+    public int deleteGoodsThumbnail(String imgPath) {
+        return session.delete(namespace + "deleteGoodsThumbnail", imgPath);
     }
 
     @Override
-    public int deleteGoodsDetail(String fileName) {
-        return session.delete(namespace + "deleteGoodsDetail", fileName);
+    public int deleteGoodsDetail(String imgPath) {
+        return session.delete(namespace + "deleteGoodsDetail", imgPath);
     }
 }

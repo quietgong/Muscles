@@ -7,7 +7,9 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -30,13 +32,33 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public int addGoods(GoodsDto goodsDto) {
+        int goodsNo = goodsDao.selectGoodsNo();
+        goodsDto.setGoodsNo(goodsNo);
+
+        saveGoodsImgs(goodsDto);
+        return goodsDao.insert(goodsDto);
+    }
+
+    private void saveGoodsImgs(GoodsDto goodsDto) {
+        List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
+        for(GoodsImgDto goodsImgDto : goodsImgDtoList){
+            Map<String, String> map = new HashMap<>();
+            map.put("goodsNo", String.valueOf(goodsDto.getGoodsNo()));
+            map.put("filePath", goodsImgDto.getUploadPath());
+            goodsDao.insertGoodsImg(map);
+        }
+    }
+
+    @Override
     public int modifyGoods(GoodsDto goodsDto) {
+        saveGoodsImgs(goodsDto);
         return goodsDao.updateGoods(goodsDto);
     }
 
     @Override
-    public int removeGoodsImg(String type, String fileName) {
-        return type.equals("thumbnail") ? goodsDao.deleteGoodsThumbnail(fileName) : goodsDao.deleteGoodsDetail(fileName);
+    public int removeGoodsImg(String type, String imgPath) {
+        return type.equals("thumbnail") ? goodsDao.deleteGoodsThumbnail(imgPath) : goodsDao.deleteGoodsDetail(imgPath);
     }
 
     @Override

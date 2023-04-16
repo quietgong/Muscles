@@ -69,4 +69,13 @@ public class GoodsServiceImplTest extends TestConfigure {
         reviewDao.deleteGoodsFaq(goodsNo); // 해당 상품에 대한 문의 데이터를 모두 삭제
         goodsDao.deleteGoods(goodsNo);
     }
+    @Test
+    public void registerGoods(){
+        GoodsDto goodsDto = new GoodsDto();
+        int goodsNo = goodsDao.selectGoodsNo();
+        goodsDto.setGoodsNo(goodsNo);
+
+//        goodsService.saveGoodsImgs(goodsDto);
+        goodsDao.insert(goodsDto);
+    }
 }
