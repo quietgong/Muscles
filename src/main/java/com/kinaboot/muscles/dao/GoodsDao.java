@@ -28,4 +28,6 @@ public interface GoodsDao {
     List<GoodsImgDto> selectGoodsDetailImg(Integer GoodsNo);
 
     List<GoodsCategoryDto> selectAllCategories();
+
+    List<GoodsDto> selectBestGoods();
 }

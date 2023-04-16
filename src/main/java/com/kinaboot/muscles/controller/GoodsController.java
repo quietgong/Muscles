@@ -32,6 +32,13 @@ public class GoodsController {
     @Autowired
     ReviewService reviewService;
 
+    @GetMapping("/best")
+    @ResponseBody
+    public ResponseEntity<List<GoodsDto>> bestGoodsList() {
+        logger.info("베스트 상품");
+        return new ResponseEntity<>(goodsService.findBestGoods(), HttpStatus.OK);
+    }
+
     @GetMapping("/{goodsNo}")
     @ResponseBody
     public ResponseEntity<GoodsDto> goodsDetails(@PathVariable Integer goodsNo) {
@@ -70,7 +77,6 @@ public class GoodsController {
 
     @GetMapping("/list")
     public String goodsList(SearchCondition sc, Model m) {
-        System.out.println("sc = " + sc);
         logger.info("상품 목록 진입");
         int totalCnt = goodsService.getTotalCntByCategory(sc);
         PageHandler ph = new PageHandler(totalCnt, sc);

@@ -123,31 +123,8 @@
                 </p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 col-md-4 mb-4">
-                <div class="card h-100">
-                    <a href="#">
-                        <img src="<c:url value='/img/cardio.jpg'/>" class="card-img-top">
-                    </a>
-                    <div class="card-body">
-                        <ul class="list-unstyled d-flex justify-content-between">
-                            <li>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                            </li>
-                            <li class="text-muted text-right">가격</li>
-                        </ul>
-                        <a href="shop-single.html" class="h2 text-decoration-none text-dark">상품 이름</a>
-                        <p class="card-text">
-                            상품 세부설명
-                        </p>
-                        <p class="text-muted">Reviews (리뷰개스)</p>
-                    </div>
-                </div>
-            </div>
+        <div class="row" id="bestGoodsList">
+            <!-- 동적 추가 -->
         </div>
     </div>
 </section>
@@ -166,5 +143,60 @@
         $(".slick-next").css("display", "none")
         $(".slick-dots").css("top", "300px")
     })
+</script>
+<script>
+    /* 베스트 상품 */
+    loadBestGoods()
+
+    function loadBestGoods() {
+        $.ajax({
+            type: "GET",
+            url: '/muscles/goods/best',
+            success: function (res) {
+                console.log(res)
+                $("#bestGoodsList").append(toHtml(res))
+            },
+            error: function () {
+                console.log('error');
+            }
+        });
+    }
+
+    let toHtml = function (items) {
+        let tmp = "";
+        items.forEach(function (item) {
+            tmp += '<div class="col-12 col-md-4 mb-4">'
+            tmp += '<div class="card h-100">'
+            tmp += "<a href=\"<c:url value='/goods/detail?goodsNo='/>" + item.goodsNo + "\">";
+            if (item.goodsImgPath == null) {
+                tmp += "<img src=\"<c:url value='/img/cardio.jpg'/> class=\"card-img-top\""
+            } else {
+                tmp += '<img src="' + item.goodsImgPath + '" class="card-img-top">';
+            }
+
+            tmp += '</a>'
+            tmp += '<div class="card-body">'
+            tmp += '<span>' + item.goodsCategory + ' > ' + item.goodsCategoryDetail + '</span>';
+            tmp += '<ul class="w-100 list-unstyled d-flex justify-content-between mb-0">'
+            tmp += '<li>상품이름</li>'
+            tmp += '<li>리뷰개수 : ' + item.reviewDtoList.length + '</li>'
+            tmp += '</ul>'
+            tmp += '<ul class="list-unstyled d-flex justify-content-center mb-1">'
+            tmp += '<div class="star-ratings">'
+            tmp += '<div class="fill-ratings" style="width: ' + item.goodsReviewScore + '%;">'
+            tmp += '<span style="font-size: 1.8rem;">★★★★★</span>'
+            tmp += '</div>'
+            tmp += '<div class="empty-ratings">'
+            tmp += '<span style="font-size: 1.8rem;">★★★★★</span>'
+            tmp += '</div>'
+            tmp += '</div>'
+            tmp += '</ul>'
+            tmp += '<p class="text-center mb-0">' + item.goodsPrice + '</p>'
+            tmp += '</div>'
+            tmp += '</div>'
+            tmp += '</div>'
+        })
+        return tmp
+    }
 </script>
 <%@ include file="footer.jsp" %>

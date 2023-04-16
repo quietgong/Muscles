@@ -17,6 +17,14 @@ public class GoodsServiceImpl implements GoodsService {
     ReviewDao reviewDao;
 
     @Override
+    public List<GoodsDto> findBestGoods() {
+        List<GoodsDto> goodsDtoList = goodsDao.selectBestGoods();
+        for(GoodsDto goodsDto : goodsDtoList)
+            goodsDto.setReviewDtoList(reviewDao.selectGoodsReview(goodsDto.getGoodsNo()));
+        return goodsDtoList;
+    }
+
+    @Override
     public List<GoodsDto> findAllGoods() {
         return goodsDao.selectAll();
     }

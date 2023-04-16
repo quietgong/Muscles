@@ -20,4 +20,6 @@ public interface GoodsService {
     List<GoodsImgDto> getGoodsDetailImgList(Integer GoodsNo);
 
     List<GoodsCategoryDto> findAllCategories();
+
+    List<GoodsDto> findBestGoods();
 }

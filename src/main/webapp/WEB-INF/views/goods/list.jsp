@@ -106,7 +106,7 @@
                             </div>
                             <div class="card-body">
                                 <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"
-                                   class="h3 text-decoration-none">상품 카테고리</a>
+                                   class="h3 text-decoration-none">${goodsDto.goodsCategory} > ${goodsDto.goodsCategoryDetail}</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>${goodsDto.goodsName}</li>
                                     <li>리뷰개수 : ${goodsDto.reviewDtoList.size()}</li>

@@ -20,6 +20,11 @@ public class GoodsDaoImpl implements GoodsDao {
     private static String namespace = "com.kinaboot.muscles.dao.goodsMapper.";
 
     @Override
+    public List<GoodsDto> selectBestGoods() {
+        return session.selectList(namespace + "selectBestGoods");
+    }
+
+    @Override
     public int deleteGoods(Integer GoodsNo) {
         return session.delete(namespace + "deleteGoods", GoodsNo);
     }

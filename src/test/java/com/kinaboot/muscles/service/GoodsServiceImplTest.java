@@ -17,6 +17,10 @@ public class GoodsServiceImplTest extends TestConfigure {
     GoodsService goodsService;
 
     @Test
+    public void getBestGoods(){
+        goodsService.findBestGoods();
+    }
+    @Test
     public void countByCategory(){
         SearchCondition sc = new SearchCondition();
         int totalCnt = goodsService.getTotalCntByCategory(sc);

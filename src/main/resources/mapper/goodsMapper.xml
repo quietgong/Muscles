@@ -7,6 +7,34 @@
         SELECT count(*)
         FROM GOODS
     </select>
+    <select id="selectBestGoods" resultType="goodsDto">
+        select g.goodsNo             as goodsNo
+             , g.goodsCategory       as goodsCategory
+             , g.goodsCategoryDetail as goodsCategoryDetail
+             , g.goodsName           as goodsName
+             , g.goodsPrice          as goodsPrice
+             , g.goodsImgPath        as goodsImgPath
+             , c.goodsReviewScore    as goodsReviewScore
+        from goods g,
+             ((select A.goodsNo as goodsNo, A.sales * B.score as score, B.score as goodsReviewScore
+               from (select goodsNo, sum(goodsQty) as sales
+                     from orderitem
+                     where orderNo in (select orderNo
+                                       from orders
+                                       where status = '주문완료'
+                                         and createdDate between DATE_ADD(now(), INTERVAL -1 MONTH) and now())
+                     group by goodsNo) A,
+                    (select goodsNo, avg(score) as score
+                     from review
+                     where orderNo in (select orderNo
+                                       from orders
+                                       where status = '주문완료'
+                                         and createdDate between DATE_ADD(now(), INTERVAL -1 MONTH) and now())
+                     group by goodsNo) B
+               where A.goodsNo = B.goodsNo)) C
+        where g.goodsNo = C.goodsNo
+        order by C.score limit 3;
+    </select>
     <select id="selectAll" resultType="goodsDto">
         select goodsNo,goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath
         FROM GOODS
