@@ -26,15 +26,19 @@
             </div>
             <div class="row mt-5">
                 <div class="col-md-12">
+                    <button style="float: right" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            name="modBtn" class="btn btn-outline-primary btn-lg">상품 등록
+                    </button>
                     <table class="table table-hover">
                         <thead>
                         <tr>
                             <th scope="col">이름</th>
-                            <th scope="col">카테고리</th>
-                            <th scope="col">가격</th>
+                            <th scope="col">대분류</th>
+                            <th scope="col">소분류</th>
+                            <th scope="col">가격(₩)</th>
                             <th scope="col">재고</th>
                             <th scope="col">평점</th>
-                            <th scope="col">판매량</th>
+                            <th scope="col">누적 판매량</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
@@ -49,6 +53,7 @@
     </div><!--//app-content-->
 </div>
 <!-- 본문 -->
+
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -62,51 +67,66 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <input id="goodsNo" type="hidden" value="">
                             <label class="form-label">상품명</label>
                             <input id="goodsName" type="text" class="form-control" placeholder="상품명을 입력하세요" value="">
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">카테고리</label>
-                            <input id="goodsCategory" type="text" class="form-control" placeholder="상품명을 입력하세요"
-                                   value="">
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">대분류</label>
+                            <select id="categorySelect" class="form-select" aria-label="Default select example">
+                                <option value="">대분류를 선택하세요</option>
+                                <option value="유산소">유산소</option>
+                                <option value="근력">근력</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">소분류</label>
+                            <select id="categoryDetailSelect" class="form-select" aria-label="Default select example">
+                                <option value="">소분류를 선택하세요</option>
+                                <!-- 대분류에 대한 소분류 셀렉트 리스트 출력-->
+                            </select>
+                            <input style="display: none" id="newCategory" type="text" class="form-control mt-2"
+                                   placeholder="카테고리 입력">
                         </div>
                         <div class="col-md-12 mt-3">
-                            <label class="form-label">가격</label>
+                            <label class="form-label">가격(₩)</label>
                             <input id="goodsPrice" type="text" class="form-control" placeholder="가격을 입력하세요" value="">
                         </div>
                         <div class="col-md-12 mt-3">
                             <label class="form-label">재고</label>
                             <input id="goodsStock" type="text" class="form-control" placeholder="재고를 입력하세요" value="">
                         </div>
-                    </div>
-                    <div class="row mt-5">
-                        <div class="col-md-12">
-                            <label for="thumbnailInput">상품 썸네일</label>
-                            <input type="file" class="form-control" id="thumbnailInput" name='uploadFile'>
+                        <div class="col-md-12 mt-3">
+                            <textarea id="goodsDescription" class="form-control mt-1" placeholder="상품 설명을 작성해주세요."
+                                      rows="5"
+                                      cols="50"></textarea>
                         </div>
                     </div>
                     <div class="row mt-5">
                         <div class="col-md-12">
-                            <img id="thumbnail" class="img-fluid" src="">
+                            <label for="thumbnail">상품 썸네일</label>
+                            <input type="file" class="form-control" id="thumbnail" name='uploadFile'>
+                            <div id="thumbnailPreview"></div>
                         </div>
                     </div>
                     <div class="row mt-5">
                         <div class="col-md-12">
                             <label for="detail">상품 소개 이미지</label>
                             <input type="file" class="form-control" multiple id="detail" name='uploadFiles'>
+                            <div id="detailPreview"></div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button onclick="modifyProduct()" type="button" id="registerBtn" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        등록
+                            data-bs-dismiss="modal">등록
                     </button>
                     <button type="button" onclick="initModal()" id="closeBtn" class="btn btn-primary"
                             data-bs-dismiss="modal">닫기
                     </button>
+
                 </div>
             </div>
         </div>
@@ -114,11 +134,23 @@
 </div>
 <!-- Modal -->
 <script>
+    // 모달창 close 내용 초기화
     function initModal() {
-        $(".detailImg").remove()
+        $("#goodsNo").val("")
+        $("#goodsName").val("")
+        $(".subCategory").hide()
+        $('#categoryDetailSelect option').eq(0).prop('selected', true)
+        $('#categorySelect option').eq(0).prop('selected', true)
+        $("#goodsPrice").val("")
+        $("#goodsStock").val("")
+        $("#goodsDescription").val("")
+        $("#thumbnailPreview").html("")
+        $("#detailPreview").html("")
+        $("input[name='uploadFile']").val("")
+        $("input[name='uploadFiles']").val("")
     }
 
-    // 수정 버튼 클릭
+    // 수정 버튼 클릭 시 해당 상품 정보 모달창에 입력
     function insertModal(goodsNo) {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
@@ -127,18 +159,25 @@
                 "Content-Type": "application/json",
             },
             success: function (res) {
-                console.log(res)
-                // 기존 상품 데이터를 모달에 적용
                 $("#goodsNo").val(res.goodsNo)
                 $("#goodsName").val(res.goodsName)
-                $("#goodsCategory").val(res.goodsCategory)
+                categoryDetailDisplay(res.goodsCategory)
+                $('#categorySelect option[value=' + res.goodsCategory + ']').prop('selected', true);
+                $('#categoryDetailSelect option[value=' + res.goodsCategoryDetail + ']').prop('selected', true);
                 $("#goodsPrice").val(res.goodsPrice)
                 $("#goodsStock").val(res.goodsStock)
-                $("#thumbnail").attr("src", res.goodsImgPath)
-                let goodsImgDtoList = res.goodsImgDtoList
-                goodsImgDtoList.forEach(function (img) {
-                    $("#detail").after('<img class="detailImg img-fluid mt-3" src="' + img.uploadPath + '">')
-                })
+                $("#goodsDescription").val(res.goodsDescription)
+                if(res.goodsImgPath!=null)
+                    showPreview([{uploadName: res.goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]}], 'thumbnail')
+                if(res.goodsImgDtoList.length!==0){
+                    let items=[]
+                    res.goodsImgDtoList.forEach(function (r){
+                        let tmp={}
+                        tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
+                        items.push(tmp)
+                    })
+                    showPreview(items, 'detail')
+                }
             },
             error: function () {
                 console.log("AJAX 통신 실패")
@@ -146,41 +185,24 @@
         })
     }
 
-    // 기존 상세 이미지 출력
-    // if (res.length !== 0) {
-    //     let detailImg = []
-    //     res.forEach(function (r) {
-    //         let tmp = {}
-    //         tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1];
-    //         detailImg.push(tmp)
-    //     })
-    //     showPreview(detailImg, "detail")
-    //     $("#modalList").html(append())
-    //     // 기존 썸네일 이미지 출력
-    //     let thumbnailImg = []
-    //     let tmp = {}
-    //     if (goodsImgPath.indexOf("&") != -1) {
-    //         tmp.uploadName = goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1];
-    //         thumbnailImg.push(tmp)
-    //         showPreview(thumbnailImg, "thumbnail")
-    //     }
-    // }
-
-    // 모달 "등록" 버튼 클릭
+    // 모달창 내부에서 "등록(수정완료)" 버튼 클릭
     function modifyProduct() {
         let data = {};
         let goodsImgDtoList = []
-        $("#detailPreview").children().each(function () {
+
+        $('.newDetail').each(function() {
             let tmp = {}
-            tmp.goodsNo = $("#goodsNo").val();
-            tmp.uploadPath = $(this).attr("data-url")
+            tmp.uploadPath = $(this).attr("src")
             goodsImgDtoList.push(tmp)
-        })
+        });
         data.goodsNo = $("#goodsNo").val();
         data.goodsName = $("#goodsName").val()
+        data.goodsCategory = $('#categorySelect option:selected').val()
+        data.goodsCategoryDetail = $('#categoryDetailSelect option:selected').val() === 'new' ? $("#newCategory").val() : $('#categoryDetailSelect option:selected').val()
+        data.goodsDescription = $("#goodsDescription").val()
         data.goodsPrice = $("#goodsPrice").val()
         data.goodsStock = $("#goodsStock").val()
-        data.goodsImgPath = $("#thumbnailInput").attr("src")
+        data.goodsImgPath = $("#newThumbnail").attr("src")
         data.goodsImgDtoList = goodsImgDtoList
         $.ajax({
             type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
@@ -192,6 +214,7 @@
             success: function () {
                 alert("수정 완료")
                 loadProductData()
+                initModal()
             },
             error: function () {
                 alert("AJAX 통신 실패")
@@ -201,45 +224,7 @@
 
 </script>
 <script>
-    // 상품 정보 추가
-</script>
-
-<script>
-    // 모달 내부 제어
-    function showPreview(items, type) {
-        let tmp = "";
-        items.forEach(function (item) {
-            let addr = "/muscles/goods/display?type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div data-type=' + type + ' data-url=' + item.uploadName + '>'
-            tmp += '<input class="delPreview" type="button" value="X">'
-            tmp += '<img src="' + addr + '">'
-            tmp += '</div>'
-        });
-        if (type == "detail")
-            $("#detailPreview").html(tmp)
-        else
-            $("#thumbnailPreview").html(tmp)
-    }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let type = $(this).parent().attr("data-type")
-        let targetdiv = $(this).parent()
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            enctype: 'multipart/form-data',
-            url: "/muscles/admin/goods/file/delete?type=" + type + "&fileName=" + fileName,
-            success: function (res) {
-                console.log(res)
-                // 파일 삭제가 성공적으로 이루어지면
-                if (res == "DEL_OK") {
-                    targetdiv.remove()
-                }
-            }
-        })
-    });
-    <!-- 이미지 업로드 -->
+    // 이미지 업로드
     $("input[type='file']").on("change", function (e) {
         let formData = new FormData();
         let type = $(this).attr("id");
@@ -247,7 +232,7 @@
         for (let i = 0; i < fileList.length; i++)
             formData.append("uploadFile", fileList[i]);
         $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
+            type: "POST",
             enctype: 'multipart/form-data',
             url: "/muscles/admin/goods/file/" + type + "/" + $("#goodsNo").val(), // 컨트롤러에서 대기중인 URL 주소이다.
             processData: false,
@@ -259,6 +244,46 @@
             }
         })
     });
+
+    function showPreview(items, type) {
+        let tmp = "";
+        items.forEach(function (item) {
+            console.log(item)
+            let addr = "/muscles/goods/display?type=" + type + "&fileName=" + item.uploadName
+            tmp += '<div data-type=' + type + ' data-url=' + item.uploadName + '>'
+            tmp += '<input class="delPreview" type="button" value="X">'
+            if (type === 'thumbnail')
+                tmp += '<img class="img-fluid" id="newThumbnail" src="' + addr + '">'
+            else
+                tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
+            tmp += '</div>'
+        });
+        if (type === "detail")
+            $("#detailPreview").append(tmp)
+        else
+            $("#thumbnailPreview").append(tmp)
+    }
+
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        let fileName = $(this).parent().attr("data-url")
+        let type = $(this).parent().attr("data-type")
+        let target = $(this)
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/muscles/admin/goods/file/delete?type=" + type + "&fileName=" + fileName,
+            success: function (res) {
+                console.log(res)
+                // 파일 삭제가 성공적으로 이루어지면
+                if (res === "DEL_OK") {
+                    target.next().remove();
+                    target.remove();
+                }
+            }
+        })
+    });
+
 </script>
 <script>
     // 상품 정보 읽기
@@ -269,6 +294,7 @@
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
             success: function (res) {
+                $("#goodsList").empty()
                 $("#goodsList").append(toHtml(res))
             },
             error: function () {
@@ -281,10 +307,11 @@
                 tmp += '<tr>'
                 tmp += '<td>' + item.goodsName + '</td>'
                 tmp += '<td>' + item.goodsCategory + '</td>'
+                tmp += '<td>' + item.goodsCategoryDetail + '</td>'
                 tmp += '<td>' + item.goodsPrice + '</td>'
                 tmp += '<td>' + item.goodsStock + '</td>'
-                tmp += '<td>구현예정</td>'
-                tmp += '<td>구현예정</td>'
+                tmp += '<td>' + item.goodsReviewScore + '</td>'
+                tmp += '<td>' + item.goodsSales + '</td>'
                 tmp += '<td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" name="modBtn" class="btn btn-primary" onclick="insertModal(' + item.goodsNo + ')">수정</button></td>'
                 tmp += '<td><button type="button" name="delBtn" class="btn btn-danger" onclick="removeProduct(' + item.goodsNo + ')">삭제</button></td>'
                 tmp += '</tr>'
@@ -302,7 +329,7 @@
             url: "/muscles/admin/goods/" + goodsNo, // 컨트롤러에서 대기중인 URL 주소이다.
             success: function () {
                 alert("해당 상품 정보를 삭제하였습니다.")
-                $("#goodsList").empty()
+
                 loadProductData()
             },
             error: function () {
@@ -310,6 +337,50 @@
             }
         })
     }
+</script>
+<script>
+    $.ajax({
+        type: "GET",
+        url: "/muscles/goods/category",
+        success: function (items) {
+            let tmp = "";
+            items.forEach(function (item) {
+                tmp += '<option class="subCategory" style="display:none;" name=' + item.category + ' value=\"' + item.subCategory + '">' + item.subCategory + '</option>'
+            })
+            tmp += '<option class="subCategory" style="display: none" name="new" value="new">신규 카테고리 생성</option>'
+            $("#categoryDetailSelect").append(tmp)
+        },
+        error: function () {
+            alert("AJAX 통신 실패")
+        }
+    })
+
+    function categoryDetailDisplay(value) {
+        if (value !== '') {
+            if (value === '유산소')
+                $("option[name='유산소']").show()
+            else if (value === '근력')
+                $("option[name='근력']").show()
+            else
+                $("option[name='기타']").show()
+            $("option[name='new']").show()
+        } else {
+            $('#categoryDetailSelect option').eq(0).prop('selected', true)
+            $(".subCategory").hide()
+        }
+    }
+
+    $("#categorySelect").on("change", function () {
+        categoryDetailDisplay(this.value)
+    })
+
+    // 신규 카테고리 입력 창
+    $("#categoryDetailSelect").on("change", function () {
+        if (this.value === 'new')
+            $("#newCategory").show()
+        else
+            $("#newCategory").hide()
+    })
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

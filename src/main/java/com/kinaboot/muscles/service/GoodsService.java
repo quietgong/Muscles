@@ -22,4 +22,6 @@ public interface GoodsService {
     List<GoodsCategoryDto> findAllCategories();
 
     List<GoodsDto> findBestGoods();
+
+    int removeGoodsImg(String type, String fileName);
 }

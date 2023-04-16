@@ -23,9 +23,9 @@ public class ChattingController {
 
     @Autowired
     ChatService chatService;
+
     List<ChatDto> chatDtoList = new ArrayList<>();
 
-    // 채팅 내용 DB 저장
     @PostMapping("/chat/post")
     @ResponseBody
     public ResponseEntity<String> chatAdd(ChatDto chatDto) {
@@ -33,11 +33,10 @@ public class ChattingController {
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
-    // 유저가 채팅상담 페이지에 접속했을 때
     @GetMapping("/chatting")
     public String chatList(HttpSession session, Model m) {
-        // 사용자 ID 이름으로 된 채팅방을 생성한다.
         String chatName = (String) session.getAttribute("id");
+        logger.info("[id] : " + chatName + "채팅상담 접속");
         boolean hasAlreadyChatRoom = false;
         if (chatDtoList.size() != 0 && chatName != null && !chatName.trim().equals("") && !chatName.equals("null")) {
             for (ChatDto chatDto : chatDtoList) {
@@ -55,31 +54,9 @@ public class ChattingController {
         m.addAttribute("chatDtoList", chatService.findChat(chatName));
         return "chatting/chatting";
     }
-
-    // 방 정보 가져오기
-    @GetMapping("/getRoom")
-    public @ResponseBody List<ChatDto> roomList() {
-        return chatDtoList;
-    }
-
-    // 상담 완료 (채팅방 삭제)
-    @ResponseBody
-    @DeleteMapping("/removeRoom/{chatName}")
-    public ResponseEntity<List<ChatDto>> roomRemove(@PathVariable String chatName) {
-        for (int i = 0; i < chatDtoList.size(); i++) {
-            if (chatDtoList.get(i).getChatName().equals(chatName)) {
-                chatDtoList.remove(i);
-                break;
-            }
-        }
-        return new ResponseEntity<>(chatDtoList, HttpStatus.OK);
-    }
-
-    // 관리자가 유저 채팅목록에 접속할 때
-    @GetMapping("/moveChating")
+    @GetMapping("/chatRoom")
     public String chatList(String chatName, Model m) {
         logger.info("관리자 채팅문의 진입");
-        System.out.println("chatName = " + chatName);
         List<ChatDto> new_list = chatDtoList.stream().
                 filter(o -> Objects.equals(o.getChatName(), chatName))
                 .collect(Collectors.toList());
@@ -90,5 +67,23 @@ public class ChattingController {
             return "chatting/chatting";
         } else
             return "chatting/chatRoom";
+    }
+    @GetMapping("/getRoom")
+    public @ResponseBody List<ChatDto> roomList() {
+        logger.info("채팅방 리스트");
+        return chatDtoList;
+    }
+
+    @ResponseBody
+    @DeleteMapping("/removeRoom/{chatName}")
+    public ResponseEntity<List<ChatDto>> roomRemove(@PathVariable String chatName) {
+        logger.info("채팅방 이름 : " + chatName + " 삭제");
+        for (int i = 0; i < chatDtoList.size(); i++) {
+            if (chatDtoList.get(i).getChatName().equals(chatName)) {
+                chatDtoList.remove(i);
+                break;
+            }
+        }
+        return new ResponseEntity<>(chatDtoList, HttpStatus.OK);
     }
 }

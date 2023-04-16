@@ -22,7 +22,7 @@
                                 <c:when test="${pageContext.request.session.getAttribute('id') == pastChat.talker}">
                                     <!-- 나의 대화 -->
                                     <div class="d-flex justify-content-between">
-                                        <p class="small mb-1 text-muted">${pastChat.createdDate}</p>
+                                        <p class="small mb-1 text-muted"><fmt:formatDate value="${pastChat.createdDate}" pattern="HH:mm" type="date"/></p>
                                         <p class="small mb-1">${pastChat.talker}</p>
                                     </div>
                                     <div class="d-flex flex-row justify-content-end mb-4 pt-1">
@@ -37,7 +37,7 @@
                                     <!-- 상대방 대화 -->
                                     <div class="d-flex justify-content-between">
                                         <p class="small mb-1">${pastChat.talker}</p>
-                                        <p class="small mb-1 text-muted">${pastChat.createdDate}</p>
+                                        <p class="small mb-1 text-muted"><fmt:formatDate value="${pastChat.createdDate}" pattern="HH:mm" type="date"/></p>
                                     </div>
                                     <div class="d-flex flex-row justify-content-start">
                                         <img src="<c:url value='/img/logo.jpg'/>" style="width: 45px; height: 100%;">
@@ -101,7 +101,10 @@
                         $("#sessionId").val(si);
                 } else if (d.type == "message") {
                     let tmp = ""
-                    let currentTime = new Date().toLocaleString()
+                    let today = new Date();
+                    let hours = ('0' + today.getHours()).slice(-2);
+                    let minutes = ('0' + today.getMinutes()).slice(-2);
+                    let currentTime = hours + ':' + minutes;
                     if (d.sessionId === $("#sessionId").val()) {
                         // 내가 메세지를 전달할 때
                         tmp+='<div class="d-flex justify-content-between">'
@@ -127,7 +130,6 @@
                         tmp+='</div>'
                         tmp+='</div>'
                     }
-                    console.log(newChat)
                     if(newChat) // 신규 대화
                         $("#chattingBox").append(tmp)
                     else // 기존 대화

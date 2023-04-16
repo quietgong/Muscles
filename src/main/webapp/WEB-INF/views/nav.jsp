@@ -36,10 +36,18 @@
             class="me-md-2 btn btn-outline-primary">
         회원가입
     </button>
-    <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button"
-            class="me-md-2 btn btn-outline-primary">
-        채팅상담
-    </button>
+    <c:choose>
+        <c:when test="${isAdmin == 'true'}">
+            <button id="chatting" onclick="location.href='<c:url value='/chatRoom'/>'" type="button" class="me-md-2 btn btn-outline-primary">
+                문의목록
+            </button>
+        </c:when>
+        <c:otherwise>
+            <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button" class="me-md-2 btn btn-outline-primary">
+                채팅문의
+            </button>
+        </c:otherwise>
+    </c:choose>
 </div>
 <!-- Close Top Nav -->
 

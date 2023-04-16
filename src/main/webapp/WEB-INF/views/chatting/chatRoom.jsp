@@ -32,7 +32,7 @@
     }
 
     function goRoom(name) {
-        location.href = "/muscles/moveChating?chatName=" + name;
+        location.href = "/muscles/chatRoom?chatName=" + name;
     }
 
     function removeRoom(name) {

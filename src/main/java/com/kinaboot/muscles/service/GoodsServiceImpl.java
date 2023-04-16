@@ -35,6 +35,11 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public int removeGoodsImg(String type, String fileName) {
+        return type.equals("thumbnail") ? goodsDao.deleteGoodsThumbnail(fileName) : goodsDao.deleteGoodsDetail(fileName);
+    }
+
+    @Override
     public List<GoodsImgDto> getGoodsDetailImgList(Integer GoodsNo) {
         return goodsDao.selectGoodsDetailImg(GoodsNo);
     }
@@ -50,10 +55,10 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public int removeGoods(Integer GoodsNo) {
-        reviewDao.deleteGoodsReview(GoodsNo); // 해당 상품에 대한 리뷰 데이터를 모두 삭제
-        reviewDao.deleteGoodsFaq(GoodsNo); // 해당 상품에 대한 문의 데이터를 모두 삭제
-        return goodsDao.deleteGoods(GoodsNo);
+    public int removeGoods(Integer goodsNo) {
+        reviewDao.deleteGoodsReview(goodsNo); // 해당 상품에 대한 리뷰 데이터를 모두 삭제
+        reviewDao.deleteGoodsFaq(goodsNo); // 해당 상품에 대한 문의 데이터를 모두 삭제
+        return goodsDao.deleteGoods(goodsNo);
     }
 
     @Override

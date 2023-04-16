@@ -14,6 +14,7 @@ public class GoodsDto {
     private int goodsPrice;
     private int goodsStock;
     private Double goodsReviewScore;
+    private int goodsSales;
 
     public GoodsDto() {
     }
@@ -51,6 +52,14 @@ public class GoodsDto {
 
     public String getGoodsCategoryDetail() {
         return goodsCategoryDetail;
+    }
+
+    public int getGoodsSales() {
+        return goodsSales;
+    }
+
+    public void setGoodsSales(int goodsSales) {
+        this.goodsSales = goodsSales;
     }
 
     public void setGoodsCategoryDetail(String goodsCategoryDetail) {
@@ -135,6 +144,7 @@ public class GoodsDto {
                 ", goodsPrice=" + goodsPrice +
                 ", goodsStock=" + goodsStock +
                 ", goodsReviewScore=" + goodsReviewScore +
+                ", goodsSales=" + goodsSales +
                 '}';
     }
 }

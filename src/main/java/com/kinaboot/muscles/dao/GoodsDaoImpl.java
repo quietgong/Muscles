@@ -36,12 +36,11 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public int updateGoods(GoodsDto goodsDto) {
-        goodsDto.setGoodsImgPath("/muscles/Goods/display?type=thumbnail&fileName=" + goodsDto.getGoodsImgPath());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
         for(GoodsImgDto goodsImgDto : goodsImgDtoList){
-            Map map = new HashMap();
-            map.put("GoodsNo", goodsImgDto.getGoodsNo());
-            map.put("filePath", "/muscles/Goods/display?type=detail&fileName=" + goodsImgDto.getUploadPath());
+            Map<String, String> map = new HashMap<>();
+            map.put("goodsNo", String.valueOf(goodsDto.getGoodsNo()));
+            map.put("filePath", goodsImgDto.getUploadPath());
             session.insert(namespace + "insertGoodsImg", map);
         }
         return session.update(namespace + "updateGoods", goodsDto);
@@ -96,5 +95,15 @@ public class GoodsDaoImpl implements GoodsDao {
     @Override
     public GoodsDto select(Integer GoodsNo) {
         return session.selectOne(namespace + "select", GoodsNo);
+    }
+
+    @Override
+    public int deleteGoodsThumbnail(String fileName) {
+        return session.delete(namespace + "deleteGoodsThumbnail", fileName);
+    }
+
+    @Override
+    public int deleteGoodsDetail(String fileName) {
+        return session.delete(namespace + "deleteGoodsDetail", fileName);
     }
 }

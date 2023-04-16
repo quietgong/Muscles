@@ -95,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
         else if (option.equals("3months")) // 지난 3개월
             calendar.add(Calendar.MONTH, -3);
 
-        if(!option.equals("all"))
+        if(!(option.equals("all") || option.equals("")))
             sc.setStartDate(calendar.getTime()); // 시작 날짜
         List<OrderDto> orderDtoList = orderDao.selectOrderAll(sc);
         return getOrderDetail(orderDtoList);

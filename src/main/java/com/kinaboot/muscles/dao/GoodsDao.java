@@ -30,4 +30,8 @@ public interface GoodsDao {
     List<GoodsCategoryDto> selectAllCategories();
 
     List<GoodsDto> selectBestGoods();
+
+    int deleteGoodsThumbnail(String fileName);
+
+    int deleteGoodsDetail(String fileName);
 }

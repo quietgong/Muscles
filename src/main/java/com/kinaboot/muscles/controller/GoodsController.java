@@ -46,6 +46,7 @@ public class GoodsController {
     }
 
     @GetMapping("/display")
+    @ResponseBody
     public ResponseEntity<byte[]> goodsImgDetails(String type, String fileName) throws IOException {
         String path = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\goods\\" + type + "\\";
         File file = new File(path + fileName);

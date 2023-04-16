@@ -36,18 +36,28 @@
         order by C.score limit 3;
     </select>
     <select id="selectAll" resultType="goodsDto">
-        select goodsNo,goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath
-        FROM GOODS
+        select g.goodsNo             as goodsNo
+             , g.goodsCategory       as goodsCategory
+             , g.goodsCategoryDetail as goodsCategoryDetail
+             , g.goodsName           as goodsName
+             , g.goodsPrice          as goodsPrice
+             , g.goodsStock          as goodsStock
+             , g.goodsImgPath        as goodsImgPath
+             , IFNULL(a.score, 0)    as goodsReviewScore
+             , IFNULL(a.sales, 0)    as goodsSales
+        FROM goods g
+                 left outer JOIN
+             (select r.goodsNo as goodsNo, r.score as score, o.goodsQty as sales
+              from (select goodsNo, avg(score) as score from review group by goodsNo) r,
+                   (select goodsNo, sum(goodsQty) as goodsQty
+                    from orderitem
+                    where orderNo in (select orderNo from orders where status = '주문완료')
+                    group by goodsNo) o
+              where r.goodsNo = o.goodsNo) a
+             on g.goodsNo = a.goodsNo;
     </select>
     <select id="select" parameterType="int" resultType="goodsDto">
-        select goodsNo,
-               goodsDescription,
-               goodsCategory,
-               goodsCategoryDetail,
-               goodsName,
-               goodsPrice,
-               goodsStock,
-               goodsImgPath
+        select *
         FROM GOODS
         where goodsNo = #{goodsNo}
     </select>
@@ -188,9 +198,15 @@
         FROM GOODS
         where goodsNo = ${goodsNo}
     </delete>
-    <delete id="deleteGoodsFaq" parameterType="int">
-        delete
-        from faq
-        where goodsNo = ${goodsNo}
+    <delete id="deleteGoodsThumbnail" parameterType="String">
+        UPDATE GOODS
+        SET goodsImgPath = null
+        where fileName = '${fileName}'
     </delete>
+    <delete id="deleteGoodsDetail" parameterType="String">
+        UPDATE goodsimg
+        SET filePath = null
+        where filePath = '${fileName}'
+    </delete>
+
 </mapper>
