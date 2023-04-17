@@ -5,6 +5,7 @@ import com.kinaboot.muscles.domain.ChatDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,5 +20,15 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public List<ChatDto> findChat(String chatName) {
         return chatDao.selectChat(chatName);
+    }
+
+    @Override
+    public Date findChatLastMsgDate(String chatName) {
+        return chatDao.selectLastMsgDate(chatName);
+    }
+
+    @Override
+    public int findChatNewMsgDate(String chatName) {
+        return chatDao.selectNewMsgCnt(chatName);
     }
 }

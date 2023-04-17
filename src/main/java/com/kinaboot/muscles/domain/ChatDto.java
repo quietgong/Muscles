@@ -11,6 +11,10 @@ public class ChatDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     Date createdDate;
 
+    int newMsgCnt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    Date lastMsgDate;
+
     public ChatDto() {
     }
 
@@ -52,6 +56,22 @@ public class ChatDto {
         this.createdDate = createdDate;
     }
 
+    public int getNewMsgCnt() {
+        return newMsgCnt;
+    }
+
+    public void setNewMsgCnt(int newMsgCnt) {
+        this.newMsgCnt = newMsgCnt;
+    }
+
+    public Date getLastMsgDate() {
+        return lastMsgDate;
+    }
+
+    public void setLastMsgDate(Date lastMsgDate) {
+        this.lastMsgDate = lastMsgDate;
+    }
+
     @Override
     public String toString() {
         return "ChatDto{" +
@@ -59,6 +79,8 @@ public class ChatDto {
                 ", talker='" + talker + '\'' +
                 ", msg='" + msg + '\'' +
                 ", createdDate=" + createdDate +
+                ", newMsgCnt=" + newMsgCnt +
+                ", lastMsgDate=" + lastMsgDate +
                 '}';
     }
 }

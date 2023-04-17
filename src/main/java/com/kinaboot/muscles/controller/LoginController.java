@@ -105,9 +105,9 @@ public class LoginController {
         String toMail = email;
         String title = "머슬스 임시 비밀번호 발송 이메일 입니다.";
         String content =
-                "안녕하세요. 머슬스입니다."
+                "안녕하세요. 머슬스입니다.<br><br>"
                         +
-                        "요청하신 임시 비밀번호는<br><br><strong>" + resetPassword + "</strong> 입니다.";
+                        "요청하신 임시 비밀번호는 <strong>" + resetPassword + "</strong> 입니다.";
 
         mailSend(resetPassword, setFrom, toMail, title, content, mailSender);
         return "pwdfindcomplete";

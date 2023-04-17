@@ -35,13 +35,6 @@
         location.href = "/muscles/chatRoom?chatName=" + name;
     }
 
-    function removeRoom(name) {
-        commonAjax('/muscles/removeRoom/' + name, "", 'delete', function (result) {
-            console.log(result)
-            createChatingRoom(result)
-        })
-    }
-
     function createChatingRoom(res) {
         if (res != null) {
             let tmp = "";
@@ -51,18 +44,14 @@
                     const rn = d.chatName.trim()
                     tmp += '<div class="row mt-3">'
                     tmp += '<div class="col-md-3">'
-                    tmp += '<span class="badge bg-danger rounded float-end mb-0" style="float: right;">3</span>'
+                    tmp += '<span class="badge bg-danger rounded float-end mb-0" style="float: right;">'+d.newMsgCnt+'</span>'
                     tmp += '<img src="/muscles/img/logo.jpg" class="d-flex align-self-center me-3" width="60">'
                     tmp += '</div>'
                     tmp += '<div class="col-md-3 pt-3">'
                     tmp += "<a onclick='goRoom(\"" + rn + "\")' style='text-decoration: none; cursor: pointer' class='fw-bold mb-0'>" + d.chatName + '</a>'
                     tmp += '</div>'
                     tmp += '<div class="col-md-3 pt-3">'
-                    tmp += '<p class="small text-muted mb-0">마지막메세지시간</p>'
-                    tmp += '</div>'
-                    tmp += '<div class="col-md-3 pt-3">'
-                    tmp += "<button type='button' onclick='removeRoom(\"" + rn + "\")' style='float: right;' class='small btn btn-primary'>상담종료</button>"
-                    tmp += '</button>'
+                    tmp += '<p class="small text-muted mb-0">' + d.lastMsgDate + '</p>'
                     tmp += '</div>'
                     tmp += '</div>'
                     tmp += '<hr>'

@@ -71,19 +71,23 @@ public class ChattingController {
     @GetMapping("/getRoom")
     public @ResponseBody List<ChatDto> roomList() {
         logger.info("채팅방 리스트");
+        for(ChatDto chatDto : chatDtoList){
+            chatDto.setLastMsgDate(chatService.findChatLastMsgDate(chatDto.getChatName()));
+            chatDto.setNewMsgCnt(chatService.findChatNewMsgDate(chatDto.getChatName()));
+        }
         return chatDtoList;
     }
 
-    @ResponseBody
     @DeleteMapping("/removeRoom/{chatName}")
-    public ResponseEntity<List<ChatDto>> roomRemove(@PathVariable String chatName) {
-        logger.info("채팅방 이름 : " + chatName + " 삭제");
+    @ResponseBody
+    public ResponseEntity<String> roomRemove(@PathVariable String chatName) {
+        logger.info("채팅방 이름, 채팅 유저 : " + chatName + " 삭제");
         for (int i = 0; i < chatDtoList.size(); i++) {
             if (chatDtoList.get(i).getChatName().equals(chatName)) {
                 chatDtoList.remove(i);
-                break;
+                return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(chatDtoList, HttpStatus.OK);
+        return new ResponseEntity<>("DEL_FAIL", HttpStatus.OK);
     }
 }

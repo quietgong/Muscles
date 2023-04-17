@@ -22,7 +22,9 @@
                                 <c:when test="${pageContext.request.session.getAttribute('id') == pastChat.talker}">
                                     <!-- 나의 대화 -->
                                     <div class="d-flex justify-content-between">
-                                        <p class="small mb-1 text-muted"><fmt:formatDate value="${pastChat.createdDate}" pattern="HH:mm" type="date"/></p>
+                                        <p class="small mb-1 text-muted"><fmt:formatDate value="${pastChat.createdDate}"
+                                                                                         pattern="HH:mm"
+                                                                                         type="date"/></p>
                                         <p class="small mb-1">${pastChat.talker}</p>
                                     </div>
                                     <div class="d-flex flex-row justify-content-end mb-4 pt-1">
@@ -37,12 +39,15 @@
                                     <!-- 상대방 대화 -->
                                     <div class="d-flex justify-content-between">
                                         <p class="small mb-1">${pastChat.talker}</p>
-                                        <p class="small mb-1 text-muted"><fmt:formatDate value="${pastChat.createdDate}" pattern="HH:mm" type="date"/></p>
+                                        <p class="small mb-1 text-muted"><fmt:formatDate value="${pastChat.createdDate}"
+                                                                                         pattern="HH:mm"
+                                                                                         type="date"/></p>
                                     </div>
                                     <div class="d-flex flex-row justify-content-start">
                                         <img src="<c:url value='/img/logo.jpg'/>" style="width: 45px; height: 100%;">
                                         <div style="max-width: 80%;">
-                                            <p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">${pastChat.msg}</p>
+                                            <p class="small p-2 ms-3 mb-3 rounded-3"
+                                               style="background-color: #f5f6f7;">${pastChat.msg}</p>
                                         </div>
                                     </div>
                                     <!-- 상대방 대화 -->
@@ -60,12 +65,53 @@
                             </button>
                         </div>
                     </div>
+                    <c:if test="${isAdmin == 'true'}">
+                        <button type='button' onclick='removeRoom()' class='btn btn-primary'>상담종료</button>
+                    </c:if>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+    function removeRoom() {
+        $.ajax({
+            type: "DELETE",
+            url: '/muscles/removeRoom/' + $("#chatName").val(),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            success: function (res) {
+                if (res === 'DEL_OK') {
+                    let option = {
+                        type: "notify",
+                        chatName: userName,
+                        sessionId: $("#sessionId").val(),
+                        userName: 'admin',
+                        msg: "상담이 종료되었습니다."
+                    }
+                    // 웹소켓에 메시지 정보 전달
+                    ws.send(JSON.stringify(option))
 
+                    // 컨트롤러에 메시지 정보 전달
+                    let data = {
+                        chatName: userName,
+                        talker: 'system',
+                        msg: "상담종료"
+                    }
+                    saveChat(data)
+                    alert("상담이 종료되었습니다.")
+                    location.href = "/muscles/chatRoom";
+                } else {
+                    alert("상담 종료 실패")
+                }
+            },
+            error: function () {
+                console.log("통신 실패")
+            }
+        })
+    }
+</script>
 <script>
     let ws;
     let userName = $("#chatName").val() == "" ? '${userId}' : $("#chatName").val();
@@ -92,50 +138,52 @@
             let newChat = $("#chattingBox").children().length === 0
             scrollTop()
             const msg = data.data;
-            if (msg != null && msg.trim() != '') {
+            if (msg != null && msg.trim() !== '') {
                 let d = JSON.parse(msg)
                 console.log(d)
-                if (d.type == "getId") {
-                    const si = d.sessionId != null ? d.sessionId : "";
-                    if (si != '')
-                        $("#sessionId").val(si);
-                } else if (d.type == "message") {
+                if (d.type === "message") { // 데이터가 "메세지" 타입 일 때
                     let tmp = ""
                     let today = new Date();
                     let hours = ('0' + today.getHours()).slice(-2);
                     let minutes = ('0' + today.getMinutes()).slice(-2);
                     let currentTime = hours + ':' + minutes;
+                    // 내가 메세지를 전달할 때
                     if (d.sessionId === $("#sessionId").val()) {
-                        // 내가 메세지를 전달할 때
-                        tmp+='<div class="d-flex justify-content-between">'
-                        tmp+='<p class="small mb-1 text-muted">'+currentTime+'</p>'
-                        tmp+='<p class="small mb-1">' + d.userName + '</p>'
-                        tmp+='</div>'
-                        tmp+='<div class="d-flex flex-row justify-content-end mb-4 pt-1">'
-                        tmp+='<div style="max-width: 80%;">'
-                        tmp+='<p class="small p-2 me-3 mb-3 text-white rounded-3 bg-primary">' + d.msg + '</p>'
-                        tmp+='</div>'
-                        tmp+='<img src="/muscles/img/logo.jpg" style="width: 45px; height: 100%;">'
-                        tmp+='</div>'
-                    } else {
+                        tmp += '<div class="d-flex justify-content-between">'
+                        tmp += '<p class="small mb-1 text-muted">' + currentTime + '</p>'
+                        tmp += '<p class="small mb-1">' + d.userName + '</p>'
+                        tmp += '</div>'
+                        tmp += '<div class="d-flex flex-row justify-content-end mb-4 pt-1">'
+                        tmp += '<div style="max-width: 80%;">'
+                        tmp += '<p class="small p-2 me-3 mb-3 text-white rounded-3 bg-primary">' + d.msg + '</p>'
+                        tmp += '</div>'
+                        tmp += '<img src="/muscles/img/logo.jpg" style="width: 45px; height: 100%;">'
+                        tmp += '</div>'
                         // 상대방의 메세지를 받았을 때
-                        tmp+='<div class="d-flex justify-content-between">'
-                        tmp+='<p class="small mb-1">' + d.userName + '</p>'
-                        tmp+='<p class="small mb-1 text-muted">' +currentTime + '</p>'
-                        tmp+='</div>'
-                        tmp+='<div class="d-flex flex-row justify-content-start">'
-                        tmp+='<img src="/muscles/img/logo.jpg" style="width: 45px; height: 100%;">'
-                        tmp+='<div style="max-width: 80%;">'
-                        tmp+='<p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">' + d.msg + '</p>'
-                        tmp+='</div>'
-                        tmp+='</div>'
+                    } else {
+                        tmp += '<div class="d-flex justify-content-between">'
+                        tmp += '<p class="small mb-1">' + d.userName + '</p>'
+                        tmp += '<p class="small mb-1 text-muted">' + currentTime + '</p>'
+                        tmp += '</div>'
+                        tmp += '<div class="d-flex flex-row justify-content-start">'
+                        tmp += '<img src="/muscles/img/logo.jpg" style="width: 45px; height: 100%;">'
+                        tmp += '<div style="max-width: 80%;">'
+                        tmp += '<p class="small p-2 ms-3 mb-3 rounded-3" style="background-color: #f5f6f7;">' + d.msg + '</p>'
+                        tmp += '</div>'
+                        tmp += '</div>'
                     }
-                    if(newChat) // 신규 대화
-                        $("#chattingBox").append(tmp)
-                    else // 기존 대화
-                        $("#chattingBox").children().last().after(tmp)
+                    // 신규 대화이면 append, 기존 대화가 있을 때는 마지막 자손요소에 추가
+                    newChat ? $("#chattingBox").append(tmp) : $("#chattingBox").children().last().after(tmp)
+                } else if (d.type === 'notify') { // 데이터가 "알림" 타입 일 때
+                    let today = new Date();
+                    let tmp = ""
+
+                    tmp += '<h1>상담 종료 알림 테스트</h1>'
+                    tmp += '<h1>종료 시간 : ' + today + '</h1>'
+
+                    $("#chattingBox").children().last().after(tmp)
                 } else
-                    console.warn("unknown type!")
+                    console.warn("알 수 없는 메세지 타입입니다.")
             }
         }
         document.addEventListener("keypress", function (e) {
@@ -162,20 +210,23 @@
             talker: '${userId}',
             msg: $("#msgInput").val()
         }
+        saveChat(data)
+        $('#msgInput').val("");
+    }
+
+    function saveChat(data) {
         // 채팅 메세지 DB 저장
         $.ajax({
             type: "POST",
             url: '/muscles/chat/post',
             data: data,
             success: function () {
-                console.log("ok")
                 scrollTop()
             },
             error: function () {
-                console.log('error');
+                console.log('채팅 메세지 저장 error');
             }
         });
-        $('#msgInput').val("");
     }
 </script>
 <!-- footer -->
