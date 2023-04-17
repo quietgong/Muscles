@@ -22,6 +22,7 @@ public class OrderController {
     OrderService orderService;
     @GetMapping("")
     public String orderList(SearchCondition sc, Model m) {
+        System.out.println("sc = " + sc);
         logger.info("주문 목록 조회");
         m.addAttribute("orderDtoList", orderService.findAllOrders(sc));
         return "admin/order";

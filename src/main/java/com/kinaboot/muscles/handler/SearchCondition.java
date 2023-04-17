@@ -18,6 +18,7 @@ public class SearchCondition {
     private String subCategory = "";
     private String userId = "";
     private String period = "";
+    private String status = "";
     private String minPrice = "";
     private String maxPrice = "";
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -45,6 +46,14 @@ public class SearchCondition {
     public SearchCondition(int page, String keyword) {
         this.page = page;
         this.keyword = keyword;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public SearchCondition(Integer page, String option, String keyword) {
@@ -169,6 +178,7 @@ public class SearchCondition {
                 ", subCategory='" + subCategory + '\'' +
                 ", userId='" + userId + '\'' +
                 ", period='" + period + '\'' +
+                ", status='" + status + '\'' +
                 ", minPrice='" + minPrice + '\'' +
                 ", maxPrice='" + maxPrice + '\'' +
                 ", startDate=" + startDate +

@@ -21,8 +21,8 @@
                     <h1 class="app-page-title mb-0">주문 관리</h1>
                 </div>
                 <div class="col-md-4">
-                    <!-- 조건 -->
-                    <form>
+                    <form id="conditionForm">
+                        <!-- 기간 조건 -->
                         <div class="input-group flex-nowrap">
                             <span class="input-group-text" id="addon-wrapping">기간</span>
                             <select name="period" class="form-select">
@@ -31,28 +31,23 @@
                                 <option value="month">이번달</option>
                                 <option value="3months">지난 3개월</option>
                             </select>
-                            <button type="submit" class="btn btn-primary">검색</button>
+                            <button type="submit" onclick="submit()" class="btn btn-primary">검색</button>
+                        </div>
+                        <!-- 상태 조건 -->
+                        <div class="input-group flex-nowrap mt-3">
+                            <span class="input-group-text" id="">상태</span>
+                            <select name="status" class="form-select">
+                                <option selected value="all">전체</option>
+                                <option value="pending">대기 주문</option>
+                                <option value="complete">완료 주문</option>
+                                <option value="cancel">취소 주문</option>
+                            </select>
+                            <button type="submit" onclick="submit()" class="btn btn-primary">검색</button>
                         </div>
                     </form>
-                    <!-- 조건 -->
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-md-12">
-                    <nav id="orders-table-tab"
-                         class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-                        <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab"
-                           href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">전체 주문</a>
-                        <a class="flex-sm-fill text-sm-center nav-link" id="orders-paid-tab" data-bs-toggle="tab"
-                           href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">대기 주문</a>
-                        <a class="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab"
-                           href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">완료
-                            주문</a>
-                        <a class="flex-sm-fill text-sm-center nav-link" id="orders-cancelled-tab" data-bs-toggle="tab"
-                           href="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">취소
-                            주문</a>
-                    </nav>
-                </div>
                 <div class="col-md-12">
                     <div class="tab-content" id="orders-table-tab-content">
                         <div class="tab-pane fade show active" id="orders-all" role="tabpanel"
@@ -91,14 +86,36 @@
                                                         </span>
                                                     </td>
                                                     <td class="cell">${orderDto.userId}</td>
-                                                    <td class="cell"><span class="note">${orderDto.createdDate}</span>
+                                                    <td class="cell">
+                                                        <span class="note">
+                                                            <fmt:formatDate value="${orderDto.createdDate}"
+                                                                            pattern="yyyy-MM-dd" type="date"/>
+                                                        </span>
                                                     </td>
-                                                    <td class="cell"><span
-                                                            class="badge bg-success">${orderDto.status}</span></td>
+                                                    <td class="cell">
+                                                        <c:choose>
+                                                            <c:when test="${orderDto.status == '주문대기'}">
+                                                                <span class="badge bg-warning">
+                                                                        ${orderDto.status}
+                                                                </span>
+                                                            </c:when>
+                                                            <c:when test="${orderDto.status == '주문완료'}">
+                                                                <span class="badge bg-success">
+                                                                        ${orderDto.status}
+                                                                </span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="badge bg-danger">
+                                                                        ${orderDto.status}
+                                                                </span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                     <td class="cell">${orderDto.paymentDto.price}</td>
-                                                    <td class="cell"><a style="text-decoration: none"
-                                                                        class="btn-sm app-btn-secondary"
-                                                                        href="<c:url value='/order/${orderDto.orderNo}'/>">상세 보기</a>
+                                                    <td class="cell">
+                                                        <a style="text-decoration: none"
+                                                           class="btn-sm app-btn-secondary"
+                                                           href="<c:url value='/order/${orderDto.orderNo}'/>">상세보기</a>
                                                     </td>
                                                     <c:if test="${orderDto.status == '주문대기'}">
                                                         <td class="cell">
@@ -109,7 +126,8 @@
                                                     </c:if>
                                                     <c:if test="${orderDto.status == '주문대기'}">
                                                         <td class="cell">
-                                                            <button type="button" data-bs-toggle="modal" data-bs-target="#orderCancelModal"
+                                                            <button type="button" data-bs-toggle="modal"
+                                                                    data-bs-target="#orderCancelModal"
                                                                     onclick="$('#orderCancelNum').val(${orderDto.orderNo})"
                                                                     class="orderCancel btn btn-outline-danger">주문취소
                                                             </button>
@@ -123,145 +141,11 @@
                                 </div><!--//app-card-body-->
                             </div><!--//app-card-->
                         </div><!--//tab-pane-->
-
-                        <div class="tab-pane fade" id="orders-paid" role="tabpanel" aria-labelledby="orders-paid-tab">
-                            <div class="app-card app-card-orders-table mb-5">
-                                <div class="app-card-body">
-                                    <div class="table-responsive">
-
-                                        <table class="table app-table-hover mb-0 text-center">
-                                            <thead>
-                                            <tr>
-                                                <th class="cell">주문번호</th>
-                                                <th class="cell">주문상품</th>
-                                                <th class="cell">구매자</th>
-                                                <th class="cell">주문일자</th>
-                                                <th class="cell">상태</th>
-                                                <th class="cell">주문가격</th>
-                                                <th class="cell"></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach var="orderDto" items="${orderDtoList}">
-                                                <c:if test="${orderDto.status == '대기중'}">
-                                                    <tr>
-                                                        <td class="cell">${orderDto.orderNo}</td>
-                                                        <td class="cell"><span
-                                                                class="truncate">${orderDto.orderItemDtoList.size()}</span>
-                                                        </td>
-                                                        <td class="cell">${orderDto.userId}</td>
-                                                        <td class="cell"><span
-                                                                class="note">${orderDto.createdDate}</span>
-                                                        </td>
-                                                        <td class="cell"><span
-                                                                class="badge bg-success">${orderDto.status}</span></td>
-                                                        <td class="cell">${orderDto.paymentDto.price}</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">상세
-                                                            보기</a>
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div><!--//table-responsive-->
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                        </div><!--//tab-pane-->
-
-                        <div class="tab-pane fade" id="orders-pending" role="tabpanel"
-                             aria-labelledby="orders-pending-tab">
-                            <div class="app-card app-card-orders-table mb-5">
-                                <div class="app-card-body">
-                                    <div class="table-responsive">
-                                        <table class="table app-table-hover mb-0 text-center">
-                                            <thead>
-                                            <tr>
-                                                <th class="cell">주문번호</th>
-                                                <th class="cell">주문상품</th>
-                                                <th class="cell">구매자</th>
-                                                <th class="cell">주문일자</th>
-                                                <th class="cell">상태</th>
-                                                <th class="cell">주문가격</th>
-                                                <th class="cell"></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach var="orderDto" items="${orderDtoList}">
-                                                <c:if test="${orderDto.status == '배송완료'}">
-                                                    <tr>
-                                                        <td class="cell">${orderDto.orderNo}</td>
-                                                        <td class="cell"><span
-                                                                class="truncate">${orderDto.orderItemDtoList.size()}</span>
-                                                        </td>
-                                                        <td class="cell">${orderDto.userId}</td>
-                                                        <td class="cell"><span
-                                                                class="note">${orderDto.createdDate}</span>
-                                                        </td>
-                                                        <td class="cell"><span
-                                                                class="badge bg-success">${orderDto.status}</span></td>
-                                                        <td class="cell">${orderDto.paymentDto.price}</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">상세
-                                                            보기</a>
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div><!--//table-responsive-->
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                        </div><!--//tab-pane-->
-                        <div class="tab-pane fade" id="orders-cancelled" role="tabpanel"
-                             aria-labelledby="orders-cancelled-tab">
-                            <div class="app-card app-card-orders-table mb-5">
-                                <div class="app-card-body">
-                                    <div class="table-responsive">
-                                        <table class="table app-table-hover mb-0 text-center">
-                                            <thead>
-                                            <tr>
-                                                <th class="cell">주문번호</th>
-                                                <th class="cell">주문상품</th>
-                                                <th class="cell">구매자</th>
-                                                <th class="cell">주문일자</th>
-                                                <th class="cell">상태</th>
-                                                <th class="cell">주문가격</th>
-                                                <th class="cell"></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach var="orderDto" items="${orderDtoList}">
-                                                <c:if test="${orderDto.status == '취소'}">
-                                                    <tr>
-                                                        <td class="cell">${orderDto.orderNo}</td>
-                                                        <td class="cell"><span
-                                                                class="truncate">${orderDto.orderItemDtoList.size()}</span>
-                                                        </td>
-                                                        <td class="cell">${orderDto.userId}</td>
-                                                        <td class="cell"><span
-                                                                class="note">${orderDto.createdDate}</span>
-                                                        </td>
-                                                        <td class="cell"><span
-                                                                class="badge bg-success">${orderDto.status}</span></td>
-                                                        <td class="cell">${orderDto.paymentDto.price}</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">상세
-                                                            보기</a>
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div><!--//table-responsive-->
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                        </div><!--//tab-pane-->
-                    </div><!--//tab-content-->
+                    </div>
                 </div>
             </div>
-        </div><!--//container-fluid-->
-    </div><!--//app-content-->
+        </div>
+    </div>
 </div>
 <!-- 주문 취소 Modal -->
 <div class="modal fade" id="orderCancelModal" tabindex="-1" aria-labelledby="orderCancelModalLabel" aria-hidden="true">
@@ -325,7 +209,6 @@
 <!-- 주문 취소 Modal -->
 <script>
     /* 주문 승인 처리 */
-
     $(".orderAccept").on("click", function () {
         let orderNo = $(this).parent().parent().children().html()
         $.ajax({
@@ -347,8 +230,6 @@
 </script>
 <script>
     /* 주문 취소 처리 */
-
-    // 주문 취소 모달창 처리 //
 
     // 기타 사유 선택시 textarea 출력, 그렇지 않으면 미출력
     $("input[name='orderCancelOption']").change(function () {
@@ -372,8 +253,6 @@
             cancelReason = $("#orderCancelContent").val()
         else
             cancelReason = $("input[name='orderCancelOption']:checked").val()
-
-        console.log(cancelReason)
         $.ajax({
             type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/order/" + orderNo,
@@ -390,6 +269,28 @@
             }
         })
     }
+</script>
+<script>
+    /* 조건 처리 */
+    // 검색 결과에 따라 각 체크박스 선택
+    $('select[name="period"] option[value="${param.period}"]').prop('selected', true);
+    $('select[name="status"] option[value="${param.status}"]').prop('selected', true);
+    
+    function submit() {
+        const form = $("#conditionForm")
+        let period = $('select[name="period"] option:selected').val()
+        let status = $('select[name="status"] option:selected').val()
+
+        form.append($('<input>').attr({
+            type: 'hidden', name: period, value: period
+        }))
+        form.append($('<input>').attr({
+            type: 'hidden', name: status, value: status
+        }))
+
+        form.submit()
+    }
+
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
