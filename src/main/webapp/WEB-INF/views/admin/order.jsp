@@ -275,7 +275,7 @@
     // 검색 결과에 따라 각 체크박스 선택
     $('select[name="period"] option[value="${param.period}"]').prop('selected', true);
     $('select[name="status"] option[value="${param.status}"]').prop('selected', true);
-    
+
     function submit() {
         const form = $("#conditionForm")
         let period = $('select[name="period"] option:selected').val()

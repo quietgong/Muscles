@@ -3,6 +3,7 @@ package com.kinaboot.muscles.dao;
 import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ public interface UserDao {
     int count();
     List<UserDto> selectAllUser();
     UserDto selectUser(String userId);
+    UserDto selectUserEmail(String email);
     List<PointDto> selectUserPoint(String userId);
     List<CouponDto> selectUserCoupon(String userId);
     int insertUser(UserDto userDto);
@@ -35,4 +37,5 @@ public interface UserDao {
     PointDto selectUserOrderPoint(int orderNo);
 
     int updateCoupon(int orderNo);
+
 }

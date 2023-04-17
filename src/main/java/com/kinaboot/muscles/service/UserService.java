@@ -12,6 +12,7 @@ import java.util.Map;
 public interface UserService {
     List<UserDto> findAllUser();
     UserDto findUser(String userId) throws Exception;
+    UserDto findUserEmail(String email);
     int addUser(UserDto userDto) throws Exception;
     int modifyUser(UserDto userDto) throws Exception;
     int removeUser(String userId, HttpServletRequest request, String removeType) throws Exception;
@@ -23,4 +24,7 @@ public interface UserService {
     int countUser(String userId);
     int removeCoupon(int couponNo, int orderNo);
     int removeCoupon(String userId);
+
+    int resetPassword(String userId, String resetPassword);
+
 }

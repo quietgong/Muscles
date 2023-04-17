@@ -43,6 +43,7 @@
     <context:component-scan base-package="com.kinaboot.muscles" name-generator="com.kinaboot.muscles.handler.FullBeanNameGenerator"/>
     <!-- View-Path 연결 -->
     <view-controller path="/" view-name="index"/>
+    <view-controller path="/pwdfind" view-name="pwdfind"/>
     <view-controller path="/admin/goods" view-name="admin/goods"/>
     <view-controller path="/admin/user" view-name="admin/user"/>
 

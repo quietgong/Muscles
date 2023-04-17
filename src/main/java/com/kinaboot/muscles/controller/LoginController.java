@@ -7,27 +7,42 @@ import com.kinaboot.muscles.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
+import java.util.Random;
+
+import static com.kinaboot.muscles.controller.common.MailController.mailSend;
 
 @Controller
 public class LoginController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @Autowired
     UserService userService;
+
     @Autowired
     CartService cartService;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping("/login/")
     public String login(String toURL, UserDto userDto, HttpServletResponse response, HttpServletRequest request, boolean rememberId) throws Exception {
@@ -56,7 +71,7 @@ public class LoginController {
         try {
             userDto = userService.findUser(id);
             String encodingPw = userDto.getPassword();
-            return passwordEncoder.matches(pw, encodingPw) && userService.findUser(id).getExpiredDate()==null;
+            return passwordEncoder.matches(pw, encodingPw) && userService.findUser(id).getExpiredDate() == null;
         } catch (Exception e) {
             return false;
         }
@@ -67,5 +82,61 @@ public class LoginController {
         logger.info("로그아웃 진입");
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/emailExistCheck")
+    @ResponseBody
+    public ResponseEntity<String> emailExistCheck(String email) {
+        try {
+            return new ResponseEntity<>(userService.findUserEmail(email).getUserId(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("invalid", HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/passwordReset")
+    public String passwordReset(String userId, String email) {
+        logger.info("임시 비밀번호 발송 진입 [email] : " + email);
+        String resetPassword = generateRandomString();
+        userService.resetPassword(userId, passwordEncoder.encode(resetPassword));
+        logger.info("생성된 임시 비밀번호 : " + resetPassword);
+        /* 이메일 발송 */
+        String setFrom = "quietgong@naver.com";
+        String toMail = email;
+        String title = "머슬스 임시 비밀번호 발송 이메일 입니다.";
+        String content =
+                "안녕하세요. 머슬스입니다."
+                        +
+                        "요청하신 임시 비밀번호는<br><br><strong>" + resetPassword + "</strong> 입니다.";
+
+        mailSend(resetPassword, setFrom, toMail, title, content, mailSender);
+        return "pwdfindcomplete";
+    }
+
+    private String generateRandomString() {
+        Random random = new Random();
+        int letterLen = 4;
+        int numLen = 2;
+
+        StringBuilder sb = new StringBuilder(letterLen + numLen);
+
+        int letterMin = 65; // ASCII code : 'A'
+        int letterMax = 90; // ASCII code : 'Z'
+
+        for (int i = 0; i < letterLen; i++) {
+            int asciiValue = random.nextInt((letterMax - letterMin) + 1) + letterMin;
+            char ch = (char) asciiValue;
+            sb.append(ch);
+        }
+
+        int numberMin = 48; // ASCII code : '0'
+        int numberMax = 57; // ASCII code : '9'
+
+        for (int i = 0; i < numLen; i++) {
+            int asciiValue = random.nextInt((numberMax - numberMin) + 1) + numberMin;
+            char ch = (char) asciiValue;
+            sb.append(ch);
+        }
+        return sb.toString();
     }
 }

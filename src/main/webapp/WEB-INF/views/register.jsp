@@ -333,10 +333,11 @@
                 },
                 success: function (verifyNum) {
                     console.log("인증번호 : " + verifyNum)
-                    verifyCode = verifyNum
+                    verifyCode = parseInt(verifyNum)
                     $("#emailVerifyNumber").attr("readonly", false)
                     $("#emailVerifyNumber").css("background-color", "#fff")
                     $("#emailVerifyNumber").focus()
+                    alert("인증번호가 전송되었습니다. 메일을 확인해주시기 바랍니다.")
                 },
                 error: function () {
                     console.log("통신 실패")

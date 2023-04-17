@@ -2,34 +2,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <c:set var="message" value="${param.msg eq null ? 'none' : 'block'}"/>
+<%@ include file="nav.jsp" %>
 <style>
-    #msg-text {
-        font-style: italic;
-        font-size: 1.2rem;
-        color: red;
-        display: ${message};
+    .rounded-t-5 {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+
+    @media (min-width: 992px) {
+        .rounded-tr-lg-0 {
+            border-top-right-radius: 0;
+        }
+
+        .rounded-bl-lg-5 {
+            border-bottom-left-radius: 0.5rem;
+        }
     }
 </style>
-<!-- nav -->
-<%@ include file="nav.jsp" %>
 <input type="hidden" name="toURL" value="${param.toURL}">
 <section class=" text-center text-lg-start">
-    <style>
-        .rounded-t-5 {
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-        }
-
-        @media (min-width: 992px) {
-            .rounded-tr-lg-0 {
-                border-top-right-radius: 0;
-            }
-
-            .rounded-bl-lg-5 {
-                border-bottom-left-radius: 0.5rem;
-            }
-        }
-    </style>
     <div class="card mb-3">
         <div class="row g-0 d-flex align-items-center justify-content-center">
             <div class="col-lg-4">
@@ -57,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <a style="float: right" href="#!">비밀번호 찾기</a>
+                                <a style="float: right" href="<c:url value='/pwdfind'/>">비밀번호 찾기</a>
                             </div>
                         </div>
                         <div class="row justify-content-center">

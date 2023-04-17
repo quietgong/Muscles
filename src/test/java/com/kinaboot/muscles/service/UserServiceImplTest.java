@@ -34,6 +34,11 @@ public class UserServiceImplTest extends TestConfigure {
     }
 
     @Test
+    public void findUserEmail() throws Exception{
+        String email = "test7@test.com";
+        UserDto userDto = userService.findUserEmail(email);
+    }
+    @Test
     public void removeUser() throws Exception {
         String userId = "test19";
         String removeType = "admin";

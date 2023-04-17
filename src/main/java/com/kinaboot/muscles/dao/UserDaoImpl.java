@@ -3,6 +3,7 @@ package com.kinaboot.muscles.dao;
 import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
+import org.apache.catalina.User;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int updateUser(UserDto userDto) {
         return session.update(namespace + "updateUser", userDto);
+    }
+
+    @Override
+    public UserDto selectUserEmail(String email) {
+        return session.selectOne(namespace + "selectUserEmail", email);
     }
 
     @Override

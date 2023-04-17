@@ -21,12 +21,11 @@
         FROM user
         where userId = '${userId}'
     </select>
-    <select id="selectUserOne" resultType="String">
+    <select id="selectUserEmail" parameterType="String" resultType="UserDto">
         SELECT *
         FROM user
-        where userId = '${userId}'
+        where email = '${email}'
     </select>
-
     <select id="selectUserCoupon" resultType="CouponDto" parameterType="String">
         select *
         from coupon

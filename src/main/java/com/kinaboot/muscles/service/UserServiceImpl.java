@@ -43,6 +43,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int resetPassword(String userId, String resetPassword) {
+        return userDao.updateUserPassword(userId, resetPassword);
+    }
+
+    @Override
+    public UserDto findUserEmail(String email) {
+        return userDao.selectUserEmail(email);
+    }
+
+    @Override
     public int removeUser(String userId, HttpServletRequest request, String removeType) throws Exception {
         int[] typeValue = new int[]{0, 0, 0};
         String opinion = "";
