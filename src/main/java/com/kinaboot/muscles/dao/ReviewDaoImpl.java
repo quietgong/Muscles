@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.domain.ReviewImgDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,11 @@ public class ReviewDaoImpl implements ReviewDao {
     private SqlSession session;
 
     private static String namespace = "com.kinaboot.muscles.dao.reviewMapper.";
+
+    @Override
+    public int selectNewReviewNo() {
+        return session.selectOne(namespace + "newReviewNo");
+    }
 
     @Override
     public List<ReviewDto> selectReviewListByProductId(Integer goodsNo) {
@@ -68,5 +74,23 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public List<ReviewDto> selectReviewListById(String userId) {
         return session.selectList(namespace + "selectReviewById", userId);
+    }
+
+    @Override
+    public int insertReviewImg(ReviewImgDto reviewImgDto) {
+        return session.insert(namespace + "insertReviewImg", reviewImgDto);
+    }
+
+    @Override
+    public int deleteReviewImg(String imgPath) {
+        return session.delete(namespace+"deleteReviewImg", imgPath);
+    }
+
+    @Override
+    public List<ReviewImgDto> selectReviewImg(int reviewNo, Integer goodsNo) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("reviewNo", reviewNo);
+        map.put("goodsNo", goodsNo);
+        return session.selectList(namespace + "selectReviewImg", map);
     }
 }

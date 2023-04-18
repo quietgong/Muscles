@@ -3,12 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kinaboot.muscles.dao.reviewMapper">
+    <select id="newReviewNo" resultType="int">
+        SELECT max(reviewNo)+1
+        FROM REVIEW
+    </select>
+
     <select id="selectReview" parameterType="map" resultType="reviewDto">
         select *
         from review
         where orderNo = #{orderNo}
           and goodsNo = #{goodsNo}
     </select>
+
     <select id="selectReviewOne" parameterType="int" resultType="reviewDto">
         select *
         from review
@@ -34,9 +40,20 @@
                     and expiredDate is null;
     </select>
 
+    <select id="selectReviewImg" parameterType="map" resultType="reviewImgDto">
+        select reviewNo, filePath as uploadPath
+        from reviewImg
+        where goodsNo = #{goodsNo}
+          and reviewNo = #{reviewNo};
+    </select>
+
     <insert id="insertReview" parameterType="reviewDto">
         insert into review (score, content, userId, goodsNo, goodsName, createdDate, orderNo)
         values (#{score}, #{content}, #{userId}, #{goodsNo}, #{goodsName}, now(), #{orderNo});
+    </insert>
+    <insert id="insertReviewImg" parameterType="reviewImgDto">
+        insert into reviewimg (reviewNo, filePath, goodsNo)
+        values (#{reviewNo}, #{uploadPath}, #{goodsNo});
     </insert>
 <update id="updateReview" parameterType="reviewDto">
     UPDATE review
@@ -59,5 +76,10 @@
         delete
         from faq
         where goodsNo = ${goodsNo}
+    </delete>
+    <delete id="deleteReviewImg" parameterType="String">
+        DELETE
+        FROM reviewImg
+        where filePath = '${imgPath}'
     </delete>
 </mapper>

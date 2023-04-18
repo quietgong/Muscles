@@ -289,7 +289,7 @@
         console.log(items)
         let tmp = "";
         items.forEach(function (item) {
-            let addr = "/muscles/goods/display?type=" + type + "&fileName=" + item.uploadName
+            let addr = "/muscles/img/display?category=goods&type=" + type + "&fileName=" + item.uploadName
             tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
             tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
             if (type === 'thumbnail')
@@ -305,10 +305,10 @@
             $("#detailPreview").append(tmp)
         else
             $("#thumbnailPreview").append(tmp)
-        test()
+        moveImgPosition()
     }
 
-    function subtest() {
+    function showUpDownBtn() {
         // 첫번째 div Up 버튼 숨기기
         $("button:contains('↑')").show()
         $('.detail:first-child button:contains("↑")').hide();
@@ -318,27 +318,32 @@
         $('.detail:last-child button:contains("↓")').hide();
     }
 
-    function test() {
-        subtest()
+    function moveImgPosition() {
+        showUpDownBtn()
         // Up 버튼 클릭 시 이전 div와 위치 변경
         $('.detail button:contains("↑")').click(function () {
             let currentDiv = $(this).parent();
             let prevDiv = currentDiv.prev('.detail');
-
             if (prevDiv.length !== 0)
                 currentDiv.insertBefore(prevDiv);
-            subtest()
+            showUpDownBtn()
         });
         // Down 버튼 클릭 시 다음 div와 위치 변경
         $('.detail button:contains("↓")').click(function () {
             let currentDiv = $(this).parent();
             let nextDiv = currentDiv.next('.detail');
-
             if (nextDiv.length !== 0)
                 currentDiv.insertAfter(nextDiv);
-            subtest()
+            showUpDownBtn()
         });
     }
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        let fileName = $(this).parent().attr("data-url")
+        let type = $(this).parent().attr("data-type")
+        let target = $(this).parent()
+        deleteImg(target, type, fileName)
+    });
 
     function deleteImg(target, type, fileName) {
         let targetDiv = target
@@ -355,15 +360,6 @@
             }
         })
     }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let type = $(this).parent().attr("data-type")
-        let target = $(this).parent()
-        deleteImg(target, type, fileName)
-    });
-
 </script>
 <script>
     // 상품 정보 읽기

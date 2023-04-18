@@ -17,9 +17,8 @@ public class PostDto {
     private Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date modDate;
-
     private Integer viewCnt;
-
+    private List<PostImgDto> postImgDtoList;
 
     public PostDto() {
 
@@ -30,6 +29,14 @@ public class PostDto {
         this.title = title;
         this.content = content;
         this.userId = userId;
+    }
+
+    public List<PostImgDto> getPostImgDtoList() {
+        return postImgDtoList;
+    }
+
+    public void setPostImgDtoList(List<PostImgDto> postImgDtoList) {
+        this.postImgDtoList = postImgDtoList;
     }
 
     public Integer getPostNo() {
@@ -116,6 +123,7 @@ public class PostDto {
                 ", createdDate=" + createdDate +
                 ", modDate=" + modDate +
                 ", viewCnt=" + viewCnt +
+                ", postImgDtoList=" + postImgDtoList +
                 '}';
     }
 }

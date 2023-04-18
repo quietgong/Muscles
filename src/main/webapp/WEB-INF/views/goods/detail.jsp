@@ -135,6 +135,9 @@
             <div class="col-md-12">
                 <span>${reviewDto.content}</span>
             </div>
+            <div>
+                <span>${reviewDto.reviewImgDtoList}</span>
+            </div>
             <hr class="mb-4 mt-5">
             </c:forEach>
         </div>

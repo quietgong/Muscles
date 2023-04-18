@@ -193,7 +193,7 @@
                 <!-- 모달 구성 요소 -->
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
                             <h3 id="goodsName" class="goodsName">상품 이름</h3>
                         </div>
                     </div>
@@ -211,7 +211,14 @@
                             </div>
                         </ul>
                     </div>
-                    <div class="row">
+                    <div class="row mt-5">
+                        <div class="col-md-12">
+                            <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
+                            <input type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
+                            <div id="reviewPreview"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
                         <div class="col-md-12">
                                 <textarea id="reviewContent" class="form-control mt-1" placeholder="상품 후기를 작성해주세요."
                                           rows="5"
@@ -231,6 +238,94 @@
     </div>
 </div>
 <!-- 리뷰 작성 Modal -->
+<script>
+    // 이미지 업로드
+    $("input[type='file']").on("change", function () {
+        let fileList = $(this)[0].files;
+        let formData = new FormData();
+        for (let i = 0; i < fileList.length; i++)
+            formData.append("uploadFile", fileList[i]);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"), // 컨트롤러에서 대기중인 URL 주소이다.
+            processData: false,
+            contentType: false,
+            data: formData,
+            dataType: 'json',
+            success: function (items) {
+                showPreview(items, "detail")
+            }
+        })
+    });
+
+    function showPreview(items, type) {
+        console.log(items)
+        let tmp = "";
+        items.forEach(function (item) {
+            let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
+            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
+            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
+            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
+            tmp += '</div>'
+        });
+        $("#reviewPreview").append(tmp)
+        moveImgPosition()
+    }
+    function showUpDownBtn() {
+        // 첫번째 div Up 버튼 숨기기
+        $("button:contains('↑')").show()
+        $('.detail:first-child button:contains("↑")').hide();
+        // 마지막 div Down 버튼 숨기기
+        $("button:contains('↓')").show()
+        $('.detail:last-child button:contains("↓")').hide();
+    }
+
+    function moveImgPosition() {
+        showUpDownBtn()
+        // Up 버튼 클릭 시 이전 div와 위치 변경
+        $('.detail button:contains("↑")').click(function () {
+            let currentDiv = $(this).parent();
+            let prevDiv = currentDiv.prev('.detail');
+            if (prevDiv.length !== 0)
+                currentDiv.insertBefore(prevDiv);
+            showUpDownBtn()
+        });
+        // Down 버튼 클릭 시 다음 div와 위치 변경
+        $('.detail button:contains("↓")').click(function () {
+            let currentDiv = $(this).parent();
+            let nextDiv = currentDiv.next('.detail');
+            if (nextDiv.length !== 0)
+                currentDiv.insertAfter(nextDiv);
+            showUpDownBtn()
+        });
+    }
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        let fileName = $(this).parent().attr("data-url")
+        let target = $(this).parent()
+        deleteImg(target, "detail", fileName)
+    });
+
+    function deleteImg(target, type, fileName) {
+        let targetDiv = target
+        $.ajax({
+            type: "DELETE",
+            enctype: 'multipart/form-data',
+            url: "/muscles/img/delete/review/detail?fileName=" + fileName,
+            success: function (res) {
+                console.log(res)
+                // 파일 삭제가 성공적으로 이루어지면
+                if (res === "DEL_OK") {
+                    targetDiv.empty();
+                }
+            }
+        })
+    }
+
+</script>
 <script>
     /* 주문 취소 모달창 처리 */
 
@@ -283,6 +378,8 @@
         $("#reviewContent").val("")
         $("#starRange").val("")
         $("#starRange").next().css("width", "100%")
+        $("#reviewPreview").html("")
+        $("#reviewImg").val("")
     }
 
     // 해당 주문에 대한 정보를 모달창에 입력
@@ -319,6 +416,14 @@
         data.goodsName = $(e).parent().attr("data-goodsName")
         data.score = $('#starRange').val()
         data.content = $('#reviewContent').val()
+        let reviewImgDtoList = []
+        $('.newDetail').each(function () {
+            let tmp = {}
+            tmp.goodsNo = data.goodsNo
+            tmp.uploadPath = $(this).attr("src")
+            reviewImgDtoList.push(tmp)
+        });
+        data.reviewImgDtoList = reviewImgDtoList
         $.ajax({
             type: "POST",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/review", // 컨트롤러에서 대기중인 URL 주소이다.

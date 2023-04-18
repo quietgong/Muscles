@@ -1,16 +1,16 @@
 package com.kinaboot.muscles.domain;
 
-public class GoodsImgDto {
+public class ImgDto {
     private Integer imgNo;
-    private Integer goodsNo;
+    private Integer no;
     private String uploadPath;
     private String uploadName;
 
-    public GoodsImgDto() {
+    public ImgDto() {
     }
 
-    public GoodsImgDto(Integer goodsNo, String uploadPath, String uploadName, String uuid) {
-        this.goodsNo = goodsNo;
+    public ImgDto(Integer no, String uploadPath, String uploadName) {
+        this.no = no;
         this.uploadPath = uploadPath;
         this.uploadName = uploadName;
     }
@@ -23,12 +23,12 @@ public class GoodsImgDto {
         this.imgNo = imgNo;
     }
 
-    public Integer getGoodsNo() {
-        return goodsNo;
+    public Integer getNo() {
+        return no;
     }
 
-    public void setGoodsNo(Integer goodsNo) {
-        this.goodsNo = goodsNo;
+    public void setNo(Integer no) {
+        this.no = no;
     }
 
     public String getUploadPath() {
@@ -49,9 +49,9 @@ public class GoodsImgDto {
 
     @Override
     public String toString() {
-        return "goodsImgDto{" +
+        return "ImgDto{" +
                 "imgNo=" + imgNo +
-                ", goodsNo=" + goodsNo +
+                ", no=" + no +
                 ", uploadPath='" + uploadPath + '\'' +
                 ", uploadName='" + uploadName + '\'' +
                 '}';

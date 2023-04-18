@@ -3,6 +3,7 @@ package com.kinaboot.muscles.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class ReviewDto {
     private int reviewNo;
@@ -18,6 +19,7 @@ public class ReviewDto {
     private Date expiredDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date modDate;
+    private List<ReviewImgDto> reviewImgDtoList;
 
     public ReviewDto() {
     }
@@ -27,6 +29,15 @@ public class ReviewDto {
         this.score = score;
         this.content = content;
         this.goodsName = goodsName;
+    }
+
+
+    public List<ReviewImgDto> getReviewImgDtoList() {
+        return reviewImgDtoList;
+    }
+
+    public void setReviewImgDtoList(List<ReviewImgDto> reviewImgDtoList) {
+        this.reviewImgDtoList = reviewImgDtoList;
     }
 
     public int getReviewNo() {
@@ -122,6 +133,7 @@ public class ReviewDto {
                 ", createdDate=" + createdDate +
                 ", expiredDate=" + expiredDate +
                 ", modDate=" + modDate +
+                ", reviewImgDtoList=" + reviewImgDtoList +
                 '}';
     }
 }

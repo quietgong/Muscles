@@ -209,12 +209,12 @@
     </delete>
     <delete id="deleteGoodsDetail" parameterType="String">
         DELETE
-        FROM goodsimg
+        FROM goodsImg
         where filePath = '${imgPath}'
     </delete>
     <delete id="deleteAllGoodsDetail" parameterType="int">
         DELETE
-        FROM goodsimg
+        FROM goodsImg
         where goodsNo = '${goodsNo}'
     </delete>
 

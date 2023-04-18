@@ -1,34 +1,26 @@
 package com.kinaboot.muscles.domain;
 
-public class GoodsImgDto {
-    private Integer imgNo;
+public class ReviewImgDto {
+    private Integer reviewImgNo;
+    private Integer reviewNo;
     private Integer goodsNo;
     private String uploadPath;
     private String uploadName;
 
-    public GoodsImgDto() {
+    public Integer getReviewImgNo() {
+        return reviewImgNo;
     }
 
-    public GoodsImgDto(Integer goodsNo, String uploadPath, String uploadName, String uuid) {
-        this.goodsNo = goodsNo;
-        this.uploadPath = uploadPath;
-        this.uploadName = uploadName;
+    public void setReviewImgNo(Integer reviewImgNo) {
+        this.reviewImgNo = reviewImgNo;
     }
 
-    public Integer getImgNo() {
-        return imgNo;
+    public Integer getReviewNo() {
+        return reviewNo;
     }
 
-    public void setImgNo(Integer imgNo) {
-        this.imgNo = imgNo;
-    }
-
-    public Integer getGoodsNo() {
-        return goodsNo;
-    }
-
-    public void setGoodsNo(Integer goodsNo) {
-        this.goodsNo = goodsNo;
+    public void setReviewNo(Integer reviewNo) {
+        this.reviewNo = reviewNo;
     }
 
     public String getUploadPath() {
@@ -47,10 +39,19 @@ public class GoodsImgDto {
         this.uploadName = uploadName;
     }
 
+    public Integer getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(Integer goodsNo) {
+        this.goodsNo = goodsNo;
+    }
+
     @Override
     public String toString() {
-        return "goodsImgDto{" +
-                "imgNo=" + imgNo +
+        return "ReviewImgDto{" +
+                "reviewImgNo=" + reviewImgNo +
+                ", reviewNo=" + reviewNo +
                 ", goodsNo=" + goodsNo +
                 ", uploadPath='" + uploadPath + '\'' +
                 ", uploadName='" + uploadName + '\'' +

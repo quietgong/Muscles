@@ -1,9 +1,11 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.TestConfigure;
+import com.kinaboot.muscles.dao.ReviewDao;
 import com.kinaboot.muscles.domain.OrderDto;
 import com.kinaboot.muscles.domain.OrderItemDto;
 import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.domain.ReviewImgDto;
 import org.junit.Test;
 import org.junit.jupiter.api.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,32 @@ import static org.junit.Assert.*;
 public class ReviewServiceImplTest extends TestConfigure {
     @Autowired
     ReviewService reviewService;
+    @Autowired
+    ReviewDao reviewDao;
 
     @Autowired
     OrderService orderService;
 
     @Test
-    public void verifyReviewExist(){
+    public void insertReview() {
+        ReviewDto reviewDto = new ReviewDto();
+        List<ReviewImgDto> reviewImgDtoList = reviewDto.getReviewImgDtoList();
+        if (reviewImgDtoList != null) {
+            for (ReviewImgDto reviewImgDto : reviewImgDtoList) {
+                reviewImgDto.setReviewNo(reviewDao.selectNewReviewNo());
+                reviewDao.insertReviewImg(reviewImgDto);
+            }
+        }
+        reviewDao.insertReview(reviewDto);
+    }
+
+    @Test
+    public void findNewReviewNo() {
+        reviewDao.selectNewReviewNo();
+    }
+
+    @Test
+    public void verifyReviewExist() {
 //        List<OrderDto> orderDtoList = orderService.findOrders("test1");
 //        for (OrderDto orderDto : orderDtoList) {
 //            for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()){
@@ -31,4 +53,5 @@ public class ReviewServiceImplTest extends TestConfigure {
 //        }
 //        System.out.println("orderDtoList = " + orderDtoList);
     }
+
 }

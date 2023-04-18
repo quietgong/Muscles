@@ -45,16 +45,6 @@ public class GoodsController {
         return new ResponseEntity<>(goodsService.findGoods(goodsNo), HttpStatus.OK);
     }
 
-    @GetMapping("/display")
-    @ResponseBody
-    public ResponseEntity<byte[]> goodsImgDetails(String type, String fileName) throws IOException {
-        String path = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\goods\\" + type + "\\";
-        File file = new File(path + fileName);
-        HttpHeaders header = new HttpHeaders();
-        header.add("Content-type", Files.probeContentType(file.toPath()));
-        return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-    }
-
     @GetMapping("/faq/{goodsNo}")
     @ResponseBody
     public ResponseEntity<List<FaqDto>> faqList(@PathVariable Integer goodsNo) {
@@ -89,8 +79,12 @@ public class GoodsController {
     @GetMapping("/detail")
     public String goodsDetails(Integer goodsNo, Model m) {
         GoodsDto goodsDto = goodsService.findGoods(goodsNo);
-        List<ReviewDto> reviewDtoList = reviewService.findReviews(goodsNo);
         List<GoodsImgDto> goodsImgDtoList = goodsService.getGoodsDetailImgList(goodsNo);
+
+        List<ReviewDto> reviewDtoList = reviewService.findReviews(goodsNo);
+        for(ReviewDto reviewDto : reviewDtoList){
+            reviewDto.setReviewImgDtoList(reviewService.findReviewImg(reviewDto.getReviewNo(),goodsNo));
+        }
         double goodsScore = 0.0;
         if (reviewDtoList.size() != 0) {
             for (ReviewDto reviewDto : reviewDtoList)

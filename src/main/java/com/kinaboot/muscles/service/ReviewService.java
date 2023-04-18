@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.domain.ReviewDto;
+import com.kinaboot.muscles.domain.ReviewImgDto;
 
 import java.util.List;
 
@@ -12,4 +13,8 @@ public interface ReviewService {
     int addReview(ReviewDto reviewDto);
     int removeReview(Integer reviewNo);
     int modifyReview(ReviewDto reviewDto);
+
+    int removeReviewImg(String imgPath);
+
+    List<ReviewImgDto> findReviewImg(int reviewNo, Integer goodsNo);
 }
