@@ -34,8 +34,6 @@
                                     onclick="location.href='<c:url value='/goods/list'/>'"
                                     class="btn btn-light btn-lg me-2">계속 쇼핑하기
                             </button>
-                            <form id="cartForm" action="<c:url value='/order/checkout'/>" method="post">
-                            </form>
                             <button id="order" type="button" class="btn btn-primary btn-lg">주문하기</button>
                         </div>
                     </div>
@@ -121,7 +119,6 @@
     }
 
     $("#order").on("click", function () {
-        const form = $("#cartForm");
         let data = []
         $("div[content='item']").each(function (index) {
             let tmp = {}
@@ -133,12 +130,17 @@
             tmp.goodsImgPath = $(this).attr("data-goodsimgpath")
             data.push(tmp)
         });
-        form.append($('<input>').attr({
-            type: 'hidden',
-            name: 'orderData',
-            value: JSON.stringify(data)
-        }))
-        form.submit();
+        let form = document.createElement("form");
+        form.setAttribute("method", "post")
+        form.setAttribute("action", "/muscles/order/checkout")
+
+        let hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "orderData");
+        hiddenField.setAttribute("value", JSON.stringify(data));
+        form.appendChild(hiddenField)
+        document.body.appendChild(form)
+        form.submit()
     });
 
     // 장바구니 상품 삭제

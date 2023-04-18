@@ -11,6 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
     SocketHandler socketHandler;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(socketHandler, "/chatserver/{roomName}"); // 소켓 서버 Endpoint

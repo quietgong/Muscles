@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<% response.setHeader("Cache-Control", "no-store"); %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <!-- nav -->
@@ -132,7 +133,7 @@
             </div>
 
             <hr class="mb-8">
-            <form id="orderForm" action="<c:url value='/order/'/>" method="post">
+            <form id="orderForm" action="<c:url value='/order/pay'/>" method="post">
                 <button id="submit" class="col-md-6 btn btn-primary btn-lg btn-block" type="submit">결제</button>
             </form>
         </div>
@@ -142,7 +143,7 @@
     loadItemList()
 
     function loadItemList() {
-        let items = JSON.parse('${orderList}')
+        let items= JSON.parse('${orderList}');;
         console.log(items)
         $("#orderList").prepend(appendItemList(items))
 

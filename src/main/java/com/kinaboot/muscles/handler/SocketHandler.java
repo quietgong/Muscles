@@ -1,8 +1,11 @@
 package com.kinaboot.muscles.handler;
 
+import com.kinaboot.muscles.controller.GoodsController;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -15,7 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
-    List<HashMap<String, Object>> rls = new ArrayList<>(); // 웹소켓 세션을 담아둘 리스트 --roomListSessions
+    private static final Logger logger = LoggerFactory.getLogger(SocketHandler.class);
+
+    List<HashMap<String, Object>> rls = new ArrayList<>(); // 웹소켓 세션을 담아둘 리스트
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
         //메시지 발송
@@ -51,6 +56,7 @@ public class SocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         //소켓 연결
+        logger.info("소켓 연결 성공");
         super.afterConnectionEstablished(session);
         boolean flag = false;
         String url = session.getUri().toString();
@@ -66,6 +72,8 @@ public class SocketHandler extends TextWebSocketHandler {
                 }
             }
         }
+
+        logger.info("세션 추가 부분 " + session);
         if(flag) { //존재하는 방이라면 세션만 추가한다.
             HashMap<String, Object> map = rls.get(idx);
             map.put(session.getId(), session);
@@ -75,7 +83,6 @@ public class SocketHandler extends TextWebSocketHandler {
             map.put(session.getId(), session);
             rls.add(map);
         }
-
         //세션등록이 끝나면 발급받은 세션 ID값의 메시지를 발송한다.
         JSONObject obj = new JSONObject();
         obj.put("type", "getId");

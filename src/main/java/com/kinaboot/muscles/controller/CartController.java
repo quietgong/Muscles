@@ -44,9 +44,7 @@ public class CartController {
     }
     @DeleteMapping("/{goodsNo}")
     public ResponseEntity<String> cartRemove(@PathVariable Integer goodsNo, HttpSession session) {
-        logger.info("장바구니 상품 삭제");
-        logger.info("삭제된 상품 번호 : " + goodsNo);
-
+        logger.info("장바구니 삭제 상품 번호 : " + goodsNo);
         cartService.removeCartItem((String) session.getAttribute("id"), goodsNo);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }

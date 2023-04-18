@@ -83,7 +83,8 @@
                                         <div class="text-left"><span class="text-muted">주문 금액</span></div>
                                     </td>
                                     <td>
-                                        <div class="text-right"><span>${orderDto.paymentDto.price + orderDto.discount}</span></div>
+                                        <div class="text-right">
+                                            <span>${orderDto.paymentDto.price + orderDto.discount}</span></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -123,5 +124,12 @@
         </div>
     </div>
 </div>
+<script>
+    try {
+        JSON.parse('${orderDto}');
+    } catch (e) {
+        location.href = "/muscles";
+    }
+</script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

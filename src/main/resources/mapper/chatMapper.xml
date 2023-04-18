@@ -20,13 +20,14 @@
         order by createdDate desc limit 1;
     </select>
     <select id="selectNewMsgCnt" parameterType="String" resultType="int">
-        select count(*)
+        select IF(count(*) = 0, (select count(*) from chat where chatName = '${chatName}'), count(*))
         from chat
         where chatName = '${chatName}'
           and createdDate > (select createdDate
                              from chat
-                             where chatName = '${chatName}' and talker = 'system'
+                             where chatName = '${chatName}'
+                               and talker = 'system'
                              order by createdDate desc
-                             limit 1)
+                            limit 1)
     </select>
 </mapper>

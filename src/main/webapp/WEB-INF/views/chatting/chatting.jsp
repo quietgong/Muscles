@@ -33,7 +33,15 @@
                                         </div>
                                         <img src="<c:url value='/img/logo.jpg'/>" style="width: 45px; height: 100%;">
                                     </div>
-                                    <!-- 나의 대화 -->
+                                </c:when>
+                                <c:when test="${pastChat.talker == 'system'}">
+                                    <!-- 상담 종료 메세지 -->
+                                    <p class="small mt-3 mb-3 text-muted text-center">--- 상담이 종료 되었습니다 ---</p>
+                                    <p class="small mt-3 mb-3 text-muted text-center">
+                                        <fmt:formatDate value="${pastChat.createdDate}"
+                                                        pattern="yyyy-MM-dd HH:ss"
+                                                        type="date"/>
+                                    </p>
                                 </c:when>
                                 <c:otherwise>
                                     <!-- 상대방 대화 -->
@@ -50,7 +58,6 @@
                                                style="background-color: #f5f6f7;">${pastChat.msg}</p>
                                         </div>
                                     </div>
-                                    <!-- 상대방 대화 -->
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
@@ -75,6 +82,7 @@
 </section>
 <script>
     function removeRoom() {
+        if (!confirm("상담을 종료합니까?")) return;
         $.ajax({
             type: "DELETE",
             url: '/muscles/removeRoom/' + $("#chatName").val(),
@@ -136,7 +144,6 @@
         }
         ws.onmessage = function (data) {
             let newChat = $("#chattingBox").children().length === 0
-            scrollTop()
             const msg = data.data;
             if (msg != null && msg.trim() !== '') {
                 let d = JSON.parse(msg)
@@ -176,15 +183,19 @@
                     newChat ? $("#chattingBox").append(tmp) : $("#chattingBox").children().last().after(tmp)
                 } else if (d.type === 'notify') { // 데이터가 "알림" 타입 일 때
                     let today = new Date();
+                    let formattedDate = today.getFullYear() + "-" + (today.getMonth() + 1).toString().padStart(2, "0") + "-" + today.getDate().toString().padStart(2, "0") + " " + today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0");
                     let tmp = ""
-
-                    tmp += '<h1>상담 종료 알림 테스트</h1>'
-                    tmp += '<h1>종료 시간 : ' + today + '</h1>'
-
+                    tmp += '<p class="small mt-3 mb-3 text-muted text-center">--- 상담이 종료 되었습니다 ---</p>'
+                    tmp += '<p class="small mt-3 mb-3 text-muted text-center">' + formattedDate +'</p>'
                     $("#chattingBox").children().last().after(tmp)
-                } else
+
+                } else if(d.type === 'getId'){
+                    $("#sessionId").val(d.sessionId)
+                }
+                else
                     console.warn("알 수 없는 메세지 타입입니다.")
             }
+            scrollTop()
         }
         document.addEventListener("keypress", function (e) {
             if (e.keyCode == 13) { //enter press

@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -61,10 +62,15 @@ public class OrderController {
         return "order/checkout";
     }
 
-    @PostMapping("/")
-    public String orderAdd(String orderData, int couponNo, int point, Model m) {
+    @PostMapping("/pay")
+    public String orderAdd(String orderData, int couponNo, int point, RedirectAttributes rttr) {
         logger.info("결제 후 주문 처리");
-        m.addAttribute("orderDto", orderService.addOrder(orderData, couponNo, point)); // 생성된 주문 데이터 반환
+        rttr.addFlashAttribute("orderDto", orderService.addOrder(orderData, couponNo, point)); // 생성된 주문 데이터 반환
+        return "redirect:/order/complete";
+    }
+
+    @GetMapping("/complete")
+    public String orderComplete(){
         return "order/complete";
     }
 
