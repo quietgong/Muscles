@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -84,6 +85,11 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "pwdfindcomplete";
+    }
+
     @GetMapping("/emailExistCheck")
     @ResponseBody
     public ResponseEntity<String> emailExistCheck(String email) {
@@ -95,7 +101,7 @@ public class LoginController {
     }
 
     @PostMapping("/passwordReset")
-    public String passwordReset(String userId, String email) {
+    public String passwordReset(String userId, String email, Model m) {
         logger.info("임시 비밀번호 발송 진입 [email] : " + email);
         String resetPassword = generateRandomString();
         userService.resetPassword(userId, passwordEncoder.encode(resetPassword));
@@ -110,6 +116,7 @@ public class LoginController {
                         "요청하신 임시 비밀번호는 <strong>" + resetPassword + "</strong> 입니다.";
 
         mailSend(resetPassword, setFrom, toMail, title, content, mailSender);
+        m.addAttribute("email", email);
         return "pwdfindcomplete";
     }
 

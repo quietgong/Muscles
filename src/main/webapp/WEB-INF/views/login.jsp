@@ -3,22 +3,6 @@
 <%@ page session="false" %>
 <c:set var="message" value="${param.msg eq null ? 'none' : 'block'}"/>
 <%@ include file="nav.jsp" %>
-<style>
-    .rounded-t-5 {
-        border-top-left-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
-    }
-
-    @media (min-width: 992px) {
-        .rounded-tr-lg-0 {
-            border-top-right-radius: 0;
-        }
-
-        .rounded-bl-lg-5 {
-            border-bottom-left-radius: 0.5rem;
-        }
-    }
-</style>
 <input type="hidden" name="toURL" value="${param.toURL}">
 <section class=" text-center text-lg-start">
     <div class="card mb-3">
@@ -51,7 +35,7 @@
                                 <a style="float: right" href="<c:url value='/pwdfind'/>">비밀번호 찾기</a>
                             </div>
                         </div>
-                        <div class="row justify-content-center">
+                        <div class="row">
                             <div class="col-md-6">
                                 <button type="submit" class="btn btn-primary btn-block mb-4">로그인</button>
                                 <a href="<c:url value='/register'/>">
