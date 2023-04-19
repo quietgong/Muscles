@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5">
@@ -38,7 +37,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 id="goodsName" class="goodsName">상품 이름</h3>
+                            <h3 id="goodsName" class="goodsName text-center">상품 이름</h3>
                         </div>
                     </div>
                     <div class="row">
@@ -54,7 +53,14 @@
                             </div>
                         </ul>
                     </div>
-                    <div class="row">
+                    <div class="row mt-5">
+                        <div class="col-md-12">
+                            <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
+                            <input type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
+                            <div id="reviewPreview"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
                         <div class="col-md-12">
                                 <textarea id="reviewContent" class="form-control mt-1" placeholder="상품 후기를 작성해주세요."
                                           rows="5"
@@ -64,7 +70,7 @@
                 </div>
             </div>
             <!-- 모달 구성 요소 -->
-            <div class="modal-footer">
+            <div id="modal-footer" class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button onclick="reviewRegister(this)" type="button" class="btn btn-primary">등록</button>
                 <input id="reviewNo" value="" type="hidden">
@@ -84,7 +90,6 @@
             url: "/muscles/mypage/review/" + '${userId}',
             success: function (res) {
                 $("#reviewList").after(toHtml(res))
-                console.log("Get All Review Item!")
             },
             error: function () {
                 console.log("통신 실패")
@@ -130,6 +135,102 @@
         $(".starRange").val(item.score) // 상품점수 입력
         $(".fill-ratings").css("width", item.score + '%') // 상품점수에 따른 별점 입력
         $("#reviewNo").val(item.reviewNo)
+        $("#modal-footer").attr("data-goodsNo", item.goodsNo)
+
+        if (item.reviewImgDtoList.length !== 0) {
+            let items = []
+            item.reviewImgDtoList.forEach(function (r) {
+                let tmp = {}
+                tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
+                items.push(tmp)
+            })
+            showPreview(items, 'detail')
+        }
+    }
+    // 이미지 업로드
+    $("input[type='file']").on("change", function () {
+        let fileList = $(this)[0].files;
+        let formData = new FormData();
+        for (let i = 0; i < fileList.length; i++)
+            formData.append("uploadFile", fileList[i]);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"), // 컨트롤러에서 대기중인 URL 주소이다.
+            processData: false,
+            contentType: false,
+            data: formData,
+            dataType: 'json',
+            success: function (items) {
+                showPreview(items, "detail")
+            }
+        })
+    });
+
+    function showPreview(items, type) {
+        console.log(items)
+        let tmp = "";
+        items.forEach(function (item) {
+            let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
+            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
+            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
+            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
+            tmp += '</div>'
+        });
+        $("#reviewPreview").append(tmp)
+        moveImgPosition()
+    }
+    function showUpDownBtn() {
+        // 첫번째 div Up 버튼 숨기기
+        $("button:contains('↑')").show()
+        $('.detail:first-child button:contains("↑")').hide();
+        // 마지막 div Down 버튼 숨기기
+        $("button:contains('↓')").show()
+        $('.detail:last-child button:contains("↓")').hide();
+    }
+
+    function moveImgPosition() {
+        showUpDownBtn()
+        // Up 버튼 클릭 시 이전 div와 위치 변경
+        $('.detail button:contains("↑")').click(function () {
+            let currentDiv = $(this).parent();
+            let prevDiv = currentDiv.prev('.detail');
+            if (prevDiv.length !== 0)
+                currentDiv.insertBefore(prevDiv);
+            showUpDownBtn()
+        });
+        // Down 버튼 클릭 시 다음 div와 위치 변경
+        $('.detail button:contains("↓")').click(function () {
+            let currentDiv = $(this).parent();
+            let nextDiv = currentDiv.next('.detail');
+            if (nextDiv.length !== 0)
+                currentDiv.insertAfter(nextDiv);
+            showUpDownBtn()
+        });
+    }
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        let fileName = $(this).parent().attr("data-url")
+        let target = $(this).parent()
+        deleteImg(target, "detail", fileName)
+    });
+
+    function deleteImg(target, type, fileName) {
+        let targetDiv = target
+        $.ajax({
+            type: "DELETE",
+            enctype: 'multipart/form-data',
+            url: "/muscles/img/delete/review/detail?fileName=" + fileName,
+            success: function (res) {
+                console.log(res)
+                // 파일 삭제가 성공적으로 이루어지면
+                if (res === "DEL_OK") {
+                    targetDiv.empty();
+                }
+            }
+        })
     }
 
     // 리뷰 수정
@@ -142,6 +243,7 @@
                 "Content-Type": "application/json",
             },
             success: function (res) {
+                console.log(res)
                 insertModalData(res)
             },
             error: function () {
@@ -154,7 +256,15 @@
         let reviewNo = $("#reviewNo").val()
         let score = $(".starRange").val()
         let content = $('#reviewContent').val()
-        console.log(score)
+        let reviewImgDtoList = []
+        $('.newDetail').each(function () {
+            let tmp = {}
+            tmp.reviewNo = reviewNo
+            tmp.goodsNo = $("#modal-footer").attr("data-goodsNo")
+            tmp.uploadPath = $(this).attr("src")
+            reviewImgDtoList.push(tmp)
+        });
+
         $.ajax({
             type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
             url: "/muscles/review/", // 컨트롤러에서 대기중인 URL 주소이다.
@@ -165,6 +275,7 @@
                 reviewNo: reviewNo,
                 score: score,
                 content: content,
+                reviewImgDtoList : reviewImgDtoList,
             }),
             success: function () {
                 alert("수정이 완료되었습니다.")

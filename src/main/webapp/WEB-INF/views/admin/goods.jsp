@@ -127,7 +127,6 @@
                     <button type="button" onclick="initModal()" id="closeBtn" class="btn btn-primary"
                             data-bs-dismiss="modal">닫기
                     </button>
-
                 </div>
             </div>
         </div>

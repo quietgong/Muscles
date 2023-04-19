@@ -30,7 +30,8 @@
         select *
         from review
         where userId = '${userId}'
-            and expiredDate is null;
+          and expiredDate is null
+        order by createdDate desc;
     </select>
 
     <select id="selectReviewByProductNo" parameterType="int" resultType="reviewDto">
@@ -45,6 +46,11 @@
         from reviewImg
         where goodsNo = #{goodsNo}
           and reviewNo = #{reviewNo};
+    </select>
+    <select id="selectReviewOneImg" parameterType="int" resultType="reviewImgDto">
+        select reviewNo, filePath as uploadPath
+        from reviewImg
+          where reviewNo = '${reviewNo}';
     </select>
 
     <insert id="insertReview" parameterType="reviewDto">
@@ -81,5 +87,15 @@
         DELETE
         FROM reviewImg
         where filePath = '${imgPath}'
+    </delete>
+    <delete id="deleteReviewImgs" parameterType="int">
+        DELETE
+        FROM reviewImg
+        where reviewNo = '${reviewNo}'
+    </delete>
+    <delete id="deleteAllReviewImg" parameterType="int">
+        DELETE
+        FROM reviewImg
+        where reviewNo = '${reviewNo}'
     </delete>
 </mapper>

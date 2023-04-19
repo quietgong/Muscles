@@ -87,10 +87,20 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
+    public int deleteReviewImg(int reviewNo) {
+        return session.delete(namespace + "deleteReviewImgs", reviewNo);
+    }
+
+    @Override
     public List<ReviewImgDto> selectReviewImg(int reviewNo, Integer goodsNo) {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("reviewNo", reviewNo);
         map.put("goodsNo", goodsNo);
         return session.selectList(namespace + "selectReviewImg", map);
+    }
+
+    @Override
+    public List<ReviewImgDto> selectReviewImg(int reviewNo) {
+        return session.selectList(namespace + "selectReviewOneImg", reviewNo);
     }
 }

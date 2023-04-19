@@ -24,6 +24,14 @@ public class ReviewServiceImplTest extends TestConfigure {
     OrderService orderService;
 
     @Test
+    public void findReviews(){
+        List<ReviewDto> reviewDtoList = reviewDao.selectReviewListById("test1");
+        for(ReviewDto reviewDto: reviewDtoList){
+            reviewDto.setReviewImgDtoList(reviewDao.selectReviewImg(reviewDto.getReviewNo()));
+        }
+        System.out.println("reviewDtoList = " + reviewDtoList);
+    }
+    @Test
     public void insertReview() {
         ReviewDto reviewDto = new ReviewDto();
         List<ReviewImgDto> reviewImgDtoList = reviewDto.getReviewImgDtoList();

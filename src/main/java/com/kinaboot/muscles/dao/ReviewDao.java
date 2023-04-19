@@ -30,6 +30,8 @@ public interface ReviewDao {
     int insertReviewImg(ReviewImgDto reviewImgDto);
 
     int deleteReviewImg(String imgPath);
+    int deleteReviewImg(int reviewNo);
 
     List<ReviewImgDto> selectReviewImg(int reviewNo, Integer goodsNo);
+    List<ReviewImgDto> selectReviewImg(int reviewNo);
 }

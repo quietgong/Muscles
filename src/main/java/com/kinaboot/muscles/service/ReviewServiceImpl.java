@@ -1,12 +1,16 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.ReviewDao;
+import com.kinaboot.muscles.domain.GoodsDto;
+import com.kinaboot.muscles.domain.GoodsImgDto;
 import com.kinaboot.muscles.domain.ReviewDto;
 import com.kinaboot.muscles.domain.ReviewImgDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReviewServiceImpl implements ReviewService{
@@ -20,11 +24,20 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public int modifyReview(ReviewDto reviewDto) {
+        saveReviewImgs(reviewDto);
         return reviewDao.updateReview(reviewDto);
+    }
+    private void saveReviewImgs(ReviewDto reviewDto) {
+        reviewDao.deleteReviewImg(reviewDto.getReviewNo()); // 해당 rievewNo 이미지 전체 삭제
+        List<ReviewImgDto> reviewImgDtoList = reviewDto.getReviewImgDtoList();
+        for(ReviewImgDto reviewImgDto : reviewImgDtoList){
+            reviewDao.insertReviewImg(reviewImgDto);
+        }
     }
 
     @Override
     public int removeReview(Integer reviewNo) {
+        reviewDao.deleteReviewImg(reviewNo);
         return reviewDao.deleteReview(reviewNo);
     }
 
@@ -48,12 +61,19 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public ReviewDto findReview(Integer reviewNo) {
-        return reviewDao.selectReview(reviewNo);
+        ReviewDto reviewDto = reviewDao.selectReview(reviewNo);
+        reviewDto.setReviewImgDtoList(reviewDao.selectReviewImg(reviewNo));
+        return reviewDto;
     }
 
     @Override
     public List<ReviewDto> findReviews(String userId) {
-        return reviewDao.selectReviewListById(userId);
+        List<ReviewDto> reviewDtoList = reviewDao.selectReviewListById(userId);
+        for(ReviewDto reviewDto: reviewDtoList){
+            reviewDto.setReviewImgDtoList(reviewDao.selectReviewImg(reviewDto.getReviewNo()));
+        }
+        System.out.println("reviewDtoList = " + reviewDtoList);
+        return reviewDtoList;
     }
 
     @Override

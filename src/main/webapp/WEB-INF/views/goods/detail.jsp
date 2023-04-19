@@ -116,7 +116,7 @@
         <c:forEach var="reviewDto" items="${reviewDtoList}">
         <div class="row">
             <div class="col">
-                <p>${reviewDto.userId}</p>
+                <h3>${reviewDto.goodsName}</h3>
                 <ul class="list-unstyled d-flex mb-1">
                     <div class="star-ratings">
                         <div class="fill-ratings" style="width: ${reviewDto.score}%;">
@@ -130,18 +130,20 @@
                 </ul>
             </div>
             <div class="col-md-12">
-                <h3>${reviewDto.goodsName}</h3>
+                <p>${reviewDto.userId}</p>
             </div>
             <div class="col-md-12">
                 <span>${reviewDto.content}</span>
             </div>
-            <div>
-                <span>${reviewDto.reviewImgDtoList}</span>
+            <div class="row flex-nowrap" style="overflow-x: auto">
+                <c:forEach var="reviewImgDto" items="${reviewDto.reviewImgDtoList}">
+                    <div class="col-md-2 mt-3">
+                        <img src='${reviewImgDto.uploadPath}' class="img-fluid">
+                    </div>
+                </c:forEach>
             </div>
             <hr class="mb-4 mt-5">
             </c:forEach>
-        </div>
-        <div class="row">
         </div>
 </section>
 <!-- 작성 리뷰 끝 -->
