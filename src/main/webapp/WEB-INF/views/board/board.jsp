@@ -22,14 +22,40 @@
             </div>
         </div>
     </div>
+</div>
+<div class="container form-control">
     <div class="row mt-3">
         <div class="col-md-12">
             <textarea readonly class="form-control mt-1" name="content" rows="20"
                       cols="80">${postDto.content}</textarea>
         </div>
     </div>
+
+    <div style="display: none" id="uploadImg" class="row mt-3">
+        <div class="col-md-12">
+            <label for="postImg" class="form-label text-center">이미지 업로드</label>
+            <input type="file" multiple class="form-control" id="postImg" name='uploadFile'>
+        </div>
+    </div>
+    <div id="postPreview" class="row flex-nowrap" style="overflow-x: auto">
+        <c:forEach var="postImgDto" items="${postDto.postImgDtoList}">
+            <div class="detail col-md-2" data-type="detail" data-url="${postImgDto.uploadPath}">
+                <button style="display:none;" class="delPreview modPosition btn btn-danger mb-3 mt-3" type="button">X
+                </button>
+                <button style="display:none; float: right" class="modPosition down btn btn-warning mb-3 mt-3"
+                        type="button">→
+                </button>
+                <button style="display:none; float: right; margin-right: 10px"
+                        class="modPosition up btn btn-warning mb-3 mt-3" type="button">←
+                </button>
+                <img src="${postImgDto.uploadPath}" class="img-fluid newDetail">
+            </div>
+        </c:forEach>
+    </div>
+</div>
+<div class="container">
     <input id="commentList" type="hidden">
-    <div class="input-group mb-3">
+    <div class="input-group mt-2 mb-3">
         <input style="background-color: #e9eff5" id="inputComment" class="form-control" type="text"
                placeholder="댓글을 입력하세요">
         <button id="registerComment" onclick="registerComment()" type="button" class="btn btn-outline-primary">댓글 등록
@@ -48,7 +74,8 @@
                 </c:when>
                 <c:otherwise>
                     <button class="btn btn-lg btn-outline-primary" type="button" onclick='location.href="<c:url
-                            value='/${postCategory}?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>"'>목록
+                            value='/${postCategory}?page=${param.page}&option=${param.option}&keyword=${param.keyword}'/>"'>
+                        목록
                     </button>
                 </c:otherwise>
             </c:choose>
@@ -59,7 +86,92 @@
         </div>
     </div>
 </div>
+<script>
+    // 이미지 업로드
+    $("input[type='file']").on("change", function () {
+        let fileList = $(this)[0].files;
+        let formData = new FormData();
+        for (let i = 0; i < fileList.length; i++)
+            formData.append("uploadFile", fileList[i]);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/muscles/img/${postCategory}/detail/0",
+            processData: false,
+            contentType: false,
+            data: formData,
+            dataType: 'json',
+            success: function (items) {
+                showPreview(items, "detail")
+            }
+        })
+    });
 
+    function showPreview(items, type) {
+        console.log(items)
+        let tmp = "";
+        items.forEach(function (item) {
+            let addr = "/muscles/img/display?category=${postCategory}&type=" + type + "&fileName=" + item.uploadName
+            tmp += '<div class="detail col-md-2" data-type=' + type + ' data-url=' + addr + '>'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">→</button>'
+            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">←</button>'
+            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
+            tmp += '</div>'
+        });
+        $("#postPreview").append(tmp)
+        showLeftRightBtn()
+    }
+
+    // Left 버튼 클릭 시 이전 div와 위치 변경
+    $(document).on("click", '.detail button:contains("←")', function () {
+        let currentDiv = $(this).parent();
+        let prevDiv = currentDiv.prev('.detail');
+        if (prevDiv.length !== 0)
+            currentDiv.insertBefore(prevDiv);
+        showLeftRightBtn()
+    });
+    // Right 버튼 클릭 시 다음 div와 위치 변경
+    $(document).on("click", '.detail button:contains("→")', function () {
+        let currentDiv = $(this).parent();
+        let nextDiv = currentDiv.next('.detail');
+        if (nextDiv.length !== 0)
+            currentDiv.insertAfter(nextDiv);
+        showLeftRightBtn()
+    });
+
+    function showLeftRightBtn() {
+        // 첫번째 div Left 버튼 숨기기
+        $("button:contains('←')").show()
+        $('.detail:first-child button:contains("←")').hide();
+        // 마지막 div Right 버튼 숨기기
+        $("button:contains('→')").show()
+        $('.detail:last-child button:contains("→")').hide();
+    }
+
+    function deleteImg(target, type, fileName) {
+        let targetDiv = target
+        $.ajax({
+            type: "DELETE",
+            enctype: 'multipart/form-data',
+            url: "/muscles/img/delete/${postCategory}/detail?fileName=" + fileName,
+            success: function (res) {
+                console.log(res)
+                // 파일 삭제가 성공적으로 이루어지면
+                if (res === "DEL_OK") {
+                    targetDiv.empty();
+                }
+            }
+        })
+    }
+
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        let fileName = $(this).parent().attr("data-url")
+        let target = $(this).parent()
+        deleteImg(target, "detail", fileName)
+    });
+</script>
 <script>
     // 글 수정
     $("#modify").on("click", function () {
@@ -70,6 +182,9 @@
             $("#remove").hide()
             $("input[name=title]").attr("readonly", false);
             $("textarea[name=content]").attr("readonly", false);
+            $("#uploadImg").show()
+            $(".modPosition").show()
+            showLeftRightBtn()
         }
         // 글 수정 완료
         else {
@@ -78,6 +193,14 @@
             modData.userId = '${userId}'
             modData.title = $("input[name=title]").val()
             modData.content = $("textarea[name=content]").val()
+            let postImgDtoList = []
+            $('.newDetail').each(function () {
+                let tmp = {}
+                tmp.postNo = postNo
+                tmp.uploadPath = $(this).attr("src")
+                postImgDtoList.push(tmp)
+            });
+            modData.postImgDtoList = postImgDtoList
             $.ajax({
                 type: "PATCH",
                 url: "/muscles/${postCategory}/" + postNo,

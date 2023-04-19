@@ -20,8 +20,9 @@ public class PostDaoImplTest {
         int insertCnt =100;
         String[] option = {"notice", "community"};
         for (int i = 1; i <= insertCnt; i++){
-            PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
-            postDao.insert(postDto, option[i%2]);
+            PostDto postDto = new PostDto(
+                    option[i%2],"title"+i,option[i%2]+i,"test"+i);
+            postDao.insert(postDto);
         }
         assert (postDao.count(option[1]) == insertCnt);
     }
@@ -32,7 +33,6 @@ public class PostDaoImplTest {
         String[] option = {"notice", "community"};
         for (int i = 1; i <= insertCnt; i++){
             PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
-            postDao.insert(postDto, option[i%2]);
         }
         assert (postDao.count("community") == insertCnt);
     }
@@ -43,7 +43,7 @@ public class PostDaoImplTest {
         String[] option = {"notice", "community"};
         for (int i = 1; i <= insertCnt; i++){
             PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
-            postDao.insert(postDto, option[i%2]);
+            postDao.insert(postDto);
         }
         assert (postDao.count("community") == insertCnt);
     }
@@ -54,7 +54,7 @@ public class PostDaoImplTest {
         String[] option = {"notice", "community"};
         for (int i = 1; i <= insertCnt; i++){
             PostDto postDto = new PostDto(option[i%2],"title"+i,option[i%2]+i,"test"+i);
-            postDao.insert(postDto, option[i%2]);
+//            postDao.insert(postDto, option[i%2]);
         }
         assert (postDao.count("community") == insertCnt);
     }

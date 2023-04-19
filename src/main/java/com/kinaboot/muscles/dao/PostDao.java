@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.PostImgDto;
 import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.handler.SearchCondition;
@@ -17,7 +18,7 @@ public interface PostDao {
     ;
     int delete(String userId) throws Exception // int delete(String statement, Object parameter)
     ;
-    int insert(PostDto postDto, String type) throws Exception // int insert(String statement, Object parameter)
+    int insert(PostDto postDto) throws Exception // int insert(String statement, Object parameter)
     ;
 
     PostDto select(Integer postNo) throws Exception // T selectOne(String statement, Object parameter)
@@ -44,4 +45,12 @@ public interface PostDao {
 
     int increaseViewCnt(Integer postNo) throws Exception // int update(String statement, Object parameter)
     ;
+
+    int selectPostNo();
+
+    int insertPostImg(PostImgDto postImgDto);
+
+    List<PostImgDto> selectPostImg(Integer postNo);
+
+    int deletePostImg(Integer postNo);
 }

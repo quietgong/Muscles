@@ -13,7 +13,7 @@ public interface PostSerivce {
     List<PostDto> findPosts(String userId, SearchCondition sc) throws Exception;
     Integer countPost(SearchCondition sc) throws Exception;
     PostDto findPost(Integer postNo) throws Exception;
-    int addPost(PostDto postDto, String type) throws Exception;
+    int addPost(PostDto postDto) throws Exception;
     int modifyPost(PostDto postDto) throws Exception;
     int removePost(Integer postNo) throws Exception;
     int removePost(String userId) throws Exception;

@@ -7,6 +7,10 @@
     <select id="count" parameterType="String" resultType="int">
         SELECT count(*) FROM post where type='${type}'
     </select>
+    <select id="selectPostNo" resultType="int">
+        select max(postNo) + 1
+        from post;
+    </select>
     <select id="select" parameterType="int" resultType="PostDto">
         SELECT * from post
         where postNo=#{postNo}
@@ -19,6 +23,11 @@
             LIMIT #{limit}, 10;
     </select>
 
+    <select id="selectPostImg" parameterType="int" resultType="PostImgDto">
+        select filePath as uploadPath
+        from postImg
+        where postNo = '${postNo}';
+    </select>
     <select id="selectAll" parameterType="String" resultType="PostDto">
         SELECT *
         from post
@@ -71,11 +80,14 @@
 
     <insert id="insert" parameterType="map">
         insert into post
-            (type,title,content,userId, createdDate)
-        values
-            ('${type}',#{postDto.title}, #{postDto.content}, #{postDto.userId}, now())
+            (type, title, content, userId, createdDate)
+        values (#{type}, #{title}, #{content}, #{userId}, now())
     </insert>
 
+    <insert id="insertPostImg" parameterType="PostImgDto">
+        insert into postimg (postNo, filePath, type)
+        values (#{postNo}, #{uploadPath},#{type});
+    </insert>
     <update id="update" parameterType="PostDto">
         update post
         set title   = #{title}
@@ -87,5 +99,10 @@
         update post set viewCnt = viewCnt+1
         where postNo=#{postNo}
     </update>
+    <delete id="deletePostImg" parameterType="int">
+        delete
+        from postimg
+        where postNo = '${postNo}';
+    </delete>
 
 </mapper>

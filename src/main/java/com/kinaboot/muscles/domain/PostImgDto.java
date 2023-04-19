@@ -5,6 +5,7 @@ public class PostImgDto {
     private Integer postNo;
     private String uploadPath;
     private String uploadName;
+    private String type;
 
     public Integer getPostImgNo() {
         return postImgNo;
@@ -38,13 +39,22 @@ public class PostImgDto {
         this.uploadName = uploadName;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
-        return "postImgDto{" +
+        return "PostImgDto{" +
                 "postImgNo=" + postImgNo +
                 ", postNo=" + postNo +
                 ", uploadPath='" + uploadPath + '\'' +
                 ", uploadName='" + uploadName + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

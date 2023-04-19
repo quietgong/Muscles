@@ -52,13 +52,11 @@ public class PostController {
 
     // 글 쓰기
     @PostMapping("/")
-    public String postAdd(PostDto postDto, String postCategory) throws Exception {
+    @ResponseBody
+    public ResponseEntity<Integer> postAdd(@RequestBody PostDto postDto) throws Exception {
         logger.info("글작성 완료");
-        logger.info("카테고리 : " + postCategory);
-        postSerivce.addPost(postDto, postCategory);
-        return "redirect:/" + postCategory;
+        return new ResponseEntity<>(postSerivce.addPost(postDto), HttpStatus.OK);
     }
-
     // 글 읽기
     @GetMapping("/{postNo}")
     public String postDetails(@PathVariable Integer postNo, Integer page, HttpServletRequest request, Model m) throws Exception {

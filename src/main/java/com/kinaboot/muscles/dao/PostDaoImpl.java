@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.dao;
 
+import com.kinaboot.muscles.domain.PostImgDto;
 import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.handler.SearchCondition;
@@ -23,6 +24,16 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
+    public int selectPostNo() {
+        return session.selectOne(namespace + "selectPostNo");
+    }
+
+    @Override
+    public List<PostImgDto> selectPostImg(Integer postNo) {
+        return session.selectList(namespace + "selectPostImg", postNo);
+    }
+
+    @Override
     public void deleteAll() {
         session.delete(namespace + "deleteAll");
     }
@@ -38,11 +49,18 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public int insert(PostDto postDto, String type) throws Exception {
-        Map<Object, Object> map = new HashMap<>();
-        map.put("postDto", postDto);
-        map.put("type", type);
-        return session.insert(namespace + "insert", map);
+    public int deletePostImg(Integer postNo) {
+        return session.delete(namespace + "deletePostImg", postNo);
+    }
+
+    @Override
+    public int insert(PostDto postDto) throws Exception {
+        return session.insert(namespace + "insert", postDto);
+    }
+
+    @Override
+    public int insertPostImg(PostImgDto postImgDto) {
+        return session.insert(namespace + "insertPostImg", postImgDto);
     }
 
     @Override
