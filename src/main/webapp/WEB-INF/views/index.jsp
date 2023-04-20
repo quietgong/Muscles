@@ -168,12 +168,10 @@
             tmp += '<div class="col-12 col-md-4 mb-4">'
             tmp += '<div class="card h-100">'
             tmp += "<a href=\"<c:url value='/goods/detail?goodsNo='/>" + item.goodsNo + "\">";
-            if (item.goodsImgPath == null) {
-                tmp += "<img src=\"<c:url value='/img/cardio.jpg'/> class=\"card-img-top\""
-            } else {
+            if (item.goodsImgPath == null)
+                tmp += "<img src=\"<c:url value='/img/cardio.jpg'/>\" class=\"card-img-top\""
+            else
                 tmp += '<img src="' + item.goodsImgPath + '" class="card-img-top">';
-            }
-
             tmp += '</a>'
             tmp += '<div class="card-body">'
             tmp += '<span>' + item.goodsCategory + ' > ' + item.goodsCategoryDetail + '</span>';

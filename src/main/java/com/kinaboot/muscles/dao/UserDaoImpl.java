@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.CouponDto;
+import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.catalina.User;
@@ -33,8 +34,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int insertExit(HashMap map) {
-        return session.insert(namespace + "insertExit", map);
+    public int insertExit(ExitDto exitDto) {
+        return session.insert(namespace + "insertExit", exitDto);
     }
 
     @Override

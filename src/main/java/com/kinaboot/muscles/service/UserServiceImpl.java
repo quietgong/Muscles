@@ -2,6 +2,7 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.CouponDto;
+import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.catalina.User;
@@ -53,21 +54,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int removeUser(String userId, HttpServletRequest request, String removeType) throws Exception {
-        int[] typeValue = new int[]{0, 0, 0};
-        String opinion = "";
-        HashMap<String,String> map = new HashMap<>();
-        map.put("userId", userId);
-        if (request != null) {
-            String[] type = request.getParameterValues("type");
-            opinion = request.getParameter("opinion");
-            for (String s : type)
-                typeValue[Integer.parseInt(s) - 1]++;
-            map.put("type1", String.valueOf(typeValue[0]));
-            map.put("type2", String.valueOf(typeValue[1]));
-            map.put("type3", String.valueOf(typeValue[2]));
-        }
-        map.put("opinion", removeType.equals("admin") ? "관리자 탈퇴 처리" : opinion);
+    public int removeUser(ExitDto exitDto, String removeType) throws Exception {
+        String userId = exitDto.getUserId();
+        if(removeType.equals("admin"))
+            exitDto.setOpinion("관리자 탈퇴 처리");
 
         // 탈퇴유저 사용기록 삭제
         postSerivce.removePost(userId); // 게시물 삭제
@@ -75,7 +65,7 @@ public class UserServiceImpl implements UserService {
         userDao.deleteUserCoupon(userId); // 쿠폰 삭제
 
         // 탈퇴 기록 저장
-        userDao.insertExit(map);
+        userDao.insertExit(exitDto);
 
         // user ExpiredDate 변경, 포인트 초기화
         return userDao.deleteUser(userDao.selectUser(userId).getUserNo());

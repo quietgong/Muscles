@@ -1,17 +1,21 @@
 package com.kinaboot.muscles.handler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Date;
-
+@Data
+@NoArgsConstructor
 public class SearchCondition {
     private static final int MIN_PAGE = 1;
     private static final int MAX_PAGE = 50;
     private static final int DEFAULT_PAGE_SIZE = 10;
     private Integer page = 1;
     private String option = "";
+    private Integer offset = 0;
     private String keyword = "";
     private String type = "";
     private String category = "";
@@ -37,8 +41,6 @@ public class SearchCondition {
                 .queryParam("option", option)
                 .build().toString();
     }
-    public SearchCondition() {
-    }
     public SearchCondition(Integer page) {
         this(page, "", "");
     }
@@ -46,14 +48,6 @@ public class SearchCondition {
     public SearchCondition(int page, String keyword) {
         this.page = page;
         this.keyword = keyword;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public SearchCondition(Integer page, String option, String keyword) {
@@ -67,122 +61,7 @@ public class SearchCondition {
         this.endDate = endDate;
     }
 
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getMinPrice() {
-        return minPrice;
-    }
-
-    public void setMinPrice(String minPrice) {
-        this.minPrice = minPrice;
-    }
-
-    public String getMaxPrice() {
-        return maxPrice;
-    }
-
-    public void setMaxPrice(String maxPrice) {
-        this.maxPrice = maxPrice;
-    }
-
     public Integer getOffset() {
-        return (page - 1) * 10;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getOption() {
-        return option;
-    }
-
-    public void setOption(String option) {
-        this.option = option;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    @Override
-    public String toString() {
-        return "SearchCondition{" +
-                "page=" + page +
-                ", option='" + option + '\'' +
-                ", keyword='" + keyword + '\'' +
-                ", type='" + type + '\'' +
-                ", category='" + category + '\'' +
-                ", subCategory='" + subCategory + '\'' +
-                ", userId='" + userId + '\'' +
-                ", period='" + period + '\'' +
-                ", status='" + status + '\'' +
-                ", minPrice='" + minPrice + '\'' +
-                ", maxPrice='" + maxPrice + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
+        return (page-1)*10;
     }
 }

@@ -18,6 +18,8 @@ public class GoodsServiceImpl implements GoodsService {
     GoodsDao goodsDao;
     @Autowired
     ReviewDao reviewDao;
+    @Autowired
+    ReviewService reviewService;
 
     @Override
     public List<GoodsDto> findBestGoods() {
@@ -62,13 +64,13 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsImgDto> getGoodsDetailImgList(Integer GoodsNo) {
-        return goodsDao.selectGoodsDetailImg(GoodsNo);
+    public List<GoodsImgDto> getGoodsDetailImgList(Integer goodsNo) {
+        return goodsDao.selectGoodsDetailImg(goodsNo);
     }
 
     @Override
-    public List<FaqDto> findFaqs(Integer GoodsNo) {
-        return goodsDao.selectFaqList(GoodsNo);
+    public List<FaqDto> findFaqs(Integer goodsNo) {
+        return goodsDao.selectFaqList(goodsNo);
     }
 
     @Override
@@ -89,10 +91,15 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public GoodsDto findGoods(Integer GoodsNo) {
-        GoodsDto goodsDto = goodsDao.select(GoodsNo);
-        goodsDto.setReviewDtoList(reviewDao.selectGoodsReview(GoodsNo));
-        goodsDto.setGoodsImgDtoList(goodsDao.selectGoodsDetailImg(GoodsNo));
+    public GoodsDto findGoods(Integer goodsNo) {
+        GoodsDto goodsDto = goodsDao.select(goodsNo);
+        goodsDto.setGoodsImgDtoList(goodsDao.selectGoodsDetailImg(goodsNo));
+        List<ReviewDto> reviewDtoList = reviewDao.selectGoodsReview(goodsNo);
+        for(ReviewDto reviewDto : reviewDtoList){
+            reviewDto.setReviewImgDtoList(reviewService.findReviewImg(reviewDto.getReviewNo(),goodsNo));
+        }
+        goodsDto.setReviewDtoList(reviewDtoList);
+
         return goodsDto;
     }
 

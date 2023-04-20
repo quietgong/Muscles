@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.controller.admin;
 
+import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,9 @@ public class UserController {
     public ResponseEntity<String> userRemove(@PathVariable String userId) {
         log.info("유저 탈퇴 처리");
         try {
-            userService.removeUser(userId, null, "admin");
+            ExitDto exitDto = new ExitDto();
+            exitDto.setUserId(userId);
+            userService.removeUser(exitDto, "admin");
             log.info("[id] : " + userId + " 탈퇴 처리 성공");
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
         } catch (Exception e) {

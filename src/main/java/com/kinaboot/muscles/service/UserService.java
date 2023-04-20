@@ -1,9 +1,6 @@
 package com.kinaboot.muscles.service;
 
-import com.kinaboot.muscles.domain.CouponDto;
-import com.kinaboot.muscles.domain.PointDto;
-import com.kinaboot.muscles.domain.PostDto;
-import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.domain.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -15,7 +12,7 @@ public interface UserService {
     UserDto findUserEmail(String email);
     int addUser(UserDto userDto) throws Exception;
     int modifyUser(UserDto userDto) throws Exception;
-    int removeUser(String userId, HttpServletRequest request, String removeType) throws Exception;
+    int removeUser(ExitDto exitDto, String removeType) throws Exception;
     List<CouponDto> findCoupons(String userId);
     int addCoupon(String userId, String recommendId);
     List<PointDto> findPoints(String userId);

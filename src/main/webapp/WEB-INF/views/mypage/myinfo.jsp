@@ -110,8 +110,6 @@
             $(".passwordInput").hide()
         }
     })
-</script>
-<script>
     getUserDetails()
     let originEmail;
 
@@ -213,15 +211,32 @@
         PhoneValidCheck()
         /* 최종 유효성 검사 */
         if (pwCheck && pwLengthCheck && pw1pw2Check && phoneCheck && emailCheck && emailFormCheck && emailVerifyCheck && addressCheck) {
-            const form = $("#modifyForm")
-            form.attr("action", "<c:url value='/mypage/modify/'/>")
-            form.append($('<input>').attr({
-                type: 'hidden',
-                name: 'password',
-                value: $("#pw1").val()
-            }))
-            form.submit()
-            alert("회원정보가 변경되었습니다. 다시 로그인해주세요.")
+            let userDto = {};
+            userDto.userId = $("#userId").val();
+            userDto.password = $("#pw1").val();
+            userDto.phone = $("#phone").val();
+            userDto.email = $("#email").val();
+            userDto.address1 = $("#address").val();
+            userDto.address2 = $("#detailAddress").val();
+            $.ajax({
+                type: "GET",            // HTTP method type(GET, POST) 형식이다.
+                url: "/muscles/mypage/modify/",
+                headers: {              // Http header
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify(userDto),
+                success: function (res) {
+                    if(res==="MOD_OK"){
+                        alert("회원정보가 변경되었습니다. 다시 로그인해주세요.")
+                        location.href = "/muscles";
+                    }
+                    else
+                        alert("에러가 발생하였습니다.")
+                },
+                error: function () {
+                    console.log("통신 실패")
+                }
+            })
         }
         return false;
     }

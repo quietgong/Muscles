@@ -1,16 +1,12 @@
 package com.kinaboot.muscles.handler;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class PageHandler {
     private SearchCondition sc;
-
-    public SearchCondition getSc() {
-        return sc;
-    }
-
-    public void setSc(SearchCondition sc) {
-        this.sc = sc;
-    }
-
     int totalPage;
     int totalCnt;
     int page;
@@ -21,13 +17,9 @@ public class PageHandler {
     int beginPage; // nav 첫 페이지
     int endPage; // nav 끝 페이지
 
-    public PageHandler() {
-    }
-
     public PageHandler(int totalCnt, SearchCondition sc) {
         this.totalCnt = totalCnt;
         this.sc = sc;
-
         doPaging(totalCnt, sc);
     }
 
@@ -40,7 +32,6 @@ public class PageHandler {
         showPrev = beginPage != 1;
         showNext = endPage != totalPage;
     }
-
     void print() {
         System.out.println("page = " + page);
         if (showPrev)
@@ -50,80 +41,5 @@ public class PageHandler {
         }
         if (showNext)
             System.out.println(">");
-    }
-
-    public int getTotalPage() {
-        return totalPage;
-    }
-
-    public void setTotalPage(int totalPage) {
-        this.totalPage = totalPage;
-    }
-
-    public int getTotalCnt() {
-        return totalCnt;
-    }
-
-    public void setTotalCnt(int totalCnt) {
-        this.totalCnt = totalCnt;
-    }
-
-    public int getNavSize() {
-        return navSize;
-    }
-
-    public void setNavSize(int navSize) {
-        this.navSize = navSize;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public boolean isShowPrev() {
-        return showPrev;
-    }
-
-    public void setShowPrev(boolean showPrev) {
-        this.showPrev = showPrev;
-    }
-
-    public boolean isShowNext() {
-        return showNext;
-    }
-
-    public void setShowNext(boolean showNext) {
-        this.showNext = showNext;
-    }
-
-    public int getBeginPage() {
-        return beginPage;
-    }
-
-    public void setBeginPage(int beginPage) {
-        this.beginPage = beginPage;
-    }
-
-    public int getEndPage() {
-        return endPage;
-    }
-
-    public void setEndPage(int endPage) {
-        this.endPage = endPage;
-    }
-
-    @Override
-    public String toString() {
-        return "PageHandler{" +
-                "totalPage=" + totalPage +
-                ", totalCnt=" + totalCnt +
-                ", page=" + page +
-                ", navSize=" + navSize +
-                ", pageSize=" + pageSize +
-                '}';
     }
 }

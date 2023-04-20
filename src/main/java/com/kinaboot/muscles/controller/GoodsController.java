@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/goods")
@@ -41,6 +42,7 @@ public class GoodsController {
     @GetMapping("/{goodsNo}")
     @ResponseBody
     public ResponseEntity<GoodsDto> goodsDetails(@PathVariable Integer goodsNo) {
+        log.info("[상품번호 " + goodsNo + " ] 상세 정보 진입");
         return new ResponseEntity<>(goodsService.findGoods(goodsNo), HttpStatus.OK);
     }
 
@@ -77,25 +79,7 @@ public class GoodsController {
 
     @GetMapping("/detail")
     public String goodsDetails(Integer goodsNo, Model m) {
-        GoodsDto goodsDto = goodsService.findGoods(goodsNo);
-        List<GoodsImgDto> goodsImgDtoList = goodsService.getGoodsDetailImgList(goodsNo);
-        List<ReviewDto> reviewDtoList = reviewService.findReviews(goodsNo);
-
-        for(ReviewDto reviewDto : reviewDtoList)
-            reviewDto.setReviewImgDtoList(reviewService.findReviewImg(reviewDto.getReviewNo(),goodsNo));
-
-        double goodsScore = 0.0;
-        if (reviewDtoList.size() != 0) {
-            for (ReviewDto reviewDto : reviewDtoList)
-                goodsScore += reviewDto.getScore();
-            goodsScore = goodsScore / reviewDtoList.size();
-        }
-        goodsDto.setGoodsReviewScore(goodsScore);
-
-
-        m.addAttribute(goodsDto);
-        m.addAttribute(reviewDtoList);
-        m.addAttribute(goodsImgDtoList);
+        m.addAttribute("goodsDto", goodsService.findGoods(goodsNo));
         return "goods/detail";
     }
 }

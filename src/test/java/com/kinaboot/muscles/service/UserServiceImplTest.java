@@ -18,7 +18,7 @@ public class UserServiceImplTest extends TestConfigure {
     public void after(){
 
     }
-    
+
     @Test
     public void findAllUser() {
     }

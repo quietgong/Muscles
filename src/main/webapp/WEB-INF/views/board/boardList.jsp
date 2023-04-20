@@ -36,7 +36,7 @@
                     <tr>
                         <td class="title">
                             <a style="text-decoration: none"
-                               href="<c:url value="/${postCategory}/${postDto.postNo}${ph.sc.queryString}"/>">
+                               href="<c:url value="/${ph.sc.type}/${postDto.postNo}${ph.sc.queryString}"/>">
                                 <c:choose>
                                     <c:when test="${postDto.commentDtoList.size() > 0}">
                                         ${postDto.title} [${postDto.commentDtoList.size()}]
@@ -59,34 +59,34 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-10" style="text-align: right">
-            <button type="submit" onclick='location.href="<c:url value='/${postCategory}/'/>"'
+            <button type="submit" onclick='location.href="<c:url value='/${ph.sc.type}/'/>"'
                     class="btn btn-lg btn-primary">글쓰기
             </button>
         </div>
     </div>
     <div class="row mt-5 justify-content-center">
         <div class="col-md-12">
-            <c:if test="${totalCnt==null||totalCnt==0}">
+            <c:if test="${ph.totalCnt==null||ph.totalCnt==0}">
                 <h1 style="text-align: center">게시물이 없습니다.</h1>
             </c:if>
-            <c:if test="${totalCnt!=null&&totalCnt!=0}">
+            <c:if test="${ph.totalCnt!=null&&ph.totalCnt!=0}">
                 <ul class="pagination pagination-lg justify-content-center">
                     <c:if test="${ph.showPrev}">
                         <li class="page-item">
                             <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
-                               href="<c:url value='${postCategory}${ph.sc.getQueryString(ph.beginPage-1)}'/>"><<</a>
+                               href="<c:url value='${ph.sc.type}${ph.sc.getQueryString(ph.beginPage-1)}'/>"><<</a>
                         </li>
                     </c:if>
                     <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
                         <li>
                             <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
-                               href="<c:url value='${postCategory}${ph.sc.getQueryString(i)}'/>">${i}</a>
+                               href="<c:url value='${ph.sc.type}${ph.sc.getQueryString(i)}'/>">${i}</a>
                         </li>
                     </c:forEach>
                     <c:if test="${ph.showNext}">
                         <li class="page-item">
                             <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
-                               href="<c:url value='${postCategory}${ph.sc.getQueryString(ph.endPage+1)}'/>">>></a>
+                               href="<c:url value='${ph.sc.type}${ph.sc.getQueryString(ph.endPage+1)}'/>">>></a>
                         </li>
                     </c:if>
                 </ul>

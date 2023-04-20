@@ -43,7 +43,7 @@
                         </ul>
                         <p class="py-2">
                                 <span class="list-inline-item text-dark">
-                                평점 : ${goodsDto.goodsReviewScore/20} | 리뷰 (${goodsDto.reviewDtoList.size()})
+                                평점 : ${goodsDto.goodsReviewScore} | 리뷰 (${goodsDto.reviewDtoList.size()})
                                 </span>
                         </p>
                         <p>${goodsDto.goodsDescription}</p>
@@ -57,7 +57,7 @@
                                     </li>
                                     <li class="list-inline-item">
                                         <c:if test="${goodsDto.goodsStock<10}">
-                                            <span>${goodsDto.goodsStock}개 남음</span>
+                                            <span style="color: red">${goodsDto.goodsStock}개 남음</span>
                                         </c:if>
                                     </li>
                                     <li class="list-inline-item"><span class="btn btn-success"
@@ -96,7 +96,7 @@
         <div class="row text-left p-2 pb-3">
             <h4>상품 설명</h4>
         </div>
-        <c:forEach var="goodsImgDto" items="${goodsImgDtoList}">
+        <c:forEach var="goodsImgDto" items="${goodsDto.goodsImgDtoList}">
             <div class="row justify-content-center">
                 <div class="col-md-8 mt-5">
                     <img class="img-fluid" src="${goodsImgDto.uploadPath}"/>
@@ -113,7 +113,7 @@
         <div class="row text-left p-2 pb-3">
             <h4>리뷰 목록</h4>
         </div>
-        <c:forEach var="reviewDto" items="${reviewDtoList}">
+        <c:forEach var="reviewDto" items="${goodsDto.reviewDtoList}">
         <div class="row">
             <div class="col">
                 <h3>${reviewDto.goodsName}</h3>
@@ -138,7 +138,7 @@
             <div class="row flex-nowrap" style="overflow-x: auto">
                 <c:forEach var="reviewImgDto" items="${reviewDto.reviewImgDtoList}">
                     <div class="col-md-2 mt-3">
-                        <img src='${reviewImgDto.uploadPath}' class="img-fluid">
+                        <img style="cursor: pointer" src='${reviewImgDto.uploadPath}' onclick="showImgDetail('${reviewImgDto.uploadPath}')" class="img-fluid" data-bs-toggle="modal" data-bs-target="#imgModal">
                     </div>
                 </c:forEach>
             </div>
@@ -206,7 +206,25 @@
     </div>
 </div>
 <!-- Modal -->
-
+<!-- 이미지 확대 출력 모달 -->
+<div class="modal fade" id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modalImg" src="" class="img-fluid">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 이미지 확대 출력 모달 -->
+<script>
+    function showImgDetail(src){
+        $("#modalImg").attr("src", src)
+    }
+</script>
 <script>
     let goodsNo = ${goodsDto.goodsNo};
     let goodsName = '${goodsDto.goodsName}';

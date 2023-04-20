@@ -34,19 +34,18 @@ public class PostController {
         log.info("글 목록 조회");
         String postCategory = parsingURL(request);
         sc.setType(postCategory);
+
         Integer totalCnt = postSerivce.countPost(sc);
-        m.addAttribute("postCategory", postCategory);
-        m.addAttribute("totalCnt", totalCnt);
         m.addAttribute("ph", new PageHandler(totalCnt, sc));
         m.addAttribute("list", postSerivce.findPosts(sc));
-        return "boardList";
+        return "board/boardList";
     }
 
     @GetMapping("/")
     public String postForm(HttpServletRequest request, Model m) {
         log.info("글작성 폼 진입 : 카테고리 : " + parsingURL(request));
         m.addAttribute("postCategory", parsingURL(request));
-        return "boardForm";
+        return "board/boardForm";
     }
 
     @GetMapping("/{postNo}")
@@ -56,7 +55,7 @@ public class PostController {
         m.addAttribute("postDto", postSerivce.findPost(postNo));
         m.addAttribute(page);
         m.addAttribute("postCategory", parsingURL(request));
-        return "board";
+        return "board/board";
     }
 
     @PostMapping("/")

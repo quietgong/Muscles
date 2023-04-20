@@ -1,5 +1,6 @@
 package com.kinaboot.muscles.controller;
 
+import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.ReviewDto;
 import com.kinaboot.muscles.domain.UserDto;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.List;
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/mypage")
 public class UserController {
     @Autowired
@@ -37,40 +38,44 @@ public class UserController {
     BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/user/{userId}")
-    @ResponseBody
     public ResponseEntity<UserDto> userDetails(@PathVariable String userId) throws Exception {
         log.info("회원정보 수정");
         return new ResponseEntity<>(userService.findUser(userId), HttpStatus.OK);
     }
 
     @GetMapping("/post/{userId}")
-    @ResponseBody
     public ResponseEntity<List<PostDto>> postList(@PathVariable String userId) throws Exception {
         log.info("내가 쓴 글 조회");
         return new ResponseEntity<>(postSerivce.findPosts(userId), HttpStatus.OK);
     }
 
     @GetMapping("/review/{userId}")
-    @ResponseBody
     public ResponseEntity<List<ReviewDto>> reviewList(@PathVariable String userId) {
         log.info("내가 쓴 리뷰 조회");
         return new ResponseEntity<>(reviewService.findReviews(userId), HttpStatus.OK);
     }
 
     @PostMapping("/modify/")
-    public String userModify(UserDto newUserDto, HttpSession session) throws Exception {
+    public ResponseEntity<String> userModify(UserDto newUserDto, HttpSession session) {
         log.info("[id] : " + newUserDto.getUserId() + " 회원 정보 변경");
-        userService.modifyUser(newUserDto);
-        session.invalidate();
-        return "redirect:/";
+        try {
+            userService.modifyUser(newUserDto);
+            session.invalidate();
+            return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("MOD_FAIL", HttpStatus.OK);
+        }
     }
 
     @PostMapping("/exit/")
-    public String exitAdd(HttpServletRequest request, HttpSession session) throws Exception {
-        String userId = (String) session.getAttribute("id");
-        log.info("[id] : " + userId + " 회원탈퇴");
-        userService.removeUser(userId, request, "user");
-        session.invalidate();
-        return "redirect:/";
+    public ResponseEntity<String> exitAdd(@RequestBody ExitDto exitDto, HttpSession session) {
+        log.info("[id] : " + exitDto.getUserId() + " 회원탈퇴");
+        try {
+            userService.removeUser(exitDto, "user");
+            session.invalidate();
+            return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("DEL_FAIL", HttpStatus.OK);
+        }
     }
 }

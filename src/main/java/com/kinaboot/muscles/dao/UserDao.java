@@ -1,6 +1,7 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.CouponDto;
+import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
 import org.apache.catalina.User;
@@ -19,7 +20,7 @@ public interface UserDao {
     List<CouponDto> selectUserCoupon(String userId);
     int insertUser(UserDto userDto);
     int insertRecommendEventCoupon(String userId, String recommendId);
-    int insertExit(HashMap map);
+    int insertExit(ExitDto exitDto);
     int updateUserPoint(String userId, int point, int orderNo);
     int updateUser(UserDto userDto);
     int updateUserPassword(String userId, String newPassword);

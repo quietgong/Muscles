@@ -22,28 +22,27 @@
     <script src="<c:url value='/js/jquery-migrate-1.2.1.min.js'/>"></script>
 </head>
 <body>
-<div class="mt-3 container d-grid gap-2 d-md-flex justify-content-md-end">
-    <h1>접속ID : ${userId}</h1>
+<div class="p-3 container d-grid gap-2 d-md-flex justify-content-end">
     <button id="admin" onclick="location.href='<c:url value='/admin/user'/>'" type="button"
-            class="me-md-2 btn btn-outline-primary" style="float: left">
+            class="btn btn-outline-primary">
         관리자 페이지
     </button>
-    <button id="login" onclick="location.href='<c:url value='/login'/>'" type="button" class="me-md-2 btn btn-outline-primary">
+    <button id="login" onclick="location.href='<c:url value='/login'/>'" type="button" class="btn btn-outline-primary">
         로그인
     </button>
-    <button id="logout" onclick="location.href='<c:url value='/logout'/>'" type="button" class="me-md-2 btn btn-outline-primary">로그아웃</button>
+    <button id="logout" onclick="location.href='<c:url value='/logout'/>'" type="button" class="btn btn-outline-primary">로그아웃</button>
     <button id="register" onclick="location.href='<c:url value='/register'/>'" type="button"
-            class="me-md-2 btn btn-outline-primary">
+            class="btn btn-outline-primary">
         회원가입
     </button>
     <c:choose>
         <c:when test="${isAdmin == 'true'}">
-            <button id="chatting" onclick="location.href='<c:url value='/chatRoom'/>'" type="button" class="me-md-2 btn btn-outline-primary">
+            <button id="chatting" onclick="location.href='<c:url value='/chatRoom'/>'" type="button" class="btn btn-outline-primary">
                 문의목록
             </button>
         </c:when>
         <c:otherwise>
-            <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button" class="me-md-2 btn btn-outline-primary">
+            <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button" class="btn btn-outline-primary">
                 채팅문의
             </button>
         </c:otherwise>
@@ -55,7 +54,7 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow">
     <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand text-success logo h1 align-self-center" href="<c:url value='/'/>">
-            Muscles
+            <img src="<c:url value='/img/logo.jpg'/>" class="img-fluid" width="300">
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
                 data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false"

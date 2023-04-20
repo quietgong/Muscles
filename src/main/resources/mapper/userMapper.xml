@@ -74,7 +74,7 @@
         values (#{userId}, #{password}, #{email}, #{phone}, #{address1}, #{address2}, 0, now())
     </insert>
 
-    <insert id="insertExit" parameterType="map">
+    <insert id="insertExit" parameterType="ExitDto">
         INSERT INTO `exit`
             (userId, exitDate, type1, type2, type3, opinion)
         values (#{userId}, now(), #{type1}, #{type2}, #{type3}, #{opinion})

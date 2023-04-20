@@ -57,9 +57,21 @@
              on g.goodsNo = a.goodsNo;
     </select>
     <select id="select" parameterType="int" resultType="goodsDto">
-        select *
-        FROM GOODS
-        where goodsNo = #{goodsNo}
+        select g.goodsNo             as goodsNo
+             , g.goodsCategory       as goodsCategory
+             , g.goodsCategoryDetail as goodsCategoryDetail
+             , g.goodsName           as goodsName
+             , g.goodsPrice          as goodsPrice
+             , g.goodsStock          as goodsStock
+             , g.goodsImgPath        as goodsImgPath
+             , IFNULL(r.score, 0)    as goodsReviewScore
+        from (select *
+              FROM GOODS
+              where goodsNo = #{goodsNo}) g
+                 left outer join (select goodsNo, avg(score) as score
+                                  from review
+                                  group by goodsNo) r
+                                 on g.goodsNo = r.goodsNo;
     </select>
     <select id="selectByCategoryCnt" parameterType="SearchCondition" resultType="int">
         select count(*)

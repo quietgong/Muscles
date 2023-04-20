@@ -48,7 +48,7 @@
                 <button style="display:none; float: right; margin-right: 10px"
                         class="modPosition up btn btn-warning mb-3 mt-3" type="button">←
                 </button>
-                <img src="${postImgDto.uploadPath}" class="img-fluid newDetail">
+                <img src="${postImgDto.uploadPath}" data-bs-toggle="modal" data-bs-target="#imgModal" onclick="showImgDetail('${postImgDto.uploadPath}')" style="cursor: pointer" class="img-fluid newDetail">
             </div>
         </c:forEach>
     </div>
@@ -86,6 +86,25 @@
         </div>
     </div>
 </div>
+<!-- 이미지 확대 출력 모달 -->
+<div class="modal fade" id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modalImg" src="" class="img-fluid">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 이미지 확대 출력 모달 -->
+<script>
+    function showImgDetail(src){
+        $("#modalImg").attr("src", src)
+    }
+</script>
 <script>
     // 이미지 업로드
     $("input[type='file']").on("change", function () {
