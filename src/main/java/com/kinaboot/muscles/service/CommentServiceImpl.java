@@ -33,5 +33,4 @@ public class CommentServiceImpl implements CommentService{
     public int modifyComment(CommentDto commentDto) throws Exception {
         return commentDao.update(commentDto);
     }
-
 }

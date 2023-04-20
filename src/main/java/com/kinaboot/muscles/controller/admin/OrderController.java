@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     @Autowired
     OrderService orderService;
+
     @GetMapping("")
     public String orderList(SearchCondition sc, Model m) {
-        System.out.println("sc = " + sc);
         log.info("주문 목록 조회");
         m.addAttribute("orderDtoList", orderService.findAllOrders(sc));
         return "admin/order";

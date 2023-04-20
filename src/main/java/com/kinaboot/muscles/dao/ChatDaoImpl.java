@@ -35,4 +35,9 @@ public class ChatDaoImpl implements ChatDao{
     public int selectNewMsgCnt(String chatName) {
         return session.selectOne(namespace + "selectNewMsgCnt", chatName);
     }
+
+    @Override
+    public int deleteAllChat() {
+        return session.delete(namespace + "deleteAllChat");
+    }
 }

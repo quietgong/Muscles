@@ -17,4 +17,6 @@ public interface PostSerivce {
     int modifyPost(PostDto postDto) throws Exception;
     int removePost(Integer postNo) throws Exception;
     int removePost(String userId) throws Exception;
+
+    int removePostImg(String imgPath);
 }

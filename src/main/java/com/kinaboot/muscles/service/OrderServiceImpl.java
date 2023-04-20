@@ -27,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     CartDao cartDao;
     @Autowired
     UserService userService;
+    @Autowired
+    ReviewService reviewService;
 
     @Override
     public int removeOrder(int orderNo, String cancelReason) {
@@ -60,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         // 적립 포인트 = 주문금액의 1%
         int pointPolicy = 1;
         int point = (int) (orderDto.getPaymentDto().getPrice() * 0.01 * pointPolicy);
-        userDao.updateUserGetPoint(userId, point, orderNo);
+        userDao.updateUserPoint(userId, point, orderNo);
 
         // 주문상태 변경
         return orderDao.updateOrderStatus(orderNo);
@@ -104,7 +106,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> findOrders(String userId, SearchCondition sc) {
         List<OrderDto> orderDtoList = orderDao.selectAll(userId, sc);
-        return getOrderDetail(orderDtoList);
+        return verifyReviewExist(getOrderDetail(orderDtoList));
+    }
+    private List<OrderDto> verifyReviewExist(List<OrderDto> orderDtoList) {
+        for (OrderDto orderDto : orderDtoList) {
+            for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()){
+                ReviewDto reviewDto = reviewService.findReview(orderItemDto.getOrderNo(), orderItemDto.getGoodsNo());
+                boolean hasReview = reviewDto != null;
+                orderItemDto.setHasReview(hasReview);
+            }
+        }
+        return orderDtoList;
     }
 
     @Override

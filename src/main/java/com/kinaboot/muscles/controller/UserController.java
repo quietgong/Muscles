@@ -1,4 +1,4 @@
-package com.kinaboot.muscles.controller.mypage;
+package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.ReviewDto;
@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/user/{userId}")
     @ResponseBody
     public ResponseEntity<UserDto> userDetails(@PathVariable String userId) throws Exception {
-        log.info("회원정보 수정을 위한 유저 데이터 반환");
+        log.info("회원정보 수정");
         return new ResponseEntity<>(userService.findUser(userId), HttpStatus.OK);
     }
 

@@ -49,8 +49,8 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public int deletePostImg(Integer postNo) {
-        return session.delete(namespace + "deletePostImg", postNo);
+    public int deletePostImgs(Integer postNo) {
+        return session.delete(namespace + "deletePostImgs", postNo);
     }
 
     @Override
@@ -110,5 +110,10 @@ public class PostDaoImpl implements PostDao {
     @Override
     public int increaseViewCnt(Integer postNo) {
         return session.update(namespace + "increaseViewCnt", postNo);
+    }
+
+    @Override
+    public int deletePostImg(String imgPath) {
+        return session.delete(namespace + "deletePostImg", imgPath);
     }
 }

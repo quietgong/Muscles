@@ -19,10 +19,8 @@ import static com.kinaboot.muscles.controller.common.MailController.mailSend;
 @Controller
 @RequestMapping("/register/")
 public class RegisterController {
-
     @Autowired
     private JavaMailSender mailSender;
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -31,18 +29,10 @@ public class RegisterController {
     @PostMapping("")
     public String registerDetails(UserDto userDto) throws Exception {
         log.info("회원가입 진입");
-        String id = userDto.getUserId();
-        if (userService.findUser(id) != null)
+        if (userService.findUser(userDto.getUserId()) != null)
             return "redirect:/?msg=" + URLEncoder.encode("중복된 아이디입니다.", "UTF-8");
-        String originPw = "";
-        String encodingPw = "";
-
-        originPw = userDto.getPassword();
-        encodingPw = passwordEncoder.encode(originPw);
-        userDto.setPassword(encodingPw);
-
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userService.addUser(userDto);
-
         log.info("ID : " + userDto.getUserId() + "생성 성공");
         return "redirect:/";
     }
@@ -69,6 +59,7 @@ public class RegisterController {
                 "머슬스 회원가입을 환영합니다."
                         + "<br><br>"
                         + "인증 번호는 " + "<strong>" + verifyCode + "</strong> 입니다.";
+
         return mailSend(String.valueOf(verifyCode), setFrom, toMail, title, content, mailSender);
     }
 }

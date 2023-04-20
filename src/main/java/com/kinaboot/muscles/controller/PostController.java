@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 @Slf4j
 @Controller
 @RequestMapping({"/community", "/notice"})
@@ -38,26 +39,16 @@ public class PostController {
         m.addAttribute("totalCnt", totalCnt);
         m.addAttribute("ph", new PageHandler(totalCnt, sc));
         m.addAttribute("list", postSerivce.findPosts(sc));
-        return "board/boardList";
+        return "boardList";
     }
 
-    // 글 쓰기 폼
     @GetMapping("/")
     public String postForm(HttpServletRequest request, Model m) {
-        log.info("글작성 폼 진입");
+        log.info("글작성 폼 진입 : 카테고리 : " + parsingURL(request));
         m.addAttribute("postCategory", parsingURL(request));
-        log.info("카테고리 : " + parsingURL(request));
-        return "board/boardForm";
+        return "boardForm";
     }
 
-    // 글 쓰기
-    @PostMapping("/")
-    @ResponseBody
-    public ResponseEntity<Integer> postAdd(@RequestBody PostDto postDto) throws Exception {
-        log.info("글작성 완료");
-        return new ResponseEntity<>(postSerivce.addPost(postDto), HttpStatus.OK);
-    }
-    // 글 읽기
     @GetMapping("/{postNo}")
     public String postDetails(@PathVariable Integer postNo, Integer page, HttpServletRequest request, Model m) throws Exception {
         log.info("글읽기 진입");
@@ -65,10 +56,16 @@ public class PostController {
         m.addAttribute("postDto", postSerivce.findPost(postNo));
         m.addAttribute(page);
         m.addAttribute("postCategory", parsingURL(request));
-        return "board/board";
+        return "board";
     }
 
-    // 글 삭제
+    @PostMapping("/")
+    @ResponseBody
+    public ResponseEntity<Integer> postAdd(@RequestBody PostDto postDto) throws Exception {
+        log.info("글작성 완료");
+        return new ResponseEntity<>(postSerivce.addPost(postDto), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{postNo}")
     @ResponseBody
     public ResponseEntity<String> postRemove(@PathVariable Integer postNo) throws Exception {
@@ -76,7 +73,6 @@ public class PostController {
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 
-    // 글 수정
     @PatchMapping("/{postNo}")
     @ResponseBody
     public ResponseEntity<String> postModify(@RequestBody PostDto postDto) throws Exception {

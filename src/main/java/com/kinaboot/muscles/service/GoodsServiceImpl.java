@@ -49,39 +49,6 @@ public class GoodsServiceImpl implements GoodsService {
             goodsDao.insertGoodsImg(map);
         }
     }
-//    private void saveGoodsImgs(GoodsDto goodsDto) {
-//        List<GoodsImgDto> newImgDtoList = goodsDto.getGoodsImgDtoList();
-//        List<GoodsImgDto> goodsImgDtoList = goodsDao.selectGoodsDetailImg(goodsDto.getGoodsNo());
-//        for (GoodsImgDto newImgDto : newImgDtoList) {
-//            boolean alreadyExists = goodsImgDtoList.stream()
-//                    .anyMatch(goodsImgDto -> goodsImgDto.getUploadPath().equals(newImgDto.getUploadPath()));
-//            if (!alreadyExists) {
-//                Map<String, String> map = new HashMap<>();
-//                map.put("goodsNo", String.valueOf(newImgDto.getGoodsNo()));
-//                map.put("filePath", newImgDto.getUploadPath());
-//                goodsDao.insertGoodsImg(map);
-//            }
-//        }
-//        if (goodsImgDtoList.size() == 0) {
-//            for (GoodsImgDto newImgDto : newImgDtoList) {
-//                Map<String, String> map = new HashMap<>();
-//                map.put("goodsNo", String.valueOf(newImgDto.getGoodsNo()));
-//                map.put("filePath", newImgDto.getUploadPath());
-//                goodsDao.insertGoodsImg(map);
-//            }
-//        } else {
-//            for (GoodsImgDto newImgDto : newImgDtoList) {
-//                for (GoodsImgDto goodsImgDto : goodsImgDtoList) {
-//                    if (!newImgDto.getUploadPath().equals(goodsImgDto.getUploadPath())) {
-//                        Map<String, String> map = new HashMap<>();
-//                        map.put("goodsNo", String.valueOf(newImgDto.getGoodsNo()));
-//                        map.put("filePath", newImgDto.getUploadPath());
-//                        goodsDao.insertGoodsImg(map);
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public int modifyGoods(GoodsDto goodsDto) {

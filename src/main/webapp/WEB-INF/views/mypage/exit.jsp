@@ -41,7 +41,7 @@
                     <p>더욱 고객님의 의견을 적극 반영하여
                         이용에 불편이 없도록 개선하겠습니다
                     </p>
-                    <button onclick="alert('탈퇴가 정상적으로 처리되었습니다.')" type="submit" class="btn btn-outline-primary">회원탈퇴</button>
+                    <button onclick="alert('탈퇴가 정상적으로 처리되었습니다.'); location.href='/';" type="submit" class="btn btn-outline-primary">회원탈퇴</button>
                     </form>
                 </div>
             </div>

@@ -13,4 +13,6 @@ public interface ChatDao {
     Date selectLastMsgDate(String chatName);
 
     int selectNewMsgCnt(String chatName);
+
+    int deleteAllChat();
 }

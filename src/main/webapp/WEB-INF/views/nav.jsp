@@ -150,7 +150,7 @@
     function getCartItemsNum(){
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/" + '${userId}', // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/cart/" + '${userId}/', // 컨트롤러에서 대기중인 URL 주소이다.
             headers: {"Content-Type": "application/json"},
             success: function (res) {
                 $("#cartNum").html(res)

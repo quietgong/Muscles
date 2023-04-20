@@ -99,10 +99,16 @@
         update post set viewCnt = viewCnt+1
         where postNo=#{postNo}
     </update>
-    <delete id="deletePostImg" parameterType="int">
+    <delete id="deletePostImgs" parameterType="int">
         delete
         from postimg
         where postNo = '${postNo}';
+    </delete>
+
+    <delete id="deletePostImg" parameterType="String">
+        DELETE
+        FROM reviewImg
+        where filePath = '${imgPath}'
     </delete>
 
 </mapper>

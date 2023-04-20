@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Controller
 public class ChattingController {
@@ -29,8 +30,10 @@ public class ChattingController {
     @PostMapping("/chat/post")
     @ResponseBody
     public ResponseEntity<String> chatAdd(ChatDto chatDto) {
-        chatService.saveChat(chatDto);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        if (chatService.saveChat(chatDto) != 0)
+            return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("ADD_FAIL", HttpStatus.OK);
     }
 
     @GetMapping("/chatting")
@@ -46,14 +49,12 @@ public class ChattingController {
                 }
             }
         }
-        if (!hasAlreadyChatRoom) {
-            ChatDto chatDto = new ChatDto();
-            chatDto.setChatName(chatName);
-            chatDtoList.add(chatDto);
-        }
+        if (!hasAlreadyChatRoom)
+            chatDtoList.add(new ChatDto(null,null,chatName));
         m.addAttribute("chatDtoList", chatService.findChat(chatName));
         return "chatting/chatting";
     }
+
     @GetMapping("/chatRoom")
     public String chatList(String chatName, Model m) {
         log.info("관리자 채팅문의 진입");
@@ -68,10 +69,12 @@ public class ChattingController {
         } else
             return "chatting/chatRoom";
     }
+
     @GetMapping("/getRoom")
-    public @ResponseBody List<ChatDto> roomList() {
+    @ResponseBody
+    public List<ChatDto> roomList() {
         log.info("채팅방 리스트");
-        for(ChatDto chatDto : chatDtoList){
+        for (ChatDto chatDto : chatDtoList) {
             chatDto.setLastMsgDate(chatService.findChatLastMsgDate(chatDto.getChatName()));
             chatDto.setNewMsgCnt(chatService.findChatNewMsgDate(chatDto.getChatName()));
         }

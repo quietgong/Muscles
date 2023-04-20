@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ReviewServiceImplTest extends TestConfigure {
+public class PostServiceImplTest extends TestConfigure {
 
 
     @Before
@@ -20,38 +20,42 @@ public class ReviewServiceImplTest extends TestConfigure {
     }
 
     @Test
-    public void findReview() {
+    public void findPost() {
     }
 
     @Test
-    public void modifyReview() {
+    public void addPost() {
     }
 
     @Test
-    public void removeReview() {
+    public void countPost() {
     }
 
     @Test
-    public void addReview() {
+    public void modifyPost() {
     }
 
     @Test
-    public void findReviews() {
+    public void findPosts() {
     }
 
     @Test
-    public void testFindReview() {
+    public void testFindPosts() {
     }
 
     @Test
-    public void testFindReviews() {
+    public void testFindPosts1() {
     }
 
     @Test
-    public void removeReviewImg() {
+    public void removePost() {
     }
 
     @Test
-    public void findReviewImg() {
+    public void testRemovePost() {
+    }
+
+    @Test
+    public void removePostImg() {
     }
 }

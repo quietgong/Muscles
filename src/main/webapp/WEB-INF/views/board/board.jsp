@@ -154,7 +154,7 @@
         $.ajax({
             type: "DELETE",
             enctype: 'multipart/form-data',
-            url: "/muscles/img/delete/${postCategory}/detail?fileName=" + fileName,
+            url: "/muscles/img/delete/post/detail?fileName=" + fileName,
             success: function (res) {
                 console.log(res)
                 // 파일 삭제가 성공적으로 이루어지면

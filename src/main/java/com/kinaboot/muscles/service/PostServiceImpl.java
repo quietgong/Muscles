@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostSerivce{
         return postDao.update(postDto);
     }
     private void savePostImgs(PostDto postDto) {
-        postDao.deletePostImg(postDto.getPostNo());
+        postDao.deletePostImgs(postDto.getPostNo());
         List<PostImgDto> postImgDtoList = postDto.getPostImgDtoList();
         for(PostImgDto postImgDto : postImgDtoList){
             postDao.insertPostImg(postImgDto);
@@ -84,7 +84,7 @@ public class PostServiceImpl implements PostSerivce{
 
     @Override
     public int removePost(Integer postNo) throws Exception {
-        postDao.deletePostImg(postNo);
+        postDao.deletePostImgs(postNo);
         commentDao.deletePost(postNo);
         return postDao.delete(postNo);
     }
@@ -93,4 +93,8 @@ public class PostServiceImpl implements PostSerivce{
         return postDao.delete(userId);
     }
 
+    @Override
+    public int removePostImg(String imgPath) {
+        return postDao.deletePostImg(imgPath);
+    }
 }

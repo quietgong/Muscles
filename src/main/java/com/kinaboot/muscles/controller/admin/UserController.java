@@ -29,9 +29,10 @@ public class UserController {
         log.info("유저 탈퇴 처리");
         try {
             userService.removeUser(userId, null, "admin");
-            log.info("[id] : " + userId + " 탈퇴 처리");
+            log.info("[id] : " + userId + " 탈퇴 처리 성공");
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
         } catch (Exception e) {
+            log.info("[id] : " + userId + " 탈퇴 처리 실패");
             return new ResponseEntity<>("DEL_FAIL", HttpStatus.BAD_REQUEST);
         }
     }

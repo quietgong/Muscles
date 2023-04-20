@@ -79,11 +79,11 @@ public class GoodsController {
     public String goodsDetails(Integer goodsNo, Model m) {
         GoodsDto goodsDto = goodsService.findGoods(goodsNo);
         List<GoodsImgDto> goodsImgDtoList = goodsService.getGoodsDetailImgList(goodsNo);
-
         List<ReviewDto> reviewDtoList = reviewService.findReviews(goodsNo);
-        for(ReviewDto reviewDto : reviewDtoList){
+
+        for(ReviewDto reviewDto : reviewDtoList)
             reviewDto.setReviewImgDtoList(reviewService.findReviewImg(reviewDto.getReviewNo(),goodsNo));
-        }
+
         double goodsScore = 0.0;
         if (reviewDtoList.size() != 0) {
             for (ReviewDto reviewDto : reviewDtoList)
@@ -91,6 +91,8 @@ public class GoodsController {
             goodsScore = goodsScore / reviewDtoList.size();
         }
         goodsDto.setGoodsReviewScore(goodsScore);
+
+
         m.addAttribute(goodsDto);
         m.addAttribute(reviewDtoList);
         m.addAttribute(goodsImgDtoList);

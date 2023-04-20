@@ -29,6 +29,7 @@ import java.net.URLEncoder;
 import java.util.Random;
 
 import static com.kinaboot.muscles.controller.common.MailController.mailSend;
+
 @Slf4j
 @Controller
 public class LoginController {
@@ -66,27 +67,11 @@ public class LoginController {
         return "redirect:" + toURL;
     }
 
-    private boolean loginCheck(String id, String pw) throws Exception {
-        UserDto userDto = null;
-        try {
-            userDto = userService.findUser(id);
-            String encodingPw = userDto.getPassword();
-            return passwordEncoder.matches(pw, encodingPw) && userService.findUser(id).getExpiredDate() == null;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         log.info("로그아웃 진입");
         session.invalidate();
         return "redirect:/";
-    }
-
-    @GetMapping("/test")
-    public String test(){
-        return "pwdfindcomplete";
     }
 
     @GetMapping("/emailExistCheck")
@@ -119,6 +104,13 @@ public class LoginController {
         return "pwdfindcomplete";
     }
 
+    private boolean loginCheck(String id, String pw) {
+        try {
+            return passwordEncoder.matches(pw, userService.findUser(id).getPassword()) && userService.findUser(id).getExpiredDate() == null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     private String generateRandomString() {
         Random random = new Random();
         int letterLen = 4;

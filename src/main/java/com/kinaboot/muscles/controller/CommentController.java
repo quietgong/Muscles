@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/comments")
@@ -21,16 +22,25 @@ public class CommentController {
     CommentService commentService;
 
     @GetMapping("")
-    public ResponseEntity<List<CommentDto>> commentList(Integer postNo) throws Exception {
+    public ResponseEntity<List<CommentDto>> commentList(Integer postNo) {
         log.info("댓글 목록 출력");
-        return new ResponseEntity<>(commentService.findComments(postNo), HttpStatus.OK);
+        try {
+            List<CommentDto> commentDtoList = commentService.findComments(postNo);
+            return new ResponseEntity<>(commentDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("")
-    public ResponseEntity<String> commentAdd(@RequestBody CommentDto commentDto) throws Exception {
+    public ResponseEntity<String> commentAdd(@RequestBody CommentDto commentDto) {
         log.info("댓글 작성");
-        commentService.addComment(commentDto);
-        return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
+        try {
+            commentService.addComment(commentDto);
+            return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("WRT_FAIL", HttpStatus.OK);
+        }
     }
 
     @PatchMapping("")

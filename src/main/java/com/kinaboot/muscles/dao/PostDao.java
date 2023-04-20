@@ -52,5 +52,7 @@ public interface PostDao {
 
     List<PostImgDto> selectPostImg(Integer postNo);
 
-    int deletePostImg(Integer postNo);
+    int deletePostImgs(Integer postNo);
+
+    int deletePostImg(String imgPath);
 }

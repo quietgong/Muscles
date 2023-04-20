@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/cart")
@@ -25,23 +26,25 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<CartDto>> cartList(HttpSession session) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<CartDto>> cartList(@PathVariable String userId) {
         log.info("장바구니 페이지 진입");
-        String userId = (String) session.getAttribute("id");
         return new ResponseEntity<>(cartService.findCartItems(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Integer> cartCount(@PathVariable String userId){
+    @GetMapping("/{userId}/")
+    public ResponseEntity<Integer> cartCount(@PathVariable String userId) {
+        log.info("사용자 : " + userId + " 장바구니 아이템 카운트");
         return new ResponseEntity<>(cartService.countCart(userId), HttpStatus.OK);
     }
+
     @PostMapping("/")
     public ResponseEntity<String> cartAdd(@RequestBody CartDto cartDto, HttpSession session) {
         log.info("장바구니 추가");
         String userId = (String) session.getAttribute("id");
         return new ResponseEntity<>(cartService.addCartItem(userId, cartDto), HttpStatus.OK);
     }
+
     @DeleteMapping("/{goodsNo}")
     public ResponseEntity<String> cartRemove(@PathVariable Integer goodsNo, HttpSession session) {
         log.info("장바구니 삭제 상품 번호 : " + goodsNo);

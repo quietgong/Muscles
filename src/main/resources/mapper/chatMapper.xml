@@ -30,4 +30,8 @@
                              order by createdDate desc
                             limit 1)
     </select>
+    <delete id="deleteAllChat">
+        DELETE
+        FROM CHAT
+    </delete>
 </mapper>

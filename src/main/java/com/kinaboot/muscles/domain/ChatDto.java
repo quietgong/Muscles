@@ -15,4 +15,17 @@ public class ChatDto {
     Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     Date lastMsgDate;
+
+    public ChatDto(String chatName, String talker, String msg) {
+        this.chatName = chatName;
+        this.talker = talker;
+        this.msg = msg;
+    }
+
+    public ChatDto(String chatName, String talker, String msg, Date createdDate) {
+        this.chatName = chatName;
+        this.talker = talker;
+        this.msg = msg;
+        this.createdDate = createdDate;
+    }
 }
