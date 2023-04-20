@@ -98,6 +98,8 @@
             tmp += "<tr class='point-item'>";
             if (item.point < 0)
                 tmp += '<td><strong>포인트 사용</strong> [주문번호:' + item.orderNo + ']</td>'
+            else if (item.orderNo === 0)
+                tmp += '<td><strong>추천인 이벤트</strong></td>'
             else
                 tmp += '<td><strong>결제 적립</strong> [주문번호:' + item.orderNo + ']</td>'
             tmp += '<td>' + item.point + '</td>'
@@ -161,7 +163,7 @@
             type: "POST",
             url: '/muscles/mypage/coupon/' + userId + '/' + recommendId,
             success: function (res) {
-                if(res === "ADD_OK"){
+                if (res === "ADD_OK") {
                     $(".coupon-item").remove()
                     loadCoupon(recommendId)
                     alert("쿠폰이 등록되었습니다.")

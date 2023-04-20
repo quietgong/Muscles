@@ -5,6 +5,7 @@ import com.kinaboot.muscles.domain.ImgDto;
 import com.kinaboot.muscles.service.GoodsService;
 import com.kinaboot.muscles.service.PostSerivce;
 import com.kinaboot.muscles.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+@Slf4j
 @RestController
 @RequestMapping("/img")
 public class ImgController {
@@ -38,13 +39,11 @@ public class ImgController {
     @Autowired
     PostSerivce postSerivce;
 
-    private static final Logger logger = LoggerFactory.getLogger(ImgController.class);
-
     String fileRoot = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\";
 
     @PostMapping(value = "/{category}/{type}/{no}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<ImgDto>> imgAdd(MultipartFile[] uploadFile, @PathVariable String category, @PathVariable String type, @PathVariable Integer no) {
-        logger.info("이미지 데이터 생성");
+        log.info("이미지 데이터 생성");
         // 서버 단 이미지 파일 체크 구현 필요
         List<ImgDto> imgDtoList = new ArrayList<>();
         String uploadPath = this.fileRoot + category + "\\" + type;
@@ -74,7 +73,7 @@ public class ImgController {
 
     @DeleteMapping("/delete/{category}/{type}")
     public ResponseEntity<String> imgRemove(@PathVariable String category, @PathVariable String type, String fileName) {
-        logger.info("category=[" + category + " type=[" + type + "]" + "fileName=[" + fileName + "] 이미지 삭제");
+        log.info("category=[" + category + " type=[" + type + "]" + "fileName=[" + fileName + "] 이미지 삭제");
         // 이미지 파일 삭제
         String filePath = this.fileRoot + category + "\\" + type + "\\" + fileName;
         new File(filePath).delete();

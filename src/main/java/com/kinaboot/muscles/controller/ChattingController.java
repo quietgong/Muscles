@@ -2,6 +2,7 @@ package com.kinaboot.muscles.controller;
 
 import com.kinaboot.muscles.domain.ChatDto;
 import com.kinaboot.muscles.service.ChatService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Controller
 public class ChattingController {
-    private static final Logger logger = LoggerFactory.getLogger(ChattingController.class);
 
     @Autowired
     ChatService chatService;
@@ -36,7 +36,7 @@ public class ChattingController {
     @GetMapping("/chatting")
     public String chatList(HttpSession session, Model m) {
         String chatName = (String) session.getAttribute("id");
-        logger.info("[id] : " + chatName + "채팅상담 접속");
+        log.info("[id] : " + chatName + "채팅상담 접속");
         boolean hasAlreadyChatRoom = false;
         if (chatDtoList.size() != 0 && chatName != null && !chatName.trim().equals("") && !chatName.equals("null")) {
             for (ChatDto chatDto : chatDtoList) {
@@ -56,7 +56,7 @@ public class ChattingController {
     }
     @GetMapping("/chatRoom")
     public String chatList(String chatName, Model m) {
-        logger.info("관리자 채팅문의 진입");
+        log.info("관리자 채팅문의 진입");
         List<ChatDto> new_list = chatDtoList.stream().
                 filter(o -> Objects.equals(o.getChatName(), chatName))
                 .collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class ChattingController {
     }
     @GetMapping("/getRoom")
     public @ResponseBody List<ChatDto> roomList() {
-        logger.info("채팅방 리스트");
+        log.info("채팅방 리스트");
         for(ChatDto chatDto : chatDtoList){
             chatDto.setLastMsgDate(chatService.findChatLastMsgDate(chatDto.getChatName()));
             chatDto.setNewMsgCnt(chatService.findChatNewMsgDate(chatDto.getChatName()));
@@ -81,7 +81,7 @@ public class ChattingController {
     @DeleteMapping("/removeRoom/{chatName}")
     @ResponseBody
     public ResponseEntity<String> roomRemove(@PathVariable String chatName) {
-        logger.info("채팅방 이름, 채팅 유저 : " + chatName + " 삭제");
+        log.info("채팅방 이름, 채팅 유저 : " + chatName + " 삭제");
         for (int i = 0; i < chatDtoList.size(); i++) {
             if (chatDtoList.get(i).getChatName().equals(chatName)) {
                 chatDtoList.remove(i);

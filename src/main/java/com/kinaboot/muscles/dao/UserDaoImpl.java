@@ -87,16 +87,6 @@ public class UserDaoImpl implements UserDao {
         return session.selectOne(namespace + "selectUserOrderPoint", orderNo);
     }
 
-    @Override
-    public int updateUserPoint(String userId, int point, int orderNo) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("point", String.valueOf(point));
-        map.put("orderNo", String.valueOf(orderNo));
-        session.update(namespace + "updateUserPoint", map);
-        session.insert(namespace + "insertPoint", map);
-        return 0;
-    }
 
     @Override
     public int updateCoupon(int orderNo) {
@@ -104,13 +94,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int updateUserGetPoint(String userId, int point, int orderNo) {
+    public int updateUserPoint(String userId, int point, int orderNo) {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("orderNo", String.valueOf(orderNo));
         map.put("point", String.valueOf(point));
+        
         session.update(namespace + "updateUserPoint", map);
-        // 포인트 적립 내역 추가
         session.insert(namespace + "insertPoint", map);
         return 0;
     }

@@ -21,7 +21,6 @@ public interface UserDao {
     int insertRecommendEventCoupon(String userId, String recommendId);
     int insertExit(HashMap map);
     int updateUserPoint(String userId, int point, int orderNo);
-    int updateUserGetPoint(String userId, int point, int orderNo);
     int updateUser(UserDto userDto);
     int updateUserPassword(String userId, String newPassword);
     int deleteAll();

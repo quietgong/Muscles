@@ -5,6 +5,7 @@ import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.GoodsService;
 import com.kinaboot.muscles.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-
+@Slf4j
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
-    private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
-
     @Autowired
     GoodsService goodsService;
 
@@ -35,7 +34,7 @@ public class GoodsController {
     @GetMapping("/best")
     @ResponseBody
     public ResponseEntity<List<GoodsDto>> bestGoodsList() {
-        logger.info("베스트 상품");
+        log.info("베스트 상품");
         return new ResponseEntity<>(goodsService.findBestGoods(), HttpStatus.OK);
     }
 
@@ -48,7 +47,7 @@ public class GoodsController {
     @GetMapping("/faq/{goodsNo}")
     @ResponseBody
     public ResponseEntity<List<FaqDto>> faqList(@PathVariable Integer goodsNo) {
-        logger.info("[goodsNo] : " + goodsNo + " 문의 리스트 출력");
+        log.info("[goodsNo] : " + goodsNo + " 문의 리스트 출력");
         List<FaqDto> faqDtoList = goodsService.findFaqs(goodsNo);
         return new ResponseEntity<>(faqDtoList, HttpStatus.OK);
     }
@@ -68,7 +67,7 @@ public class GoodsController {
 
     @GetMapping("/list")
     public String goodsList(SearchCondition sc, Model m) {
-        logger.info("상품 목록 진입");
+        log.info("상품 목록 진입");
         int totalCnt = goodsService.getTotalCntByCategory(sc);
         PageHandler ph = new PageHandler(totalCnt, sc);
         m.addAttribute("list", goodsService.findGoods(sc));

@@ -7,6 +7,7 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.PostSerivce;
 import com.kinaboot.muscles.service.ReviewService;
 import com.kinaboot.muscles.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.List;
-
+@Slf4j
 @Controller
 @RequestMapping("/mypage")
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     ReviewService reviewService;
     @Autowired
@@ -39,27 +39,27 @@ public class UserController {
     @GetMapping("/user/{userId}")
     @ResponseBody
     public ResponseEntity<UserDto> userDetails(@PathVariable String userId) throws Exception {
-        logger.info("회원정보 수정을 위한 유저 데이터 반환");
+        log.info("회원정보 수정을 위한 유저 데이터 반환");
         return new ResponseEntity<>(userService.findUser(userId), HttpStatus.OK);
     }
 
     @GetMapping("/post/{userId}")
     @ResponseBody
     public ResponseEntity<List<PostDto>> postList(@PathVariable String userId) throws Exception {
-        logger.info("내가 쓴 글 조회");
+        log.info("내가 쓴 글 조회");
         return new ResponseEntity<>(postSerivce.findPosts(userId), HttpStatus.OK);
     }
 
     @GetMapping("/review/{userId}")
     @ResponseBody
     public ResponseEntity<List<ReviewDto>> reviewList(@PathVariable String userId) {
-        logger.info("내가 쓴 리뷰 조회");
+        log.info("내가 쓴 리뷰 조회");
         return new ResponseEntity<>(reviewService.findReviews(userId), HttpStatus.OK);
     }
 
     @PostMapping("/modify/")
     public String userModify(UserDto newUserDto, HttpSession session) throws Exception {
-        logger.info("[id] : " + newUserDto.getUserId() + " 회원 정보 변경");
+        log.info("[id] : " + newUserDto.getUserId() + " 회원 정보 변경");
         userService.modifyUser(newUserDto);
         session.invalidate();
         return "redirect:/";
@@ -68,7 +68,7 @@ public class UserController {
     @PostMapping("/exit/")
     public String exitAdd(HttpServletRequest request, HttpSession session) throws Exception {
         String userId = (String) session.getAttribute("id");
-        logger.info("[id] : " + userId + " 회원탈퇴");
+        log.info("[id] : " + userId + " 회원탈퇴");
         userService.removeUser(userId, request, "user");
         session.invalidate();
         return "redirect:/";

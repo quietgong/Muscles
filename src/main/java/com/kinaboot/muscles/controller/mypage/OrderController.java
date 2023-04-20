@@ -6,6 +6,7 @@ import com.kinaboot.muscles.domain.ReviewDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.OrderService;
 import com.kinaboot.muscles.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-
+@Slf4j
 @Controller
 @RequestMapping("/mypage/order")
 public class OrderController {
-    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     @Autowired
     OrderService orderService;
 
@@ -30,7 +30,7 @@ public class OrderController {
 
     @GetMapping("")
     public String orderList(HttpSession session, Model m, SearchCondition sc) {
-        logger.info("유저 주문내역 진입");
+        log.info("유저 주문내역 진입");
         String userId = (String) session.getAttribute("id");
         List<OrderDto> orderDtoList = orderService.findOrders(userId, sc);
         if (orderDtoList != null)

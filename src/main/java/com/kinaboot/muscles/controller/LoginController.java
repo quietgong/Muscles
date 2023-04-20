@@ -4,6 +4,7 @@ import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.service.CartService;
 import com.kinaboot.muscles.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import java.net.URLEncoder;
 import java.util.Random;
 
 import static com.kinaboot.muscles.controller.common.MailController.mailSend;
-
+@Slf4j
 @Controller
 public class LoginController {
     @Autowired
@@ -42,8 +43,6 @@ public class LoginController {
 
     @Autowired
     private JavaMailSender mailSender;
-
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping("/login/")
     public String login(String toURL, UserDto userDto, HttpServletResponse response, HttpServletRequest request, boolean rememberId) throws Exception {
@@ -80,7 +79,7 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        logger.info("로그아웃 진입");
+        log.info("로그아웃 진입");
         session.invalidate();
         return "redirect:/";
     }
@@ -102,10 +101,10 @@ public class LoginController {
 
     @PostMapping("/passwordReset")
     public String passwordReset(String userId, String email, Model m) {
-        logger.info("임시 비밀번호 발송 진입 [email] : " + email);
+        log.info("임시 비밀번호 발송 진입 [email] : " + email);
         String resetPassword = generateRandomString();
         userService.resetPassword(userId, passwordEncoder.encode(resetPassword));
-        logger.info("생성된 임시 비밀번호 : " + resetPassword);
+        log.info("생성된 임시 비밀번호 : " + resetPassword);
         /* 이메일 발송 */
         String setFrom = "quietgong@naver.com";
         String toMail = email;

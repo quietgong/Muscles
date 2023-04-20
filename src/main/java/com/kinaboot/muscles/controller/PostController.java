@@ -4,6 +4,7 @@ import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.PostSerivce;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+@Slf4j
 @Controller
 @RequestMapping({"/community", "/notice"})
 public class PostController {
-    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @Autowired
     PostSerivce postSerivce;
@@ -30,7 +30,7 @@ public class PostController {
 
     @GetMapping("")
     public String postList(SearchCondition sc, HttpServletRequest request, Model m) throws Exception {
-        logger.info("글 목록 조회");
+        log.info("글 목록 조회");
         String postCategory = parsingURL(request);
         sc.setType(postCategory);
         Integer totalCnt = postSerivce.countPost(sc);
@@ -44,9 +44,9 @@ public class PostController {
     // 글 쓰기 폼
     @GetMapping("/")
     public String postForm(HttpServletRequest request, Model m) {
-        logger.info("글작성 폼 진입");
+        log.info("글작성 폼 진입");
         m.addAttribute("postCategory", parsingURL(request));
-        logger.info("카테고리 : " + parsingURL(request));
+        log.info("카테고리 : " + parsingURL(request));
         return "board/boardForm";
     }
 
@@ -54,13 +54,13 @@ public class PostController {
     @PostMapping("/")
     @ResponseBody
     public ResponseEntity<Integer> postAdd(@RequestBody PostDto postDto) throws Exception {
-        logger.info("글작성 완료");
+        log.info("글작성 완료");
         return new ResponseEntity<>(postSerivce.addPost(postDto), HttpStatus.OK);
     }
     // 글 읽기
     @GetMapping("/{postNo}")
     public String postDetails(@PathVariable Integer postNo, Integer page, HttpServletRequest request, Model m) throws Exception {
-        logger.info("글읽기 진입");
+        log.info("글읽기 진입");
         page = page == null ? 1 : page;
         m.addAttribute("postDto", postSerivce.findPost(postNo));
         m.addAttribute(page);

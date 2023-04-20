@@ -129,6 +129,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int addCoupon(String userId, String recommendId) {
-        return userDao.countUser(recommendId) != 0 ? userDao.insertRecommendEventCoupon(userId, recommendId) : 0;
+        int userCnt =userDao.countUser(recommendId);
+        int eventPoint = 1000; // 추천받은 유저에게 보상하는 포인트
+        if(userCnt!=0) {
+            userDao.updateUserPoint(recommendId, eventPoint, 0);
+            return userDao.insertRecommendEventCoupon(userId, recommendId);
+        }
+        else
+            return 0;
     }
 }
