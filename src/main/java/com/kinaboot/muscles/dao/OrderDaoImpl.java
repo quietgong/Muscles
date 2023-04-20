@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -87,10 +86,6 @@ public class OrderDaoImpl implements OrderDao {
         map.put("orderNo", orderNo);
         map.put("goodsNo", goodsNo);
         return session.selectOne(namespace + "selectOrderItem", map);
-    }
-    @Override
-    public List<OrderDto> selectOrderAllByUser() {
-        return session.selectList(namespace + "selectAllByUser");
     }
 
     @Override

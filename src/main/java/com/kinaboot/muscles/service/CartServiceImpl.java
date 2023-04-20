@@ -24,11 +24,11 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public String addCartItem(String userId, CartDto cartDto) {
+    public String addCartItem(CartDto cartDto) {
         // 추가하고자 하는 아이템이 이미 장바구니에 있을 때 추가 실패
-        if(cartDao.select(userId, cartDto.getGoodsNo())!=0)
+        if(cartDao.select(cartDto.getUserId(), cartDto.getGoodsNo())!=0)
             return "ADD_FAIL";
-        cartDao.add(userId, cartDto);
+        cartDao.insert(cartDto);
         return "ADD_OK";
     }
 

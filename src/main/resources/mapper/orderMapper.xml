@@ -51,6 +51,7 @@
             </otherwise>
         </choose>
     </sql>
+
     <!-- userId로 주문정보 목록 반환 -->
     <select id="selectOrderList" parameterType="SearchCondition" resultType="orderDto">
         select orderNo, userId, status, cancelReason, createdDate
@@ -69,7 +70,7 @@
         select orderNo, goodsNo, goodsName, goodsCategory, goodsQty, goodsPrice
         from orderitem
         WHERE orderNo = #{orderNo}
-          AND goodsNo = #{goodsNo}
+        AND goodsNo = #{goodsNo}
     </select>
     <!-- orderNo로 주문상품 목록 반환 -->
     <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
@@ -89,10 +90,7 @@
         from payment
         WHERE orderNo = '${orderNo}'
     </select>
-    <select id="selectUserRecentOrderNo" resultType="int">
-        select IFNULL(max(orderNo) + 1, 1) as orderNo
-        from orders
-    </select>
+
     <insert id="insertOrder" parameterType="orderDto">
         insert into orders (userId, status, discount, createdDate)
         values (#{userId}, '주문대기', #{discount}, now());
@@ -101,7 +99,7 @@
     <insert id="insertOrderItem" parameterType="orderItemDto">
         insert into orderitem (orderNo, goodsNo, goodsName, goodsCategory, goodsQty, goodsPrice, goodsImgPath)
         values (#{orderNo}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsQty},
-                #{goodsPrice}, #{goodsImgPath});
+        #{goodsPrice}, #{goodsImgPath});
     </insert>
 
     <insert id="insertDelivery" parameterType="deliveryDto">
@@ -127,8 +125,8 @@
 
     <delete id="deleteOrder" parameterType="map">
         update orders
-        set status       = '주문취소'
-          , cancelReason = #{cancelReason}
+        set status = '주문취소'
+        , cancelReason = #{cancelReason}
         where orderNo = #{orderNo}
     </delete>
 </mapper>

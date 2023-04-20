@@ -8,12 +8,14 @@
         FROM cart
         where userId = '${userId}'
     </select>
+
     <select id="countCartItem" resultType="int" parameterType="map">
         SELECT count(*)
         FROM cart
         where userId = #{userId}
           and goodsNo = #{goodsNo}
     </select>
+
     <select id="selectAll" resultType="CartDto" parameterType="String">
         select p.goodsNo as goodsNo
                ,p.goodsName as goodsName
@@ -25,16 +27,12 @@
         where p.goodsNo = c.goodsNo
           and c.userId = '${userId}';
     </select>
-    <select id="selectItem" resultType="CartDto" parameterType="int">
-        select goodsName,
-               goodsPrice
-        from goods
-        where p.goodsNo = '${goodsNo}';
-    </select>
-    <insert id="insert" parameterType="map">
+
+    <insert id="insert" parameterType="CartDto">
         insert into cart (userId, goodsNo, goodsName, goodsCategory, goodsPrice, goodsQty)
         values (#{userId}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsPrice}, #{goodsQty});
     </insert>
+
     <delete id="deleteItem" parameterType="map">
         delete
         from cart

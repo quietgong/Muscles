@@ -17,11 +17,11 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public int removeComment(String userId) throws Exception {
-        return commentDao.delete(userId);
+        return commentDao.deleteComments(userId);
     }
     @Override
     public int removeComment(Integer commentNo) throws Exception {
-        return commentDao.delete(commentNo);
+        return commentDao.deleteComment(commentNo);
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.Map;
 public class GoodsDaoImpl implements GoodsDao {
     @Autowired
     GoodsDao goodsDao;
+
     @Autowired
     private SqlSession session;
 
@@ -109,6 +110,7 @@ public class GoodsDaoImpl implements GoodsDao {
     public int deleteGoodsDetail(String imgPath) {
         return session.delete(namespace + "deleteGoodsDetail", imgPath);
     }
+
     @Override
     public int deleteAllGoodsDetail(int goodsNo) {
         return session.delete(namespace + "deleteAllGoodsDetail", goodsNo);

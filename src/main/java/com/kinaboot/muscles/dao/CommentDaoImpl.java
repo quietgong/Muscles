@@ -11,38 +11,14 @@ import java.util.Map;
 
 @Repository
 public class CommentDaoImpl implements CommentDao {
-
-
     @Autowired
     private SqlSession session;
+
     private static String namespace = "com.kinaboot.muscles.dao.commentMapper.";
 
     @Override
     public int count() throws Exception {
         return session.selectOne(namespace + "count");
-    }
-
-    @Override
-    public int deleteAll() {
-        return session.delete(namespace + "deleteAll");
-    }
-
-    @Override
-    public int delete(Integer commentNo) throws Exception {
-        return session.delete(namespace + "delete", commentNo);
-    }
-    @Override
-    public int delete(String userId) throws Exception {
-        return session.delete(namespace + "deleteComment", userId);
-    }
-    @Override
-    public int deletePost(Integer postNo) {
-        return session.delete(namespace + "deletePost", postNo);
-    }
-
-    @Override
-    public int insert(CommentDto commentDto) throws Exception {
-        return session.insert(namespace + "insert", commentDto);
     }
 
     @Override
@@ -56,7 +32,32 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
+    public int insert(CommentDto commentDto) throws Exception {
+        return session.insert(namespace + "insert", commentDto);
+    }
+
+    @Override
     public int update(CommentDto commentDto) throws Exception {
         return session.update(namespace + "update", commentDto);
+    }
+
+    @Override
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
+    }
+
+    @Override
+    public int deleteComment(Integer commentNo) throws Exception {
+        return session.delete(namespace + "deleteComment", commentNo);
+    }
+
+    @Override
+    public int deleteComments(String userId) throws Exception {
+        return session.delete(namespace + "deleteComments", userId);
+    }
+
+    @Override
+    public int deletePost(Integer postNo) {
+        return session.delete(namespace + "deletePost", postNo);
     }
 }

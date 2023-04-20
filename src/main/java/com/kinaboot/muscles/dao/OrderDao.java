@@ -10,8 +10,6 @@ public interface OrderDao {
 
     OrderDto insertOrder(OrderDto orderDto);
 
-    List<OrderDto> selectOrderAllByUser();
-
     OrderDto selectOrder(Integer orderNo);
 
     int updateOrderStatus(Integer bundleNo);
@@ -27,6 +25,6 @@ public interface OrderDao {
     DeliveryDto selectDelivery(int orderNo);
 
     PaymentDto selectPayment(int orderNo);
-    int deleteOrder(Integer orderNo, String cancelReason);
 
+    int deleteOrder(Integer orderNo, String cancelReason);
 }

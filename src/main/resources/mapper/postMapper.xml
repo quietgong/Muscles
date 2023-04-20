@@ -7,20 +7,16 @@
     <select id="count" parameterType="String" resultType="int">
         SELECT count(*) FROM post where type='${type}'
     </select>
+
     <select id="selectPostNo" resultType="int">
         select max(postNo) + 1
         from post;
     </select>
+
     <select id="select" parameterType="int" resultType="PostDto">
         SELECT * from post
         where postNo=#{postNo}
         order by createdDate desc, postNo desc
-    </select>
-
-    <select id="selectPage" parameterType="int" resultType="PostDto">
-        SELECT * from post
-        where type='community'
-            LIMIT #{limit}, 10;
     </select>
 
     <select id="selectPostImg" parameterType="int" resultType="PostImgDto">
@@ -68,19 +64,10 @@
             </otherwise>
         </choose>
     </sql>
-    <delete id="deleteAll">
-        DELETE from post
-    </delete>
-    <delete id="delete" parameterType="int">
-        DELETE from post where postNo=${postNo}
-    </delete>
-    <delete id="deletePost" parameterType="String">
-        DELETE from post where userId='${userId}'
-    </delete>
 
     <insert id="insert" parameterType="map">
         insert into post
-            (type, title, content, userId, createdDate)
+        (type, title, content, userId, createdDate)
         values (#{type}, #{title}, #{content}, #{userId}, now())
     </insert>
 
@@ -88,26 +75,37 @@
         insert into postimg (postNo, filePath, type)
         values (#{postNo}, #{uploadPath},#{type});
     </insert>
+
     <update id="update" parameterType="PostDto">
         update post
-        set title   = #{title}
-          , content = #{content}
-          , modDate = now()
+        set title = #{title}
+        , content = #{content}
+        , modDate = now()
         where postNo = #{postNo}
     </update>
+
     <update id="increaseViewCnt" parameterType="int">
         update post set viewCnt = viewCnt+1
         where postNo=#{postNo}
     </update>
+
+    <delete id="deleteAll">
+        DELETE from post
+    </delete>
+
+    <delete id="delete" parameterType="int">
+        DELETE from post where postNo=${postNo}
+    </delete>
+
+    <delete id="deletePost" parameterType="String">
+        DELETE from post where userId='${userId}'
+    </delete>
+
     <delete id="deletePostImgs" parameterType="int">
-        delete
-        from postimg
-        where postNo = '${postNo}';
+        delete from postimg where postNo = '${postNo}'
     </delete>
 
     <delete id="deletePostImg" parameterType="String">
-        DELETE
-        FROM reviewImg
-        where filePath = '${imgPath}'
+        DELETE FROM reviewImg where filePath = '${imgPath}'
     </delete>
 </mapper>

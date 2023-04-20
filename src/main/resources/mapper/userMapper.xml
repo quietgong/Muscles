@@ -41,33 +41,17 @@
         from point
         where orderNo = '${orderNo}';
     </select>
-    <update id="updateUser" parameterType="UserDto">
-        UPDATE USER
-        SET EMAIL    = #{email}
-          , PHONE    = #{phone}
-          , PASSWORD = #{password}
-          , address1 = #{address1}
-          , address2 = #{address2}
-        WHERE userId = #{userId}
-    </update>
 
-    <update id="updateUserPassword" parameterType="map">
-        UPDATE USER
-        SET PASSWORD = #{newPassword}
-        WHERE userId = #{userId}
-    </update>
     <insert id="insertRecommendEventCoupon" parameterType="map">
         insert into coupon (couponName, couponCode, userId, discount)
         values ("추천인 이벤트", #{recommendId}, #{userId}, #{discount});
     </insert>
+
     <insert id="insertPoint" parameterType="map">
         insert into point (userId, point, orderNo)
         values (#{userId}, #{point}, #{orderNo});
     </insert>
-    <insert id="insertRecommendPoint" parameterType="map">
-        insert into point (userId, point, pointName)
-        values ('${recommendId}', 100, "추천인 이벤트");
-    </insert>
+
     <insert id="insertUser" parameterType="UserDto">
         INSERT INTO user
         (userId, password, email, phone, address1, address2, point, createdDate)
@@ -80,33 +64,22 @@
         values (#{userId}, now(), #{type1}, #{type2}, #{type3}, #{opinion})
     </insert>
 
-    <delete id="deleteAllUser">
-        DELETE
-        FROM USER
-    </delete>
-    <delete id="deleteUser" parameterType="int">
+    <update id="updateUser" parameterType="UserDto">
         UPDATE USER
-        SET expiredDate = now()
-            ,point = 0
-        where userNo = '${userNo}';
-    </delete>
-    <delete id="deleteData" parameterType="String">
-        DELETE
-        POST
-        where userId = '${userId}';
-
-        DELETE
-        COMMENT
-        where userId = '${userId}';
-
-        UPDATE USER
-        SET point = 0
-        where userId = '${userId}';
-    </delete>
-    <update id="updateExpiredDate" parameterType="String">
-        UPDATE USER
-        SET expiredDate = now();
+        SET EMAIL    = #{email}
+        , PHONE    = #{phone}
+        , PASSWORD = #{password}
+        , address1 = #{address1}
+        , address2 = #{address2}
+        WHERE userId = #{userId}
     </update>
+
+    <update id="updateUserPassword" parameterType="map">
+        UPDATE USER
+        SET PASSWORD = #{newPassword}
+        WHERE userId = #{userId}
+    </update>
+
     <update id="updateUserPoint" parameterType="map">
         update user
         set point = point + #{point}
@@ -117,16 +90,19 @@
         set orderNo = 0
         where orderNo = ${orderNo}
     </update>
-    <delete id="deleteCoupon" parameterType="map">
-        update coupon
-        set orderNo = #{orderNo}
-        where couponNo = #{couponNo}
+
+    <delete id="deleteAllUser">
+        DELETE
+        FROM USER
     </delete>
-    <delete id="deleteUserPoint" parameterType="int">
-        delete
-        from point
-        where orderNo = ${orderNo};
+
+    <delete id="deleteUser" parameterType="int">
+        UPDATE USER
+        SET expiredDate = now()
+            ,point = 0
+        where userNo = '${userNo}';
     </delete>
+
     <delete id="deleteUserCoupon" parameterType="String">
         delete
         from coupon

@@ -11,13 +11,9 @@ public interface GoodsDao {
     int insert(GoodsDto goodsDto);
     int deleteAll();
     int count();
-
     GoodsDto select(Integer GoodsNo);
-
     List<GoodsDto> selectAll();
-
     int deleteGoods(Integer GoodsNo);
-
     int updateGoods(GoodsDto goodsDto);
 
     List<FaqDto> selectFaqList(Integer GoodsNo);

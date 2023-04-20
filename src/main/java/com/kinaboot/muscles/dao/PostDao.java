@@ -8,43 +8,31 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import java.util.List;
 
 public interface PostDao {
-    int count(String type) throws Exception // T selectOne(String statement)
-    ;
+    int count(String type) throws Exception;
 
-    void deleteAll() // int delete(String statement)
-    ;
+    void deleteAll();
 
-    int delete(Integer postNo) throws Exception // int delete(String statement, Object parameter)
-    ;
-    int delete(String userId) throws Exception // int delete(String statement, Object parameter)
-    ;
-    int insert(PostDto postDto) throws Exception // int insert(String statement, Object parameter)
-    ;
+    int delete(Integer postNo) throws Exception;
 
-    PostDto select(Integer postNo) throws Exception // T selectOne(String statement, Object parameter)
-    ;
+    int delete(String userId) throws Exception;
 
-    List<PostDto> selectAll(String type) throws Exception // List<E> selectList(String statement)
-    ;
+    int insert(PostDto postDto) throws Exception;
 
-    List<PostDto> selectAllByUser(String userId) throws Exception // List<E> selectList(String statement)
-    ;
+    PostDto select(Integer postNo) throws Exception;
 
-    List<PostDto> selectPage(PageHandler ph) throws Exception // List<E> selectList(String statement, Object parameter)
-    ;
+    List<PostDto> selectAll(String type) throws Exception;
 
-    List<PostDto> searchResult(SearchCondition sc) throws Exception // List<E> selectList(String statement, Object parameter)
-    ;
+    List<PostDto> selectAllByUser(String userId) throws Exception;
+
+    List<PostDto> searchResult(SearchCondition sc) throws Exception;
 
     List<PostDto> searchResult(String userId, SearchCondition sc);
 
     Integer searchResultCnt(SearchCondition sc) throws Exception;
 
-    int update(PostDto dto) throws Exception // int update(String statement, Object parameter)
-    ;
+    int update(PostDto dto) throws Exception;
 
-    int increaseViewCnt(Integer postNo) throws Exception // int update(String statement, Object parameter)
-    ;
+    int increaseViewCnt(Integer postNo) throws Exception;
 
     int selectPostNo();
 

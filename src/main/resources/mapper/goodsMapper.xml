@@ -7,71 +7,68 @@
         SELECT count(*)
         FROM GOODS
     </select>
+
+    <select id="selectGoodsNo" resultType="int">
+        select max(goodsNo) + 1
+        from goods
+    </select>
+    <sql id="goodsBasicColumns">
+        select g.goodsNo as goodsNo
+        , g.goodsCategory as goodsCategory
+        , g.goodsCategoryDetail as goodsCategoryDetail
+        , g.goodsName as goodsName
+        , g.goodsPrice as goodsPrice
+        , g.goodsStock as goodsStock
+        , g.goodsImgPath as goodsImgPath
+    </sql>
     <select id="selectBestGoods" resultType="goodsDto">
-        select g.goodsNo             as goodsNo
-             , g.goodsCategory       as goodsCategory
-             , g.goodsCategoryDetail as goodsCategoryDetail
-             , g.goodsName           as goodsName
-             , g.goodsPrice          as goodsPrice
-             , g.goodsImgPath        as goodsImgPath
-             , c.goodsReviewScore    as goodsReviewScore
+        <include refid="goodsBasicColumns"/>
+        , c.goodsReviewScore as goodsReviewScore
         from goods g,
-             ((select A.goodsNo as goodsNo, A.sales * B.score as score, B.score as goodsReviewScore
-               from (select goodsNo, sum(goodsQty) as sales
-                     from orderitem
-                     where orderNo in (select orderNo
-                                       from orders
-                                       where status = '주문완료'
-                                         and createdDate between DATE_ADD(now(), INTERVAL -1 MONTH) and now())
-                     group by goodsNo) A,
-                    (select goodsNo, avg(score) as score
-                     from review
-                     where orderNo in (select orderNo
-                                       from orders
-                                       where status = '주문완료'
-                                         and createdDate between DATE_ADD(now(), INTERVAL -1 MONTH) and now())
-                     group by goodsNo) B
-               where A.goodsNo = B.goodsNo)) C
+        ((select A.goodsNo as goodsNo, A.sales * B.score as score, B.score as goodsReviewScore
+        from (select goodsNo, sum(goodsQty) as sales
+        from orderitem
+        where orderNo in (select orderNo
+        from orders
+        where status = '주문완료'
+        and createdDate between DATE_ADD(now(), INTERVAL -1 MONTH) and now())
+        group by goodsNo) A,
+        (select goodsNo, avg(score) as score
+        from review
+        where orderNo in (select orderNo
+        from orders
+        where status = '주문완료'
+        and createdDate between DATE_ADD(now(), INTERVAL -1 MONTH) and now())
+        group by goodsNo) B
+        where A.goodsNo = B.goodsNo)) C
         where g.goodsNo = C.goodsNo
         order by C.score limit 3;
     </select>
     <select id="selectAll" resultType="goodsDto">
-        select g.goodsNo             as goodsNo
-             , g.goodsCategory       as goodsCategory
-             , g.goodsCategoryDetail as goodsCategoryDetail
-             , g.goodsName           as goodsName
-             , g.goodsPrice          as goodsPrice
-             , g.goodsStock          as goodsStock
-             , g.goodsImgPath        as goodsImgPath
-             , IFNULL(a.score, 0)    as goodsReviewScore
-             , IFNULL(a.sales, 0)    as goodsSales
+        <include refid="goodsBasicColumns"/>
+        , IFNULL(a.score, 0) as goodsReviewScore
+        , IFNULL(a.sales, 0) as goodsSales
         FROM goods g
-                 left outer JOIN
-             (select r.goodsNo as goodsNo, r.score as score, o.goodsQty as sales
-              from (select goodsNo, avg(score) as score from review group by goodsNo) r,
-                   (select goodsNo, sum(goodsQty) as goodsQty
-                    from orderitem
-                    where orderNo in (select orderNo from orders where status = '주문완료')
-                    group by goodsNo) o
-              where r.goodsNo = o.goodsNo) a
-             on g.goodsNo = a.goodsNo;
+        left outer JOIN
+        (select r.goodsNo as goodsNo, r.score as score, o.goodsQty as sales
+        from (select goodsNo, avg(score) as score from review group by goodsNo) r,
+        (select goodsNo, sum(goodsQty) as goodsQty
+        from orderitem
+        where orderNo in (select orderNo from orders where status = '주문완료')
+        group by goodsNo) o
+        where r.goodsNo = o.goodsNo) a
+        on g.goodsNo = a.goodsNo;
     </select>
     <select id="select" parameterType="int" resultType="goodsDto">
-        select g.goodsNo             as goodsNo
-             , g.goodsCategory       as goodsCategory
-             , g.goodsCategoryDetail as goodsCategoryDetail
-             , g.goodsName           as goodsName
-             , g.goodsPrice          as goodsPrice
-             , g.goodsStock          as goodsStock
-             , g.goodsImgPath        as goodsImgPath
-             , IFNULL(r.score, 0)    as goodsReviewScore
+        <include refid="goodsBasicColumns"/>
+        , IFNULL(r.score, 0) as goodsReviewScore
         from (select *
-              FROM GOODS
-              where goodsNo = #{goodsNo}) g
-                 left outer join (select goodsNo, avg(score) as score
-                                  from review
-                                  group by goodsNo) r
-                                 on g.goodsNo = r.goodsNo;
+        FROM GOODS
+        where goodsNo = #{goodsNo}) g
+        left outer join (select goodsNo, avg(score) as score
+        from review
+        group by goodsNo) r
+        on g.goodsNo = r.goodsNo;
     </select>
     <select id="selectByCategoryCnt" parameterType="SearchCondition" resultType="int">
         select count(*)
@@ -80,15 +77,9 @@
         <include refid="priceCondition"/>
         <include refid="goodsCondition"/>
     </select>
+
     <select id="selectByCategory" parameterType="SearchCondition" resultType="goodsDto">
-        select g.goodsNo as goodsNo
-        ,g.goodsDescription as goodsDescription
-        , g.goodsCategory as goodsCategory
-        , g.goodsCategoryDetail as goodsCategoryDetail
-        , g.goodsName as goodsName
-        , g.goodsPrice as goodsPrice
-        , g.goodsStock as goodsStock
-        , g.goodsImgPath as goodsImgPath
+        <include refid="goodsBasicColumns"/>
         , IFNULL(r.score, 0) as goodsReviewScore
         from goods g,
         (select g.goodsNo, avg(r.score) score
@@ -120,7 +111,6 @@
             </otherwise>
         </choose>
     </sql>
-
     <sql id="goodsCondition">
         <if test="keyword!=''">
             and goodsName like concat('%',#{keyword},'%')
@@ -132,7 +122,6 @@
             and goodsCategoryDetail = #{subCategory}
         </if>
     </sql>
-
     <sql id="optionCondition">
         <choose>
             <when test='option=="lowPrice"'>
@@ -146,27 +135,25 @@
             </when>
         </choose>
     </sql>
+
     <select id="selectFaqList" parameterType="int" resultType="faqDto">
         SELECT *
         FROM faq
         where goodsNo = ${goodsNo}
         order by createdDate
     </select>
-    <select id="selectGoodsNo" resultType="int">
-        select max(goodsNo) + 1
-        from goods
-    </select>
+
     <select id="selectAllCategories" resultType="goodsCategoryDto">
         select goodsCategory as category
-               ,goodsCategoryDetail as subCategory
+        ,goodsCategoryDetail as subCategory
         from goods
         group by goodsCategory, goodsCategoryDetail;
     </select>
     <insert id="insert" parameterType="goodsDto">
         insert into goods
-        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath)
-        values (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice},
-                #{goodsStock}, #{goodsImgPath})
+        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath) values
+        (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice}, #{goodsStock},
+        #{goodsImgPath})
     </insert>
     <insert id="insertFaqQuestion" parameterType="faqDto">
         insert into faq (userId, goodsNo, question, createdDate)
@@ -174,8 +161,8 @@
     </insert>
     <insert id="insertFaqAnswer" parameterType="faqDto">
         update faq
-        set answer    = #{answer},
-            replyDate = now()
+        set answer = #{answer},
+        replyDate = now()
         where faqNo = #{faqNo};
     </insert>
     <select id="selectGoodsImg" parameterType="int" resultType="goodsImgDto">
@@ -191,13 +178,13 @@
     </insert>
     <update id="updateGoods" parameterType="goodsDto">
         update goods
-        set goodsName           = #{goodsName},
-            goodsDescription    = #{goodsDescription},
-            goodsPrice          = #{goodsPrice},
-            goodsCategory       = #{goodsCategory},
-            goodsCategoryDetail = #{goodsCategoryDetail},
-            goodsStock          = #{goodsStock},
-            goodsImgPath        = #{goodsImgPath}
+        set goodsName = #{goodsName},
+        goodsDescription = #{goodsDescription},
+        goodsPrice = #{goodsPrice},
+        goodsCategory = #{goodsCategory},
+        goodsCategoryDetail = #{goodsCategoryDetail},
+        goodsStock = #{goodsStock},
+        goodsImgPath = #{goodsImgPath}
         where goodsNo = #{goodsNo};
     </update>
     <delete id="deleteAll">
@@ -229,5 +216,4 @@
         FROM goodsImg
         where goodsNo = '${goodsNo}'
     </delete>
-
 </mapper>

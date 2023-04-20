@@ -254,6 +254,7 @@
 
     function addCart() {
         let data = {}
+        data.userId = '${userId}'
         data.goodsNo = goodsNo
         data.goodsName = goodsName
         data.goodsCategory = goodsCategory

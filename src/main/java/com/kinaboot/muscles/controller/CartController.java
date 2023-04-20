@@ -39,10 +39,9 @@ public class CartController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> cartAdd(@RequestBody CartDto cartDto, HttpSession session) {
+    public ResponseEntity<String> cartAdd(@RequestBody CartDto cartDto) {
         log.info("장바구니 추가");
-        String userId = (String) session.getAttribute("id");
-        return new ResponseEntity<>(cartService.addCartItem(userId, cartDto), HttpStatus.OK);
+        return new ResponseEntity<>(cartService.addCartItem(cartDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{goodsNo}")

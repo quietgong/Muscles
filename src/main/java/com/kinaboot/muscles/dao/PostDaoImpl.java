@@ -1,7 +1,6 @@
 package com.kinaboot.muscles.dao;
 
 import com.kinaboot.muscles.domain.PostImgDto;
-import com.kinaboot.muscles.handler.PageHandler;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
@@ -10,12 +9,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class PostDaoImpl implements PostDao {
     @Autowired
     private SqlSession session;
+
     private static String namespace = "com.kinaboot.muscles.dao.postMapper.";
 
     @Override
@@ -69,9 +68,8 @@ public class PostDaoImpl implements PostDao {
     }
     @Override
     public List<PostDto> searchResult(String userId, SearchCondition sc) {
-        HashMap map = new HashMap();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("type", "community");
         map.put("sc", sc);
         return session.selectList(namespace + "searchResult", map);
     }
@@ -94,12 +92,6 @@ public class PostDaoImpl implements PostDao {
     @Override
     public PostDto select(Integer postNo) throws Exception {
         return session.selectOne(namespace + "select", postNo);
-    }
-
-    @Override
-    public List<PostDto> selectPage(PageHandler ph) {
-        int limit = (ph.getSc().getPage() - 1) * ph.getPageSize();
-        return session.selectList(namespace + "selectPage", limit);
     }
 
     @Override

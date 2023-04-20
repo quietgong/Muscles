@@ -3,33 +3,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kinaboot.muscles.dao.chatMapper">
-    <insert id="insertChat" parameterType="ChatDto">
-        insert into chat (chatName, talker, msg, createdDate)
-        values (#{chatName}, #{talker}, #{msg}, now());
-    </insert>
     <select id="selectChat" parameterType="String" resultType="ChatDto">
         select talker, msg, createdDate
         from chat
         where chatName = '${chatName}'
         order by createdDate
     </select>
+
     <select id="selectLastMsgDate" parameterType="String" resultType="Date">
         select createdDate
         from chat
         where chatName = '${chatName}'
         order by createdDate desc limit 1;
     </select>
+
     <select id="selectNewMsgCnt" parameterType="String" resultType="int">
         select IF(count(*) = 0, (select count(*) from chat where chatName = '${chatName}'), count(*))
         from chat
         where chatName = '${chatName}'
-          and createdDate > (select createdDate
-                             from chat
-                             where chatName = '${chatName}'
-                               and talker = 'system'
-                             order by createdDate desc
-                            limit 1)
+        and createdDate > (select createdDate
+        from chat
+        where chatName = '${chatName}'
+        and talker = 'system'
+        order by createdDate desc
+        limit 1)
     </select>
+
+    <insert id="insertChat" parameterType="ChatDto">
+        insert into chat (chatName, talker, msg, createdDate)
+        values (#{chatName}, #{talker}, #{msg}, now());
+    </insert>
+
     <delete id="deleteAllChat">
         DELETE
         FROM CHAT

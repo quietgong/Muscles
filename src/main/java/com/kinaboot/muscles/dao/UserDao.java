@@ -28,14 +28,8 @@ public interface UserDao {
     int deleteUser(Integer userNo);
     int deleteUserCoupon(String userId);
     int deleteUserPoint(int orderNo);
-    int deletePoint(String userId);
-
     int countUser(String userId);
-
     int deleteCoupon(int couponNo, int orderNo);
-
     PointDto selectUserOrderPoint(int orderNo);
-
     int updateCoupon(int orderNo);
-
 }

@@ -4,7 +4,6 @@ import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
-import org.apache.catalina.User;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,12 +17,12 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private SqlSession session;
 
+    private static String namespace = "com.kinaboot.muscles.dao.userMapper.";
+
     @Override
     public List<UserDto> selectAllUser() {
         return session.selectList(namespace + "selectAllUser");
     }
-
-    private static String namespace = "com.kinaboot.muscles.dao.userMapper.";
 
     @Override
     public int updateUserPassword(String userId, String newPassword) {
@@ -88,7 +87,6 @@ public class UserDaoImpl implements UserDao {
         return session.selectOne(namespace + "selectUserOrderPoint", orderNo);
     }
 
-
     @Override
     public int updateCoupon(int orderNo) {
         return session.update(namespace + "updateCoupon", orderNo);
@@ -102,8 +100,7 @@ public class UserDaoImpl implements UserDao {
         map.put("point", String.valueOf(point));
         
         session.update(namespace + "updateUserPoint", map);
-        session.insert(namespace + "insertPoint", map);
-        return 0;
+        return session.insert(namespace + "insertPoint", map);
     }
 
     @Override
@@ -122,11 +119,6 @@ public class UserDaoImpl implements UserDao {
         map.put("couponNo", couponNo);
         map.put("orderNo", orderNo);
         return session.delete(namespace + "deleteCoupon", map);
-    }
-
-    @Override
-    public int deletePoint(String userId) {
-        return session.update(namespace + "modifyUserPoint", userId);
     }
 
     @Override

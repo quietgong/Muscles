@@ -160,6 +160,7 @@
     // 장바구니 추가
     function addCart(goodsNo, goodsName, goodsCategory, goodsPrice) {
         let data = {}
+        data.userId = '${userId}'
         data.goodsNo = goodsNo
         data.goodsName = goodsName
         data.goodsCategory = goodsCategory
