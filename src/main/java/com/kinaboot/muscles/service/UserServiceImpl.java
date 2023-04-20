@@ -19,14 +19,13 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
-
     @Autowired
     PostSerivce postSerivce;
-
     @Autowired
     CommentService commentService;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public List<UserDto> findAllUser() {
         return userDao.selectAllUser();

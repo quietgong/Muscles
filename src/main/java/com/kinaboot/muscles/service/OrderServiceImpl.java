@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 포인트 사용 취소 처리
         PointDto pointDto = userService.findPoint(orderNo);
-        if(pointDto!=null){
+        if (pointDto != null) {
             int point = userService.findPoint(orderNo).getPoint();
             // 1. 포인트 환불
             userDao.updateUserPoint(userId, -point, orderNo);
@@ -53,10 +53,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int acceptOrder(int orderNo) {
         // 구매 제품 재고 수량 변경
-        orderDao.updateStock(orderDao.selectOrderItemList(orderNo));
+        List<OrderItemDto> orderItemDtoList = orderDao.selectOrderItemList(orderNo);
+        for (OrderItemDto orderItemDto : orderItemDtoList) {
+            orderDao.updateStock(orderItemDto);
+        }
 
         // 포인트 적립
-        OrderDto orderDto = orderDao.selectOrder(orderNo);
+        OrderDto orderDto = findOrder(orderNo);
         String userId = orderDto.getUserId();
 
         // 적립 포인트 = 주문금액의 1%
@@ -75,7 +78,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto findOrder(Integer orderNo) {
-        return orderDao.selectOrder(orderNo);
+        OrderDto orderDto = orderDao.selectOrder(orderNo);
+        List<OrderItemDto> orderItemDtoList = orderDao.selectOrderItemList(orderNo);
+        DeliveryDto deliveryDto = orderDao.selectDelivery(orderNo);
+        PaymentDto paymentDto = orderDao.selectPayment(orderNo);
+
+        orderDto.setOrderItemDtoList(orderItemDtoList);
+        orderDto.setDeliveryDto(deliveryDto);
+        orderDto.setPaymentDto(paymentDto);
+
+        return orderDto;
     }
 
     @Override
@@ -97,20 +109,21 @@ public class OrderServiceImpl implements OrderService {
         else if (option.equals("3months")) // 지난 3개월
             calendar.add(Calendar.MONTH, -3);
 
-        if(!(option.equals("all") || option.equals("")))
+        if (!(option.equals("all") || option.equals("")))
             sc.setStartDate(calendar.getTime()); // 시작 날짜
         List<OrderDto> orderDtoList = orderDao.selectOrderAll(sc);
         return getOrderDetail(orderDtoList);
     }
 
     @Override
-    public List<OrderDto> findOrders(String userId, SearchCondition sc) {
-        List<OrderDto> orderDtoList = orderDao.selectAll(userId, sc);
+    public List<OrderDto> findOrders(SearchCondition sc) {
+        List<OrderDto> orderDtoList = orderDao.selectAll(sc);
         return verifyReviewExist(getOrderDetail(orderDtoList));
     }
+
     private List<OrderDto> verifyReviewExist(List<OrderDto> orderDtoList) {
         for (OrderDto orderDto : orderDtoList) {
-            for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()){
+            for (OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()) {
                 ReviewDto reviewDto = reviewService.findReview(orderItemDto.getOrderNo(), orderItemDto.getGoodsNo());
                 boolean hasReview = reviewDto != null;
                 orderItemDto.setHasReview(hasReview);
@@ -125,28 +138,40 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderDto = JsonToJava(orderData);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         String userId = orderDto.getUserId();
 
         // 주문 정보 생성
-        OrderDto newOrderDto = orderDao.insertOrder(orderDto);
+        int newOrderNo = orderDao.insertOrder(orderDto);
+        orderDto.setOrderNo(newOrderNo);
 
-        // 구매 제품 장바구니에서 삭제
         List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
-        for (OrderItemDto orderItemDto : orderItemDtoList)
+        for(OrderItemDto orderItemDto : orderItemDtoList){
+            orderItemDto.setOrderNo(newOrderNo);
+            // 주문상품 정보 생성
+            orderDao.insertOrderItem(orderItemDto);
+            // 주문상품 장바구니에서 제거
             cartDao.deleteCartItem(userId, orderItemDto.getGoodsNo());
+        }
+
+        // 배송 정보 생성
+        DeliveryDto deliveryDto = orderDto.getDeliveryDto();
+        deliveryDto.setOrderNo(newOrderNo);
+        orderDao.insertDelivery(deliveryDto);
+
+        // 결제 정보 생성
+        PaymentDto paymentDto = orderDto.getPaymentDto();
+        paymentDto.setOrderNo(newOrderNo);
+        orderDao.insertPayment(paymentDto);
 
         // 쿠폰 상태 변경
-        if (couponNo != 0)
-            userService.removeCoupon(couponNo, newOrderDto.getOrderNo());
+        if (couponNo != 0) userService.removeCoupon(couponNo, newOrderNo);
 
         // 포인트 사용 적용
-        if (point != 0)
-            userService.modifyPoint(userId, -point, newOrderDto.getOrderNo());
+        if (point != 0) userService.modifyPoint(userId, -point, newOrderNo);
 
-        // 주문 정보 생성
-        return newOrderDto;
+        return findOrder(newOrderNo);
     }
 
     private List<OrderDto> getOrderDetail(List<OrderDto> orderDtoList) {

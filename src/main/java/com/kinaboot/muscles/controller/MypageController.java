@@ -52,7 +52,8 @@ public class MypageController {
     public String orderList(HttpSession session, Model m, SearchCondition sc) {
         log.info("유저 주문내역 진입");
         String userId = (String) session.getAttribute("id");
-        m.addAttribute("orderDtoList", orderService.findOrders(userId, sc));
+        sc.setUserId(userId);
+        m.addAttribute("orderDtoList", orderService.findOrders(sc));
         return "mypage/myorder";
     }
 }

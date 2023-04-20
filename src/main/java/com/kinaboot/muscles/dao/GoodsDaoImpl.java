@@ -46,8 +46,7 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int insertFaq(FaqDto faqDto) {
-        // faqAnswer이 null이면 질문에 insert, null이 아니면 답변에 insert
+    public int insertFaq(FaqDto faqDto) { // faqAnswer이 null이면 질문에 insert, null이 아니면 답변에 insert
         return faqDto.getAnswer() == null ? session.insert(namespace + "insertFaqQuestion", faqDto) : session.insert(namespace + "insertFaqAnswer", faqDto);
     }
 
@@ -82,7 +81,10 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int insertGoodsImg(Map<String, String> map) {
+    public int insertGoodsImg(int goodsNo, String uploadPath) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("goodsNo", String.valueOf(goodsNo));
+        map.put("uploadPath", uploadPath);
         return session.insert(namespace + "insertGoodsImg", map);
     }
 

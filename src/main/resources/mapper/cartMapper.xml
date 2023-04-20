@@ -39,4 +39,9 @@
         where userId = #{userId}
           and goodsNo = #{goodsNo};
     </delete>
+
+    <delete id="deleteAll">
+        DELETE
+        FROM CART
+    </delete>
 </mapper>

@@ -101,4 +101,8 @@
         FROM reviewImg
         where reviewNo = '${reviewNo}'
     </delete>
+    <delete id="deleteAll">
+        DELETE
+        FROM REVIEW
+    </delete>
 </mapper>

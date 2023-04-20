@@ -9,14 +9,12 @@ import static org.junit.Assert.*;
 
 public class ReviewServiceImplTest extends TestConfigure {
 
-
     @Before
-    public void before(){
-
+    public void setUp() throws Exception {
     }
-    @After
-    public void after(){
 
+    @After
+    public void tearDown() throws Exception {
     }
 
     @Test

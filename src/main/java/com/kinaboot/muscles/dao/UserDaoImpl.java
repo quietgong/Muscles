@@ -54,7 +54,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int deleteAll() {
-        return session.delete(namespace + "deleteAllUser");
+        return session.delete(namespace + "deleteAll");
     }
 
     @Override

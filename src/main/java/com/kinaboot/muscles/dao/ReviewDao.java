@@ -22,4 +22,5 @@ public interface ReviewDao {
     int deleteReviewImg(int reviewNo);
     List<ReviewImgDto> selectReviewImg(int reviewNo, Integer goodsNo);
     List<ReviewImgDto> selectReviewImg(int reviewNo);
+    int deleteAll();
 }

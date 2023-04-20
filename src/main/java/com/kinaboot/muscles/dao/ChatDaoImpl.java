@@ -37,7 +37,7 @@ public class ChatDaoImpl implements ChatDao{
     }
 
     @Override
-    public int deleteAllChat() {
-        return session.delete(namespace + "deleteAllChat");
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
     }
 }

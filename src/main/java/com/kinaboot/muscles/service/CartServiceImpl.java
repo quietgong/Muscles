@@ -20,7 +20,6 @@ public class CartServiceImpl implements CartService{
     @Override
     public List<CartDto> findCartItems(String userId) {
         return cartDao.selectAll(userId);
-
     }
 
     @Override

@@ -9,9 +9,6 @@ import java.util.List;
 
 public interface PostDao {
     int count(String type) throws Exception;
-
-    void deleteAll();
-
     int delete(Integer postNo) throws Exception;
 
     int delete(String userId) throws Exception;
@@ -25,8 +22,6 @@ public interface PostDao {
     List<PostDto> selectAllByUser(String userId) throws Exception;
 
     List<PostDto> searchResult(SearchCondition sc) throws Exception;
-
-    List<PostDto> searchResult(String userId, SearchCondition sc);
 
     Integer searchResultCnt(SearchCondition sc) throws Exception;
 
@@ -43,4 +38,5 @@ public interface PostDao {
     int deletePostImgs(Integer postNo);
 
     int deletePostImg(String imgPath);
+    int deleteAll();
 }

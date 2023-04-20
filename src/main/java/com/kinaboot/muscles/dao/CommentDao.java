@@ -10,8 +10,8 @@ public interface CommentDao {
     CommentDto select(Integer commentNo) throws Exception;
     int insert(CommentDto commentDto) throws Exception;
     int update(CommentDto commentDto) throws Exception;
-    int deleteAll();
     int deleteComment(Integer commentNo) throws Exception;
     int deleteComments(String userId) throws Exception;
     int deletePost(Integer postNo);
+    int deleteAll();
 }

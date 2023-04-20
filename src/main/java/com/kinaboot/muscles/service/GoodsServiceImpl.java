@@ -41,14 +41,12 @@ public class GoodsServiceImpl implements GoodsService {
         saveGoodsImgs(goodsDto);
         return goodsDao.insert(goodsDto);
     }
+
     private void saveGoodsImgs(GoodsDto goodsDto) {
         goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
         for(GoodsImgDto goodsImgDto : goodsImgDtoList){
-            Map<String, String> map = new HashMap<>();
-            map.put("goodsNo", String.valueOf(goodsImgDto.getGoodsNo()));
-            map.put("filePath", goodsImgDto.getUploadPath());
-            goodsDao.insertGoodsImg(map);
+            goodsDao.insertGoodsImg(goodsImgDto.getGoodsNo(), goodsImgDto.getUploadPath());
         }
     }
 

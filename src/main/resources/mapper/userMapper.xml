@@ -91,7 +91,7 @@
         where orderNo = ${orderNo}
     </update>
 
-    <delete id="deleteAllUser">
+    <delete id="deleteAll">
         DELETE
         FROM USER
     </delete>

@@ -6,9 +6,9 @@ import com.kinaboot.muscles.handler.SearchCondition;
 import java.util.List;
 
 public interface OrderDao {
-    int updateStock(List<OrderItemDto> orderItemDtoList);
+    int updateStock(OrderItemDto orderItemDto);
 
-    OrderDto insertOrder(OrderDto orderDto);
+    int insertOrder(OrderDto orderDto);
 
     OrderDto selectOrder(Integer orderNo);
 
@@ -16,7 +16,7 @@ public interface OrderDao {
 
     List<OrderDto> selectOrderAll(SearchCondition sc);
 
-    List<OrderDto> selectAll(String userId, SearchCondition sc);
+    List<OrderDto> selectAll(SearchCondition sc);
 
     List<OrderItemDto> selectOrderItemList(Integer orderNo);
 
@@ -27,4 +27,11 @@ public interface OrderDao {
     PaymentDto selectPayment(int orderNo);
 
     int deleteOrder(Integer orderNo, String cancelReason);
+
+    int insertOrderItem(OrderItemDto orderItemDto);
+
+    int insertDelivery(DeliveryDto deliveryDto);
+
+    int insertPayment(PaymentDto paymentDto);
+    int deleteAll();
 }

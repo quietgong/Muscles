@@ -44,7 +44,7 @@ public class CommentServiceImplTest extends TestConfigure {
     public void removeCommentNo() throws Exception {
         int before = commentDao.count();
         int commentNo = commentDao.selectAll(1).get(0).getCommentNo();
-        commentDao.delete(commentNo);
+        commentDao.deleteComment(commentNo);
         int after = commentDao.count();
         assertEquals(before - 1, after);
     }

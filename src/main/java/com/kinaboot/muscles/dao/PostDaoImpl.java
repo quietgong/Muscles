@@ -33,8 +33,8 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public void deleteAll() {
-        session.delete(namespace + "deleteAll");
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
     }
 
     @Override
@@ -65,13 +65,6 @@ public class PostDaoImpl implements PostDao {
     @Override
     public List<PostDto> searchResult(SearchCondition sc) {
         return session.selectList(namespace + "searchResult", sc);
-    }
-    @Override
-    public List<PostDto> searchResult(String userId, SearchCondition sc) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("sc", sc);
-        return session.selectList(namespace + "searchResult", map);
     }
 
     @Override
@@ -108,4 +101,5 @@ public class PostDaoImpl implements PostDao {
     public int deletePostImg(String imgPath) {
         return session.delete(namespace + "deletePostImg", imgPath);
     }
+
 }

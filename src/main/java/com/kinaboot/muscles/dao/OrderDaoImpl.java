@@ -16,20 +16,16 @@ public class OrderDaoImpl implements OrderDao {
     private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
 
     @Override
-    public List<OrderDto> selectAll(String userId, SearchCondition sc) {
-        sc.setUserId(userId);
+    public List<OrderDto> selectAll(SearchCondition sc) {
         return session.selectList(namespace + "selectOrderList", sc);
     }
 
     @Override
-    public int updateStock(List<OrderItemDto> orderItemDtoList) {
+    public int updateStock(OrderItemDto orderItemDto) {
         HashMap<String, Integer> map = new HashMap<>();
-        for (OrderItemDto orderItemDto : orderItemDtoList) {
-            map.put("goodsNo", orderItemDto.getGoodsNo());
-            map.put("goodsQty", orderItemDto.getGoodsQty());
-            session.update(namespace + "updateStock", map);
-        }
-        return 0;
+        map.put("goodsNo", orderItemDto.getGoodsNo());
+        map.put("goodsQty", orderItemDto.getGoodsQty());
+        return session.update(namespace + "updateStock", map);
     }
 
     @Override
@@ -41,10 +37,24 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public int insertOrderItem(OrderItemDto orderItemDto) {
+        return session.insert(namespace + "insertOrderItem");
+    }
+
+    @Override
+    public int insertDelivery(DeliveryDto deliveryDto) {
+        return session.insert(namespace + "insertDelivery");
+    }
+
+    @Override
+    public int insertPayment(PaymentDto paymentDto) {
+        return session.insert(namespace + "insertPayment");
+    }
+
+    @Override
     public int updateOrderStatus(Integer orderNo) {
         return session.update(namespace + "updateOrderStatus", orderNo);
     }
-
 
     @Override
     public List<OrderDto> selectOrderAll(SearchCondition sc) {
@@ -68,16 +78,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public OrderDto selectOrder(Integer orderNo) {
-        OrderDto orderDto = session.selectOne(namespace + "selectOrder", orderNo);
-        List<OrderItemDto> orderItemDtoList = session.selectList(namespace + "selectOrderItemList", orderNo);
-        DeliveryDto deliveryDto = session.selectOne(namespace + "selectDelivery", orderNo);
-        PaymentDto paymentDto = session.selectOne(namespace + "selectPayment", orderNo);
-
-        orderDto.setOrderItemDtoList(orderItemDtoList);
-        orderDto.setDeliveryDto(deliveryDto);
-        orderDto.setPaymentDto(paymentDto);
-
-        return orderDto;
+        return session.selectOne(namespace + "selectOrder", orderNo);
     }
 
     @Override
@@ -89,34 +90,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public OrderDto insertOrder(OrderDto orderDto) {
-        // 주문 정보 생성
+    public int insertOrder(OrderDto orderDto) {
         session.insert(namespace + "insertOrder", orderDto);
+        return session.selectOne(namespace + "newOrderNo");
+    }
 
-        // 생성한 주문 번호 반환
-        int orderNo = session.selectOne(namespace+"newOrderNo");
-
-        // 주문상품 정보 생성
-        List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
-        for (OrderItemDto orderItemDto : orderItemDtoList) {
-            orderItemDto.setOrderNo(orderNo);
-            session.insert(namespace + "insertOrderItem", orderItemDto);
-        }
-        // 배송 정보 생성
-        DeliveryDto deliveryDto = orderDto.getDeliveryDto();
-        deliveryDto.setOrderNo(orderNo);
-        session.insert(namespace + "insertDelivery", deliveryDto);
-
-        // 결제 정보 생성
-        PaymentDto paymentDto = orderDto.getPaymentDto();
-        paymentDto.setOrderNo(orderNo);
-        session.insert(namespace + "insertPayment", paymentDto);
-
-        OrderDto newOrderDto = session.selectOne(namespace + "selectOrder", orderNo);
-        newOrderDto.setOrderItemDtoList(orderItemDtoList);
-        newOrderDto.setDeliveryDto(deliveryDto);
-        newOrderDto.setPaymentDto(paymentDto);
-
-        return newOrderDto;
+    @Override
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
     }
 }

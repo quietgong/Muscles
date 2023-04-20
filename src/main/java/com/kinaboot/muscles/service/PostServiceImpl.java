@@ -4,11 +4,8 @@ import com.kinaboot.muscles.dao.CommentDao;
 import com.kinaboot.muscles.dao.PostDao;
 import com.kinaboot.muscles.domain.PostDto;
 import com.kinaboot.muscles.domain.PostImgDto;
-import com.kinaboot.muscles.domain.ReviewDto;
-import com.kinaboot.muscles.domain.ReviewImgDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,10 +64,6 @@ public class PostServiceImpl implements PostSerivce{
         for(PostDto postDto : postDtoList)
             postDto.setCommentDtoList(commentDao.selectAll(postDto.getPostNo()));
         return postDtoList;
-    }
-    @Override
-    public List<PostDto> findPosts(String userId, SearchCondition sc) {
-        return postDao.searchResult(userId, sc);
     }
 
     @Override

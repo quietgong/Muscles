@@ -11,7 +11,7 @@ public interface OrderService {
     List<OrderDto> findAllOrders(SearchCondition sc);
 
     // 특정 유저 전체 주문 조회
-    List<OrderDto> findOrders(String userId, SearchCondition sc);
+    List<OrderDto> findOrders(SearchCondition sc);
 
     // 단건 주문 생성
     OrderDto addOrder(String orderData, int couponNo, int point);

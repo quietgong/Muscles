@@ -32,7 +32,7 @@ public interface GoodsDao {
 
     int deleteGoodsDetail(String imgPath);
 
-    int insertGoodsImg(Map<String, String> map);
+    int insertGoodsImg(int goodsNo, String uploadPath);
 
     int selectGoodsNo();
 

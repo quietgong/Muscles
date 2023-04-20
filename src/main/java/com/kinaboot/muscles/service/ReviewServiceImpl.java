@@ -72,7 +72,6 @@ public class ReviewServiceImpl implements ReviewService{
         for(ReviewDto reviewDto: reviewDtoList){
             reviewDto.setReviewImgDtoList(reviewDao.selectReviewImg(reviewDto.getReviewNo()));
         }
-        System.out.println("reviewDtoList = " + reviewDtoList);
         return reviewDtoList;
     }
 

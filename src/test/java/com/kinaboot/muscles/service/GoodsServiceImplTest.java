@@ -1,20 +1,28 @@
 package com.kinaboot.muscles.service;
 
+import com.kinaboot.muscles.TestConfigure;
+import com.kinaboot.muscles.dao.GoodsDao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
-public class GoodsServiceImplTest {
+public class GoodsServiceImplTest extends TestConfigure {
+    @Autowired
+    GoodsService goodsService;
+    @Autowired
+    GoodsDao goodsDao;
 
     @Before
-    public void before(){
-
+    public void setUp() throws Exception {
+        goodsDao.deleteAll();
     }
-    @After
-    public void after(){
 
+    @After
+    public void tearDown() throws Exception {
+        
     }
 
     @Test

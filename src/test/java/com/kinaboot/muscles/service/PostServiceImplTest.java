@@ -9,14 +9,12 @@ import static org.junit.Assert.*;
 
 public class PostServiceImplTest extends TestConfigure {
 
-
     @Before
-    public void before(){
-
+    public void setUp() throws Exception {
     }
-    @After
-    public void after(){
 
+    @After
+    public void tearDown() throws Exception {
     }
 
     @Test
@@ -41,10 +39,6 @@ public class PostServiceImplTest extends TestConfigure {
 
     @Test
     public void testFindPosts() {
-    }
-
-    @Test
-    public void testFindPosts1() {
     }
 
     @Test

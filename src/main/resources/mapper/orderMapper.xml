@@ -129,4 +129,8 @@
         , cancelReason = #{cancelReason}
         where orderNo = #{orderNo}
     </delete>
+    <delete id="deleteAll">
+        DELETE
+        FROM ORDERS
+    </delete>
 </mapper>

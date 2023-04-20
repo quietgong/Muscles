@@ -34,7 +34,7 @@
         values (#{chatName}, #{talker}, #{msg}, now());
     </insert>
 
-    <delete id="deleteAllChat">
+    <delete id="deleteAll">
         DELETE
         FROM CHAT
     </delete>

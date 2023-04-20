@@ -46,4 +46,9 @@ public class CartDaoImpl implements CartDao {
         map.put("goodsNo", String.valueOf(goodsNo));
         return session.delete(namespace + "deleteItem", map);
     }
+
+    @Override
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
+    }
 }

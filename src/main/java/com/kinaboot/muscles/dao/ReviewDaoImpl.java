@@ -103,4 +103,9 @@ public class ReviewDaoImpl implements ReviewDao {
     public List<ReviewImgDto> selectReviewImg(int reviewNo) {
         return session.selectList(namespace + "selectReviewOneImg", reviewNo);
     }
+
+    @Override
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
+    }
 }
