@@ -6,6 +6,7 @@ import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,24 +36,24 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int addGoods(GoodsDto goodsDto) {
         int goodsNo = goodsDao.selectGoodsNo();
         goodsDto.setGoodsNo(goodsNo);
-        saveGoodsImgs(goodsDto);
+        goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
+        List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
+        for(GoodsImgDto goodsImgDto : goodsImgDtoList)
+            goodsDao.insertGoodsImg(goodsImgDto.getGoodsNo(), goodsImgDto.getUploadPath());
         return goodsDao.insert(goodsDto);
     }
 
-    private void saveGoodsImgs(GoodsDto goodsDto) {
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int modifyGoods(GoodsDto goodsDto) {
         goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
-        for(GoodsImgDto goodsImgDto : goodsImgDtoList){
+        for(GoodsImgDto goodsImgDto : goodsImgDtoList)
             goodsDao.insertGoodsImg(goodsImgDto.getGoodsNo(), goodsImgDto.getUploadPath());
-        }
-    }
-
-    @Override
-    public int modifyGoods(GoodsDto goodsDto) {
-        saveGoodsImgs(goodsDto);
         return goodsDao.updateGoods(goodsDto);
     }
 
@@ -77,6 +78,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    @Transactional
     public int removeGoods(Integer goodsNo) {
         reviewDao.deleteGoodsReview(goodsNo); // 해당 상품에 대한 리뷰 데이터를 모두 삭제
         reviewDao.deleteGoodsFaq(goodsNo); // 해당 상품에 대한 문의 데이터를 모두 삭제

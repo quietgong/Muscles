@@ -9,6 +9,7 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -27,8 +28,38 @@ public class UserServiceImpl implements UserService {
     BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    public int countUser(String userId) {
+        return userDao.countUser(userId);
+    }
+
+    @Override
+    public UserDto findUser(String userId) {
+        return userDao.selectUser(userId);
+    }
+
+    @Override
     public List<UserDto> findAllUser() {
         return userDao.selectAllUser();
+    }
+
+    @Override
+    public UserDto findUserEmail(String email) {
+        return userDao.selectUserEmail(email);
+    }
+
+    @Override
+    public List<CouponDto> findCoupons(String userId) {
+        return userDao.selectUserCoupon(userId);
+    }
+
+    @Override
+    public List<PointDto> findPoints(String userId) {
+        return userDao.selectUserPoint(userId);
+    }
+
+    @Override
+    public PointDto findPoint(int orderNo) {
+        return userDao.selectUserOrderPoint(orderNo);
     }
 
     @Override
@@ -48,11 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findUserEmail(String email) {
-        return userDao.selectUserEmail(email);
-    }
-
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public int removeUser(ExitDto exitDto, String removeType) throws Exception {
         String userId = exitDto.getUserId();
         if(removeType.equals("admin"))
@@ -69,12 +96,7 @@ public class UserServiceImpl implements UserService {
         // user ExpiredDate 변경, 포인트 초기화
         return userDao.deleteUser(userDao.selectUser(userId).getUserNo());
     }
-
-    @Override
-    public int countUser(String userId) {
-        return userDao.countUser(userId);
-    }
-
+    
     @Override
     public int removeCoupon(String userId) {
         return userDao.deleteUserCoupon(userId);
@@ -83,11 +105,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public int removeCoupon(int couponNo, int orderNo) {
         return userDao.deleteCoupon(couponNo, orderNo);
-    }
-
-    @Override
-    public UserDto findUser(String userId) {
-        return userDao.selectUser(userId);
     }
 
     @Override
@@ -101,22 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<CouponDto> findCoupons(String userId) {
-        return userDao.selectUserCoupon(userId);
-    }
-
-
-    @Override
-    public List<PointDto> findPoints(String userId) {
-        return userDao.selectUserPoint(userId);
-    }
-    @Override
-    public PointDto findPoint(int orderNo) {
-        return userDao.selectUserOrderPoint(orderNo);
-    }
-
-
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public int addCoupon(String userId, String recommendId) {
         int userCnt =userDao.countUser(recommendId);
         int eventPoint = 1000; // 추천받은 유저에게 보상하는 포인트

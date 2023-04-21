@@ -10,6 +10,7 @@ import com.kinaboot.muscles.domain.*;
 import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
     ReviewService reviewService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int removeOrder(int orderNo, String cancelReason) {
         String userId = orderDao.selectOrder(orderNo).getUserId();
 
@@ -51,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int acceptOrder(int orderNo) {
         // 구매 제품 재고 수량 변경
         List<OrderItemDto> orderItemDtoList = orderDao.selectOrderItemList(orderNo);
@@ -133,6 +136,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public OrderDto addOrder(String orderData, int couponNo, int point) {
         OrderDto orderDto = null;
         try {

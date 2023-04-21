@@ -7,6 +7,7 @@ import com.kinaboot.muscles.domain.PostImgDto;
 import com.kinaboot.muscles.handler.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,16 +46,13 @@ public class PostServiceImpl implements PostSerivce{
     }
 
     @Override
+    @Transactional
     public int modifyPost(PostDto postDto) throws Exception {
-        savePostImgs(postDto);
-        return postDao.update(postDto);
-    }
-    private void savePostImgs(PostDto postDto) {
         postDao.deletePostImgs(postDto.getPostNo());
         List<PostImgDto> postImgDtoList = postDto.getPostImgDtoList();
-        for(PostImgDto postImgDto : postImgDtoList){
+        for(PostImgDto postImgDto : postImgDtoList)
             postDao.insertPostImg(postImgDto);
-        }
+        return postDao.update(postDto);
     }
 
     @Override
@@ -76,6 +74,7 @@ public class PostServiceImpl implements PostSerivce{
     }
 
     @Override
+    @Transactional
     public int removePost(Integer postNo) throws Exception {
         postDao.deletePostImgs(postNo);
         commentDao.deletePost(postNo);
