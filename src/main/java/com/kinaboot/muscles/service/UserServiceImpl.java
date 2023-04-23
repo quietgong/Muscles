@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         // user ExpiredDate 변경, 포인트 초기화
         return userDao.deleteUser(userDao.selectUser(userId).getUserNo());
     }
-    
+
     @Override
     public int removeCoupon(String userId) {
         return userDao.deleteUserCoupon(userId);

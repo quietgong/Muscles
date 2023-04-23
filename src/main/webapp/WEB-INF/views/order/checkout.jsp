@@ -207,7 +207,7 @@
         $(".order-item-price").each(function () {
             orderPrice += Number($(this).html())
         })
-        $("#payPrice").html(orderPrice - totalDiscount)
+        $("#payPrice").html((orderPrice - totalDiscount).toLocaleString())
     }
 </script>
 <script>

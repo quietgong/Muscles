@@ -383,7 +383,7 @@
                 tmp += '<td>' + item.goodsName + '</td>'
                 tmp += '<td>' + item.goodsCategory + '</td>'
                 tmp += '<td>' + item.goodsCategoryDetail + '</td>'
-                tmp += '<td>' + item.goodsPrice + '</td>'
+                tmp += '<td>' + item.goodsPrice.toLocaleString() + '</td>'
                 tmp += '<td>' + item.goodsStock + '</td>'
                 tmp += '<td>' + item.goodsReviewScore + '</td>'
                 tmp += '<td>' + item.goodsSales + '</td>'

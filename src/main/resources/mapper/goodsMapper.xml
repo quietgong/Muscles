@@ -176,6 +176,7 @@
         insert into goodsImg (goodsNo, filePath)
         values (#{goodsNo},#{filePath});
     </insert>
+
     <update id="updateGoods" parameterType="goodsDto">
         update goods
         set goodsName = #{goodsName},
@@ -187,6 +188,7 @@
         goodsImgPath = #{goodsImgPath}
         where goodsNo = #{goodsNo};
     </update>
+
     <delete id="deleteAll">
         DELETE
         FROM GOODS
@@ -199,6 +201,11 @@
     <delete id="deleteGoods" parameterType="int">
         DELETE
         FROM GOODS
+        where goodsNo = '${goodsNo}'
+    </delete>
+    <delete id="deleteGoodsFaq" parameterType="int">
+        delete
+        from faq
         where goodsNo = ${goodsNo}
     </delete>
     <delete id="deleteGoodsThumbnail" parameterType="String">

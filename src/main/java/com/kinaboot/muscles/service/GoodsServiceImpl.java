@@ -81,7 +81,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Transactional
     public int removeGoods(Integer goodsNo) {
         reviewDao.deleteGoodsReview(goodsNo); // 해당 상품에 대한 리뷰 데이터를 모두 삭제
-        reviewDao.deleteGoodsFaq(goodsNo); // 해당 상품에 대한 문의 데이터를 모두 삭제
+        goodsDao.deleteGoodsFaq(goodsNo); // 해당 상품에 대한 문의 데이터를 모두 삭제
         return goodsDao.deleteGoods(goodsNo);
     }
 

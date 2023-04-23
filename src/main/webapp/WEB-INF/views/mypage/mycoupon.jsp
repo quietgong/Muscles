@@ -102,10 +102,10 @@
                 tmp += '<td><strong>추천인 이벤트</strong></td>'
             else
                 tmp += '<td><strong>결제 적립</strong> [주문번호:' + item.orderNo + ']</td>'
-            tmp += '<td>' + item.point + '</td>'
+            tmp += '<td>' + item.point.toLocaleString() + '</td>'
             tmp += '</tr>'
         })
-        $("#totalPoint").html(totalPoint)
+        $("#totalPoint").html(totalPoint.toLocaleString())
         return tmp
     }
 </script>
@@ -133,7 +133,7 @@
             tmp += "<tr class='coupon-item'>";
             tmp += '<td>' + item.couponName + '</td>'
             tmp += '<td>[추천인] ' + item.couponCode + '</td>'
-            tmp += '<td>' + item.discount + '</td>'
+            tmp += '<td>' + item.discount.toLocaleString() + '</td>'
             if (item.orderNo === 0)
                 tmp += '<td>사용가능</td>'
             else

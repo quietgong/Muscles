@@ -29,7 +29,7 @@
                                         <!-- 상품 이름 -->
                                         <p class="card-text">${orderItemDto.goodsName}</p>
                                         <!-- 상품 단가 -->
-                                        <span class="card-text">${orderItemDto.goodsPrice}원</span>
+                                        <span class="card-text"><fmt:formatNumber value="${orderItemDto.goodsPrice}" pattern="#,###"/>원</span>
                                         <span class="card-text"> · </span>
                                         <!-- 주문 개수 -->
                                         <span class="card-text">${orderItemDto.goodsQty} 개</span><br>
@@ -74,7 +74,7 @@
                             <tbody>
                             <tr>
                                 <td style="word-break: break-all">${orderDto.paymentDto.type}</td>
-                                <td style="word-break: break-all">${orderDto.paymentDto.price}</td>
+                                <td style="word-break: break-all"><fmt:formatNumber value="${orderDto.paymentDto.price}" pattern="#,###"/></td>
                             </tr>
                             </tbody>
                         </table>

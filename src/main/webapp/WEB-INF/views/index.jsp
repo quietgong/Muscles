@@ -177,7 +177,7 @@
             tmp += '<span>' + item.goodsCategory + ' > ' + item.goodsCategoryDetail + '</span>';
             tmp += '<ul class="w-100 list-unstyled d-flex justify-content-between mb-0">'
             tmp += '<li>상품이름</li>'
-            tmp += '<li>리뷰개수 : ' + item.reviewDtoList.length + '</li>'
+            tmp += '<li>리뷰개수 : ' + item.reviewDtoList.length.toLocaleString() + '</li>'
             tmp += '</ul>'
             tmp += '<ul class="list-unstyled d-flex justify-content-center mb-1">'
             tmp += '<div class="star-ratings">'
@@ -189,7 +189,7 @@
             tmp += '</div>'
             tmp += '</div>'
             tmp += '</ul>'
-            tmp += '<p class="text-center mb-0">' + item.goodsPrice + '</p>'
+            tmp += '<p class="text-center mb-0">' + item.goodsPrice.toLocaleString() + '</p>'
             tmp += '</div>'
             tmp += '</div>'
             tmp += '</div>'

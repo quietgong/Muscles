@@ -34,7 +34,7 @@
                             <label class="form-check-label" for="c">단순 탈퇴</label>
                         </div>
                         <textarea class="form-control mt-1" id="message" placeholder="쇼핑몰 이용에 개선 사항 있다면 의견을 남겨 주세요!" rows="8"></textarea>
-                    <p>지금까지 저희 머슬스를 이용해 주셔서 감사합니다.</p>
+                    <p class="mt-3">지금까지 저희 머슬스를 이용해 주셔서 감사합니다.</p>
                     <p>부족한 점이 있었다면 너그러운 양해 바라며,</p>
                     <p>더욱 고객님의 의견을 적극 반영하여
                         이용에 불편이 없도록 개선하겠습니다

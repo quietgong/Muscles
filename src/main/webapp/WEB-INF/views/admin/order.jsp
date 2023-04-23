@@ -111,7 +111,8 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td class="cell">${orderDto.paymentDto.price}</td>
+                                                    <td class="cell"><fmt:formatNumber value="${orderDto.paymentDto.price}"
+                                                                                       pattern="#,###"/></td>
                                                     <td class="cell">
                                                         <a style="text-decoration: none"
                                                            class="btn-sm app-btn-secondary"

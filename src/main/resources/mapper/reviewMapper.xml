@@ -81,11 +81,6 @@
         from review
         where goodsNo = '${goodsNo}'
     </delete>
-    <delete id="deleteGoodsFaq" parameterType="int">
-        delete
-        from faq
-        where goodsNo = ${goodsNo}
-    </delete>
     <delete id="deleteReviewImg" parameterType="String">
         DELETE
         FROM reviewImg

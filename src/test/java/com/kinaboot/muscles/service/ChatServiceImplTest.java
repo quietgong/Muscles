@@ -40,6 +40,6 @@ public class ChatServiceImplTest extends TestConfigure {
     }
 
     public void deleteAllChat(){
-        chatDao.deleteAllChat();
+        chatDao.deleteAll();
     }
 }

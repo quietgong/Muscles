@@ -13,16 +13,16 @@ public interface GoodsDao {
     int count();
     GoodsDto select(Integer GoodsNo);
     List<GoodsDto> selectAll();
-    int deleteGoods(Integer GoodsNo);
+    int deleteGoods(Integer goodsNo);
     int updateGoods(GoodsDto goodsDto);
 
-    List<FaqDto> selectFaqList(Integer GoodsNo);
+    List<FaqDto> selectFaqList(Integer goodsNo);
 
     int insertFaq(FaqDto faqDto);
 
     int selectByCategoryCnt(SearchCondition sc);
 
-    List<GoodsImgDto> selectGoodsDetailImg(Integer GoodsNo);
+    List<GoodsImgDto> selectGoodsDetailImg(Integer goodsNo);
 
     List<GoodsCategoryDto> selectAllCategories();
 
@@ -37,4 +37,6 @@ public interface GoodsDao {
     int selectGoodsNo();
 
     int deleteAllGoodsDetail(int goodsNo);
+
+    int deleteGoodsFaq(Integer goodsNo);
 }

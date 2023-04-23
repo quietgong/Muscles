@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 <!-- nav -->
 <%@ include file="../nav.jsp" %>
@@ -60,20 +61,20 @@
                             </li>
                         </c:if>
                         <li class="list-inline-item mt-3">
-                            <p class="h3 text-dark text-decoration-none">총 ${ph.totalCnt} 개의 상품이 존재합니다.</p>
+                            <p class="h3 text-dark text-decoration-none">총 <fmt:formatNumber value="${ph.totalCnt }"
+                                                                                             pattern="#,###"/> 개의 상품이
+                                존재합니다.</p>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-6 pb-4">
                     <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="lowPrice">낮은가격
-                            순
+                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="lowPrice">낮은가격 순
                         </button>
                         <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="highPrice">
                             높은가격 순
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="review">리뷰 점수
-                            순
+                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="review">리뷰 점수 순
                         </button>
                     </div>
                 </div>
@@ -106,10 +107,11 @@
                             </div>
                             <div class="card-body">
                                 <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"
-                                   class="h3 text-decoration-none">${goodsDto.goodsCategory} > ${goodsDto.goodsCategoryDetail}</a>
+                                   class="h3 text-decoration-none">${goodsDto.goodsCategory}
+                                    > ${goodsDto.goodsCategoryDetail}</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>${goodsDto.goodsName}</li>
-                                    <li>리뷰개수 : ${goodsDto.reviewDtoList.size()}</li>
+                                    <li>리뷰개수 : <fmt:formatNumber value="${goodsDto.reviewDtoList.size()}" pattern="#,###" /></li>
                                 </ul>
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <div class="star-ratings">
@@ -121,7 +123,7 @@
                                         </div>
                                     </div>
                                 </ul>
-                                <p class="text-center mb-0">${goodsDto.goodsPrice}</p>
+                                <p class="text-center mb-0"><fmt:formatNumber value="${goodsDto.goodsPrice}" pattern="#,###" /></p>
                             </div>
                         </div>
                     </div>

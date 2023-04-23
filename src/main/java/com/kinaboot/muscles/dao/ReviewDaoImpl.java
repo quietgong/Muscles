@@ -43,11 +43,6 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int deleteGoodsFaq(Integer goodsNo) {
-        return session.delete(namespace+"deleteGoodsFaq", goodsNo);
-    }
-
-    @Override
     public int deleteGoodsReview(Integer goodsNo) {
         return session.delete(namespace + "deleteGoodsReview", goodsNo);
     }

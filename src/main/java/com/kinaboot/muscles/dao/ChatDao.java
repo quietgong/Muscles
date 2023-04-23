@@ -15,4 +15,5 @@ public interface ChatDao {
     int selectNewMsgCnt(String chatName);
 
     int deleteAll();
+
 }

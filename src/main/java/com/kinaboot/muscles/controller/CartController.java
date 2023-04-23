@@ -32,7 +32,7 @@ public class CartController {
         return new ResponseEntity<>(cartService.findCartItems(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}/")
+    @GetMapping("/count/{userId}")
     public ResponseEntity<Integer> cartCount(@PathVariable String userId) {
         log.info("사용자 : " + userId + " 장바구니 아이템 카운트");
         return new ResponseEntity<>(cartService.countCart(userId), HttpStatus.OK);

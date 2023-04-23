@@ -28,7 +28,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="h2">${goodsDto.goodsName}</h1>
-                        <p id="price" class="h3 py-2">${goodsDto.goodsPrice}</p>
+                        <p id="price" class="h3 py-2"><fmt:formatNumber value="${goodsDto.goodsPrice}" pattern="#,###"/></p>
                         <ul class="list-inline pb-3">
                             <li class="list-inline-item text-right">
                                 <div class="star-ratings">

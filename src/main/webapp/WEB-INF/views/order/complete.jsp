@@ -84,7 +84,7 @@
                                     </td>
                                     <td>
                                         <div class="text-right">
-                                            <span>${orderDto.paymentDto.price + orderDto.discount}</span></div>
+                                            <span><fmt:formatNumber value="${orderDto.paymentDto.price + orderDto.discount}" pattern="#,###"/></span></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -92,7 +92,7 @@
                                         <div class="text-left"><span class="text-muted">할인 적용</span></div>
                                     </td>
                                     <td>
-                                        <div class="text-right"><span class="text-success">₩${orderDto.discount}</span>
+                                        <div class="text-right"><span class="text-success">₩<fmt:formatNumber value="${orderDto.discount}" pattern="#,###"/></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -103,7 +103,7 @@
                                     </td>
                                     <td>
                                         <div class="text-right"><span
-                                                class="font-weight-bold">${orderDto.paymentDto.price}</span>
+                                                class="font-weight-bold"><fmt:formatNumber value="${orderDto.paymentDto.price}" pattern="#,###"/></span>
                                         </div>
                                     </td>
                                 </tr>

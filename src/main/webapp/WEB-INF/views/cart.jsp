@@ -48,11 +48,11 @@
     function loadCartItem() {
         $.ajax({
             type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/" + ${userId}, // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/cart/" + '${userId}',
             headers: {"Content-Type": "application/json"},
             success: function (res) {
                 $("#cartItemList").html(toHtml(res))
-                if (res.length == 0)
+                if (res.length === 0)
                     $("#order").css("display", "none");
                 else {
                     calculateTotalPrice()
@@ -115,7 +115,7 @@
         $(".nowPrice").each(function () {
             totalPrice += parseInt($(this).html())
         })
-        $("#totalPrice").html(totalPrice)
+        $("#totalPrice").html(totalPrice.toLocaleString())
     }
 
     $("#order").on("click", function () {

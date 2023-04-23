@@ -31,13 +31,13 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int deleteGoods(Integer GoodsNo) {
-        return session.delete(namespace + "deleteGoods", GoodsNo);
+    public int deleteGoods(Integer goodsNo) {
+        return session.delete(namespace + "deleteGoods", goodsNo);
     }
 
     @Override
-    public List<GoodsImgDto> selectGoodsDetailImg(Integer GoodsNo) {
-        return session.selectList(namespace + "selectGoodsImg", GoodsNo);
+    public List<GoodsImgDto> selectGoodsDetailImg(Integer goodsNo) {
+        return session.selectList(namespace + "selectGoodsImg", goodsNo);
     }
 
     @Override
@@ -46,13 +46,13 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int insertFaq(FaqDto faqDto) { // faqAnswer이 null이면 질문에 insert, null이 아니면 답변에 insert
+    public int insertFaq(FaqDto faqDto) { // Answer이 null이면 질문에 insert, null이 아니면 답변에 insert
         return faqDto.getAnswer() == null ? session.insert(namespace + "insertFaqQuestion", faqDto) : session.insert(namespace + "insertFaqAnswer", faqDto);
     }
 
     @Override
-    public List<FaqDto> selectFaqList(Integer GoodsNo) {
-        return session.selectList(namespace + "selectFaqList", GoodsNo);
+    public List<FaqDto> selectFaqList(Integer goodsNo) {
+        return session.selectList(namespace + "selectFaqList", goodsNo);
     }
 
     @Override
@@ -84,8 +84,13 @@ public class GoodsDaoImpl implements GoodsDao {
     public int insertGoodsImg(int goodsNo, String uploadPath) {
         HashMap<String, String> map = new HashMap<>();
         map.put("goodsNo", String.valueOf(goodsNo));
-        map.put("uploadPath", uploadPath);
+        map.put("filePath", uploadPath);
         return session.insert(namespace + "insertGoodsImg", map);
+    }
+
+    @Override
+    public int deleteGoodsFaq(Integer goodsNo) {
+        return session.delete(namespace+"deleteGoodsFaq", goodsNo);
     }
 
     @Override
@@ -99,8 +104,8 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public GoodsDto select(Integer GoodsNo) {
-        return session.selectOne(namespace + "select", GoodsNo);
+    public GoodsDto select(Integer goodsNo) {
+        return session.selectOne(namespace + "select", goodsNo);
     }
 
     @Override
