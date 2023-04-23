@@ -40,10 +40,25 @@ span {
     z-index: 0;
 }
 
-.ck-editor__editable {
-    min-height: 500px;
+tr {
+    vertical-align: middle;
 }
 
 td {
     word-break: break-all;
+    vertical-align: middle;
+}
+
+td span {
+    font-size: 1.4rem;
+    text-align: center;
+}
+/* 유효성 검사 메세지 */
+#emailVerifyNumber {
+    background-color: #ffeded;
+}
+
+.checkMsg {
+    display: none;
+    color: #dc3545;
 }

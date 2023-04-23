@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5 justify-content-center">

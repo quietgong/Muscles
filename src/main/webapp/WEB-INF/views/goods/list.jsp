@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <form id="conditionForm">
 </form>
@@ -69,12 +68,14 @@
                 </div>
                 <div class="col-md-6 pb-4">
                     <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="lowPrice">낮은가격 순
+                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="lowPrice">낮은가격
+                            순
                         </button>
                         <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="highPrice">
                             높은가격 순
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="review">리뷰 점수 순
+                        <button type="button" class="btn btn-primary" onclick="optionSearch(this)" value="review">리뷰 점수
+                            순
                         </button>
                     </div>
                 </div>
@@ -111,7 +112,8 @@
                                     > ${goodsDto.goodsCategoryDetail}</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>${goodsDto.goodsName}</li>
-                                    <li>리뷰개수 : <fmt:formatNumber value="${goodsDto.reviewDtoList.size()}" pattern="#,###" /></li>
+                                    <li>리뷰개수 : <fmt:formatNumber value="${goodsDto.reviewDtoList.size()}"
+                                                                 pattern="#,###"/></li>
                                 </ul>
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <div class="star-ratings">
@@ -123,7 +125,8 @@
                                         </div>
                                     </div>
                                 </ul>
-                                <p class="text-center mb-0"><fmt:formatNumber value="${goodsDto.goodsPrice}" pattern="#,###" /></p>
+                                <p class="text-center mb-0"><fmt:formatNumber value="${goodsDto.goodsPrice}"
+                                                                              pattern="#,###"/></p>
                             </div>
                         </div>
                     </div>
@@ -168,53 +171,24 @@
         data.goodsCategory = goodsCategory
         data.goodsQty = 1
         data.goodsPrice = goodsPrice
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/",
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify(data),
-            success: function (res) {
-                if (res === "ADD_OK")
-                    alert("장바구니에 추가하였습니다.")
-                else
-                    alert("장바구니에 이미 존재합니다.")
-                getCartItemsNum()
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/cart/", data, "POST", function (res) {
+            res === "ADD_OK" ? alert("장바구니에 추가하였습니다.") : alert("장바구니에 이미 존재합니다.")
+            getCartItemsNum()
         })
     }
-</script>
-<script>
+
     $(document).ready(function () {
         let star_rating_width = $('.fill-ratings span').width();
         $('.star-ratings').width(star_rating_width);
     })
-</script>
-<script>
     // 카테고리 불러오기
     loadGoodsCategories()
 
     function loadGoodsCategories() {
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/goods/category", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                console.log(res)
+        commonAjax("/muscles/goods/category", null, "GET", function (res) {
                 addCategoryList(res)
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
         })
     }
-
     function addCategoryList(items) {
         items.forEach(function (item) {
             let link = "<li><a style='cursor: pointer' class=\"text-decoration-none\" onclick=\"subCategorySearch(this)\">" + item.subCategory + "</a></li>";

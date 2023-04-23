@@ -104,11 +104,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int deleteUserPoint(int orderNo) {
-        return session.delete(namespace + "deleteUserPoint", orderNo);
-    }
-
-    @Override
     public int deleteUserCoupon(String userId) {
         return session.delete(namespace + "deleteUserCoupon", userId);
     }
@@ -133,5 +128,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int insertUser(UserDto userDto) {
         return session.insert(namespace + "insertUser", userDto);
+    }
+
+    @Override
+    public int deleteUserPointHistory(int orderNo) {
+        return session.delete(namespace + "deleteUserPointHistory", orderNo);
     }
 }

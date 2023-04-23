@@ -2,17 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
-<style>
-    td {
-        vertical-align: middle;
-    }
-
-    td span {
-        font-size: 1.4rem;
-        text-align: center;
-    }
-</style>
 <%@ include file="../nav.jsp" %>
 <div class="container mt-5 mb-5">
     <div class="row d-flex justify-content-center">

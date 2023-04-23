@@ -44,7 +44,7 @@
 
     <insert id="insertRecommendEventCoupon" parameterType="map">
         insert into coupon (couponName, couponCode, userId, discount)
-        values ("추천인 이벤트", #{recommendId}, #{userId}, #{discount});
+        values ('추천인 이벤트', #{recommendId}, #{userId}, #{discount});
     </insert>
 
     <insert id="insertPoint" parameterType="map">
@@ -74,6 +74,11 @@
         WHERE userId = #{userId}
     </update>
 
+    <delete id="deleteCoupon" parameterType="map">
+        UPDATE coupon
+        set orderNo = #{orderNo}
+        where couponNo = #{couponNo};
+    </delete>
     <update id="updateUserPassword" parameterType="map">
         UPDATE USER
         SET PASSWORD = #{newPassword}
@@ -107,5 +112,10 @@
         delete
         from coupon
         where userId = '${userId}';
+    </delete>
+    <delete id="deleteUserPointHistory" parameterType="int">
+        delete
+        from point
+        where orderNo = ${orderNo};
     </delete>
 </mapper>

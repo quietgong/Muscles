@@ -42,8 +42,6 @@ public interface UserDao {
 
     int deleteUserCoupon(String userId);
 
-    int deleteUserPoint(int orderNo);
-
     int countUser(String userId);
 
     int deleteCoupon(int couponNo, int orderNo);
@@ -51,4 +49,6 @@ public interface UserDao {
     PointDto selectUserOrderPoint(int orderNo);
 
     int updateCoupon(int orderNo);
+
+    int deleteUserPointHistory(int orderNo);
 }

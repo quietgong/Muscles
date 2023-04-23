@@ -2,9 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
-
 <!-- 상품 정보 시작 -->
 <section class="bg-light">
     <div class="container pb-5">
@@ -28,7 +26,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="h2">${goodsDto.goodsName}</h1>
-                        <p id="price" class="h3 py-2"><fmt:formatNumber value="${goodsDto.goodsPrice}" pattern="#,###"/></p>
+                        <p id="price" class="h3 py-2"><fmt:formatNumber value="${goodsDto.goodsPrice}"
+                                                                        pattern="#,###"/></p>
                         <ul class="list-inline pb-3">
                             <li class="list-inline-item text-right">
                                 <div class="star-ratings">
@@ -89,7 +88,6 @@
     </div>
 </section>
 <!-- 상품 정보 끝 -->
-
 <!-- 상품 상세 시작 -->
 <section class="py-5">
     <div class="container">
@@ -106,7 +104,6 @@
     </div>
 </section>
 <!-- 상품 상세 끝 -->
-
 <!-- 작성 리뷰 시작 -->
 <section class="py-5">
     <div class="container">
@@ -138,7 +135,9 @@
             <div class="row flex-nowrap" style="overflow-x: auto">
                 <c:forEach var="reviewImgDto" items="${reviewDto.reviewImgDtoList}">
                     <div class="col-md-2 mt-3">
-                        <img style="cursor: pointer" src='${reviewImgDto.uploadPath}' onclick="showImgDetail('${reviewImgDto.uploadPath}')" class="img-fluid" data-bs-toggle="modal" data-bs-target="#imgModal">
+                        <img style="cursor: pointer" src='${reviewImgDto.uploadPath}'
+                             onclick="showImgDetail('${reviewImgDto.uploadPath}')" class="img-fluid"
+                             data-bs-toggle="modal" data-bs-target="#imgModal">
                     </div>
                 </c:forEach>
             </div>
@@ -147,7 +146,6 @@
         </div>
 </section>
 <!-- 작성 리뷰 끝 -->
-
 <!-- 상품 문의 시작 -->
 <section class="py-5">
     <div class="container form-control">
@@ -180,7 +178,6 @@
     </div>
 </section>
 <!-- 상품 문의 끝 -->
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -221,11 +218,10 @@
 </div>
 <!-- 이미지 확대 출력 모달 -->
 <script>
-    function showImgDetail(src){
+    function showImgDetail(src) {
         $("#modalImg").attr("src", src)
     }
-</script>
-<script>
+
     let goodsNo = ${goodsDto.goodsNo};
     let goodsName = '${goodsDto.goodsName}';
     let goodsPrice = '${goodsDto.goodsPrice}';
@@ -261,44 +257,19 @@
         data.goodsQty = $("#var-value").html()
         data.goodsPrice = goodsPrice * parseInt($("#var-value").html())
         console.log(JSON.stringify(data))
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/",
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify(data),
-            success: function (res) {
-                if (res == "ADD_OK")
-                    alert("장바구니에 추가하였습니다.")
-                else
-                    alert("장바구니에 이미 존재합니다.")
-                getCartItemsNum()
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/cart/", data, "POST", function (res) {
+            res === "ADD_OK" ? alert("장바구니에 추가하였습니다.") : alert("장바구니에 이미 존재합니다.")
+            getCartItemsNum()
         })
     }
-</script>
-<script>
+
     // FAQ
     loadFaqData()
 
     function loadFaqData() {
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/goods/faq/" + goodsNo,
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                $("#faqList").empty()
-                $("#faqList").append(toHtml(res))
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/goods/faq/", null, "GET", function (res) {
+            $("#faqList").empty()
+            $("#faqList").append(toHtml(res))
         })
         let toHtml = function (items) {
             let tmp = "";
@@ -348,22 +319,10 @@
             data.answer = $("#content").val()
             data.faqNo = $("#faqNo").val()
         }
-
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/goods/faq/", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify(data),
-            success: function () {
-                alert("등록되었습니다.")
-                loadFaqData()
-                $("#content").val("")
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/goods/faq/", data, "POST", function () {
+            alert("등록되었습니다.")
+            loadFaqData()
+            $("#content").val("")
         })
     })
 </script>

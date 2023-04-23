@@ -2,11 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5">
-        <!-- 사이드바 -->
         <div class="col-md-2">
             <%@include file="sidebar.jsp" %>
         </div>
@@ -27,19 +25,8 @@
     loadPostList()
 
     function loadPostList() {
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/mypage/post/" + '${userId}',
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                console.log(res)
-                $("#postList").append(toHtml(res))
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/mypage/post/" + '${userId}', null, "GET", function (res) {
+            $("#postList").append(toHtml(res))
         })
     }
 
@@ -53,9 +40,7 @@
             tmp += '</a>'
             tmp += '</td>'
             tmp += '<td class="viewCnt">' + item.viewCnt + '</td>'
-            tmp += '<td colspan="regdate">'
-            tmp +=  item.createdDate
-            tmp += '</td>'
+            tmp += '<td colspan="regdate">' + item.createdDate + '</td>'
             tmp += '</tr>'
         })
         return tmp;

@@ -22,15 +22,14 @@
     function getRoom() {
         commonAjax('/muscles/getRoom', "", 'get', function (result) {
             console.log(result)
-            createChatingRoom(result);
+            createChatRoom(result);
         });
     }
-
     function goRoom(name) {
         location.href = "/muscles/chatRoom?chatName=" + name;
     }
 
-    function createChatingRoom(res) {
+    function createChatRoom(res) {
         if (res != null) {
             let tmp = "";
             res.forEach(function (d) {
@@ -55,22 +54,6 @@
             });
             $("#roomList").empty().append(tmp);
         }
-    }
-
-    function commonAjax(url, parameter, type, callback, contentType) {
-        $.ajax({
-            url: url,
-            data: parameter,
-            type: type,
-            contentType: contentType != null ? contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-            success: function (res) {
-                callback(res);
-            },
-            error: function (err) {
-                console.log('error');
-                callback(err);
-            }
-        });
     }
 </script>
 <!-- footer -->

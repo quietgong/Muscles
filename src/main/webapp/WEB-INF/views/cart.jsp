@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <%@ include file="nav.jsp" %>
-<!-- 장바구니 시작 -->
 <div class="container">
     <div class="row mt-5">
         <section class="h-100" style="background-color: #eee;">
@@ -46,21 +45,13 @@
     loadCartItem()
 
     function loadCartItem() {
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/" + '${userId}',
-            headers: {"Content-Type": "application/json"},
-            success: function (res) {
-                $("#cartItemList").html(toHtml(res))
-                if (res.length === 0)
-                    $("#order").css("display", "none");
-                else {
-                    calculateTotalPrice()
-                    $("#order").css("display", "block");
-                }
-            },
-            error: function () {
-                console.log("통신 실패")
+        commonAjax("/muscles/cart/" + '${userId}', null, "GET", function (res) {
+            $("#cartItemList").html(toHtml(res))
+            if (res.length === 0)
+                $("#order").css("display", "none");
+            else {
+                calculateTotalPrice()
+                $("#order").css("display", "block");
             }
         })
     }
@@ -145,18 +136,11 @@
 
     // 장바구니 상품 삭제
     function deleteItem(goodsNo) {
-        $.ajax({
-            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/" + goodsNo, // 컨트롤러에서 대기중인 URL 주소이다.
-            success: function (res) {
-                if (res == "DEL_OK")
-                    alert("장바구니에서 삭제하였습니다.")
-                loadCartItem()
-                getCartItemsNum()
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/cart/" + goodsNo, null, "DELETE", function (res) {
+            if (res === "DEL_OK")
+                alert("장바구니에서 삭제하였습니다.")
+            loadCartItem()
+            getCartItemsNum()
         })
     }
 </script>

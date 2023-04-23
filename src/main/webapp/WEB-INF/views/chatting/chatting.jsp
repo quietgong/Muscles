@@ -83,39 +83,24 @@
 <script>
     function removeRoom() {
         if (!confirm("상담을 종료합니까?")) return;
-        $.ajax({
-            type: "DELETE",
-            url: '/muscles/removeRoom/' + $("#chatName").val(),
-            headers: {
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                if (res === 'DEL_OK') {
-                    let option = {
-                        type: "notify",
-                        chatName: userName,
-                        sessionId: $("#sessionId").val(),
-                        userName: 'admin',
-                        msg: "상담이 종료되었습니다."
-                    }
-                    // 웹소켓에 메시지 정보 전달
-                    ws.send(JSON.stringify(option))
-
-                    // 컨트롤러에 메시지 정보 전달
-                    let data = {
-                        chatName: userName,
-                        talker: 'system',
-                        msg: "상담종료"
-                    }
-                    saveChat(data)
-                    alert("상담이 종료되었습니다.")
-                    location.href = "/muscles/chatRoom";
-                } else {
-                    alert("상담 종료 실패")
+        commonAjax("/muscles/removeRoom/" + $("#chatName").val(), null, "DELETE", function (res) {
+            if (res === 'DEL_OK') {
+                let option = {
+                    type: "notify", chatName: userName, sessionId: $("#sessionId").val(), userName: 'admin',
+                    msg: "상담이 종료되었습니다."
                 }
-            },
-            error: function () {
-                console.log("통신 실패")
+                // 웹소켓에 메시지 정보 전달
+                ws.send(JSON.stringify(option))
+
+                // 컨트롤러에 메시지 정보 전달
+                let data = {
+                    chatName: userName,
+                    talker: 'system',
+                    msg: "상담종료"
+                }
+                saveChat(data)
+                alert("상담이 종료되었습니다.")
+                location.href = "/muscles/chatRoom";
             }
         })
     }
@@ -186,12 +171,10 @@
                     let formattedDate = today.getFullYear() + "-" + (today.getMonth() + 1).toString().padStart(2, "0") + "-" + today.getDate().toString().padStart(2, "0") + " " + today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0");
                     let tmp = ""
                     tmp += '<p class="small mt-3 mb-3 text-muted text-center">--- 상담이 종료 되었습니다 ---</p>'
-                    tmp += '<p class="small mt-3 mb-3 text-muted text-center">' + formattedDate +'</p>'
+                    tmp += '<p class="small mt-3 mb-3 text-muted text-center">' + formattedDate + '</p>'
                     $("#chattingBox").children().last().after(tmp)
-
-                } else if(d.type === 'getId'){
+                } else if (d.type === 'getId')
                     $("#sessionId").val(d.sessionId)
-                }
                 else
                     console.warn("알 수 없는 메세지 타입입니다.")
             }
@@ -227,16 +210,8 @@
 
     function saveChat(data) {
         // 채팅 메세지 DB 저장
-        $.ajax({
-            type: "POST",
-            url: '/muscles/chat/post',
-            data: data,
-            success: function () {
-                scrollTop()
-            },
-            error: function () {
-                console.log('채팅 메세지 저장 error');
-            }
+        commonAjax("/muscles/chat/post", data, "POST", function () {
+            scrollTop()
         });
     }
 </script>

@@ -38,7 +38,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public int insertOrderItem(OrderItemDto orderItemDto) {
-        return session.insert(namespace + "insertOrderItem");
+        return session.insert(namespace + "insertOrderItem", orderItemDto);
     }
 
     @Override
@@ -98,5 +98,20 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public int deleteAll() {
         return session.delete(namespace + "deleteAll");
+    }
+
+    @Override
+    public int deleteAllOrderItem() {
+        return session.delete(namespace + "deleteAllOrderItem");
+    }
+
+    @Override
+    public int deleteAllPayment() {
+        return session.delete(namespace + "deleteAllPayment");
+    }
+
+    @Override
+    public int deleteAllDelivery() {
+        return session.delete(namespace + "deleteAllDelivery");
     }
 }

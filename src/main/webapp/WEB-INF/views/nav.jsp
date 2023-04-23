@@ -11,15 +11,14 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- css files -->
     <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/templatemo.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/custom.css'/>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="<c:url value='/css/fontawesome.min.css'/>">
-    <!-- jQuery -->
     <script src="<c:url value='/js/jquery-1.11.0.min.js'/>"></script>
     <script src="<c:url value='/js/jquery-migrate-1.2.1.min.js'/>"></script>
+    <script src="<c:url value='/js/custom.js'/>"></script>
 </head>
 <body>
 <div class="p-3 container d-grid gap-2 d-md-flex justify-content-end">
@@ -147,16 +146,8 @@
     }
 
     function getCartItemsNum(){
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/cart/count/" + '${userId}', // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {"Content-Type": "application/json"},
-            success: function (res) {
+    commonAjax("/muscles/cart/count/" + '${userId}', null, "GET", function (res) {
                 $("#cartNum").html(res)
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
         })
     }
 </script>

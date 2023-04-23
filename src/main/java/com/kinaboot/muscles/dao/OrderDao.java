@@ -34,4 +34,10 @@ public interface OrderDao {
 
     int insertPayment(PaymentDto paymentDto);
     int deleteAll();
+
+    int deleteAllOrderItem();
+
+    int deleteAllPayment();
+
+    int deleteAllDelivery();
 }

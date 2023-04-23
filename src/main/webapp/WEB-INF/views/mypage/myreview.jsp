@@ -5,7 +5,6 @@
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5">
-        <!-- 사이드바 -->
         <div class="col-md-2">
             <%@include file="sidebar.jsp" %>
         </div>
@@ -17,13 +16,12 @@
                         <h4>리뷰 작성 목록</h4>
                     </div>
                     <input type="hidden" id="reviewList">
-                    <!-- 리뷰 데이터 -->
+                    <!-- 리뷰 데이터 동적 추가 -->
                 </div>
             </section>
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -43,7 +41,7 @@
                     <div class="row">
                         <ul class="list-unstyled d-flex justify-content-center mb-1">
                             <div class="star-ratings" style="width: auto">
-                                <input class="starRange" type="range" value="0" step="10" min="0" max="100" />
+                                <input class="starRange" type="range" value="0" step="10" min="0" max="100"/>
                                 <div class="fill-ratings">
                                     <span style="font-size: 1.8rem;">★★★★★</span>
                                 </div>
@@ -79,21 +77,13 @@
     </div>
 </div>
 <!-- Modal -->
-
 <script>
     // 리뷰 데이터 불러오기
     loadReviewData()
 
     function loadReviewData() {
-        $.ajax({
-            type: "GET",
-            url: "/muscles/mypage/review/" + '${userId}',
-            success: function (res) {
-                $("#reviewList").after(toHtml(res))
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/mypage/review/" + '${userId}', null, "GET", function (res) {
+            $("#reviewList").after(toHtml(res))
         })
     }
 
@@ -147,6 +137,7 @@
             showPreview(items, 'detail')
         }
     }
+
     // 이미지 업로드
     $("input[type='file']").on("change", function () {
         let fileList = $(this)[0].files;
@@ -168,7 +159,6 @@
     });
 
     function showPreview(items, type) {
-        console.log(items)
         let tmp = "";
         items.forEach(function (item) {
             let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
@@ -182,18 +172,16 @@
         $("#reviewPreview").append(tmp)
         moveImgPosition()
     }
+
     function showUpDownBtn() {
-        // 첫번째 div Up 버튼 숨기기
         $("button:contains('↑')").show()
         $('.detail:first-child button:contains("↑")').hide();
-        // 마지막 div Down 버튼 숨기기
         $("button:contains('↓')").show()
         $('.detail:last-child button:contains("↓")').hide();
     }
 
     function moveImgPosition() {
         showUpDownBtn()
-        // Up 버튼 클릭 시 이전 div와 위치 변경
         $('.detail button:contains("↑")').click(function () {
             let currentDiv = $(this).parent();
             let prevDiv = currentDiv.prev('.detail');
@@ -201,7 +189,6 @@
                 currentDiv.insertBefore(prevDiv);
             showUpDownBtn()
         });
-        // Down 버튼 클릭 시 다음 div와 위치 변경
         $('.detail button:contains("↓")').click(function () {
             let currentDiv = $(this).parent();
             let nextDiv = currentDiv.next('.detail');
@@ -210,6 +197,7 @@
             showUpDownBtn()
         });
     }
+
     <!-- 업로드된 이미지 삭제 -->
     $(document).on("click", ".delPreview", function () {
         let fileName = $(this).parent().attr("data-url")
@@ -236,19 +224,8 @@
     // 리뷰 수정
     function modReview(e) {
         let reviewNo = $(e).parent().attr("data-reviewNo")
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/review/" + reviewNo, // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                console.log(res)
-                insertModalData(res)
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/review/" + reviewNo, null, "GET", function (res) {
+            insertModalData(res)
         })
     }
 
@@ -265,25 +242,10 @@
             reviewImgDtoList.push(tmp)
         });
 
-        $.ajax({
-            type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/review/", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify({
-                reviewNo: reviewNo,
-                score: score,
-                content: content,
-                reviewImgDtoList : reviewImgDtoList,
-            }),
-            success: function () {
-                alert("수정이 완료되었습니다.")
-                location.reload()
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        let data = {reviewNo: reviewNo, score: score, content: content, reviewImgDtoList: reviewImgDtoList}
+        commonAjax("/muscles/review/", data, "PATCH", function () {
+            alert("수정이 완료되었습니다.")
+            location.reload()
         })
     }
 
@@ -291,15 +253,8 @@
     function delReview(e) {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
         let reviewNo = $(e).parent().attr("data-reviewNo")
-        $.ajax({
-            type: "DELETE",
-            url: "/muscles/review/" + reviewNo,
-            success: function () {
+        commonAjax("/muscles/review/" + reviewNo, null, "DELETE", function () {
                 location.reload()
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
         })
     }
 

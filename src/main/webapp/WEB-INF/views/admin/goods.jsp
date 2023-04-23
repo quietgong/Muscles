@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5">
@@ -13,7 +12,7 @@
                     <h1 class="app-page-title mb-0">상품 관리</h1>
                 </div>
                 <div class="col-md-4">
-                    <!-- 조건 -->
+                    <!-- 검색 조건 -->
                     <form>
                         <div class="input-group flex-nowrap">
                             <span class="input-group-text" id="addon-wrapping">상품명</span>
@@ -21,7 +20,7 @@
                             <button type="submit" class="btn btn-primary">검색</button>
                         </div>
                     </form>
-                    <!-- 조건 -->
+                    <!-- 검색 조건 -->
                 </div>
             </div>
             <div class="row mt-5">
@@ -44,17 +43,13 @@
                             <th scope="col"></th>
                         </tr>
                         </thead>
-                        <tbody id="goodsList">
-
-                        </tbody>
+                        <tbody id="goodsList"><!-- 동적 요소 추가--></tbody>
                     </table>
                 </div>
             </div>
-        </div><!--//container-fluid-->
-    </div><!--//app-content-->
+        </div>
+    </div>
 </div>
-<!-- 본문 -->
-
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -151,78 +146,45 @@
     // 수정 버튼 클릭 시 해당 상품 정보 모달창에 입력
     function insertModal(goodsNo) {
         $('#staticBackdropLabel').html('상품정보 변경');
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/goods/" + goodsNo, // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                $("#goodsNo").val(res.goodsNo)
-                $("#goodsName").val(res.goodsName)
-                categoryDetailDisplay(res.goodsCategory)
-                $('#categorySelect option[value=' + res.goodsCategory + ']').prop('selected', true);
-                $('#categoryDetailSelect option[value=' + res.goodsCategoryDetail + ']').prop('selected', true);
-                $("#goodsPrice").val(res.goodsPrice)
-                $("#goodsStock").val(res.goodsStock)
-                $("#goodsDescription").val(res.goodsDescription)
-                if (res.goodsImgPath != null)
-                    showPreview([{uploadName: res.goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]}], 'thumbnail')
-                if (res.goodsImgDtoList.length !== 0) {
-                    let items = []
-                    res.goodsImgDtoList.forEach(function (r) {
-                        let tmp = {}
-                        tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
-                        items.push(tmp)
-                    })
-                    showPreview(items, 'detail')
-                }
-            },
-            error: function () {
-                console.log("AJAX 통신 실패")
+        commonAjax("/muscles/admin/goods/" + goodsNo, null, "GET", function (res) {
+            $("#goodsNo").val(res.goodsNo)
+            $("#goodsName").val(res.goodsName)
+            categoryDetailDisplay(res.goodsCategory)
+            $('#categorySelect option[value=' + res.goodsCategory + ']').prop('selected', true);
+            $('#categoryDetailSelect option[value=' + res.goodsCategoryDetail + ']').prop('selected', true);
+            $("#goodsPrice").val(res.goodsPrice)
+            $("#goodsStock").val(res.goodsStock)
+            $("#goodsDescription").val(res.goodsDescription)
+            if (res.goodsImgPath != null)
+                showPreview([{uploadName: res.goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]}], 'thumbnail')
+            if (res.goodsImgDtoList.length !== 0) {
+                let items = []
+                res.goodsImgDtoList.forEach(function (r) {
+                    let tmp = {}
+                    tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
+                    items.push(tmp)
+                })
+                showPreview(items, 'detail')
             }
         })
     }
 
     function modifyGoods(data) {
-        $.ajax({
-            type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify(data),
-            success: function () {
-                alert("수정 완료")
-                loadProductData()
-                initModal()
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/admin/goods/", data, "PATCH", function () {
+            alert("수정 완료")
+            loadProductData()
+            initModal()
         })
     }
 
     function registerGoods(data) {
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify(data),
-            success: function (res) {
-                if (res === "ADD_OK") {
-                    alert("등록 완료")
-                    loadProductData()
-                    initModal()
-                } else {
-                    alert("등록 실패")
-                }
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/admin/goods/", data, "POST", function (res) {
+            if (res === "ADD_OK") {
+                alert("등록 완료")
+                loadProductData()
+                initModal()
+            } else
+                alert("등록 실패")
         })
     }
 
@@ -246,14 +208,9 @@
         data.goodsStock = $("#goodsStock").val()
         data.goodsImgPath = $("#newThumbnail").attr("src")
         data.goodsImgDtoList = goodsImgDtoList
-        // 상품 등록
-        if (data.goodsNo === '0')
-            registerGoods(data)
-        // 상품 수정
-        else
-            modifyGoods(data)
+        // 상품 번호 데이터가 있으면 수정, 없으면 등록
+        data.goodsNo === '0' ? registerGoods(data) : modifyGoods(data)
     }
-
 </script>
 <script>
     // 이미지 업로드
@@ -266,14 +223,12 @@
             }
         }
         let formData = new FormData();
-        console.log(type)
-        console.log(fileList)
         for (let i = 0; i < fileList.length; i++)
             formData.append("uploadFile", fileList[i]);
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "/muscles/img/goods/" + type + "/" + $("#goodsNo").val(), // 컨트롤러에서 대기중인 URL 주소이다.
+            url: "/muscles/img/goods/" + type + "/" + $("#goodsNo").val(),
             processData: false,
             contentType: false,
             data: formData,
@@ -285,7 +240,6 @@
     });
 
     function showPreview(items, type) {
-        console.log(items)
         let tmp = "";
         items.forEach(function (item) {
             let addr = "/muscles/img/display?category=goods&type=" + type + "&fileName=" + item.uploadName
@@ -300,19 +254,13 @@
             }
             tmp += '</div>'
         });
-        if (type === "detail")
-            $("#detailPreview").append(tmp)
-        else
-            $("#thumbnailPreview").append(tmp)
+        type === "detail" ? $("#detailPreview").append(tmp) : $("#thumbnailPreview").append(tmp);
         moveImgPosition()
     }
 
     function showUpDownBtn() {
-        // 첫번째 div Up 버튼 숨기기
         $("button:contains('↑')").show()
         $('.detail:first-child button:contains("↑")').hide();
-
-        // 마지막 div Down 버튼 숨기기
         $("button:contains('↓')").show()
         $('.detail:last-child button:contains("↓")').hide();
     }
@@ -336,6 +284,7 @@
             showUpDownBtn()
         });
     }
+
     <!-- 업로드된 이미지 삭제 -->
     $(document).on("click", ".delPreview", function () {
         let fileName = $(this).parent().attr("data-url")
@@ -346,18 +295,10 @@
 
     function deleteImg(target, type, fileName) {
         let targetDiv = target
-        $.ajax({
-            type: "DELETE",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/delete/goods/" + type + "?fileName=" + fileName,
-            success: function (res) {
-                console.log(res)
-                // 파일 삭제가 성공적으로 이루어지면
-                if (res === "DEL_OK") {
-                    targetDiv.empty();
-                }
-            }
-        })
+        commonAjax("/muscles/img/delete/goods/" + type + "?fileName=" + fileName, null, "DELETE",
+            function (res) {
+                if (res === "DEL_OK") targetDiv.empty();// 파일 삭제가 성공적으로 이루어지면
+            })
     }
 </script>
 <script>
@@ -365,16 +306,9 @@
     loadProductData()
 
     function loadProductData() {
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/goods/", // 컨트롤러에서 대기중인 URL 주소이다.
-            success: function (res) {
-                $("#goodsList").empty()
-                $("#goodsList").append(toHtml(res))
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/admin/goods/", data, "GET", function (res) {
+            $("#goodsList").empty()
+            $("#goodsList").append(toHtml(res))
         })
         let toHtml = function (items) {
             let tmp = "";
@@ -399,17 +333,9 @@
     // 상품 정보 삭제
     function removeProduct(goodsNo) {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
-        $.ajax({
-            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/goods/" + goodsNo, // 컨트롤러에서 대기중인 URL 주소이다.
-            success: function () {
-                alert("해당 상품 정보를 삭제하였습니다.")
-
-                loadProductData()
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/admin/goods/" + goodsNo, null, "DELETE", function () {
+            alert("해당 상품 정보를 삭제하였습니다.")
+            loadProductData()
         })
     }
 </script>
@@ -417,20 +343,13 @@
     loadCategory()
 
     function loadCategory() {
-        $.ajax({
-            type: "GET",
-            url: "/muscles/goods/category",
-            success: function (items) {
-                let tmp = "";
-                items.forEach(function (item) {
-                    tmp += '<option class="subCategory" style="display:none" name=' + item.category + ' value="' + item.subCategory + '">' + item.subCategory + '</option>'
-                })
-                tmp += '<option class="subCategory" style="display: none" name="new" value="new">신규 카테고리 생성</option>'
-                $("#categoryDetailSelect").append(tmp)
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/goods/category", null, "GET", function (items) {
+            let tmp = "";
+            items.forEach(function (item) {
+                tmp += '<option class="subCategory" style="display:none" name=' + item.category + ' value="' + item.subCategory + '">' + item.subCategory + '</option>'
+            })
+            tmp += '<option class="subCategory" style="display: none" name="new" value="new">신규 카테고리 생성</option>'
+            $("#categoryDetailSelect").append(tmp)
         })
     }
 
@@ -444,21 +363,16 @@
             else
                 $("option[name='기타']").show()
             $("option[name='new']").show()
-        } else {
+        } else
             $('#categoryDetailSelect option').eq(0).prop('selected', true)
-        }
     }
 
     $("#categorySelect").on("change", function () {
         categoryDetailDisplay(this.value)
     })
-
     // 신규 카테고리 입력 창
     $("#categoryDetailSelect").on("change", function () {
-        if (this.value === 'new')
-            $("#newCategory").show()
-        else
-            $("#newCategory").hide()
+        this.value === 'new' ? $("#newCategory").show() : $("#newCategory").hide()
     })
 </script>
 <!-- footer -->

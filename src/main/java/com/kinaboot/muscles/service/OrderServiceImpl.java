@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
             // 1. 포인트 환불
             userDao.updateUserPoint(userId, -point, orderNo);
             // 2. 포인트 사용내역 삭제
-            userDao.deleteUserPoint(orderNo);
+            userDao.deleteUserPointHistory(orderNo);
         }
         // 쿠폰 사용 취소 처리
         userDao.updateCoupon(orderNo);

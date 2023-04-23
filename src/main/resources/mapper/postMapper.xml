@@ -67,8 +67,8 @@
 
     <insert id="insert" parameterType="map">
         insert into post
-        (type, title, content, userId, createdDate)
-        values (#{type}, #{title}, #{content}, #{userId}, now())
+        (postNo, type, title, content, userId, createdDate)
+        values (#{postNo}, #{type}, #{title}, #{content}, #{userId}, now())
     </insert>
 
     <insert id="insertPostImg" parameterType="PostImgDto">

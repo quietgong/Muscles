@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5">
-        <!-- 사이드바 -->
         <div class="col-md-2">
             <%@include file="sidebar.jsp" %>
         </div>
-        <!-- 컨텐츠 -->
         <div class="col-md-10">
             <section class="py-5">
                 <div class="container">
@@ -78,16 +75,9 @@
     loadPoint()
 
     function loadPoint() {
-        $.ajax({
-            type: "GET",
-            url: '/muscles/mypage/point/' + userId,
-            success: function (res) {
-                $("#pointList").after(toHtmlPoint(res));
-            },
-            error: function () {
-                console.log('error');
-            }
-        });
+        commonAjax("/muscles/mypage/point/" + userId, null, "GET", function (res) {
+            $("#pointList").after(toHtmlPoint(res));
+        })
     }
 
     let toHtmlPoint = function (items) {
@@ -114,16 +104,9 @@
     loadCoupon();
 
     function loadCoupon() {
-        $.ajax({
-            type: "GET",
-            url: '/muscles/mypage/coupon/' + userId,
-            success: function (res) {
-                $("#couponList").after(toHtml(res));
-                checkCouponList(res)
-            },
-            error: function () {
-                console.log('error');
-            }
+        commonAjax("/muscles/mypage/coupon/" + userId, null, "GET", function (res) {
+            $("#couponList").after(toHtml(res));
+            checkCouponList(res)
         });
     }
 
@@ -134,10 +117,7 @@
             tmp += '<td>' + item.couponName + '</td>'
             tmp += '<td>[추천인] ' + item.couponCode + '</td>'
             tmp += '<td>' + item.discount.toLocaleString() + '</td>'
-            if (item.orderNo === 0)
-                tmp += '<td>사용가능</td>'
-            else
-                tmp += '<td>사용완료</td>'
+            tmp += item.orderNo === 0 ? '<td>사용가능</td>' : '<td>사용완료</td>'
             tmp += '</tr>'
         })
         return tmp
@@ -159,30 +139,20 @@
             alert("유효하지 않은 아이디입니다. 다시 입력해주세요.")
             return false;
         }
-        $.ajax({
-            type: "POST",
-            url: '/muscles/mypage/coupon/' + userId + '/' + recommendId,
-            success: function (res) {
-                if (res === "ADD_OK") {
-                    $(".coupon-item").remove()
-                    loadCoupon(recommendId)
-                    alert("쿠폰이 등록되었습니다.")
-                } else
-                    alert("유효하지 않은 아이디입니다. 다시 입력해주세요.")
-            },
-            error: function () {
-                console.log('error');
-            }
+        commonAjax('/muscles/mypage/coupon/' + userId + '/' + recommendId, data, "POST", function (res) {
+            if (res === "ADD_OK") {
+                $(".coupon-item").remove()
+                loadCoupon(recommendId)
+                alert("쿠폰이 등록되었습니다.")
+            } else
+                alert("유효하지 않은 아이디입니다. 다시 입력해주세요.")
         });
     }
 
     $("#selectEvent").on("change", function () {
         let selectedOption = this.value;
         // 쿠폰 등록을 이미 했는지 안했는지 확인
-        if (selectedOption === 'recommend')
-            $("#inputRecommend").show()
-        else
-            $("#inputRecommend").hide()
+        selectedOption === 'recommend' ? $("#inputRecommend").show() : $("#inputRecommend").hide()
     })
 </script>
 <!-- footer -->

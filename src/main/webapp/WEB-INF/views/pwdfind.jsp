@@ -2,16 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <%@ include file="nav.jsp" %>
-<style>
-    #emailVerifyNumber {
-        background-color: #ffeded;
-    }
-
-    .checkMsg {
-        display: none;
-        color: #dc3545;
-    }
-</style>
 <div class="container" style="margin-top: 100px">
     <div class="row justify-content-center align-content-center">
         <div class="col-md-8">
@@ -98,14 +88,7 @@
     }
 
     function EmailExistCheck(email) {
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/emailExistCheck?email=" + email,      // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                console.log(res)
+    commonAjax("/muscles/emailExistCheck?email=" + email, null, "GET", function (res) {
                 if (res !== 'invalid') {
                     $("#userId").val(res)
                     $("#email_exist_check").hide()
@@ -115,11 +98,6 @@
                     $("#email_exist_check").show()
                     emailExistCheck = false
                 }
-
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
         })
     }
 
@@ -150,29 +128,18 @@
     $("#sendVerifyNumber").on("click", function () {
         let email = $("#email").val()
         if (emailCheck && emailFormCheck && emailExistCheck) {
-            $.ajax({
-                type: "GET",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/register/mailCheck?email=" + email,
-                headers: {              // Http header
-                    "Content-Type": "application/json",
-                },
-                success: function (verifyNumber) {
+            commonAjax("/muscles/register/mailCheck?email=" + email, null, "GET", function (verifyNumber) {
                     console.log("인증코드 : " + verifyNumber)
                     verifyCode = verifyNumber
                     $("#emailVerifyNumber").attr("readonly", false)
                     $("#emailVerifyNumber").css("background-color", "#fff")
                     $("#emailVerifyNumber").focus()
                     alert("인증번호가 전송되었습니다. 메일을 확인해주시기 바랍니다.")
-                },
-                error: function () {
-                    console.log("통신 실패")
-                }
+
             })
         } else
             alert("잘못된 이메일 또는 존재하지 않는 이메일입니다.")
     })
-</script>
-<script>
     function submit() {
         EmailValidCheck()
         EmailVerifyCheck()

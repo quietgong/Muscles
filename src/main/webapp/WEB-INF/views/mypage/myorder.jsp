@@ -2,20 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
-<style>
-    tr {
-        vertical-align: middle;
-    }
-
-    td {
-        vertical-align: middle;
-    }
-</style>
 <div class="container">
     <div class="row mt-3">
-        <!-- 사이드바 -->
         <div class="col-md-2">
             <%@include file="sidebar.jsp" %>
         </div>
@@ -76,7 +65,9 @@
                                                         <!-- 상품 이름 -->
                                                         <p class="card-text">${orderItemDto.goodsName}</p>
                                                         <!-- 상품 단가 -->
-                                                        <span class="card-text"><fmt:formatNumber value="${orderItemDto.goodsPrice}" pattern="#,###"/>원</span>
+                                                        <span class="card-text"><fmt:formatNumber
+                                                                value="${orderItemDto.goodsPrice}"
+                                                                pattern="#,###"/>원</span>
                                                         <span class="card-text"> · </span>
                                                         <!-- 주문 개수 -->
                                                         <span class="card-text">${orderItemDto.goodsQty} 개</span><br>
@@ -114,7 +105,6 @@
         </div>
     </div>
 </div>
-<%@ include file="../footer.jsp" %>
 <!-- 주문 취소 Modal -->
 <div class="modal fade" id="orderCancelModal" tabindex="-1" aria-labelledby="orderCancelModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -274,18 +264,16 @@
         $("#reviewPreview").append(tmp)
         moveImgPosition()
     }
+
     function showUpDownBtn() {
-        // 첫번째 div Up 버튼 숨기기
         $("button:contains('↑')").show()
         $('.detail:first-child button:contains("↑")').hide();
-        // 마지막 div Down 버튼 숨기기
         $("button:contains('↓')").show()
         $('.detail:last-child button:contains("↓")').hide();
     }
 
     function moveImgPosition() {
         showUpDownBtn()
-        // Up 버튼 클릭 시 이전 div와 위치 변경
         $('.detail button:contains("↑")').click(function () {
             let currentDiv = $(this).parent();
             let prevDiv = currentDiv.prev('.detail');
@@ -293,7 +281,6 @@
                 currentDiv.insertBefore(prevDiv);
             showUpDownBtn()
         });
-        // Down 버튼 클릭 시 다음 div와 위치 변경
         $('.detail button:contains("↓")').click(function () {
             let currentDiv = $(this).parent();
             let nextDiv = currentDiv.next('.detail');
@@ -302,6 +289,7 @@
             showUpDownBtn()
         });
     }
+
     <!-- 업로드된 이미지 삭제 -->
     $(document).on("click", ".delPreview", function () {
         let fileName = $(this).parent().attr("data-url")
@@ -318,9 +306,8 @@
             success: function (res) {
                 console.log(res)
                 // 파일 삭제가 성공적으로 이루어지면
-                if (res === "DEL_OK") {
+                if (res === "DEL_OK")
                     targetDiv.empty();
-                }
             }
         })
     }
@@ -328,7 +315,6 @@
 </script>
 <script>
     /* 주문 취소 모달창 처리 */
-
     // 기타 사유 선택시 textarea 출력, 그렇지 않으면 미출력
     $("input[name='orderCancelOption']").change(function () {
         if ($("input[name='orderCancelOption']:checked").val() === 'etc') {
@@ -352,27 +338,13 @@
         else
             cancelReason = $("input[name='orderCancelOption']:checked").val()
 
-        console.log(cancelReason)
-        $.ajax({
-            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/order/" + orderNo,
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: cancelReason,
-            success: function () {
-                alert("주문이 취소되었습니다.")
-                location.replace("")
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/order/" + orderNo, cancelReason, "DELETE", function () {
+            alert("주문이 취소되었습니다.")
+            location.replace("")
         })
     }
 </script>
 <script>
-    /* 리뷰 작성 모달창 처리 */
-
     // 리뷰 작성 모달창이 닫혔을 때 모달 내용 초기화
     function initReviewModal() {
         $("#reviewContent").val("")
@@ -384,24 +356,14 @@
 
     // 해당 주문에 대한 정보를 모달창에 입력
     function createReview(orderNo, goodsNo) {
-        $.ajax({
-            type: "GET",
-            url: "/muscles/order?orderNo=" + orderNo + "&goodsNo=" + goodsNo,
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                console.log(res)
-                insertReviewModalData(res)
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        let url = "/muscles/order?orderNo=" + orderNo + "&goodsNo=" + goodsNo
+        commonAjax(url, null, "GET", function (res) {
+            insertReviewModalData(res)
         })
     }
 
     function insertReviewModalData(item) {
-        $("#goodsName").html(item.goodsName) // 상품 이름 입력
+        $("#goodsName").html(item.goodsName)
         $("#modal-footer").attr("data-orderNo", item.orderNo)
         $("#modal-footer").attr("data-goodsNo", item.goodsNo)
         $("#modal-footer").attr("data-goodsName", item.goodsName)
@@ -424,21 +386,9 @@
             reviewImgDtoList.push(tmp)
         });
         data.reviewImgDtoList = reviewImgDtoList
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/review", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify(data),
-            success: function () {
-                alert("등록이 완료되었습니다.")
-                // 리뷰 등록 버튼 숨기기
-                location.replace("")
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/review", data, "POST", function () {
+            alert("등록이 완료되었습니다.")
+            // 리뷰 등록 버튼 숨기기
         })
     }
 </script>
@@ -448,3 +398,4 @@
         $(this).next().css("width", $(this).val() + '%')
     })
 </script>
+<%@ include file="../footer.jsp" %>

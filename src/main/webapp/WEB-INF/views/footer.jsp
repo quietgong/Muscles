@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- js files -->
+<script src="<c:url value='/js/ajax.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.bundle.min.js'/>"></script>
-<script src="<c:url value='/js/custom.js'/>"></script>
 <script src="<c:url value='/js/slick.min.js'/>"></script>
 <script src="<c:url value='/js/templatemo.js'/>"></script>
 <!-- Start Footer -->

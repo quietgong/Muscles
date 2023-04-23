@@ -1,15 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../nav.jsp" %>
-<style>
-    tr {
-        vertical-align: middle;
-    }
-
-    td {
-        vertical-align: middle;
-    }
-</style>
 <div class="container">
     <div class="row mt-5">
         <div class="col-md-2">
@@ -111,8 +102,9 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td class="cell"><fmt:formatNumber value="${orderDto.paymentDto.price}"
-                                                                                       pattern="#,###"/></td>
+                                                    <td class="cell"><fmt:formatNumber
+                                                            value="${orderDto.paymentDto.price}"
+                                                            pattern="#,###"/></td>
                                                     <td class="cell">
                                                         <a style="text-decoration: none"
                                                            class="btn-sm app-btn-secondary"
@@ -212,32 +204,15 @@
     /* 주문 승인 처리 */
     $(".orderAccept").on("click", function () {
         let orderNo = $(this).parent().parent().children().html()
-        $.ajax({
-            type: "POST",
-            url: "/muscles/admin/order/" + orderNo,
-            headers: { // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                if (res === 'ACCEPT_OK')
-                    alert("주문을 승인하였습니다.")
-                location.replace("")
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/admin/order/" + orderNo, null, "POST", function (res) {
+            if (res === 'ACCEPT_OK')
+                alert("주문을 승인하였습니다.")
+            location.replace("")
         })
     })
-</script>
-<script>
     /* 주문 취소 처리 */
-
-    // 기타 사유 선택시 textarea 출력, 그렇지 않으면 미출력
-    $("input[name='orderCancelOption']").change(function () {
-        if ($("input[name='orderCancelOption']:checked").val() === 'etc') {
-            $("#orderCancelDetail").show()
-        } else
-            $("#orderCancelDetail").hide()
+    $("input[name='orderCancelOption']").change(function () { // 기타 사유 선택시 textarea 출력, 그렇지 않으면 미출력
+        $("input[name='orderCancelOption']:checked").val() === 'etc' ? $("#orderCancelDetail").show() : $("#orderCancelDetail").hide();
     });
     $("#etcReason:checked")
 
@@ -254,20 +229,9 @@
             cancelReason = $("#orderCancelContent").val()
         else
             cancelReason = $("input[name='orderCancelOption']:checked").val()
-        $.ajax({
-            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/order/" + orderNo,
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: cancelReason,
-            success: function () {
-                alert("주문이 취소되었습니다.")
-                location.replace("")
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/order/" + orderNo, cancelReason, "DELETE", function () {
+            alert("주문이 취소되었습니다.")
+            location.replace("")
         })
     }
 </script>
@@ -288,10 +252,8 @@
         form.append($('<input>').attr({
             type: 'hidden', name: status, value: status
         }))
-
         form.submit()
     }
-
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

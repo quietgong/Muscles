@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <div class="row mt-5">
@@ -14,7 +13,7 @@
                     <h1 class="app-page-title mb-0">고객 관리</h1>
                 </div>
                 <div class="col-md-4">
-                    <!-- 조건 -->
+                    <!-- 검색 조건 -->
                     <form>
                         <div class="input-group flex-nowrap">
                             <span class="input-group-text" id="addon-wrapping">기간</span>
@@ -27,7 +26,7 @@
                             <button type="submit" class="btn btn-primary">검색</button>
                         </div>
                     </form>
-                    <!-- 조건 -->
+                    <!-- 검색 조건 -->
                 </div>
             </div>
             <div class="row mt-5">
@@ -67,10 +66,10 @@
 
                                             </tbody>
                                         </table>
-                                    </div><!--//table-responsive-->
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                        </div><!--//tab-pane-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- 전체 회원 테이블 -->
 
                         <!-- 일반 회원 테이블 -->
@@ -164,7 +163,6 @@
     function insertData(items, condition) {
         let tmp = "";
         function makeTmp(item) {
-            tmp = "";
             tmp += '<tr>'
             tmp += '<td class="cell">' + item.userNo + '</td>'
             tmp += '<td class="cell">' + item.userId + '</td>'
@@ -192,49 +190,22 @@
             })
         }
         tmp += '</tr>'
-
         return tmp
     }
 
-    // AJAX로 고객 데이터 가져오기
     function getUserData() {
         let ret
-        $.ajax({
-            async: false,
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/user/", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                ret = res
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/admin/user/", null, "GET", function (res) {
+            ret = res
         })
         return ret
     }
 
     // 고객 탈퇴 처리
-    function expireUser(userId){
-        $.ajax({
-            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/admin/user/" + userId, // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (msg) {
-                if (msg == "DEL_OK") {
-                    alert("탈퇴 처리 완료")
-                } else {
-                    alert("탈퇴 처리 실패")
-                }
-                location.reload()
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+    function expireUser(userId) {
+        commonAjax("/muscles/admin/user/" + userId, null, "DELETE", function (msg) {
+            msg === "DEL_OK" ? alert("탈퇴 처리 완료") : alert("탈퇴 처리 실패");
+            location.reload()
         })
     }
 </script>

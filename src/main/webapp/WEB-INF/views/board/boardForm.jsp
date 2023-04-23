@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="mb-3">
                 <label class="form-label" for="title">제목</label>
-                <input required class="form-control" id="title"type="text" placeholder="제목을 입력해주세요">
+                <input required class="form-control" id="title" type="text" placeholder="제목을 입력해주세요">
             </div>
         </div>
     </div>
@@ -70,24 +70,21 @@
         $("#postPreview").append(tmp)
         showLeftRightBtn()
     }
+
     function showLeftRightBtn() {
-        // 첫번째 div Left 버튼 숨기기
         $("button:contains('←')").show()
         $('.detail:first-child button:contains("←")').hide();
-        // 마지막 div Right 버튼 숨기기
         $("button:contains('→')").show()
         $('.detail:last-child button:contains("→")').hide();
     }
-    // Left 버튼 클릭 시 이전 div와 위치 변경
-    $(document).on("click", '.detail button:contains("←")', function (){
+
+    $(document).on("click", '.detail button:contains("←")', function () {
         let currentDiv = $(this).parent();
         let prevDiv = currentDiv.prev('.detail');
-        if (prevDiv.length !== 0)
-            currentDiv.insertBefore(prevDiv);
+        if (prevDiv.length !== 0) currentDiv.insertBefore(prevDiv);
         showLeftRightBtn()
     });
-    // Right 버튼 클릭 시 다음 div와 위치 변경
-    $(document).on("click", '.detail button:contains("→")', function (){
+    $(document).on("click", '.detail button:contains("→")', function () {
         let currentDiv = $(this).parent();
         let nextDiv = currentDiv.next('.detail');
         if (nextDiv.length !== 0)
@@ -110,12 +107,14 @@
             }
         })
     }
+
     <!-- 업로드된 이미지 삭제 -->
     $(document).on("click", ".delPreview", function () {
         let fileName = $(this).parent().attr("data-url")
         let target = $(this).parent()
         deleteImg(target, "detail", fileName)
     });
+
     function postRegister() {
         let postDto = {}
         postDto.type = '${postCategory}'
@@ -129,20 +128,8 @@
             postImgDtoList.push(tmp)
         });
         postDto.postImgDtoList = postImgDtoList
-
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/${postCategory}/",
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify(postDto),
-            success: function (postNo) {
-                location.href = "/muscles/${postCategory}/"+postNo
-            },
-            error: function () {
-                console.log("통신 실패")
-            }
+        commonAjax("/muscles/${postCategory}", postDto, "POST", function () {
+            location.href = "/muscles/${postCategory}/" + postNo
         })
     }
 </script>

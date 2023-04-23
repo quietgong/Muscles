@@ -48,7 +48,9 @@
                 <button style="display:none; float: right; margin-right: 10px"
                         class="modPosition up btn btn-warning mb-3 mt-3" type="button">←
                 </button>
-                <img src="${postImgDto.uploadPath}" data-bs-toggle="modal" data-bs-target="#imgModal" onclick="showImgDetail('${postImgDto.uploadPath}')" style="cursor: pointer" class="img-fluid newDetail">
+                <img src="${postImgDto.uploadPath}" data-bs-toggle="modal" data-bs-target="#imgModal"
+                     onclick="showImgDetail('${postImgDto.uploadPath}')" style="cursor: pointer"
+                     class="img-fluid newDetail">
             </div>
         </c:forEach>
     </div>
@@ -99,13 +101,12 @@
         </div>
     </div>
 </div>
-<!-- 이미지 확대 출력 모달 -->
 <script>
-    function showImgDetail(src){
+    // 이미지 확대 모달 출력
+    function showImgDetail(src) {
         $("#modalImg").attr("src", src)
     }
-</script>
-<script>
+
     // 이미지 업로드
     $("input[type='file']").on("change", function () {
         let fileList = $(this)[0].files;
@@ -127,7 +128,6 @@
     });
 
     function showPreview(items, type) {
-        console.log(items)
         let tmp = "";
         items.forEach(function (item) {
             let addr = "/muscles/img/display?category=${postCategory}&type=" + type + "&fileName=" + item.uploadName
@@ -160,10 +160,8 @@
     });
 
     function showLeftRightBtn() {
-        // 첫번째 div Left 버튼 숨기기
         $("button:contains('←')").show()
         $('.detail:first-child button:contains("←")').hide();
-        // 마지막 div Right 버튼 숨기기
         $("button:contains('→')").show()
         $('.detail:last-child button:contains("→")').hide();
     }
@@ -175,11 +173,9 @@
             enctype: 'multipart/form-data',
             url: "/muscles/img/delete/post/detail?fileName=" + fileName,
             success: function (res) {
-                console.log(res)
                 // 파일 삭제가 성공적으로 이루어지면
-                if (res === "DEL_OK") {
+                if (res === "DEL_OK")
                     targetDiv.empty();
-                }
             }
         })
     }
@@ -220,21 +216,8 @@
                 postImgDtoList.push(tmp)
             });
             modData.postImgDtoList = postImgDtoList
-            $.ajax({
-                type: "PATCH",
-                url: "/muscles/${postCategory}/" + postNo,
-                headers: {              // Http header
-                    "Content-Type": "application/json",
-                },
-                data: JSON.stringify(modData),
-                success: function (res) {
-                    if (res === "MOD_OK")
-                        // 수정 성공 시, 새로 고침
-                        location.reload()
-                },
-                error: function () {
-                    console.log("수정 실패")
-                }
+            commonAjax("/muscles/${postCategory}/" + postNo, modData, "PATCH", function (res) {
+                if (res === "MOD_OK") location.reload()
             });
         }
     });
@@ -242,17 +225,9 @@
     // 글 삭제
     $("#remove").on("click", function () {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
-        $.ajax({
-            type: "DELETE",
-            url: "/muscles/${postCategory}/" + postNo,
-            success: function (res) {
-                if (res === "DEL_OK")
-                    // 삭제 성공 시, 해당 게시판 목록으로 이동
-                    location.href = "<c:url value='/${postCategory}'/>"
-            },
-            error: function () {
-                console.log("삭제 실패")
-            }
+        commonAjax("/muscles/${postCategory}/" + postNo, null, "DELETE", function (res) {
+            if (res === "DEL_OK") // 삭제 성공 시, 해당 게시판 목록으로 이동
+                location.href = "<c:url value='/${postCategory}'/>"
         });
     });
 </script>
@@ -263,19 +238,9 @@
     loadComments()
 
     function loadComments() {
-        $.ajax({
-            type: "GET",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/comments?postNo=" + postNo, // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function (res) {
-                $(".comment-area").remove()
-                $("#commentList").after(toHtml(res))
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/comments?postNo=" + postNo, data, "GET", function (res) {
+            $(".comment-area").remove()
+            $("#commentList").after(toHtml(res))
         })
     }
 
@@ -287,21 +252,9 @@
             alert("댓글을 입력해주시기 바랍니다.")
             return;
         }
-        $.ajax({
-            type: "POST",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/comments", // 컨트롤러에서 대기중인 URL 주소이다.
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            data: JSON.stringify({
-                userId: userId, postNo: postNo, content: content
-            }),
-            success: function () {
-                loadComments()
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        let data = {userId: userId, postNo: postNo, content: content}
+        commonAjax("/muscles/comments", data, "POST", function () {
+            loadComments()
         })
         $("#inputComment").val("")
     }
@@ -310,18 +263,8 @@
     $(document).on("click", ".delBtn", function () {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
         let commentNo = $(this).parent().parent().attr('data-commentno')
-        $.ajax({
-            type: "DELETE",            // HTTP method type(GET, POST) 형식이다.
-            url: "/muscles/comments/" + commentNo,
-            headers: {              // Http header
-                "Content-Type": "application/json",
-            },
-            success: function () {
-                loadComments()
-            },
-            error: function () {
-                alert("AJAX 통신 실패")
-            }
+        commonAjax("/muscles/comments/" + commentNo, null, "DELETE", function () {
+            loadComments()
         })
     })
 
@@ -338,22 +281,11 @@
         $(document).on("click", "#modifyComment", function () {
             let content = $("#inputComment").val()
             let data = {commentNo: commentNo, content: content}
-            $.ajax({
-                type: "PATCH",            // HTTP method type(GET, POST) 형식이다.
-                url: "/muscles/comments",
-                headers: {              // Http header
-                    "Content-Type": "application/json",
-                },
-                data: JSON.stringify(data),
-                success: function () {
-                    $("#registerComment").show()
-                    $("#modifyComment").hide()
-                    $("#modifyCancel").hide()
-                    loadComments()
-                },
-                error: function () {
-                    alert("AJAX 통신 실패")
-                }
+            commonAjax("/muscles/comments", data, "PATCH", function () {
+                $("#registerComment").show()
+                $("#modifyComment").hide()
+                $("#modifyCancel").hide()
+                loadComments()
             })
             $("#inputComment").val("")
         })
@@ -365,7 +297,6 @@
         $("#modifyCancel").hide()
         $("#inputComment").val("")
     })
-
 
     let toHtml = function (comments) {
         let tmp = "";
@@ -380,10 +311,9 @@
             }
             tmp += ' <p style="font-style: italic" class="comment">' + comment.content + '</p>'
             if (comment.createdDate === comment.modDate)
-                tmp += ' <p style="font-weight: bold" class="commentDate">' + comment.createdDate
+                tmp += '<p style="font-weight: bold" class="commentDate">' + comment.createdDate + '</p>'
             else
-                tmp += ' |  <p class="commentDate">' + comment.modDate + "(수정됨)"
-            tmp += '</p>'
+                tmp += '<p class="commentDate">' + comment.modDate + "(수정됨)" + '</p>'
             tmp += '</div>'
             tmp += '</div>'
             tmp += '</div>'

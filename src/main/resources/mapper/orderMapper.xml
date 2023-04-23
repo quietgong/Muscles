@@ -67,14 +67,14 @@
     </select>
     <!-- orderNo, goodsNo 로 주문상품 반환 -->
     <select id="selectOrderItem" resultType="orderItemDto" parameterType="map">
-        select orderNo, goodsNo, goodsName, goodsCategory, goodsQty, goodsPrice
+        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice
         from orderitem
         WHERE orderNo = #{orderNo}
-        AND goodsNo = #{goodsNo}
+          AND goodsNo = #{goodsNo}
     </select>
     <!-- orderNo로 주문상품 목록 반환 -->
     <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
-        select *
+        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice
         from orderitem
         WHERE orderNo = '${orderNo}'
     </select>
@@ -92,14 +92,13 @@
     </select>
 
     <insert id="insertOrder" parameterType="orderDto">
-        insert into orders (userId, status, discount, createdDate)
-        values (#{userId}, '주문대기', #{discount}, now());
+        insert into orders (orderNo, userId, status, discount, createdDate)
+        values (#{orderNo},#{userId}, '주문대기', #{discount}, now());
     </insert>
 
     <insert id="insertOrderItem" parameterType="orderItemDto">
-        insert into orderitem (orderNo, goodsNo, goodsName, goodsCategory, goodsQty, goodsPrice, goodsImgPath)
-        values (#{orderNo}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsQty},
-        #{goodsPrice}, #{goodsImgPath});
+        insert into orderitem (orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice, goodsImgPath)
+        values (#{orderNo}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsQty}, #{goodsPrice}, #{goodsImgPath});
     </insert>
 
     <insert id="insertDelivery" parameterType="deliveryDto">
@@ -132,5 +131,18 @@
     <delete id="deleteAll">
         DELETE
         FROM ORDERS
+    </delete>
+
+    <delete id="deleteAllOrderItem">
+        DELETE
+        FROM orderitem
+    </delete>
+    <delete id="deleteAllPayment">
+        DELETE
+        FROM payment
+    </delete>
+    <delete id="deleteAllDelivery">
+        DELETE
+        FROM delivery
     </delete>
 </mapper>
