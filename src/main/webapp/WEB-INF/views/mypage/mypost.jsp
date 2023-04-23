@@ -8,7 +8,6 @@
         <div class="col-md-2">
             <%@include file="sidebar.jsp" %>
         </div>
-        <!-- 컨텐츠 -->
         <div class="col-md-10">
             <table id="postList" class="table table-hover" style="text-align: center">
                 <tr>

@@ -5,6 +5,7 @@ import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,8 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findAllUser() {
-        return userDao.selectAllUser();
+    public List<UserDto> findAllUser(SearchCondition sc) {
+        return userDao.selectAllUser(sc);
     }
 
     @Override

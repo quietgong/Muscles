@@ -1,13 +1,14 @@
 package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.domain.*;
+import com.kinaboot.muscles.handler.SearchCondition;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 public interface UserService {
-    List<UserDto> findAllUser();
+    List<UserDto> findAllUser(SearchCondition sc);
     UserDto findUser(String userId) throws Exception;
     UserDto findUserEmail(String email);
     int addUser(UserDto userDto) throws Exception;

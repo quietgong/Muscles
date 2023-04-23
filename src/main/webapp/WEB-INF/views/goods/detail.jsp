@@ -216,12 +216,7 @@
         </div>
     </div>
 </div>
-<!-- 이미지 확대 출력 모달 -->
 <script>
-    function showImgDetail(src) {
-        $("#modalImg").attr("src", src)
-    }
-
     let goodsNo = ${goodsDto.goodsNo};
     let goodsName = '${goodsDto.goodsName}';
     let goodsPrice = '${goodsDto.goodsPrice}';
@@ -256,20 +251,19 @@
         data.goodsCategory = goodsCategory
         data.goodsQty = $("#var-value").html()
         data.goodsPrice = goodsPrice * parseInt($("#var-value").html())
-        console.log(JSON.stringify(data))
         commonAjax("/muscles/cart/", data, "POST", function (res) {
             res === "ADD_OK" ? alert("장바구니에 추가하였습니다.") : alert("장바구니에 이미 존재합니다.")
             getCartItemsNum()
         })
     }
 
-    // FAQ
     loadFaqData()
 
-    function loadFaqData() {
+    function loadFaqData() { // FAQ 데이터 불러오기
         commonAjax("/muscles/goods/faq/", null, "GET", function (res) {
-            $("#faqList").empty()
-            $("#faqList").append(toHtml(res))
+            let target = $("#faqList")
+            target.empty()
+            target.append(toHtml(res))
         })
         let toHtml = function (items) {
             let tmp = "";

@@ -128,7 +128,6 @@
         </div>
     </div>
 </section>
-<!-- 베스트 상품 끝 -->
 <script>
     $(document).ready(function () {
         $('.slide_div').slick({

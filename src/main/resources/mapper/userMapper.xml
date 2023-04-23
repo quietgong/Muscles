@@ -12,10 +12,24 @@
         FROM user
         where userId = '${userId}'
     </select>
-    <select id="selectAllUser" resultType="UserDto">
+    <select id="selectAllUser" parameterType="SearchCondition" resultType="UserDto">
         SELECT *
         FROM user
+        <include refid="statusCondition"></include>
     </select>
+    <sql id="statusCondition">
+        <choose>
+            <when test='status == active'>
+                and expiredDate is not null
+            </when>
+            <when test='status == inactive'>
+                and expiredDate is null
+            </when>
+            <otherwise>
+                and 1=1
+            </otherwise>
+        </choose>
+    </sql>
     <select id="selectUser" parameterType="String" resultType="UserDto">
         SELECT *
         FROM user
@@ -67,10 +81,10 @@
     <update id="updateUser" parameterType="UserDto">
         UPDATE USER
         SET EMAIL    = #{email}
-        , PHONE    = #{phone}
-        , PASSWORD = #{password}
-        , address1 = #{address1}
-        , address2 = #{address2}
+          , PHONE    = #{phone}
+          , PASSWORD = #{password}
+          , address1 = #{address1}
+          , address2 = #{address2}
         WHERE userId = #{userId}
     </update>
 
@@ -104,7 +118,7 @@
     <delete id="deleteUser" parameterType="int">
         UPDATE USER
         SET expiredDate = now()
-            ,point = 0
+          , point       = 0
         where userNo = '${userNo}';
     </delete>
 

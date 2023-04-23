@@ -3,7 +3,7 @@ function commonAjax(url, parameter, type, callback) {
         type: type,
         url: url,
         data: JSON.stringify(parameter),
-        headers: {              // Http header
+        headers: {
             "Content-Type": "application/json",
         },
         success: function (res) {

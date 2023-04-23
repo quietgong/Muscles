@@ -156,7 +156,7 @@
             $("#goodsStock").val(res.goodsStock)
             $("#goodsDescription").val(res.goodsDescription)
             if (res.goodsImgPath != null)
-                showPreview([{uploadName: res.goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]}], 'thumbnail')
+                showGoodsImgPreview([{uploadName: res.goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]}], 'thumbnail')
             if (res.goodsImgDtoList.length !== 0) {
                 let items = []
                 res.goodsImgDtoList.forEach(function (r) {
@@ -164,7 +164,7 @@
                     tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
                     items.push(tmp)
                 })
-                showPreview(items, 'detail')
+                showGoodsImgPreview(items, 'detail')
             }
         })
     }
@@ -213,100 +213,10 @@
     }
 </script>
 <script>
-    // 이미지 업로드
-    $("input[type='file']").on("change", function () {
-        let type = $(this).attr("id");
-        let fileList = $(this)[0].files;
-        if (type === 'thumbnail') {
-            if (fileList.length > 1) {
-                deleteImg($(this).next().children(), "thumbnail", $(this).next().children().attr("data-url"))
-            }
-        }
-        let formData = new FormData();
-        for (let i = 0; i < fileList.length; i++)
-            formData.append("uploadFile", fileList[i]);
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/goods/" + type + "/" + $("#goodsNo").val(),
-            processData: false,
-            contentType: false,
-            data: formData,
-            dataType: 'json',
-            success: function (items) {
-                showPreview(items, type)
-            }
-        })
-    });
-
-    function showPreview(items, type) {
-        let tmp = "";
-        items.forEach(function (item) {
-            let addr = "/muscles/img/display?category=goods&type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
-            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            if (type === 'thumbnail')
-                tmp += '<img class="img-fluid" id="newThumbnail" src="' + addr + '">'
-            else {
-                tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
-                tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
-                tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
-            }
-            tmp += '</div>'
-        });
-        type === "detail" ? $("#detailPreview").append(tmp) : $("#thumbnailPreview").append(tmp);
-        moveImgPosition()
-    }
-
-    function showUpDownBtn() {
-        $("button:contains('↑')").show()
-        $('.detail:first-child button:contains("↑")').hide();
-        $("button:contains('↓')").show()
-        $('.detail:last-child button:contains("↓")').hide();
-    }
-
-    function moveImgPosition() {
-        showUpDownBtn()
-        // Up 버튼 클릭 시 이전 div와 위치 변경
-        $('.detail button:contains("↑")').click(function () {
-            let currentDiv = $(this).parent();
-            let prevDiv = currentDiv.prev('.detail');
-            if (prevDiv.length !== 0)
-                currentDiv.insertBefore(prevDiv);
-            showUpDownBtn()
-        });
-        // Down 버튼 클릭 시 다음 div와 위치 변경
-        $('.detail button:contains("↓")').click(function () {
-            let currentDiv = $(this).parent();
-            let nextDiv = currentDiv.next('.detail');
-            if (nextDiv.length !== 0)
-                currentDiv.insertAfter(nextDiv);
-            showUpDownBtn()
-        });
-    }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let type = $(this).parent().attr("data-type")
-        let target = $(this).parent()
-        deleteImg(target, type, fileName)
-    });
-
-    function deleteImg(target, type, fileName) {
-        let targetDiv = target
-        commonAjax("/muscles/img/delete/goods/" + type + "?fileName=" + fileName, null, "DELETE",
-            function (res) {
-                if (res === "DEL_OK") targetDiv.empty();// 파일 삭제가 성공적으로 이루어지면
-            })
-    }
-</script>
-<script>
     // 상품 정보 읽기
     loadProductData()
-
     function loadProductData() {
-        commonAjax("/muscles/admin/goods/", data, "GET", function (res) {
+        commonAjax("/muscles/admin/goods/", null, "GET", function (res) {
             $("#goodsList").empty()
             $("#goodsList").append(toHtml(res))
         })
@@ -328,8 +238,6 @@
             return tmp;
         }
     }
-</script>
-<script>
     // 상품 정보 삭제
     function removeProduct(goodsNo) {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
@@ -338,8 +246,7 @@
             loadProductData()
         })
     }
-</script>
-<script>
+    // 카테고리 불러오기
     loadCategory()
 
     function loadCategory() {
@@ -374,6 +281,29 @@
     $("#categoryDetailSelect").on("change", function () {
         this.value === 'new' ? $("#newCategory").show() : $("#newCategory").hide()
     })
+</script>
+<script>
+    // 이미지 업로드
+    $("input[type='file']").on("change", function () {
+        let type = $(this).parent().attr("data-type")
+        uploadGoodsImg("/muscles/img/goods/" + type + "/" + $("#goodsNo").val())
+    });
+
+    // <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        let fileName = $(this).parent().attr("data-url")
+        let type = $(this).parent().attr("data-type")
+        let target = $(this).parent()
+        deleteImg(target, type, fileName)
+    });
+
+    function deleteImg(target, type, fileName) {
+        let targetDiv = target
+        commonAjax("/muscles/img/delete/goods/" + type + "?fileName=" + fileName, null, "DELETE",
+            function (res) {
+                if (res === "DEL_OK") targetDiv.empty();// 파일 삭제가 성공적으로 이루어지면
+            })
+    }
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

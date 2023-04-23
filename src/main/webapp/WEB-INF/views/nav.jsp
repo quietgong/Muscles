@@ -126,25 +126,6 @@
 </div>
 <script>
     checkLoginStatus()
-    function checkLoginStatus() {
-        let userId = '${userId}'
-        if (userId === "") { // 로그아웃 상태
-            $("#login").css("display", "inline-block")
-            $("#register").css("display", "inline-block")
-            $("#chatting").css("display", "none")
-            // $("#admin").css("display", "none")
-            $("#logout").css("display", "none")
-            $("#cartNum").html("0")
-        } else {
-            getCartItemsNum()
-            $("#login").css("display", "none")
-            $("#register").css("display", "none")
-            $("#chatting").css("display", "inline-block")
-            // $("#admin").css("display", "inline-block")
-            $("#logout").css("display", "inline-block")
-        }
-    }
-
     function getCartItemsNum(){
     commonAjax("/muscles/cart/count/" + '${userId}', null, "GET", function (res) {
                 $("#cartNum").html(res)

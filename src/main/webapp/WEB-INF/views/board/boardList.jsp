@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
-<!-- nav -->
 <%@ include file="../nav.jsp" %>
 <div class="container">
     <form>
@@ -94,8 +93,6 @@
         </div>
     </div>
 </div>
-<script>
-    $("#${param.page}").attr("class", "active page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark")
-</script>
+<script>$("#${param.page}").addClass("active")</script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

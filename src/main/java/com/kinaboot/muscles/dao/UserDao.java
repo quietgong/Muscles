@@ -4,6 +4,7 @@ import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public interface UserDao {
     int count();
 
-    List<UserDto> selectAllUser();
+    List<UserDto> selectAllUser(SearchCondition sc);
 
     UserDto selectUser(String userId);
 

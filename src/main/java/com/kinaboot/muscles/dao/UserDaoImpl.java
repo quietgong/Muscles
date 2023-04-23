@@ -4,6 +4,7 @@ import com.kinaboot.muscles.domain.CouponDto;
 import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,8 +21,8 @@ public class UserDaoImpl implements UserDao {
     private static String namespace = "com.kinaboot.muscles.dao.userMapper.";
 
     @Override
-    public List<UserDto> selectAllUser() {
-        return session.selectList(namespace + "selectAllUser");
+    public List<UserDto> selectAllUser(SearchCondition sc) {
+        return session.selectList(namespace + "selectAllUser", sc);
     }
 
     @Override

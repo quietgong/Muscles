@@ -89,6 +89,9 @@
         </div>
     </div>
 </div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="<c:url value='/js/DaumPostCode.js'/>"></script>
+<script src="<c:url value='/js/validation.js'/>"></script>
 <script>
     $("#pwCheck").change(function () {
         $("#pwCheck").is(":checked") ? $(".passwordInput").show() : $(".passwordInput").hide()
@@ -106,19 +109,6 @@
             originEmail = user.email
         })
     }
-</script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="<c:url value='/js/DaumPostCode.js'/>"></script>
-<script>
-    /* 회원정보 변경 유효성 체크 */
-    let pwCheck = false // 비밀번호 입력 체크
-    let pwLengthCheck = false // 비밀번호 길이 체크
-    let pw1pw2Check = false // 비밀번호, 비밀번호 확인 일치 체크
-    let phoneCheck = false // 휴대폰번호 입력 체크
-    let emailCheck = false // 이메일 입력 체크
-    let emailFormCheck = false // 이메일 형식 체크
-    let emailVerifyCheck = false // 이메일 인증 체크
-    let addressCheck = false // 주소 입력 체크
 
     function submitModify() {
         if (!$("#pwCheck").is(":checked")) {
@@ -129,7 +119,7 @@
             PwValidCheck()
             Pw1Pw2Check()
         }
-        if ($("#email").val() == originEmail) {
+        if ($("#email").val() === originEmail) {
             emailCheck = true
             emailFormCheck = true
             emailVerifyCheck = true
@@ -138,8 +128,6 @@
             EmailVerifyCheck()
             EmailFormCheck($("#email").val())
         }
-        AddressValidCheck()
-        PhoneValidCheck()
         /* 최종 유효성 검사 */
         if (pwCheck && pwLengthCheck && pw1pw2Check && phoneCheck && emailCheck && emailFormCheck && emailVerifyCheck && addressCheck) {
             let userDto = {};
@@ -155,157 +143,5 @@
         }
         return false;
     }
-
-    /*
-    * 비밀번호 유효성 체크
-     */
-    function PwValidCheck() {
-        let pw1 = $("#pw1").val()
-        // 입력 여부 체크
-        if (pw1 == "") {
-            $("#pw_check").css("display", "block")
-            pwCheck = false
-        } else {
-            $("#pw_check").css("display", "none")
-            pwCheck = true
-        }
-        // 비밀번호 길이 체크
-        if (pw1 != "" && pw1.length < 5) {
-            $("#pw_length_check").css("display", "block")
-            pwLengthCheck = false
-        } else {
-            $("#pw_length_check").css("display", "none")
-            pwLengthCheck = true
-        }
-    }
-
-    $("#pw1").on("keyup", function () {
-        PwValidCheck()
-    });
-
-    // 비밀번호1, 비밀번호2 일치 체크
-    function Pw1Pw2Check() {
-        let pw1 = $("#pw1").val()
-        let pw2 = $("#pw2").val()
-        if (pw2 !== "") {
-            if (pw1 === pw2) {
-                $("#pw2_check_ok").css("display", "block")
-                $("#pw2_check_fail").css("display", "none")
-                pw1pw2Check = true
-            } else {
-                $("#pw2_check_ok").css("display", "none")
-                $("#pw2_check_fail").css("display", "block")
-                pw1pw2Check = false
-            }
-        }
-    }
-
-    $("#pw2").on("keyup", function () {
-        Pw1Pw2Check()
-    });
-
-    /*
-    * 이메일 유효성 체크
-     */
-    function EmailValidCheck() {
-        let email = $("#email").val()
-        // 입력 여부 체크
-        if (email === "") {
-            $("#email_check").css("display", "block")
-            emailCheck = false
-        } else {
-            $("#email_check").css("display", "none")
-            emailCheck = true
-        }
-    }
-
-    $("#email").on("keyup", function () {
-        EmailValidCheck()
-        if (emailCheck) {
-            if (EmailFormCheck($("#email").val())) {
-                $("#email_form_check").css("display", "none")
-                emailFormCheck = true
-            } else {
-                $("#email_form_check").css("display", "block")
-                emailFormCheck = false
-            }
-        }
-    })
-
-    function EmailFormCheck(email) {
-        var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        return form.test(email)
-    }
-
-    // 이메일 인증 체크
-    function EmailVerifyCheck() {
-        if ($("#emailVerifyNumber").val() === verifyCode) {
-            emailVerifyCheck = true
-            $("#email_verify_check_ok").css("display", "block")
-            $("#email_verify_check_fail").css("display", "none")
-        } else {
-            emailVerifyCheck = false
-            $("#email_verify_check_ok").css("display", "none")
-            $("#email_verify_check_fail").css("display", "block")
-        }
-    }
-
-    $("#emailVerifyNumber").on("keyup", function () {
-        EmailVerifyCheck()
-    })
-    /* 이메일 인증코드 발송 */
-    let verifyCode;
-    $("#sendVerifyNumber").on("click", function () {
-        EmailValidCheck()
-        if (emailCheck) {
-            let email = $("#email").val()
-            commonAjax("/muscles/register/mailCheck?email=" + email, null, "GET", function (verifyNum) {
-                console.log("인증번호 : " + verifyNum)
-                verifyCode = verifyNum
-                $("#emailVerifyNumber").attr("readonly", false)
-                $("#emailVerifyNumber").css("background-color", "#fff")
-                $("#emailVerifyNumber").focus()
-            })
-        }
-    })
-
-    /*
-    * 주소 유효성 체크
-     */
-    function AddressValidCheck() {
-        let address = $("#address").val()
-        // 입력 여부 체크
-        if (address === "") {
-            $("#address_check").css("display", "block")
-            addressCheck = false
-        } else {
-            $("#address_check").css("display", "none")
-            addressCheck = true
-        }
-    }
-
-    $("#address").on("keyup", function () {
-        AddressValidCheck()
-    })
-
-    /*
-    * 연락처 유효성 체크
-     */
-    function PhoneValidCheck() {
-        $("#phone").val($("#phone").val().replaceAll("-", ""))
-        let phone = $("#phone").val()
-        // 입력 여부 체크
-        if (phone === "") {
-            $("#phone_check").css("display", "block")
-            phoneCheck = false
-        } else {
-            $("#phone_check").css("display", "none")
-            phoneCheck = true
-        }
-    }
-
-    $("#phone").on("keyup", function () {
-        PhoneValidCheck()
-    })
 </script>
 <%@ include file="../footer.jsp" %>

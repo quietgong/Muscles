@@ -177,10 +177,6 @@
         })
     }
 
-    $(document).ready(function () {
-        let star_rating_width = $('.fill-ratings span').width();
-        $('.star-ratings').width(star_rating_width);
-    })
     // 카테고리 불러오기
     loadGoodsCategories()
 

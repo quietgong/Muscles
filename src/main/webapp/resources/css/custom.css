@@ -40,6 +40,7 @@ span {
     z-index: 0;
 }
 
+/* 테이블 속성 */
 tr {
     vertical-align: middle;
 }

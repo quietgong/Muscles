@@ -2,6 +2,7 @@ package com.kinaboot.muscles.controller.admin;
 
 import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.UserDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -21,9 +22,9 @@ public class UserController {
     UserService userService;
 
     @GetMapping("")
-    public ResponseEntity<List<UserDto>> userList() {
+    public ResponseEntity<List<UserDto>> userList(SearchCondition sc) {
         log.info("유저 전체 목록 조회");
-        return new ResponseEntity<>(userService.findAllUser(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAllUser(sc), HttpStatus.OK);
     }
     @DeleteMapping("{userId}")
     public ResponseEntity<String> userRemove(@PathVariable String userId) {

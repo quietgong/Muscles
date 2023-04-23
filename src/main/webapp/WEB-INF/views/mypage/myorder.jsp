@@ -231,26 +231,10 @@
 <script>
     // 이미지 업로드
     $("input[type='file']").on("change", function () {
-        let fileList = $(this)[0].files;
-        let formData = new FormData();
-        for (let i = 0; i < fileList.length; i++)
-            formData.append("uploadFile", fileList[i]);
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"), // 컨트롤러에서 대기중인 URL 주소이다.
-            processData: false,
-            contentType: false,
-            data: formData,
-            dataType: 'json',
-            success: function (items) {
-                showPreview(items, "detail")
-            }
-        })
+        uploadImg("/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"))
     });
 
     function showPreview(items, type) {
-        console.log(items)
         let tmp = "";
         items.forEach(function (item) {
             let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
@@ -262,56 +246,13 @@
             tmp += '</div>'
         });
         $("#reviewPreview").append(tmp)
-        moveImgPosition()
-    }
-
-    function showUpDownBtn() {
-        $("button:contains('↑')").show()
-        $('.detail:first-child button:contains("↑")').hide();
-        $("button:contains('↓')").show()
-        $('.detail:last-child button:contains("↓")').hide();
-    }
-
-    function moveImgPosition() {
         showUpDownBtn()
-        $('.detail button:contains("↑")').click(function () {
-            let currentDiv = $(this).parent();
-            let prevDiv = currentDiv.prev('.detail');
-            if (prevDiv.length !== 0)
-                currentDiv.insertBefore(prevDiv);
-            showUpDownBtn()
-        });
-        $('.detail button:contains("↓")').click(function () {
-            let currentDiv = $(this).parent();
-            let nextDiv = currentDiv.next('.detail');
-            if (nextDiv.length !== 0)
-                currentDiv.insertAfter(nextDiv);
-            showUpDownBtn()
-        });
     }
 
     <!-- 업로드된 이미지 삭제 -->
     $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let target = $(this).parent()
-        deleteImg(target, "detail", fileName)
+        RemoveUploadImg("/muscles/img/delete/post/detail?fileName=" + $(this).parent().attr("data-url"))
     });
-
-    function deleteImg(target, type, fileName) {
-        let targetDiv = target
-        $.ajax({
-            type: "DELETE",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/delete/review/detail?fileName=" + fileName,
-            success: function (res) {
-                console.log(res)
-                // 파일 삭제가 성공적으로 이루어지면
-                if (res === "DEL_OK")
-                    targetDiv.empty();
-            }
-        })
-    }
-
 </script>
 <script>
     /* 주문 취소 모달창 처리 */
@@ -333,11 +274,8 @@
     function orderCancel(e) {
         let orderNo = $(e).next().val()
         let cancelReason;
-        if ($("input[name='orderCancelOption']:checked").val() === 'etc')
-            cancelReason = $("#orderCancelContent").val()
-        else
-            cancelReason = $("input[name='orderCancelOption']:checked").val()
-
+        let checkVal = $("input[name='orderCancelOption']:checked").val()
+        cancelReason = checkVal === 'etc' ? $("#orderCancelContent").val() : checkVal
         commonAjax("/muscles/order/" + orderNo, cancelReason, "DELETE", function () {
             alert("주문이 취소되었습니다.")
             location.replace("")
@@ -391,11 +329,5 @@
             // 리뷰 등록 버튼 숨기기
         })
     }
-</script>
-<script>
-    // 별점 드래그
-    $(document).on('mouseup', '.starRange', function () {
-        $(this).next().css("width", $(this).val() + '%')
-    })
 </script>
 <%@ include file="../footer.jsp" %>

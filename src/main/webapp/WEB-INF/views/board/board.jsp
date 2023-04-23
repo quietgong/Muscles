@@ -102,97 +102,10 @@
     </div>
 </div>
 <script>
-    // 이미지 확대 모달 출력
-    function showImgDetail(src) {
-        $("#modalImg").attr("src", src)
-    }
-
-    // 이미지 업로드
-    $("input[type='file']").on("change", function () {
-        let fileList = $(this)[0].files;
-        let formData = new FormData();
-        for (let i = 0; i < fileList.length; i++)
-            formData.append("uploadFile", fileList[i]);
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/${postCategory}/detail/0",
-            processData: false,
-            contentType: false,
-            data: formData,
-            dataType: 'json',
-            success: function (items) {
-                showPreview(items, "detail")
-            }
-        })
-    });
-
-    function showPreview(items, type) {
-        let tmp = "";
-        items.forEach(function (item) {
-            let addr = "/muscles/img/display?category=${postCategory}&type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div class="detail col-md-2" data-type=' + type + ' data-url=' + addr + '>'
-            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">→</button>'
-            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">←</button>'
-            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
-            tmp += '</div>'
-        });
-        $("#postPreview").append(tmp)
-        showLeftRightBtn()
-    }
-
-    // Left 버튼 클릭 시 이전 div와 위치 변경
-    $(document).on("click", '.detail button:contains("←")', function () {
-        let currentDiv = $(this).parent();
-        let prevDiv = currentDiv.prev('.detail');
-        if (prevDiv.length !== 0)
-            currentDiv.insertBefore(prevDiv);
-        showLeftRightBtn()
-    });
-    // Right 버튼 클릭 시 다음 div와 위치 변경
-    $(document).on("click", '.detail button:contains("→")', function () {
-        let currentDiv = $(this).parent();
-        let nextDiv = currentDiv.next('.detail');
-        if (nextDiv.length !== 0)
-            currentDiv.insertAfter(nextDiv);
-        showLeftRightBtn()
-    });
-
-    function showLeftRightBtn() {
-        $("button:contains('←')").show()
-        $('.detail:first-child button:contains("←")').hide();
-        $("button:contains('→')").show()
-        $('.detail:last-child button:contains("→")').hide();
-    }
-
-    function deleteImg(target, type, fileName) {
-        let targetDiv = target
-        $.ajax({
-            type: "DELETE",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/delete/post/detail?fileName=" + fileName,
-            success: function (res) {
-                // 파일 삭제가 성공적으로 이루어지면
-                if (res === "DEL_OK")
-                    targetDiv.empty();
-            }
-        })
-    }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let target = $(this).parent()
-        deleteImg(target, "detail", fileName)
-    });
-</script>
-<script>
     // 글 수정
     $("#modify").on("click", function () {
         let isReadOnly = $("textarea[name=content]").attr("readonly");
-        // 글 수정 시작
-        if (isReadOnly === "readonly") {
+        if (isReadOnly === "readonly") { // 글 수정 시작
             $("#modify").html("등록");
             $("#remove").hide()
             $("input[name=title]").attr("readonly", false);
@@ -201,8 +114,7 @@
             $(".modPosition").show()
             showLeftRightBtn()
         }
-        // 글 수정 완료
-        else {
+        else { // 글 수정 완료
             let modData = {}
             modData.postNo = postNo
             modData.userId = '${userId}'
@@ -230,15 +142,14 @@
                 location.href = "<c:url value='/${postCategory}'/>"
         });
     });
-</script>
-<script>
+
     // 댓글 기능
     let postNo = ${postDto.postNo};
     // 댓글 불러오기
     loadComments()
 
     function loadComments() {
-        commonAjax("/muscles/comments?postNo=" + postNo, data, "GET", function (res) {
+        commonAjax("/muscles/comments?postNo=" + postNo, null, "GET", function (res) {
             $(".comment-area").remove()
             $("#commentList").after(toHtml(res))
         })
@@ -290,6 +201,7 @@
             $("#inputComment").val("")
         })
     })
+
     // 댓글 수정 취소
     $("#modifyCancel").click(function () {
         $("#registerComment").show()
@@ -320,6 +232,32 @@
         })
         return tmp;
     }
+</script>
+<script>
+    // 이미지 업로드
+    $("input[type='file']").on("change", function () {
+        uploadImg("/muscles/img/'${postCategory}'/detail/0")
+    });
+
+    function showPreview(items, type) {
+        let tmp = "";
+        items.forEach(function (item) {
+            let addr = "/muscles/img/display?category=${postCategory}&type=" + type + "&fileName=" + item.uploadName
+            tmp += '<div class="detail col-md-2" data-type=' + type + ' data-url=' + addr + '>'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">→</button>'
+            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">←</button>'
+            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
+            tmp += '</div>'
+        });
+        $("#postPreview").append(tmp)
+        showLeftRightBtn()
+    }
+
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        RemoveUploadImg("/muscles/img/delete/post/detail?fileName=" + fileName)
+    });
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

@@ -130,10 +130,10 @@
                                             </c:forEach>
                                             </tbody>
                                         </table>
-                                    </div><!--//table-responsive-->
-                                </div><!--//app-card-body-->
-                            </div><!--//app-card-->
-                        </div><!--//tab-pane-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -205,9 +205,8 @@
     $(".orderAccept").on("click", function () {
         let orderNo = $(this).parent().parent().children().html()
         commonAjax("/muscles/admin/order/" + orderNo, null, "POST", function (res) {
-            if (res === 'ACCEPT_OK')
-                alert("주문을 승인하였습니다.")
-            location.replace("")
+            if (res === 'ACCEPT_OK') alert("주문을 승인하였습니다.")
+            location.reload()
         })
     })
     /* 주문 취소 처리 */
@@ -225,10 +224,8 @@
     function orderCancel(e) {
         let orderNo = $(e).next().val()
         let cancelReason;
-        if ($("input[name='orderCancelOption']:checked").val() === 'etc')
-            cancelReason = $("#orderCancelContent").val()
-        else
-            cancelReason = $("input[name='orderCancelOption']:checked").val()
+        let checkedVal = $("input[name='orderCancelOption']:checked").val()
+        cancelReason = checkedVal === 'etc' ? $("#orderCancelContent").val() : checkedVal
         commonAjax("/muscles/order/" + orderNo, cancelReason, "DELETE", function () {
             alert("주문이 취소되었습니다.")
             location.replace("")

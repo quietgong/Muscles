@@ -138,98 +138,14 @@
         }
     }
 
-    // 이미지 업로드
-    $("input[type='file']").on("change", function () {
-        let fileList = $(this)[0].files;
-        let formData = new FormData();
-        for (let i = 0; i < fileList.length; i++)
-            formData.append("uploadFile", fileList[i]);
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"), // 컨트롤러에서 대기중인 URL 주소이다.
-            processData: false,
-            contentType: false,
-            data: formData,
-            dataType: 'json',
-            success: function (items) {
-                showPreview(items, "detail")
-            }
-        })
-    });
-
-    function showPreview(items, type) {
-        let tmp = "";
-        items.forEach(function (item) {
-            let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
-            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
-            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
-            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
-            tmp += '</div>'
-        });
-        $("#reviewPreview").append(tmp)
-        moveImgPosition()
-    }
-
-    function showUpDownBtn() {
-        $("button:contains('↑')").show()
-        $('.detail:first-child button:contains("↑")').hide();
-        $("button:contains('↓')").show()
-        $('.detail:last-child button:contains("↓")').hide();
-    }
-
-    function moveImgPosition() {
-        showUpDownBtn()
-        $('.detail button:contains("↑")').click(function () {
-            let currentDiv = $(this).parent();
-            let prevDiv = currentDiv.prev('.detail');
-            if (prevDiv.length !== 0)
-                currentDiv.insertBefore(prevDiv);
-            showUpDownBtn()
-        });
-        $('.detail button:contains("↓")').click(function () {
-            let currentDiv = $(this).parent();
-            let nextDiv = currentDiv.next('.detail');
-            if (nextDiv.length !== 0)
-                currentDiv.insertAfter(nextDiv);
-            showUpDownBtn()
-        });
-    }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let target = $(this).parent()
-        deleteImg(target, "detail", fileName)
-    });
-
-    function deleteImg(target, type, fileName) {
-        let targetDiv = target
-        $.ajax({
-            type: "DELETE",
-            enctype: 'multipart/form-data',
-            url: "/muscles/img/delete/review/detail?fileName=" + fileName,
-            success: function (res) {
-                console.log(res)
-                // 파일 삭제가 성공적으로 이루어지면
-                if (res === "DEL_OK") {
-                    targetDiv.empty();
-                }
-            }
-        })
-    }
-
-    // 리뷰 수정
-    function modReview(e) {
+    function modReview(e) { // 리뷰 수정
         let reviewNo = $(e).parent().attr("data-reviewNo")
         commonAjax("/muscles/review/" + reviewNo, null, "GET", function (res) {
             insertModalData(res)
         })
     }
 
-    function reviewRegister() {
+    function reviewRegister() { // 리뷰 등록
         let reviewNo = $("#reviewNo").val()
         let score = $(".starRange").val()
         let content = $('#reviewContent').val()
@@ -249,19 +165,39 @@
         })
     }
 
-    // 리뷰 삭제
-    function delReview(e) {
+    function delReview(e) { // 리뷰 삭제
         if (!confirm("정말로 삭제하시겠습니까?")) return;
         let reviewNo = $(e).parent().attr("data-reviewNo")
         commonAjax("/muscles/review/" + reviewNo, null, "DELETE", function () {
                 location.reload()
         })
     }
+</script>
+<script>
+    // 이미지 업로드
+    $("input[type='file']").on("change", function () {
+        uploadImg("/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"))
+    });
 
-    // 별점 드래그
-    $(document).on('mouseup', '.starRange', function () {
-        $(this).next().css("width", $(this).val() + '%')
-    })
+    function showPreview(items, type) {
+        let tmp = "";
+        items.forEach(function (item) {
+            let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
+            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
+            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
+            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
+            tmp += '</div>'
+        });
+        $("#reviewPreview").append(tmp)
+        showUpDownBtn()
+    }
+
+    <!-- 업로드된 이미지 삭제 -->
+    $(document).on("click", ".delPreview", function () {
+        RemoveUploadImg("/muscles/img/delete/review/detail?fileName=" + fileName)
+    });
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>
