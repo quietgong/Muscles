@@ -23,8 +23,8 @@
 
     <insert id="insert" parameterType="commentDto">
         insert into comment
-        (postNo, content, userId, createdDate, modDate)
-        values (#{postNo}, #{content}, #{userId}, now(), now())
+        (postNo, content, userId, createdDate)
+        values (#{postNo}, #{content}, #{userId}, now())
     </insert>
 
     <update id="update" parameterType="CommentDto">

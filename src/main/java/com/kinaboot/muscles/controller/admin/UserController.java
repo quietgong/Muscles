@@ -21,8 +21,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("")
+    @GetMapping("find")
     public ResponseEntity<List<UserDto>> userList(SearchCondition sc) {
+        System.out.println("sc = " + sc);
         log.info("유저 전체 목록 조회");
         return new ResponseEntity<>(userService.findAllUser(sc), HttpStatus.OK);
     }

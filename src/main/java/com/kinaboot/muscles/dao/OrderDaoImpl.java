@@ -43,12 +43,12 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public int insertDelivery(DeliveryDto deliveryDto) {
-        return session.insert(namespace + "insertDelivery");
+        return session.insert(namespace + "insertDelivery", deliveryDto);
     }
 
     @Override
     public int insertPayment(PaymentDto paymentDto) {
-        return session.insert(namespace + "insertPayment");
+        return session.insert(namespace + "insertPayment", paymentDto);
     }
 
     @Override

@@ -22,6 +22,7 @@
                ,c.goodsQty as goodsQty
                ,p.goodsPrice as goodsPrice
                ,p.goodsCategory as goodsCategory
+               ,p.goodsCategoryDetail as goodsCategoryDetail
                ,p.goodsImgPath as goodsImgPath
         from cart c, goods p
         where p.goodsNo = c.goodsNo

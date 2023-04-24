@@ -29,7 +29,8 @@ public class ChattingController {
 
     @PostMapping("/chat/post")
     @ResponseBody
-    public ResponseEntity<String> chatAdd(ChatDto chatDto) {
+    public ResponseEntity<String> chatAdd(@RequestBody ChatDto chatDto) {
+        System.out.println("chatDto = " + chatDto);
         if (chatService.saveChat(chatDto) != 0)
             return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
         else
@@ -39,7 +40,7 @@ public class ChattingController {
     @GetMapping("/chatting")
     public String chatList(HttpSession session, Model m) {
         String chatName = (String) session.getAttribute("id");
-        log.info("[id] : " + chatName + "채팅상담 접속");
+        log.info("[id] : " + chatName + " 채팅상담 접속");
         boolean hasAlreadyChatRoom = false;
         if (chatDtoList.size() != 0 && chatName != null && !chatName.trim().equals("") && !chatName.equals("null")) {
             for (ChatDto chatDto : chatDtoList) {
@@ -50,7 +51,7 @@ public class ChattingController {
             }
         }
         if (!hasAlreadyChatRoom)
-            chatDtoList.add(new ChatDto(null,null,chatName));
+            chatDtoList.add(new ChatDto(chatName, chatName, chatName));
         m.addAttribute("chatDtoList", chatService.findChat(chatName));
         return "chatting/chatting";
     }

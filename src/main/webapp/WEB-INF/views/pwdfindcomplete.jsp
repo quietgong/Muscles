@@ -9,8 +9,8 @@
                 <h5 class="card-header">비밀번호 찾기</h5>
                 <div class="card-body">
                     <h5 class="card-title">이메일(${email})로 임시 비밀번호를 발송했습니다.</h5>
-                    <p class="card-text">보안을 위해 임시 비밀번호를 사용한 로그인 이후,</p>
-                    <p class="card-text">반드시 <strong>비밀번호를 변경</strong>하여 주시기 바랍니다.</p>
+                    <p class="card-text mt-3">보안을 위해 임시 비밀번호를 사용한 로그인 이후,</p>
+                    <p class="card-text mt-3">반드시 <strong>비밀번호를 변경</strong>하여 주시기 바랍니다.</p>
                 </div>
                 <div class="card-body">
                     <div class="card-text">
@@ -22,5 +22,11 @@
         </div>
     </div>
 </div>
+<script>
+    let email = '${email}';
+    if (email === '' || email == null) {
+        location.href = "/muscles";
+    }
+</script>
 <!-- footer -->
 <%@ include file="footer.jsp" %>

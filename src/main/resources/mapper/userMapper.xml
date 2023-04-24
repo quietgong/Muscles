@@ -15,18 +15,18 @@
     <select id="selectAllUser" parameterType="SearchCondition" resultType="UserDto">
         SELECT *
         FROM user
-        <include refid="statusCondition"></include>
+        <include refid="statusCondition"/>
     </select>
     <sql id="statusCondition">
         <choose>
-            <when test='status == active'>
-                and expiredDate is not null
+            <when test='status == "active"'>
+                where expiredDate is null
             </when>
-            <when test='status == inactive'>
-                and expiredDate is null
+            <when test='status == "inactive"'>
+                where expiredDate is not null
             </when>
             <otherwise>
-                and 1=1
+                where 1=1
             </otherwise>
         </choose>
     </sql>

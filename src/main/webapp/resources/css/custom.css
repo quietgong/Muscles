@@ -54,6 +54,7 @@ td span {
     font-size: 1.4rem;
     text-align: center;
 }
+
 /* 유효성 검사 메세지 */
 #emailVerifyNumber {
     background-color: #ffeded;

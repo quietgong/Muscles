@@ -210,8 +210,9 @@
 
     function saveChat(data) {
         // 채팅 메세지 DB 저장
-        commonAjax("/muscles/chat/post", data, "POST", function () {
-            scrollTop()
+        commonAjax("/muscles/chat/save", data, "POST", function (res) {
+            if(res==="ADD_OK")
+                scrollTop()
         });
     }
 </script>

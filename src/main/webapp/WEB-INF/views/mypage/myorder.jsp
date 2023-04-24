@@ -74,6 +74,13 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="d-flex justify-content-center gap-2">
+                                                            <c:set var="hasReview"
+                                                                   value="${orderDto.status == '주문완료' && orderItemDto.hasReview == false ? 'inline' : 'none'}"/>
+                                                            <button style="display: ${hasReview}" type=button class="btn btn-primary"
+                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                                    onclick="createReview(${orderDto.orderNo}, ${orderItemDto.goodsNo})">
+                                                                리뷰 작성
+                                                            </button>
                                                             <button type="button"
                                                                     onclick='location.href="<c:url
                                                                             value='/goods/detail?goodsNo=${orderItemDto.goodsNo}'/>"'
@@ -84,13 +91,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <c:set var="hasReview"
-                                                   value="${orderDto.status == '주문완료' && orderItemDto.hasReview == false ? 'inline' : 'none'}"/>
-                                            <button style="display: ${hasReview}" type=button class="btn btn-primary"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                    onclick="createReview(${orderDto.orderNo}, ${orderItemDto.goodsNo})">
-                                                리뷰 작성
-                                            </button>
                                         </div>
                                     </c:forEach>
                                     <!-- 주문상품 반복 -->
@@ -204,7 +204,7 @@
                     <div class="row mt-5">
                         <div class="col-md-12">
                             <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
-                            <input type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
+                            <input onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this)' type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
                             <div id="reviewPreview"></div>
                         </div>
                     </div>
@@ -228,12 +228,9 @@
     </div>
 </div>
 <!-- 리뷰 작성 Modal -->
-<script>
-    // 이미지 업로드
-    $("input[type='file']").on("change", function () {
-        uploadImg("/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"))
-    });
 
+<script src="<c:url value='/js/custom/image.js'/>"></script>
+<script>
     function showPreview(items, type) {
         let tmp = "";
         items.forEach(function (item) {
@@ -248,11 +245,6 @@
         $("#reviewPreview").append(tmp)
         showUpDownBtn()
     }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        RemoveUploadImg("/muscles/img/delete/post/detail?fileName=" + $(this).parent().attr("data-url"))
-    });
 </script>
 <script>
     /* 주문 취소 모달창 처리 */
@@ -326,7 +318,7 @@
         data.reviewImgDtoList = reviewImgDtoList
         commonAjax("/muscles/review", data, "POST", function () {
             alert("등록이 완료되었습니다.")
-            // 리뷰 등록 버튼 숨기기
+            location.reload()
         })
     }
 </script>

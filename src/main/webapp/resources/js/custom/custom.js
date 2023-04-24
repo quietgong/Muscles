@@ -9,8 +9,7 @@ $(document).ready(function () {
 })
 
 // 로그인 상태에 따라 버튼 보여주기, 숨기기
-function checkLoginStatus() {
-    let userId = '${userId}'
+function checkLoginStatus(userId) {
     if (userId === "") { // 로그아웃 상태
         $("#login").css("display", "inline-block")
         $("#register").css("display", "inline-block")

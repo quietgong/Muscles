@@ -69,6 +69,11 @@ public class OrderController {
         return "redirect:/order/complete";
     }
 
+    @GetMapping("/complete")
+    public String m(){
+        return "order/complete";
+    }
+
     @DeleteMapping("/{orderNo}")
     public ResponseEntity<String> removeOrder(@PathVariable Integer orderNo, @RequestBody String cancelReason) {
         log.info("[주문번호] : " + orderNo + " 주문취소, [취소사유] : " + cancelReason );

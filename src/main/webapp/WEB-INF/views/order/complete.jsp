@@ -19,24 +19,23 @@
                             <tr>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">주문일자</span>
-                                        <span><fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd"
+                                        <span class="mt-2"><fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd"
                                                               type="date"/></span></div>
                                 </td>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">주문번호</span>
-                                        <span>${orderDto.orderNo}</span></div>
+                                        <span class="mt-2">${orderDto.orderNo}</span></div>
                                 </td>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">결제수단</span>
-                                        <span>
+                                        <span class="mt-2">
                                             ${orderDto.paymentDto.type}
                                         </span>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">배송지</span>
-                                        <span>${orderDto.deliveryDto.address1}</span>
-                                        <span>${orderDto.deliveryDto.address2}</span>
+                                        <span class="mt-2">${orderDto.deliveryDto.address1} ${orderDto.deliveryDto.address2}</span>
                                     </div>
                                 </td>
                             </tr>
@@ -49,13 +48,15 @@
                             <!-- 상품 목록 -->
                             <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
                                 <tr>
-                                    <td width="30%"><img class="img-fluid" src="${orderItemDto.goodsImgPath}"></td>
-                                    <td width="25%"><span class="font-weight-bold">${orderItemDto.goodsName}</span>
+                                    <td width="40%"><img class="img-fluid" src="${orderItemDto.goodsImgPath}"></td>
+                                    <td width="25%">
+                                        <span class="font-weight-bold">
+                                                ${orderItemDto.goodsName} (수량 : ${orderItemDto.goodsQty})
+                                        </span>
                                     </td>
-                                    <td width="20%"><span>수량:${orderItemDto.goodsQty}</span></td>
                                     <td width="20%">
                                         <div class="text-right"><span
-                                                class="font-weight-bold">${orderItemDto.goodsPrice}</span></div>
+                                                class="font-weight-bold">₩<fmt:formatNumber value="${orderItemDto.goodsPrice}" pattern="#,###" /></span></div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -73,7 +74,9 @@
                                     </td>
                                     <td>
                                         <div class="text-right">
-                                            <span><fmt:formatNumber value="${orderDto.paymentDto.price + orderDto.discount}" pattern="#,###"/></span></div>
+                                            <span>₩<fmt:formatNumber
+                                                    value="${orderDto.paymentDto.price + orderDto.discount}"
+                                                    pattern="#,###"/></span></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -81,7 +84,8 @@
                                         <div class="text-left"><span class="text-muted">할인 적용</span></div>
                                     </td>
                                     <td>
-                                        <div class="text-right"><span class="text-success">₩<fmt:formatNumber value="${orderDto.discount}" pattern="#,###"/></span>
+                                        <div class="text-right"><span class="text-success">₩<fmt:formatNumber
+                                                value="${orderDto.discount}" pattern="#,###"/></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -92,7 +96,8 @@
                                     </td>
                                     <td>
                                         <div class="text-right"><span
-                                                class="font-weight-bold"><fmt:formatNumber value="${orderDto.paymentDto.price}" pattern="#,###"/></span>
+                                                class="font-weight-bold"><fmt:formatNumber
+                                                value="₩${orderDto.paymentDto.price}" pattern="#,###"/></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -114,11 +119,11 @@
     </div>
 </div>
 <script>
-    try {
-        JSON.parse('${orderDto}');
-    } catch (e) {
-        location.href = "/muscles";
-    }
+    <%--try {--%>
+    <%--    JSON.parse('${orderDto}');--%>
+    <%--} catch (e) {--%>
+    <%--    location.href = "/muscles";--%>
+    <%--}--%>
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

@@ -11,14 +11,18 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/templatemo.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/custom.css'/>">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="<c:url value='/css/fontawesome.min.css'/>">
     <script src="<c:url value='/js/jquery-1.11.0.min.js'/>"></script>
     <script src="<c:url value='/js/jquery-migrate-1.2.1.min.js'/>"></script>
-    <script src="<c:url value='/js/custom.js'/>"></script>
+    <script src="<c:url value='/js/custom/custom.js'/>"></script>
+    <script src="<c:url value='/js/custom/ajax.js'/>"></script>
+    <script src="<c:url value='/js/bootstrap.bundle.min.js'/>"></script>
+    <script src="<c:url value='/js/slick.min.js'/>"></script>
+    <script src="<c:url value='/js/templatemo.js'/>"></script>
 </head>
 <body>
 <div class="p-3 container d-grid gap-2 d-md-flex justify-content-end">
@@ -47,8 +51,6 @@
         </c:otherwise>
     </c:choose>
 </div>
-<!-- Close Top Nav -->
-
 <!-- Header -->
 <nav class="navbar navbar-expand-lg navbar-light shadow">
     <div class="container d-flex justify-content-between align-items-center">
@@ -125,9 +127,10 @@
     </div>
 </div>
 <script>
-    checkLoginStatus()
+    let userId = '${userId}';
+    checkLoginStatus(userId)
     function getCartItemsNum(){
-    commonAjax("/muscles/cart/count/" + '${userId}', null, "GET", function (res) {
+    commonAjax("/muscles/cart/count/" + userId, null, "GET", function (res) {
                 $("#cartNum").html(res)
         })
     }

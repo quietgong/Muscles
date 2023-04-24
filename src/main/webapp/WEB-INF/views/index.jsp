@@ -152,7 +152,6 @@
             type: "GET",
             url: '/muscles/goods/best',
             success: function (res) {
-                console.log(res)
                 $("#bestGoodsList").append(toHtml(res))
             },
             error: function () {

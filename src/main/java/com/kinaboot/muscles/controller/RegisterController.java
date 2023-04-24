@@ -15,12 +15,11 @@ import java.net.URLEncoder;
 import java.util.Random;
 
 import static com.kinaboot.muscles.controller.common.MailController.mailSend;
+
 @Slf4j
 @Controller
 @RequestMapping("/register/")
 public class RegisterController {
-    @Autowired
-    private JavaMailSender mailSender;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -42,24 +41,5 @@ public class RegisterController {
     public int idDupCheck(@PathVariable String userId) {
         log.info("ID 중복검사 [id] : " + userId);
         return userService.countUser(userId);
-    }
-
-    @GetMapping("mailCheck")
-    @ResponseBody
-    public String emailCheck(String email) {
-        log.info("인증번호 전송 진입 [email] : " + email);
-        Random random = new Random();
-        int verifyCode = random.nextInt(888888) + 111111;
-        log.info("생성된 인증번호 : " + verifyCode);
-        /* 이메일 발송 */
-        String setFrom = "quietgong@naver.com";
-        String toMail = email;
-        String title = "머슬스 회원가입 인증 이메일 입니다.";
-        String content =
-                "머슬스 회원가입을 환영합니다."
-                        + "<br><br>"
-                        + "인증 번호는 " + "<strong>" + verifyCode + "</strong> 입니다.";
-
-        return mailSend(String.valueOf(verifyCode), setFrom, toMail, title, content, mailSender);
     }
 }

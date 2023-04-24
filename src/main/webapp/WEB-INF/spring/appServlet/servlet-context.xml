@@ -45,17 +45,13 @@
     <view-controller path="/" view-name="index"/>
 
     <view-controller path="/pwdfind" view-name="pwdfind"/>
-
     <view-controller path="/admin/goods" view-name="admin/goods"/>
     <view-controller path="/admin/user" view-name="admin/user"/>
-
-    <view-controller path="/order/complete" view-name="order/complete"/>
     <view-controller path="/chatting" view-name="chatting/chatRoom"/>
     <view-controller path="/login" view-name="login"/>
     <view-controller path="/cart" view-name="cart"/>
     <view-controller path="/nav" view-name="nav"/>
     <view-controller path="/register" view-name="register"/>
-
     <view-controller path="/mypage/coupon" view-name="mypage/mycoupon"/>
     <view-controller path="/mypage/modify" view-name="mypage/myinfo"/>
     <view-controller path="/mypage/review" view-name="mypage/myreview"/>

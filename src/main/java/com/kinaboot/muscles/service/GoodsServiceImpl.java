@@ -42,7 +42,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDto.setGoodsNo(goodsNo);
         goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
-        for(GoodsImgDto goodsImgDto : goodsImgDtoList)
+        for (GoodsImgDto goodsImgDto : goodsImgDtoList)
             goodsDao.insertGoodsImg(goodsImgDto.getGoodsNo(), goodsImgDto.getUploadPath());
         return goodsDao.insert(goodsDto);
     }
@@ -52,7 +52,7 @@ public class GoodsServiceImpl implements GoodsService {
     public int modifyGoods(GoodsDto goodsDto) {
         goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
-        for(GoodsImgDto goodsImgDto : goodsImgDtoList)
+        for (GoodsImgDto goodsImgDto : goodsImgDtoList)
             goodsDao.insertGoodsImg(goodsImgDto.getGoodsNo(), goodsImgDto.getUploadPath());
         return goodsDao.updateGoods(goodsDto);
     }
@@ -94,12 +94,11 @@ public class GoodsServiceImpl implements GoodsService {
     public GoodsDto findGoods(Integer goodsNo) {
         GoodsDto goodsDto = goodsDao.select(goodsNo);
         goodsDto.setGoodsImgDtoList(goodsDao.selectGoodsDetailImg(goodsNo));
-        List<ReviewDto> reviewDtoList = reviewDao.selectGoodsReview(goodsNo);
-        for(ReviewDto reviewDto : reviewDtoList){
-            reviewDto.setReviewImgDtoList(reviewService.findReviewImg(reviewDto.getReviewNo(),goodsNo));
-        }
-        goodsDto.setReviewDtoList(reviewDtoList);
 
+        List<ReviewDto> reviewDtoList = reviewDao.selectGoodsReview(goodsNo);
+        for (ReviewDto reviewDto : reviewDao.selectGoodsReview(goodsNo))
+            reviewDto.setReviewImgDtoList(reviewService.findReviewImg(reviewDto.getReviewNo(), goodsNo));
+        goodsDto.setReviewDtoList(reviewDtoList);
         return goodsDto;
     }
 

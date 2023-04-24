@@ -41,7 +41,7 @@
                                 <tr id="couponList">
                                     <th>이벤트</th>
                                     <th>쿠폰 코드</th>
-                                    <th>할인가</th>
+                                    <th>할인가(₩)</th>
                                     <th>상태</th>
                                 </tr>
                                 <!-- 동적 추가-->
@@ -50,14 +50,14 @@
                     </div>
                     <hr class="mt-5">
                     <div class="row mt-5 text-left p-2 pb-3">
-                        <h4>포인트 내역 (보유 포인트 : <span id="totalPoint"></span>)</h4>
+                        <h4>포인트 내역</h4>
                     </div>
                     <div class="row">
                         <div class="col-md-10">
                             <table style="text-align: center;" class="table table-hover">
                                 <tr id="pointList">
                                     <th>구분</th>
-                                    <th>포인트</th>
+                                    <th>포인트 (합계 : <span id="totalPoint"></span>)</th>
                                 </tr>
                                 <!-- 동적 추가-->
                             </table>
@@ -69,8 +69,6 @@
     </div>
 </div>
 <script>
-    let userId = '${userId}'
-
     /* 포인트 */
     loadPoint()
 
@@ -139,7 +137,7 @@
             alert("유효하지 않은 아이디입니다. 다시 입력해주세요.")
             return false;
         }
-        commonAjax('/muscles/mypage/coupon/' + userId + '/' + recommendId, data, "POST", function (res) {
+        commonAjax('/muscles/mypage/coupon/' + userId + '/' + recommendId, null, "POST", function (res) {
             if (res === "ADD_OK") {
                 $(".coupon-item").remove()
                 loadCoupon(recommendId)

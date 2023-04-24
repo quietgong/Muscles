@@ -25,7 +25,8 @@
             <div class="col-lg-7 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        <h1 class="h2">${goodsDto.goodsName}</h1>
+                        <h1 class="h2">[${goodsDto.goodsCategory}
+                            > ${goodsDto.goodsCategoryDetail}] <strong>${goodsDto.goodsName}</strong></h1>
                         <p id="price" class="h3 py-2"><fmt:formatNumber value="${goodsDto.goodsPrice}"
                                                                         pattern="#,###"/></p>
                         <ul class="list-inline pb-3">
@@ -42,7 +43,7 @@
                         </ul>
                         <p class="py-2">
                                 <span class="list-inline-item text-dark">
-                                평점 : ${goodsDto.goodsReviewScore} | 리뷰 (${goodsDto.reviewDtoList.size()})
+                                평점 : ${goodsDto.goodsReviewScore/20} | 리뷰 (${goodsDto.reviewDtoList.size()})
                                 </span>
                         </p>
                         <p>${goodsDto.goodsDescription}</p>
@@ -97,7 +98,7 @@
         <c:forEach var="goodsImgDto" items="${goodsDto.goodsImgDtoList}">
             <div class="row justify-content-center">
                 <div class="col-md-8 mt-5">
-                    <img class="img-fluid" src="${goodsImgDto.uploadPath}"/>
+                    <img style="border-radius: 20px" class="img-fluid" src="${goodsImgDto.uploadPath}"/>
                 </div>
             </div>
         </c:forEach>
@@ -163,7 +164,7 @@
             <div class="col-md-12">
                 <ul>
                     <li>상품문의 및 후기게시판을 통해 취소나 환불, 반품 등은 처리되지 않습니다.</li>
-                    <li>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 고객센터 내 1:1 문의하기를 이용해주세요.</li>
+                    <li>가격, 판매자, 교환/환불 및 배송 등 해당 상품 자체와 관련 없는 문의는 1:1 채팅 문의를 이용해주세요.</li>
                     <li>"해당 상품 자체"와 관계없는 글, 양도, 광고성, 욕설, 비방, 도배 등의 글은 예고 없이 이동, 노출제한, 삭제 등의 조치가 취해질 수 있습니다.</li>
                     <li>공개 게시판이므로 전화번호, 메일 주소 등 고객님의 소중한 개인정보는 절대 남기지 말아주세요.</li>
                 </ul>
@@ -221,6 +222,7 @@
     let goodsName = '${goodsDto.goodsName}';
     let goodsPrice = '${goodsDto.goodsPrice}';
     let goodsCategory = '${goodsDto.goodsCategory}';
+    let goodsCategoryDetail = '${goodsDto.goodsCategoryDetail}';
     let goodsStock = ${goodsDto.goodsStock};
     let goodsImgPath = '${goodsDto.goodsImgPath}';
 
@@ -230,6 +232,7 @@
         data.goodsNo = goodsNo
         data.goodsName = goodsName
         data.goodsCategory = goodsCategory
+        data.goodsCategoryDetail = goodsCategoryDetail
         data.goodsQty = $("#var-value").html()
         data.goodsPrice = goodsPrice * parseInt($("#var-value").html())
         data.goodsImgPath = goodsImgPath
@@ -258,9 +261,9 @@
     }
 
     loadFaqData()
-
     function loadFaqData() { // FAQ 데이터 불러오기
-        commonAjax("/muscles/goods/faq/", null, "GET", function (res) {
+        commonAjax("/muscles/goods/faq/"+goodsNo, null, "GET", function (res) {
+            console.log(res)
             let target = $("#faqList")
             target.empty()
             target.append(toHtml(res))

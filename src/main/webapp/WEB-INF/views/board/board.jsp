@@ -4,74 +4,63 @@
 <%@ page session="false" %>
 <%@ include file="../nav.jsp" %>
 <div class="container">
-    <div class="row mt-5">
-        <div class="col-md-12">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-8">
             <div class="mb-3">
                 <label class="form-label" for="title">제목</label>
                 <input id="title" class="form-control" type="text" name="title" readonly value="${postDto.title}">
             </div>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-md-12">
             <div class="mb-3">
                 <label class="form-label" for="writer">작성자 (작성일자 : <fmt:formatDate value="${postDto.createdDate}"
                                                                                    pattern="yyyy-MM-dd"
                                                                                    type="date"/>)</label>
                 <input id="writer" class="form-control" type="text" name="userId" readonly value="${postDto.userId}">
             </div>
-        </div>
-    </div>
-</div>
-<div class="container form-control">
-    <div class="row mt-3">
-        <div class="col-md-12">
             <textarea readonly class="form-control mt-1" name="content" rows="20"
                       cols="80">${postDto.content}</textarea>
-        </div>
-    </div>
-
-    <div style="display: none" id="uploadImg" class="row mt-3">
-        <div class="col-md-12">
-            <label for="postImg" class="form-label text-center">이미지 업로드</label>
-            <input type="file" multiple class="form-control" id="postImg" name='uploadFile'>
-        </div>
-    </div>
-    <div id="postPreview" class="row flex-nowrap" style="overflow-x: auto">
-        <c:forEach var="postImgDto" items="${postDto.postImgDtoList}">
-            <div class="detail col-md-2" data-type="detail" data-url="${postImgDto.uploadPath}">
-                <button style="display:none;" class="delPreview modPosition btn btn-danger mb-3 mt-3" type="button">X
-                </button>
-                <button style="display:none; float: right" class="modPosition down btn btn-warning mb-3 mt-3"
-                        type="button">→
-                </button>
-                <button style="display:none; float: right; margin-right: 10px"
-                        class="modPosition up btn btn-warning mb-3 mt-3" type="button">←
-                </button>
-                <img src="${postImgDto.uploadPath}" data-bs-toggle="modal" data-bs-target="#imgModal"
-                     onclick="showImgDetail('${postImgDto.uploadPath}')" style="cursor: pointer"
-                     class="img-fluid newDetail">
+            <div style="display: none" id="uploadImg" class="mt-2">
+                <label for="postImg" class="form-label text-center">이미지 업로드</label>
+                <input type="file" onchange='uploadImg("/muscles/img/${postCategory}/detail/0", this)' multiple class="form-control" id="postImg" name='uploadFile'>
             </div>
-        </c:forEach>
-    </div>
-</div>
-<div class="container">
-    <input id="commentList" type="hidden">
-    <div class="input-group mt-2 mb-3">
-        <input style="background-color: #e9eff5" id="inputComment" class="form-control" type="text"
-               placeholder="댓글을 입력하세요">
-        <button id="registerComment" onclick="registerComment()" type="button" class="btn btn-outline-primary">댓글 등록
-        </button>
-        <button style="display: none" id="modifyComment" type="button" class="btn btn-outline-primary">수정</button>
-        <button style="display: none" id="modifyCancel" type="button" class="btn btn-outline-danger">취소</button>
-    </div>
-    <!-- 댓글 -->
-    <div class="row mt-5">
-        <div class="col-md-12" style="text-align: right">
+            <div id="postPreview" class="row flex-nowrap" style="overflow-x: auto">
+                <c:forEach var="postImgDto" items="${postDto.postImgDtoList}">
+                    <div class="detail col-md-3" data-type="detail" data-url="${postImgDto.uploadPath}">
+                        <button style="display:none;" class="delPreview modPosition btn btn-danger mb-3 mt-3"
+                                type="button">X
+                        </button>
+                        <button style="display:none; float: right" class="modPosition down btn btn-warning mb-3 mt-3"
+                                type="button">→
+                        </button>
+                        <button style="display:none; float: right; margin-right: 10px"
+                                class="modPosition up btn btn-warning mb-3 mt-3" type="button">←
+                        </button>
+                        <img src="${postImgDto.uploadPath}" data-bs-toggle="modal" data-bs-target="#imgModal"
+                             onclick="showImgDetail('${postImgDto.uploadPath}')" style="cursor: pointer"
+                             class="img-fluid newDetail">
+                    </div>
+                </c:forEach>
+            </div>
+            <input id="commentList" type="hidden"/>
+            <div class="input-group mt-2 mb-3">
+                <input style="background-color: #e9eff5" id="inputComment" class="form-control" type="text"
+                       placeholder="댓글을 입력하세요">
+                <button id="registerComment" onclick="registerComment()" type="button"
+                        class="btn btn-outline-primary">댓글 등록
+                </button>
+                <button style="display: none" id="modifyComment" type="button" class="btn btn-outline-primary">
+                    수정
+                </button>
+                <button style="display: none" id="modifyCancel" type="button" class="btn btn-outline-danger">
+                    취소
+                </button>
+            </div>
+            <!-- 댓글 -->
+            <div class="text-end">
             <c:choose>
                 <c:when test="${param.page eq null}">
                     <button class="btn btn-lg btn-outline-primary" type="button" onclick='location.href="<c:url
-                            value='/${postCategory}?page=1&option=${param.option}&keyword=${param.keyword}'/>"'>목록
+                            value='/${postCategory}?page=1&option=${param.option}&keyword=${param.keyword}'/>"'>
+                        목록
                     </button>
                 </c:when>
                 <c:otherwise>
@@ -85,6 +74,7 @@
                 <button id="modify" class="btn btn-lg btn-primary" type="button">수정</button>
                 <button id="remove" class="btn btn-lg btn-primary" type="button">삭제</button>
             </c:if>
+            </div>
         </div>
     </div>
 </div>
@@ -113,8 +103,7 @@
             $("#uploadImg").show()
             $(".modPosition").show()
             showLeftRightBtn()
-        }
-        else { // 글 수정 완료
+        } else { // 글 수정 완료
             let modData = {}
             modData.postNo = postNo
             modData.userId = '${userId}'
@@ -143,11 +132,9 @@
         });
     });
 
-    // 댓글 기능
-    let postNo = ${postDto.postNo};
     // 댓글 불러오기
+    let postNo = ${postDto.postNo};
     loadComments()
-
     function loadComments() {
         commonAjax("/muscles/comments?postNo=" + postNo, null, "GET", function (res) {
             $(".comment-area").remove()
@@ -213,32 +200,24 @@
     let toHtml = function (comments) {
         let tmp = "";
         comments.forEach(function (comment) {
-            tmp += '<div class="row comment-area">'
-            tmp += '<div class="col-md-12" data-commentNo=' + comment.commentNo + ' data-postNo=' + comment.postNo + '>'
-            tmp += '<div class="mb-0" style="border: 1px solid #e2e3e5">'
+            tmp += '<div style="border: 1px solid #e2e3e5" class="comment-area mb-0" data-commentNo=' + comment.commentNo + ' data-postNo=' + comment.postNo + '>'
             tmp += '<span style="font-weight: bold" class="commenter">' + comment.userId + '</span>'
+            if (comment.modDate == null)
+                tmp += '<span class="p-2">(' + comment.createdDate + ')</span>'
+            else
+                tmp += '<span class="p-2">(' + comment.modDate + " 수정됨 " + ')</span>'
             if (comment.userId === '${userId}') {
                 tmp += '<button style="float: right" type="button" class="delBtn btn btn-outline-primary">삭제</button>'
                 tmp += '<button style="float: right" type="button" class="modBtn btn btn-outline-primary">수정</button>'
             }
             tmp += ' <p style="font-style: italic" class="comment">' + comment.content + '</p>'
-            if (comment.createdDate === comment.modDate)
-                tmp += '<p style="font-weight: bold" class="commentDate">' + comment.createdDate + '</p>'
-            else
-                tmp += '<p class="commentDate">' + comment.modDate + "(수정됨)" + '</p>'
-            tmp += '</div>'
-            tmp += '</div>'
             tmp += '</div>'
         })
         return tmp;
     }
 </script>
+<script src="<c:url value='/js/custom/image.js'/>"></script>
 <script>
-    // 이미지 업로드
-    $("input[type='file']").on("change", function () {
-        uploadImg("/muscles/img/'${postCategory}'/detail/0")
-    });
-
     function showPreview(items, type) {
         let tmp = "";
         items.forEach(function (item) {
@@ -253,11 +232,6 @@
         $("#postPreview").append(tmp)
         showLeftRightBtn()
     }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        RemoveUploadImg("/muscles/img/delete/post/detail?fileName=" + fileName)
-    });
 </script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

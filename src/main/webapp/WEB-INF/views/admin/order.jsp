@@ -65,7 +65,6 @@
                                                 <tr>
                                                     <td class="cell">${orderDto.orderNo}</td>
                                                     <td class="cell">
-                                                        <span class="truncate">
                                                             <c:choose>
                                                                 <c:when test="${orderDto.orderItemDtoList.size()>1}">
                                                                     ${orderDto.orderItemDtoList[0].goodsName} 외 ${orderDto.orderItemDtoList.size()-1}개
@@ -74,14 +73,11 @@
                                                                     ${orderDto.orderItemDtoList[0].goodsName}
                                                                 </c:otherwise>
                                                             </c:choose>
-                                                        </span>
                                                     </td>
                                                     <td class="cell">${orderDto.userId}</td>
                                                     <td class="cell">
-                                                        <span class="note">
                                                             <fmt:formatDate value="${orderDto.createdDate}"
                                                                             pattern="yyyy-MM-dd" type="date"/>
-                                                        </span>
                                                     </td>
                                                     <td class="cell">
                                                         <c:choose>

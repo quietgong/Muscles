@@ -150,12 +150,10 @@ public class OrderServiceImpl implements OrderService {
         int newOrderNo = orderDao.insertOrder(orderDto);
         orderDto.setOrderNo(newOrderNo);
 
-        List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
-        for(OrderItemDto orderItemDto : orderItemDtoList){
+        // 주문 상품 목록 생성
+        for(OrderItemDto orderItemDto : orderDto.getOrderItemDtoList()){
             orderItemDto.setOrderNo(newOrderNo);
-            // 주문상품 정보 생성
             orderDao.insertOrderItem(orderItemDto);
-            // 주문상품 장바구니에서 제거
             cartDao.deleteCartItem(userId, orderItemDto.getGoodsNo());
         }
 

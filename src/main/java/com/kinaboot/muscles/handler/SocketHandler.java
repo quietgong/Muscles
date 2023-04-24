@@ -1,6 +1,5 @@
 package com.kinaboot.muscles.handler;
 
-import com.kinaboot.muscles.controller.GoodsController;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -88,6 +87,7 @@ public class SocketHandler extends TextWebSocketHandler {
         obj.put("type", "getId");
         obj.put("sessionId", session.getId());
         session.sendMessage(new TextMessage(obj.toJSONString()));
+        logger.info("발송 완료");
     }
 
     //소켓 종료

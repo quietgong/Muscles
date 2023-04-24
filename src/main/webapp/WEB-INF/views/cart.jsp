@@ -11,17 +11,13 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
                         </div>
-                        <!-- 장바구니 상품 시작 -->
-                        <div id="cartItemList" class="card rounded-3 mb-4">
-                            <!-- AJAX 동적 추가 -->
-                        </div>
-                        <!-- 장바구니 상품 끝 -->
+                        <div id="cartItemList" class="card rounded-3 mb-4"><!-- AJAX 동적 추가 --></div>
                         <!-- 요약 정보 시작 -->
                         <div class="card mb-5">
                             <div class="card-body p-5">
                                 <div class="float-end">
                                     <p class="mb-0 me-5 d-flex align-items-center">
-                                        <span class="small text-muted me-2">총 주문금액 : ₩</span>
+                                        <span class="text-muted me-2">총 주문금액 : ₩</span>
                                         <span id="totalPrice" class="lead fw-normal"></span>
                                     </p>
                                 </div>
@@ -33,7 +29,8 @@
                                     onclick="location.href='<c:url value='/goods/list'/>'"
                                     class="btn btn-light btn-lg me-2">계속 쇼핑하기
                             </button>
-                            <button id="order" type="button" class="btn btn-primary btn-lg">주문하기</button>
+                            <button style="display: none" id="order" type="button" class="btn btn-primary btn-lg">주문하기
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -47,11 +44,9 @@
     function loadCartItem() {
         commonAjax("/muscles/cart/" + '${userId}', null, "GET", function (res) {
             $("#cartItemList").html(toHtml(res))
-            if (res.length === 0)
-                $("#order").css("display", "none");
-            else {
+            if (res.length !== 0) {
                 calculateTotalPrice()
-                $("#order").css("display", "block");
+                $("#order").show();
             }
         })
     }
@@ -61,6 +56,7 @@
         items.forEach(function (item) {
             tmp += '<div content="item" class="card-body p-4" data-goodsNo=' + item.goodsNo +
                 ' data-goodsName=' + item.goodsName + ' data-goodsCategory=' + item.goodsCategory +
+                ' data-goodsCategoryDetail=' + item.goodsCategoryDetail +
                 ' data-goodsPrice=' + item.goodsPrice + ' data-goodsImgPath=' + item.goodsImgPath + '>'
             tmp += '<div class="row d-flex justify-content-between align-items-center">'
             tmp += '<div class="col-md-2 col-lg-2 col-xl-2">'
@@ -69,7 +65,7 @@
             tmp += '<img src=\"' + item.goodsImgPath + '\" class="img-fluid rounded-3">'
             tmp += '</div>'
             tmp += '<div class="col-md-3 col-lg-3 col-xl-3">'
-            tmp += '<p class="lead fw-normal mb-2">' + item.goodsCategory + '</p>'
+            tmp += '<p class="lead fw-normal mb-2">' + item.goodsCategory + ' > ' + item.goodsCategoryDetail + '</p>'
             tmp += '<p>' + item.goodsName + '</p>'
             tmp += '</div>'
             tmp += '<div class="col-md-3 col-lg-3 col-xl-2 d-flex" data-goodsPrice=' + item.goodsPrice + '>'
@@ -82,7 +78,7 @@
             tmp += '</button>'
             tmp += '</div>'
             tmp += '<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">'
-            tmp += '<h5 class="mb-0 nowPrice">' + item.goodsPrice * item.goodsQty + '</h5>'
+            tmp += '<h5 class="mb-0 nowPrice text-end">' + (item.goodsPrice * item.goodsQty).toLocaleString() + ' ₩</h5>'
             tmp += '</div>'
             tmp += '<div class="col-md-1 col-lg-1 col-xl-1 text-end">'
             tmp += '<a style="cursor: pointer" onclick="deleteItem(' + item.goodsNo + ')" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>'
@@ -96,15 +92,14 @@
     function qtyChange(elem) {
         let goodsPrice = parseInt($(elem).parent().attr("data-goodsPrice"))
         let nowQty = parseInt($(elem).siblings('input').val())
-        $(elem).parent().next().children().html(goodsPrice * nowQty)
+        $(elem).parent().next().children().html((goodsPrice * nowQty).toLocaleString() + " ₩")
         calculateTotalPrice()
     }
 
-    function calculateTotalPrice() {
-        // 총 주문금액 구하기
+    function calculateTotalPrice() { // 총 주문금액 구하기
         let totalPrice = 0;
         $(".nowPrice").each(function () {
-            totalPrice += parseInt($(this).html())
+            totalPrice += parseInt($(this).html().replaceAll(",", "").replaceAll(" ₩", ""))
         })
         $("#totalPrice").html(totalPrice.toLocaleString())
     }
@@ -116,6 +111,7 @@
             tmp.goodsNo = $(this).attr("data-goodsNo")
             tmp.goodsName = $(this).attr("data-goodsname")
             tmp.goodsCategory = $(this).attr("data-goodscategory")
+            tmp.goodsCategoryDetail = $(this).attr("data-goodscategorydetail")
             tmp.goodsQty = $("input[name='quantity']").eq(index).val()
             tmp.goodsPrice = parseInt($(this).attr("data-goodsprice")) * parseInt(tmp.goodsQty)
             tmp.goodsImgPath = $(this).attr("data-goodsimgpath")

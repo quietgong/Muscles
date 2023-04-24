@@ -1,26 +1,20 @@
 package com.kinaboot.muscles.controller;
 
-import com.kinaboot.muscles.dao.UserDao;
 import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.service.CartService;
 import com.kinaboot.muscles.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,10 +78,20 @@ public class LoginController {
         }
     }
 
+
+    private boolean loginCheck(String id, String pw) {
+        try {
+            return passwordEncoder.matches(pw, userService.findUser(id).getPassword()) && userService.findUser(id).getExpiredDate() == null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @PostMapping("/passwordReset")
-    public String passwordReset(String userId, String email, Model m) {
+    public String passwordReset(String email, RedirectAttributes rttr) {
         log.info("임시 비밀번호 발송 진입 [email] : " + email);
         String resetPassword = generateRandomString();
+        String userId = userService.findUserEmail(email).getUserId();
         userService.resetPassword(userId, passwordEncoder.encode(resetPassword));
         log.info("생성된 임시 비밀번호 : " + resetPassword);
         /* 이메일 발송 */
@@ -100,17 +104,15 @@ public class LoginController {
                         "요청하신 임시 비밀번호는 <strong>" + resetPassword + "</strong> 입니다.";
 
         mailSend(resetPassword, setFrom, toMail, title, content, mailSender);
-        m.addAttribute("email", email);
+        rttr.addFlashAttribute("email", email);
+        return "redirect:/pwfind";
+    }
+
+    @GetMapping("/pwfind")
+    public String resetPassword(){
         return "pwdfindcomplete";
     }
 
-    private boolean loginCheck(String id, String pw) {
-        try {
-            return passwordEncoder.matches(pw, userService.findUser(id).getPassword()) && userService.findUser(id).getExpiredDate() == null;
-        } catch (Exception e) {
-            return false;
-        }
-    }
     private String generateRandomString() {
         Random random = new Random();
         int letterLen = 4;

@@ -38,7 +38,7 @@
                         </c:if>
                     </c:forEach>
                 </select>
-                <div class="row">
+                <div class="row mt-5">
                     <label class="form-check-label" for="pointUse">포인트 사용</label>
                     <input id="pointUse" type="number" value="0" min="0" max="${userDto.point}">
                     <span id="userPoint">보유 포인트 : ${userDto.point}</span>
@@ -142,7 +142,8 @@
     loadItemList()
 
     function loadItemList() {
-        let items= JSON.parse('${orderList}');;
+        let items = JSON.parse('${orderList}');
+        ;
         $("#orderList").prepend(appendItemList(items))
 
         function appendItemList(items) {
@@ -150,10 +151,10 @@
             items.forEach(function (item) {
                 tmp += '<li class="list-group-item d-flex justify-content-between lh-condensed">'
                 tmp += '<div>'
-                tmp += '<h6 class="my-0">' + item.goodsName + '<span>·' + item.goodsQty + '개 </span>' + '</h6>'
-                tmp += '<small class="text-muted">' + item.goodsCategory + '</small>'
+                tmp += '<h6 class="my-0">' + item.goodsName + '<span> · ' + item.goodsQty + '개 </span>' + '</h6>'
+                tmp += '<small class="text-muted">' + item.goodsCategory + ' > ' + item.goodsCategoryDetail + '</small>'
                 tmp += '</div>'
-                tmp += '<span class="order-item-price text-muted">' + item.goodsPrice + '</span>'
+                tmp += '<span class="order-item-price text-muted">' + item.goodsPrice.toLocaleString() + ' ₩</span>'
                 tmp += '</li>'
             })
             return tmp;
@@ -203,7 +204,7 @@
         let totalDiscount = couponDiscount + point
         // 현재 주문 가격 표시
         $(".order-item-price").each(function () {
-            orderPrice += Number($(this).html())
+            orderPrice += Number($(this).html().replaceAll(",", "").replaceAll(" ₩", ""))
         })
         $("#payPrice").html((orderPrice - totalDiscount).toLocaleString())
     }
@@ -212,22 +213,17 @@
     // 결제 버튼
     $("#submit").on("click", function () {
         const form = $('#orderForm');
-        // 주문 정보
-        let orderData = {};
-        // 주문 상품 정보
-        let orderItemDtoList = JSON.parse('${orderList}')
-        // 결제 정보
-        let payment = {};
+        let orderData = {}; // 주문 정보
+        let orderItemDtoList = JSON.parse('${orderList}') // 주문 상품 정보
+        let payment = {}; // 결제 정보
         payment.type = $("input[name='paymentMethod']:checked").val()
-        payment.price = $("#payPrice").html()
-        // 배송 정보
-        let delivery = {};
+        payment.price = $("#payPrice").html().replaceAll(",","")
+        let delivery = {}; // 배송 정보
         delivery.receiver = $("#receiver").val()
         delivery.phone = $("#phone").val()
         delivery.address1 = $("#address1").val()
         delivery.address2 = $("#address2").val()
         delivery.message = $("#message").val()
-
         orderData.userId = '${userId}'
         orderData.discount = couponDiscount + point
         orderData.paymentDto = payment
@@ -249,6 +245,9 @@
             name: 'point',
             value: point
         }))
+        console.log(orderData)
+        console.log(couponNo)
+        console.log(point)
         form.submit();
     });
 </script>
@@ -269,7 +268,7 @@
         if (checkbox.checked)
             for (let i = 0; i < inputs.length; i++)
                 inputs[i].value = savedDeliveryInfo[i];
-         else
+        else
             for (let i = 0; i < inputs.length; i++)
                 inputs[i].value = '';
     })

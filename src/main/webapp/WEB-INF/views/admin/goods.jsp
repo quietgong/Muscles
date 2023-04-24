@@ -229,7 +229,7 @@
                 tmp += '<td>' + item.goodsCategoryDetail + '</td>'
                 tmp += '<td>' + item.goodsPrice.toLocaleString() + '</td>'
                 tmp += '<td>' + item.goodsStock + '</td>'
-                tmp += '<td>' + item.goodsReviewScore + '</td>'
+                tmp += '<td>' + item.goodsReviewScore/20 + '</td>'
                 tmp += '<td>' + item.goodsSales + '</td>'
                 tmp += '<td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" name="modBtn" class="btn btn-primary" onclick="insertModal(' + item.goodsNo + ')">수정</button></td>'
                 tmp += '<td><button type="button" name="delBtn" class="btn btn-danger" onclick="removeProduct(' + item.goodsNo + ')">삭제</button></td>'

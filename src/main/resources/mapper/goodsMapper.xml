@@ -13,13 +13,14 @@
         from goods
     </select>
     <sql id="goodsBasicColumns">
-        select g.goodsNo as goodsNo
-        , g.goodsCategory as goodsCategory
-        , g.goodsCategoryDetail as goodsCategoryDetail
-        , g.goodsName as goodsName
-        , g.goodsPrice as goodsPrice
-        , g.goodsStock as goodsStock
-        , g.goodsImgPath as goodsImgPath
+        select g.goodsNo             as goodsNo
+             , g.goodsCategory       as goodsCategory
+             , g.goodsCategoryDetail as goodsCategoryDetail
+             , g.goodsDescription    as goodsDescription
+             , g.goodsName           as goodsName
+             , g.goodsPrice          as goodsPrice
+             , g.goodsStock          as goodsStock
+             , g.goodsImgPath        as goodsImgPath
     </sql>
     <select id="selectBestGoods" resultType="goodsDto">
         <include refid="goodsBasicColumns"/>
