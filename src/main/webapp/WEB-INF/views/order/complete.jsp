@@ -7,8 +7,9 @@
     <div class="row d-flex justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="text-left logo p-2 px-5"><img class="img-fluid" src="<c:url value='/img/logo.jpg'/>"
-                                                          width="80"></div>
+                <div class="text-left logo p-2 px-5">
+                    <img class="img-fluid" src="<c:url value='/img/logo.jpg'/>" width="80">
+                </div>
                 <div class="invoice p-5">
                     <h5>주문이 완료되었습니다!</h5> <span class="font-weight-bold d-block mt-4">
                             안녕하세요, ${userId} 님</span>
@@ -19,8 +20,9 @@
                             <tr>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">주문일자</span>
-                                        <span class="mt-2"><fmt:formatDate value="${orderDto.createdDate}" pattern="yyyy-MM-dd"
-                                                              type="date"/></span></div>
+                                        <span class="mt-2"><fmt:formatDate value="${orderDto.createdDate}"
+                                                                           pattern="yyyy-MM-dd"
+                                                                           type="date"/></span></div>
                                 </td>
                                 <td>
                                     <div class="py-2"><span class="d-block text-muted">주문번호</span>
@@ -48,15 +50,18 @@
                             <!-- 상품 목록 -->
                             <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
                                 <tr>
-                                    <td width="40%"><img class="img-fluid" src="${orderItemDto.goodsImgPath}"></td>
-                                    <td width="25%">
+                                    <td width="30%"><img class="img-fluid" src="${orderItemDto.goodsImgPath}"></td>
+                                    <td width="40%">
                                         <span class="font-weight-bold">
                                                 ${orderItemDto.goodsName} (수량 : ${orderItemDto.goodsQty})
                                         </span>
                                     </td>
                                     <td width="20%">
-                                        <div class="text-right"><span
-                                                class="font-weight-bold">₩<fmt:formatNumber value="${orderItemDto.goodsPrice}" pattern="#,###" /></span></div>
+                                        <div class="text-right">
+                                            <span class="font-weight-bold">
+                                                ₩<fmt:formatNumber value="${orderItemDto.goodsPrice}" pattern="#,###"/>
+                                            </span>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -74,9 +79,10 @@
                                     </td>
                                     <td>
                                         <div class="text-right">
-                                            <span>₩<fmt:formatNumber
-                                                    value="${orderDto.paymentDto.price + orderDto.discount}"
-                                                    pattern="#,###"/></span></div>
+                                            <span>
+                                                ₩<fmt:formatNumber value="${orderDto.paymentDto.price + orderDto.discount}" pattern="#,###"/>
+                                            </span>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -84,8 +90,10 @@
                                         <div class="text-left"><span class="text-muted">할인 적용</span></div>
                                     </td>
                                     <td>
-                                        <div class="text-right"><span class="text-success">₩<fmt:formatNumber
-                                                value="${orderDto.discount}" pattern="#,###"/></span>
+                                        <div class="text-right">
+                                            <span class="text-success">
+                                                ₩<fmt:formatNumber value="${orderDto.discount}" pattern="#,###"/>
+                                            </span>
                                         </div>
                                     </td>
                                 </tr>
@@ -95,9 +103,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-right"><span
-                                                class="font-weight-bold"><fmt:formatNumber
-                                                value="₩${orderDto.paymentDto.price}" pattern="#,###"/></span>
+                                        <div class="text-right">
+                                            <span class="font-weight-bold">
+                                                ₩<fmt:formatNumber value="${orderDto.paymentDto.price}" pattern="#,###"/>
+                                            </span>
                                         </div>
                                     </td>
                                 </tr>

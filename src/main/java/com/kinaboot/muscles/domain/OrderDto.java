@@ -22,7 +22,6 @@ public class OrderDto {
     private List<OrderItemDto> orderItemDtoList;
     private DeliveryDto deliveryDto;
     private PaymentDto paymentDto;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
 }

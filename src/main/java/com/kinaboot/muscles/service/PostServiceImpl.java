@@ -29,14 +29,13 @@ public class PostServiceImpl implements PostSerivce{
 
     @Override
     public int addPost(PostDto postDto) throws Exception {
+        postDao.insert(postDto);
         List<PostImgDto> postImgDtoList = postDto.getPostImgDtoList();
         int postNo = postDao.selectPostNo();
         for(PostImgDto postImgDto : postImgDtoList) {
-            postImgDto.setType(postDto.getType());
             postImgDto.setPostNo(postNo);
             postDao.insertPostImg(postImgDto);
         }
-        postDao.insert(postDto);
         return postNo;
     }
 

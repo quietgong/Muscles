@@ -2,6 +2,7 @@ package com.kinaboot.muscles.controller.admin;
 
 import com.kinaboot.muscles.domain.GoodsDto;
 import com.kinaboot.muscles.domain.GoodsImgDto;
+import com.kinaboot.muscles.handler.SearchCondition;
 import com.kinaboot.muscles.service.GoodsService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

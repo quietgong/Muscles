@@ -65,12 +65,13 @@ public class OrderController {
     @PostMapping("/pay")
     public String orderAdd(String orderData, int couponNo, int point, RedirectAttributes rttr) {
         log.info("결제 후 주문 처리");
-        rttr.addFlashAttribute("orderDto", orderService.addOrder(orderData, couponNo, point)); // 생성된 주문 데이터 반환
+        OrderDto newOrder = orderService.addOrder(orderData, couponNo, point);
+        rttr.addFlashAttribute("orderDto", newOrder);
         return "redirect:/order/complete";
     }
 
     @GetMapping("/complete")
-    public String m(){
+    public String complete(){
         return "order/complete";
     }
 

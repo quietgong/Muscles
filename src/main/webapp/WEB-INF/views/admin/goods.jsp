@@ -11,17 +11,6 @@
                 <div class="col-md-8">
                     <h1 class="app-page-title mb-0">상품 관리</h1>
                 </div>
-                <div class="col-md-4">
-                    <!-- 검색 조건 -->
-                    <form>
-                        <div class="input-group flex-nowrap">
-                            <span class="input-group-text" id="addon-wrapping">상품명</span>
-                            <input class="form-control">
-                            <button type="submit" class="btn btn-primary">검색</button>
-                        </div>
-                    </form>
-                    <!-- 검색 조건 -->
-                </div>
             </div>
             <div class="row mt-5">
                 <div class="col-md-12">
@@ -57,8 +46,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">상품정보 변경</h5>
-                <button type="button" onclick="initModal()" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="container">
@@ -80,11 +68,9 @@
                         <div class="col-md-6 mt-3">
                             <label class="form-label">소분류</label>
                             <select id="categoryDetailSelect" class="form-select" aria-label="Default select example">
-                                <option value="">소분류를 선택하세요</option>
-                                <!-- 대분류에 대한 소분류 셀렉트 리스트 출력-->
+                                <option value="">소분류를 선택하세요</option><!-- 대분류에 대한 소분류 셀렉트 리스트 출력-->
                             </select>
-                            <input style="display: none" id="newCategory" type="text" class="form-control mt-2"
-                                   placeholder="카테고리 입력">
+                            <input style="display: none" id="newCategory" type="text" class="form-control mt-2" placeholder="카테고리 입력">
                         </div>
                         <div class="col-md-12 mt-3">
                             <label class="form-label">가격(₩)</label>
@@ -103,15 +89,19 @@
                     <div class="row mt-5">
                         <div class="col-md-12">
                             <label for="thumbnail">상품 썸네일</label>
-                            <input type="file" class="form-control" id="thumbnail" name='uploadFile'>
-                            <div id="thumbnailPreview"></div>
+                            <input type="file"
+                                   onchange='uploadImg("/muscles/img/goods/thumbnail/"+ $("#goodsNo").val(), this, "goods", "thumbnail")'
+                                   class="form-control" id="thumbnail" name='uploadFile'>
+                            <div id="thumbnailPreview"><!-- 미리보기 이미지 출력 영역 --></div>
                         </div>
                     </div>
                     <div class="row mt-5">
                         <div class="col-md-12">
                             <label for="detail">상품 소개 이미지</label>
-                            <input type="file" class="form-control" multiple id="detail" name='uploadFiles'>
-                            <div id="detailPreview"></div>
+                            <input type="file"
+                                   onchange='uploadImg("/muscles/img/goods/detail/" + $("#goodsNo").val(), this, "goods", "detail")'
+                                   class="form-control" multiple id="detail" name='uploadFiles'>
+                            <div id="detailPreview"><!-- 미리보기 이미지 출력 영역 --></div>
                         </div>
                     </div>
                 </div>
@@ -119,8 +109,7 @@
                     <button onclick="submit()" type="button" id="registerBtn" class="btn btn-secondary"
                             data-bs-dismiss="modal">등록
                     </button>
-                    <button type="button" onclick="initModal()" id="closeBtn" class="btn btn-primary"
-                            data-bs-dismiss="modal">닫기
+                    <button type="button" id="closeBtn" class="btn btn-primary" data-bs-dismiss="modal">닫기
                     </button>
                 </div>
             </div>
@@ -129,20 +118,6 @@
 </div>
 <!-- Modal -->
 <script>
-    // 모달창 close 내용 초기화
-    function initModal() {
-        $("#goodsNo").val("")
-        $("#goodsName").val("")
-        $(".subCategory").hide()
-        $('#categoryDetailSelect option').eq(0).prop('selected', true)
-        $('#categorySelect option').eq(0).prop('selected', true)
-        $("#goodsPrice").val("")
-        $("#goodsStock").val("")
-        $("#goodsDescription").val("")
-        $("#thumbnailPreview").html("")
-        $("#detailPreview").html("")
-    }
-
     // 수정 버튼 클릭 시 해당 상품 정보 모달창에 입력
     function insertModal(goodsNo) {
         $('#staticBackdropLabel').html('상품정보 변경');
@@ -172,19 +147,14 @@
     function modifyGoods(data) {
         commonAjax("/muscles/admin/goods/", data, "PATCH", function () {
             alert("수정 완료")
-            loadProductData()
-            initModal()
+            loadGoodsData()
         })
     }
 
     function registerGoods(data) {
-        commonAjax("/muscles/admin/goods/", data, "POST", function (res) {
-            if (res === "ADD_OK") {
-                alert("등록 완료")
-                loadProductData()
-                initModal()
-            } else
-                alert("등록 실패")
+        commonAjax("/muscles/admin/goods/", data, "POST", function () {
+            alert("등록 완료")
+            loadGoodsData()
         })
     }
 
@@ -214,8 +184,9 @@
 </script>
 <script>
     // 상품 정보 읽기
-    loadProductData()
-    function loadProductData() {
+    loadGoodsData()
+
+    function loadGoodsData() {
         commonAjax("/muscles/admin/goods/", null, "GET", function (res) {
             $("#goodsList").empty()
             $("#goodsList").append(toHtml(res))
@@ -229,7 +200,7 @@
                 tmp += '<td>' + item.goodsCategoryDetail + '</td>'
                 tmp += '<td>' + item.goodsPrice.toLocaleString() + '</td>'
                 tmp += '<td>' + item.goodsStock + '</td>'
-                tmp += '<td>' + item.goodsReviewScore/20 + '</td>'
+                tmp += '<td>' + item.goodsReviewScore / 20 + '</td>'
                 tmp += '<td>' + item.goodsSales + '</td>'
                 tmp += '<td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" name="modBtn" class="btn btn-primary" onclick="insertModal(' + item.goodsNo + ')">수정</button></td>'
                 tmp += '<td><button type="button" name="delBtn" class="btn btn-danger" onclick="removeProduct(' + item.goodsNo + ')">삭제</button></td>'
@@ -238,14 +209,16 @@
             return tmp;
         }
     }
+
     // 상품 정보 삭제
     function removeProduct(goodsNo) {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
         commonAjax("/muscles/admin/goods/" + goodsNo, null, "DELETE", function () {
             alert("해당 상품 정보를 삭제하였습니다.")
-            loadProductData()
+            loadGoodsData()
         })
     }
+
     // 카테고리 불러오기
     loadCategory()
 
@@ -282,28 +255,6 @@
         this.value === 'new' ? $("#newCategory").show() : $("#newCategory").hide()
     })
 </script>
-<script>
-    // 이미지 업로드
-    $("input[type='file']").on("change", function () {
-        let type = $(this).parent().attr("data-type")
-        uploadGoodsImg("/muscles/img/goods/" + type + "/" + $("#goodsNo").val())
-    });
-
-    // <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        let fileName = $(this).parent().attr("data-url")
-        let type = $(this).parent().attr("data-type")
-        let target = $(this).parent()
-        deleteImg(target, type, fileName)
-    });
-
-    function deleteImg(target, type, fileName) {
-        let targetDiv = target
-        commonAjax("/muscles/img/delete/goods/" + type + "?fileName=" + fileName, null, "DELETE",
-            function (res) {
-                if (res === "DEL_OK") targetDiv.empty();// 파일 삭제가 성공적으로 이루어지면
-            })
-    }
-</script>
+<script src="<c:url value='/js/custom/image.js'/>"></script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

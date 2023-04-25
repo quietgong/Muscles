@@ -10,23 +10,23 @@ public interface OrderDao {
 
     int insertOrder(OrderDto orderDto);
 
-    OrderDto selectOrder(Integer orderNo);
+    OrderDto selectOrder(int orderNo);
 
-    int updateOrderStatus(Integer bundleNo);
+    int updateOrderStatus(int bundleNo);
 
     List<OrderDto> selectOrderAll(SearchCondition sc);
 
     List<OrderDto> selectAll(SearchCondition sc);
 
-    List<OrderItemDto> selectOrderItemList(Integer orderNo);
+    List<OrderItemDto> selectOrderItemList(int orderNo);
 
-    OrderItemDto selectOrderItem(Integer orderNo, Integer goodsNo);
+    OrderItemDto selectOrderItem(int orderNo, int goodsNo);
 
     DeliveryDto selectDelivery(int orderNo);
 
     PaymentDto selectPayment(int orderNo);
 
-    int deleteOrder(Integer orderNo, String cancelReason);
+    int deleteOrder(int orderNo, String cancelReason);
 
     int insertOrderItem(OrderItemDto orderItemDto);
 

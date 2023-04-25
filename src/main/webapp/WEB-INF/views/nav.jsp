@@ -11,41 +11,41 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/templatemo.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/custom.css'/>">
     <link rel="stylesheet" href="<c:url value='/css/fontawesome.min.css'/>">
     <script src="<c:url value='/js/jquery-1.11.0.min.js'/>"></script>
     <script src="<c:url value='/js/jquery-migrate-1.2.1.min.js'/>"></script>
-    <script src="<c:url value='/js/custom/custom.js'/>"></script>
     <script src="<c:url value='/js/custom/ajax.js'/>"></script>
     <script src="<c:url value='/js/bootstrap.bundle.min.js'/>"></script>
     <script src="<c:url value='/js/slick.min.js'/>"></script>
     <script src="<c:url value='/js/templatemo.js'/>"></script>
+    <script src="<c:url value='/js/custom/custom.js'/>"></script>
 </head>
 <body>
 <div class="p-3 container d-grid gap-2 d-md-flex justify-content-end">
-    <button id="admin" onclick="location.href='<c:url value='/admin/user'/>'" type="button"
-            class="btn btn-outline-primary">
-        관리자 페이지
+    <button onclick="location.href='<c:url value='/admin/user'/>'" type="button" class="btn btn-outline-primary">관리자
+        페이지
     </button>
-    <button id="login" onclick="location.href='<c:url value='/login'/>'" type="button" class="btn btn-outline-primary">
-        로그인
+    <button onclick="location.href='<c:url value='/login'/>'" type="button" class="logoff btn btn-outline-primary">로그인
     </button>
-    <button id="logout" onclick="location.href='<c:url value='/logout'/>'" type="button" class="btn btn-outline-primary">로그아웃</button>
-    <button id="register" onclick="location.href='<c:url value='/register'/>'" type="button"
-            class="btn btn-outline-primary">
+    <button onclick="location.href='<c:url value='/logout'/>'" type="button" class="logon btn btn-outline-primary">
+        로그아웃
+    </button>
+    <button onclick="location.href='<c:url value='/register'/>'" type="button" class="logoff btn btn-outline-primary">
         회원가입
     </button>
-    <c:choose>
-        <c:when test="${isAdmin == 'true'}">
-            <button id="chatting" onclick="location.href='<c:url value='/chatRoom'/>'" type="button" class="btn btn-outline-primary">
-                문의목록
-            </button>
-        </c:when>
+    <c:choose><c:when test="${isAdmin == 'true'}">
+        <button id="chatting" onclick="location.href='<c:url value='/chatRoom'/>'" type="button"
+                class="logon btn btn-outline-primary">문의목록
+        </button>
+    </c:when>
         <c:otherwise>
-            <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button" class="btn btn-outline-primary">
+            <button id="chatting" onclick="location.href='<c:url value='/chatting'/>'" type="button"
+                    class="logon btn btn-outline-primary">
                 채팅문의
             </button>
         </c:otherwise>
@@ -98,7 +98,7 @@
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1 fa-2x"></i>
                     <span id="cartNum"
                           class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                        <!-- 장바구니 아이템 개수 -->
+                        0
                     </span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="<c:url value='/mypage/order'/>">
@@ -129,11 +129,21 @@
 <script>
     let userId = '${userId}';
     checkLoginStatus(userId)
-    function getCartItemsNum(){
-    commonAjax("/muscles/cart/count/" + userId, null, "GET", function (res) {
-                $("#cartNum").html(res)
+
+    function checkLoginStatus(userId) {
+        if (userId !== "") { // 로그인 상태
+            getCartItemsNum()
+            $(".logon").show()
+            $(".logoff").hide()
+        } else {
+            $(".logon").hide()
+            $(".logoff").show()
+        }
+    }
+
+    function getCartItemsNum() {
+        commonAjax("/muscles/cart/count/" + userId, null, "GET", function (res) {
+            $("#cartNum").html(res)
         })
     }
 </script>
-</body>
-</html>

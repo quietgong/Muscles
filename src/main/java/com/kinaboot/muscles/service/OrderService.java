@@ -20,13 +20,13 @@ public interface OrderService {
     int acceptOrder(int orderNo);
 
     // 특정 주문 상품 전체 조회
-    List<OrderItemDto> findOrderItems(Integer orderNo);
+    List<OrderItemDto> findOrderItems(int orderNo);
 
     // 특정 주문 상품 단건 조회
-    OrderItemDto findOrderItem(Integer orderNo, Integer goodsNo);
+    OrderItemDto findOrderItem(int orderNo, int goodsNo);
 
     // 특정 주문 단건 조회
-    OrderDto findOrder(Integer orderNo);
+    OrderDto findOrder(int orderNo);
 
     // 특정 주문 삭제
     int removeOrder(int orderNo, String cancelReason);

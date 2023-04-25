@@ -29,7 +29,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int deleteOrder(Integer orderNo, String cancelReason) {
+    public int deleteOrder(int orderNo, String cancelReason) {
         HashMap<String, String> map = new HashMap<>();
         map.put("orderNo", String.valueOf(orderNo));
         map.put("cancelReason", cancelReason);
@@ -52,7 +52,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int updateOrderStatus(Integer orderNo) {
+    public int updateOrderStatus(int orderNo) {
         return session.update(namespace + "updateOrderStatus", orderNo);
     }
 
@@ -62,7 +62,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<OrderItemDto> selectOrderItemList(Integer orderNo) {
+    public List<OrderItemDto> selectOrderItemList(int orderNo) {
         return session.selectList(namespace + "selectOrderItemList", orderNo);
     }
 
@@ -77,12 +77,12 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public OrderDto selectOrder(Integer orderNo) {
+    public OrderDto selectOrder(int orderNo) {
         return session.selectOne(namespace + "selectOrder", orderNo);
     }
 
     @Override
-    public OrderItemDto selectOrderItem(Integer orderNo, Integer goodsNo) {
+    public OrderItemDto selectOrderItem(int orderNo, int goodsNo) {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("orderNo", orderNo);
         map.put("goodsNo", goodsNo);

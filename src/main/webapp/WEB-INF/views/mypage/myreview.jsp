@@ -15,19 +15,17 @@
                     <div class="row text-left p-2 pb-3">
                         <h4>리뷰 작성 목록</h4>
                     </div>
-                    <input type="hidden" id="reviewList">
-                    <!-- 리뷰 데이터 동적 추가 -->
-                </div>
+                    <input type="hidden" id="reviewList"><!-- 리뷰 데이터 동적 추가 --></div>
             </section>
         </div>
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">리뷰 작성</h5>
+                <h5 class="modal-title" id="reviewModalLabel">리뷰 작성</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -40,7 +38,7 @@
                     </div>
                     <div class="row">
                         <ul class="list-unstyled d-flex justify-content-center mb-1">
-                            <div class="star-ratings" style="width: auto">
+                            <div class="star-score" style="width: auto">
                                 <input class="starRange" type="range" value="0" step="10" min="0" max="100"/>
                                 <div class="fill-ratings">
                                     <span style="font-size: 1.8rem;">★★★★★</span>
@@ -53,9 +51,10 @@
                     </div>
                     <div class="row mt-5">
                         <div class="col-md-12">
-                            <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
+                            <label onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this, "review","detail")'
+                                   for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
                             <input type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
-                            <div id="reviewPreview"></div>
+                            <div id="detailPreview"><!-- 미리보기 이미지 출력 영역--></div>
                         </div>
                     </div>
                     <div class="row mt-5">
@@ -93,7 +92,7 @@
             tmp += '<div class="row">'
             tmp += '<div data-reviewNo=' + item.reviewNo + ' class="col-md-12">'
             tmp += '<button style="float: right;" type="button" onclick="delReview(this)" class="btn btn-space btn-outline-primary">삭제</button>'
-            tmp += '<button style="float: right; margin-right: 10px" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="modReview(this)" class="delBtn btn btn-space btn-outline-primary">수정</button>'
+            tmp += '<button style="float: right; margin-right: 10px" type="button" data-bs-toggle="modal" data-bs-target="#reviewModal" onclick="modReview(this)" class="delBtn btn btn-space btn-outline-primary">수정</button>'
             tmp += '<h3>' + item.goodsName + '</h3>'
             tmp += '</div>'
             tmp += '<div class="col-md-12">'
@@ -173,31 +172,5 @@
         })
     }
 </script>
-<script>
-    // 이미지 업로드
-    $("input[type='file']").on("change", function () {
-        uploadImg("/muscles/img/review/detail/" + $("#modal-footer").attr("data-goodsno"))
-    });
-
-    function showPreview(items, type) {
-        let tmp = "";
-        items.forEach(function (item) {
-            let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
-            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
-            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
-            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
-            tmp += '</div>'
-        });
-        $("#reviewPreview").append(tmp)
-        showUpDownBtn()
-    }
-
-    <!-- 업로드된 이미지 삭제 -->
-    $(document).on("click", ".delPreview", function () {
-        RemoveUploadImg("/muscles/img/delete/review/detail?fileName=" + fileName)
-    });
-</script>
-<!-- footer -->
+<script src="<c:url value='/js/custom/image.js'/>"></script>
 <%@ include file="../footer.jsp" %>

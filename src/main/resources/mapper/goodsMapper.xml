@@ -58,7 +58,7 @@
         where orderNo in (select orderNo from orders where status = '주문완료')
         group by goodsNo) o
         where r.goodsNo = o.goodsNo) a
-        on g.goodsNo = a.goodsNo;
+        on g.goodsNo = a.goodsNo
     </select>
     <select id="select" parameterType="int" resultType="goodsDto">
         <include refid="goodsBasicColumns"/>
@@ -145,16 +145,17 @@
     </select>
 
     <select id="selectAllCategories" resultType="goodsCategoryDto">
-        select goodsCategory as category
-        ,goodsCategoryDetail as subCategory
+        select goodsCategory       as category
+             , goodsCategoryDetail as subCategory
         from goods
         group by goodsCategory, goodsCategoryDetail;
     </select>
     <insert id="insert" parameterType="goodsDto">
         insert into goods
-        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath) values
-        (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice}, #{goodsStock},
-        #{goodsImgPath})
+        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath)
+        values (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice},
+                #{goodsStock},
+                #{goodsImgPath})
     </insert>
     <insert id="insertFaqQuestion" parameterType="faqDto">
         insert into faq (userId, goodsNo, question, createdDate)
@@ -162,8 +163,8 @@
     </insert>
     <insert id="insertFaqAnswer" parameterType="faqDto">
         update faq
-        set answer = #{answer},
-        replyDate = now()
+        set answer    = #{answer},
+            replyDate = now()
         where faqNo = #{faqNo};
     </insert>
     <select id="selectGoodsImg" parameterType="int" resultType="goodsImgDto">
@@ -175,18 +176,18 @@
     <!-- 상품상세 이미지 경로 입력 -->
     <insert id="insertGoodsImg" parameterType="map">
         insert into goodsImg (goodsNo, filePath)
-        values (#{goodsNo},#{filePath});
+        values (#{goodsNo}, #{filePath});
     </insert>
 
     <update id="updateGoods" parameterType="goodsDto">
         update goods
-        set goodsName = #{goodsName},
-        goodsDescription = #{goodsDescription},
-        goodsPrice = #{goodsPrice},
-        goodsCategory = #{goodsCategory},
-        goodsCategoryDetail = #{goodsCategoryDetail},
-        goodsStock = #{goodsStock},
-        goodsImgPath = #{goodsImgPath}
+        set goodsName           = #{goodsName},
+            goodsDescription    = #{goodsDescription},
+            goodsPrice          = #{goodsPrice},
+            goodsCategory       = #{goodsCategory},
+            goodsCategoryDetail = #{goodsCategoryDetail},
+            goodsStock          = #{goodsStock},
+            goodsImgPath        = #{goodsImgPath}
         where goodsNo = #{goodsNo};
     </update>
 

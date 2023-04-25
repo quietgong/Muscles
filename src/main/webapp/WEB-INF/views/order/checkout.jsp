@@ -33,7 +33,8 @@
                         <c:if test="${couponDto.orderNo eq 0}">
                             <option value="${couponDto.couponName}"
                                     data-no=${couponDto.couponNo} data-sub=${couponDto.discount}>
-                                    ${couponDto.couponName}(${couponDto.discount}원 할인)
+                                    ${couponDto.couponName}(<fmt:formatNumber value="${couponDto.discount}"
+                                                                              pattern="#,###"/>원 할인)
                             </option>
                         </c:if>
                     </c:forEach>
@@ -41,7 +42,8 @@
                 <div class="row mt-5">
                     <label class="form-check-label" for="pointUse">포인트 사용</label>
                     <input id="pointUse" type="number" value="0" min="0" max="${userDto.point}">
-                    <span id="userPoint">보유 포인트 : ${userDto.point}</span>
+                    <span id="userPoint">보유 포인트 : <fmt:formatNumber value="${userDto.point}"
+                                                                    pattern="#,###"/></span>
                     <button id="pointAll" type="button" class="btn btn-primary">모두 사용</button>
                 </div>
             </div>
@@ -217,7 +219,7 @@
         let orderItemDtoList = JSON.parse('${orderList}') // 주문 상품 정보
         let payment = {}; // 결제 정보
         payment.type = $("input[name='paymentMethod']:checked").val()
-        payment.price = $("#payPrice").html().replaceAll(",","")
+        payment.price = $("#payPrice").html().replaceAll(",", "")
         let delivery = {}; // 배송 정보
         delivery.receiver = $("#receiver").val()
         delivery.phone = $("#phone").val()

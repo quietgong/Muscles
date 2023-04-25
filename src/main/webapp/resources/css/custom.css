@@ -10,6 +10,14 @@ Custom Css
     margin: 0;
     padding: 0;
 }
+.star-score {
+    unicode-bidi: bidi-override;
+    color: #ccc;
+    font-size: 64px;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
 .starRange{
     width: 100%;
     height: 100%;
@@ -41,6 +49,7 @@ span {
 }
 
 /* 테이블 속성 */
+
 tr {
     vertical-align: middle;
 }
@@ -56,6 +65,7 @@ td span {
 }
 
 /* 유효성 검사 메세지 */
+
 #emailVerifyNumber {
     background-color: #ffeded;
 }

@@ -51,7 +51,7 @@ public class ChattingController {
             }
         }
         if (!hasAlreadyChatRoom)
-            chatDtoList.add(new ChatDto(chatName, chatName, chatName));
+            chatDtoList.add(new ChatDto(chatName, chatName, chatName, 0, null, null));
         m.addAttribute("chatDtoList", chatService.findChat(chatName));
         return "chatting/chatting";
     }

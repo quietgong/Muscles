@@ -1,6 +1,7 @@
+<script src="<c:url value='/js/custom/custom.js'/>"></script>
+<script src="<c:url value='/js/custom/modal.js'/>"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!-- Start Footer -->
-<footer class="bg-dark mt-5" id="tempaltemo_footer">
+<footer class="bg-dark mt-5" id="templatemo_footer">
     <div class="container">
         <div class="row">
             <div class="col-md-4 pt-5">
@@ -8,6 +9,5 @@
             </div>
         </div>
 </footer>
-<!-- End Footer -->
 </body>
 </html>

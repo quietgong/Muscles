@@ -22,10 +22,10 @@ public class ChatServiceImplTest extends TestConfigure {
     public void saveChat() {
         deleteAllChat();
 
-        ChatDto chatDto1 = new ChatDto("test","test","MSG");
-        ChatDto chatDto2 = new ChatDto("test","system","상담종료");
-        ChatDto chatDto3 = new ChatDto("test","test","MSG");
-        ChatDto chatDto4 = new ChatDto("test","test","MSG");
+        ChatDto chatDto1 = new ChatDto("test","test","MSG",0,null,null);
+        ChatDto chatDto2 = new ChatDto("test","system","상담종료",0,null,null);
+        ChatDto chatDto3 = new ChatDto("test","test","MSG",0,null,null);
+        ChatDto chatDto4 = new ChatDto("test","test","MSG",0,null,null);
 
         chatDao.insertChat(chatDto1);
         chatDao.insertChat(chatDto2);

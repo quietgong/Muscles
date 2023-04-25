@@ -85,14 +85,13 @@
                     <!-- 상품 카드 -->
                     <div class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
-                            <div class="card rounded-0">
+                            <div class="card rounded-0" style="height: 250px">
                                 <c:choose>
                                     <c:when test="${goodsDto.goodsImgPath eq null}">
-                                        <img class="card-img rounded-0 img-fluid"
-                                             src="<c:url value='/img/cardio.jpg'/>">
+                                        <img style="height: 250px;" class="card-img rounded-0 img-fluid" src="<c:url value='/img/cardio.jpg'/>">
                                     </c:when>
                                     <c:otherwise>
-                                        <img class="card-img rounded-0 img-fluid" src="${goodsDto.goodsImgPath}">
+                                        <img style="height: 250px;" class="card-img rounded-0 img-fluid" src="${goodsDto.goodsImgPath}">
                                     </c:otherwise>
                                 </c:choose>
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">

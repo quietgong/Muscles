@@ -95,13 +95,13 @@
         <div class="row text-left p-2 pb-3">
             <h4>상품 설명</h4>
         </div>
+        <div class="row justify-content-center">
         <c:forEach var="goodsImgDto" items="${goodsDto.goodsImgDtoList}">
-            <div class="row justify-content-center">
                 <div class="col-md-8 mt-5">
-                    <img style="border-radius: 20px" class="img-fluid" src="${goodsImgDto.uploadPath}"/>
+                    <img class="img-fluid" src="${goodsImgDto.uploadPath}"/>
                 </div>
-            </div>
         </c:forEach>
+        </div>
     </div>
 </section>
 <!-- 상품 상세 끝 -->
@@ -323,5 +323,4 @@
         })
     })
 </script>
-<!-- footer -->
 <%@ include file="../footer.jsp" %>

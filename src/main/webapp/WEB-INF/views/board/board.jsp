@@ -20,26 +20,21 @@
                       cols="80">${postDto.content}</textarea>
             <div style="display: none" id="uploadImg" class="mt-2">
                 <label for="postImg" class="form-label text-center">이미지 업로드</label>
-                <input type="file" onchange='uploadImg("/muscles/img/${postCategory}/detail/0", this)' multiple class="form-control" id="postImg" name='uploadFile'>
+                <input type="file" onchange='uploadImg("/muscles/img/post/detail/0", this, "post", "detail")'
+                       multiple class="form-control" id="postImg" name='uploadFile'>
             </div>
-            <div id="postPreview" class="row flex-nowrap" style="overflow-x: auto">
+            <div id="detailPreview" class="row flex-nowrap" style="overflow-x: auto">
                 <c:forEach var="postImgDto" items="${postDto.postImgDtoList}">
-                    <div class="detail col-md-3" data-type="detail" data-url="${postImgDto.uploadPath}">
-                        <button style="display:none;" class="delPreview modPosition btn btn-danger mb-3 mt-3"
-                                type="button">X
-                        </button>
-                        <button style="display:none; float: right" class="modPosition down btn btn-warning mb-3 mt-3"
-                                type="button">→
-                        </button>
-                        <button style="display:none; float: right; margin-right: 10px"
-                                class="modPosition up btn btn-warning mb-3 mt-3" type="button">←
-                        </button>
+                    <div class="detail col-md-4" data-category="post" data-type="detail" data-url="${postImgDto.uploadPath}">
+                        <button style="display:none;" class="delPreview modPosition btn btn-danger mb-3 mt-3" type="button">X</button>
+                        <button style="display:none; float: right" class="modPosition down btn btn-warning mb-3 mt-3" type="button">→</button>
+                        <button style="display:none; float: right; margin-right: 10px" class="modPosition up btn btn-warning mb-3 mt-3" type="button">←</button>
                         <img src="${postImgDto.uploadPath}" data-bs-toggle="modal" data-bs-target="#imgModal"
-                             onclick="showImgDetail('${postImgDto.uploadPath}')" style="cursor: pointer"
-                             class="img-fluid newDetail">
+                             onclick="showImgDetail('${postImgDto.uploadPath}')" style="cursor: pointer" class="img-fluid newDetail">
                     </div>
                 </c:forEach>
             </div>
+
             <input id="commentList" type="hidden"/>
             <div class="input-group mt-2 mb-3">
                 <input style="background-color: #e9eff5" id="inputComment" class="form-control" type="text"
@@ -217,21 +212,4 @@
     }
 </script>
 <script src="<c:url value='/js/custom/image.js'/>"></script>
-<script>
-    function showPreview(items, type) {
-        let tmp = "";
-        items.forEach(function (item) {
-            let addr = "/muscles/img/display?category=${postCategory}&type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div class="detail col-md-2" data-type=' + type + ' data-url=' + addr + '>'
-            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">→</button>'
-            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">←</button>'
-            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
-            tmp += '</div>'
-        });
-        $("#postPreview").append(tmp)
-        showLeftRightBtn()
-    }
-</script>
-<!-- footer -->
 <%@ include file="../footer.jsp" %>

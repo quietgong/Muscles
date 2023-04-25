@@ -8,7 +8,6 @@
         <div class="col-md-2">
             <%@include file="sidebar.jsp" %>
         </div>
-        <!-- 컨텐츠 -->
         <div class="col-md-10">
             <!-- 검색 조건 -->
             <div class="row mt-5 justify-content-center">
@@ -76,8 +75,10 @@
                                                         <div class="d-flex justify-content-center gap-2">
                                                             <c:set var="hasReview"
                                                                    value="${orderDto.status == '주문완료' && orderItemDto.hasReview == false ? 'inline' : 'none'}"/>
-                                                            <button style="display: ${hasReview}" type=button class="btn btn-primary"
-                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                            <button style="display: ${hasReview}" type=button
+                                                                    class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#reviewModal"
                                                                     onclick="createReview(${orderDto.orderNo}, ${orderItemDto.goodsNo})">
                                                                 리뷰 작성
                                                             </button>
@@ -111,7 +112,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="orderCancelModalLabel">주문 취소 사유</h5>
-                <button type="button" onclick="initOrderCancelModal()" class="btn-close" data-bs-dismiss="modal"
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -159,8 +160,7 @@
             </div>
             <!-- 모달 구성 요소 -->
             <div class="modal-footer">
-                <button type="button" onclick="initOrderCancelModal()" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                 </button>
                 <button onclick="orderCancel(this)" type="button" class="btn btn-primary">완료</button>
                 <input type="hidden" id="orderCancelNum" value="">
@@ -171,12 +171,12 @@
 <!-- 주문 취소 Modal -->
 
 <!-- 리뷰 작성 Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">리뷰 작성</h5>
-                <button type="button" onclick="initReviewModal()" class="btn-close" data-bs-dismiss="modal"
+                <h5 class="modal-title" id="reviewModalLabel">리뷰 작성</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -186,81 +186,53 @@
                         <div class="col-md-12 text-center">
                             <h3 id="goodsName" class="goodsName">상품 이름</h3>
                         </div>
-                    </div>
-                    <div class="row">
-                        <ul class="list-unstyled d-flex justify-content-center mb-1">
-                            <div class="star-ratings" style="width: auto">
-                                <input id="starRange" class="starRange" type="range" value="100" step="10" min="0"
-                                       max="100"/>
-                                <div class="fill-ratings">
-                                    <span style="font-size: 1.8rem;">★★★★★</span>
-                                </div>
-                                <div class="empty-ratings">
-                                    <span style="font-size: 1.8rem;">★★★★★</span>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
-                    <div class="row mt-5">
                         <div class="col-md-12">
-                            <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
-                            <input onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this)' type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
-                            <div id="reviewPreview"></div>
+                            <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                <div class="star-score">
+                                    <input id="starRange" class="starRange" type="range" value="100" step="10" min="0"
+                                           max="100"/>
+                                    <div class="fill-ratings" style="width: 100%">
+                                        <span style="font-size: 1.8rem;">★★★★★</span>
+                                    </div>
+                                    <div class="empty-ratings">
+                                        <span style="font-size: 1.8rem;">★★★★★</span>
+                                    </div>
+                                </div>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="row mt-5">
                         <div class="col-md-12">
-                                <textarea id="reviewContent" class="form-control mt-1" placeholder="상품 후기를 작성해주세요."
+                                <textarea id="reviewContent" class="form-control" placeholder="상품 후기를 작성해주세요."
                                           rows="5"
                                           cols="50"></textarea>
                         </div>
+                        <div class="col-md-12">
+                            <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
+                            <input onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this, "review","detail")'
+                                   type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
+                            <div id="detailPreview"><!-- 미리보기 이미지 출력 영역--></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- 모달 구성 요소 -->
-            <div id="modal-footer" class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="initReviewModal()" data-bs-dismiss="modal">
-                    Close
-                </button>
-                <button onclick="reviewRegister(this)" type="button" class="btn btn-primary">등록</button>
+                <!-- 모달 구성 요소 -->
+                <div id="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button onclick="reviewRegister(this)" type="button" class="btn btn-primary">등록</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!-- 리뷰 작성 Modal -->
-
 <script src="<c:url value='/js/custom/image.js'/>"></script>
-<script>
-    function showPreview(items, type) {
-        let tmp = "";
-        items.forEach(function (item) {
-            let addr = "/muscles/img/display?category=review&type=" + type + "&fileName=" + item.uploadName
-            tmp += '<div class="detail" data-type=' + type + ' data-url=' + item.uploadName + '>'
-            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↓</button>'
-            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↑</button>'
-            tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
-            tmp += '</div>'
-        });
-        $("#reviewPreview").append(tmp)
-        showUpDownBtn()
-    }
-</script>
 <script>
     /* 주문 취소 모달창 처리 */
     // 기타 사유 선택시 textarea 출력, 그렇지 않으면 미출력
     $("input[name='orderCancelOption']").change(function () {
-        if ($("input[name='orderCancelOption']:checked").val() === 'etc') {
+        if ($("input[name='orderCancelOption']:checked").val() === 'etc')
             $("#orderCancelDetail").show()
-        } else
+        else
             $("#orderCancelDetail").hide()
     });
-    $("#etcReason:checked")
-
-    // 주문 취소 모달창이 닫혔을 때 모달 내용 초기화
-    function initOrderCancelModal() {
-        $("#orderCancelDetail").val("")
-    }
 
     // 주문 취소
     function orderCancel(e) {
@@ -275,15 +247,6 @@
     }
 </script>
 <script>
-    // 리뷰 작성 모달창이 닫혔을 때 모달 내용 초기화
-    function initReviewModal() {
-        $("#reviewContent").val("")
-        $("#starRange").val("")
-        $("#starRange").next().css("width", "100%")
-        $("#reviewPreview").html("")
-        $("#reviewImg").val("")
-    }
-
     // 해당 주문에 대한 정보를 모달창에 입력
     function createReview(orderNo, goodsNo) {
         let url = "/muscles/order?orderNo=" + orderNo + "&goodsNo=" + goodsNo

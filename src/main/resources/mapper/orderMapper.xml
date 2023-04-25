@@ -18,6 +18,7 @@
         where 1=1
         <include refid="statusCondition"/>
         <include refid="dateCondition"/>
+        order by createdDate desc
     </select>
     <sql id="statusCondition">
         <choose>
@@ -74,7 +75,7 @@
     </select>
     <!-- orderNo로 주문상품 목록 반환 -->
     <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
-        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice
+        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice, goodsImgPath
         from orderitem
         WHERE orderNo = '${orderNo}'
     </select>

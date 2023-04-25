@@ -73,23 +73,11 @@ public class ImgController {
 
     @DeleteMapping("/delete/{category}/{type}")
     public ResponseEntity<String> imgRemove(@PathVariable String category, @PathVariable String type, String fileName) {
-        log.info("category=[" + category + " type=[" + type + "]" + "fileName=[" + fileName + "] 이미지 삭제");
+        log.info("category=[" + category + "] type=[" + type + "]" + " fileName=[" + fileName + "] 이미지 삭제");
         // 원본 이미지 파일 삭제
-        String filePath = this.fileRoot + category + "\\" + type + "\\" + fileName;
-        new File(filePath).delete();
-
-        // DB 삭제
-        String imgPath = "/muscles/" + category + "/display?type=" + type + "&fileName=" + fileName;
-        try {
-            if (category.equals("goods"))
-                goodsService.removeGoodsImg(type, imgPath);
-            else if(category.equals("review"))
-                reviewService.removeReviewImg(imgPath);
-            else if(category.equals("post"))
-                postSerivce.removePostImg(imgPath);
-        } catch (Exception e) {
-            return new ResponseEntity<>("DEL_FAIL", HttpStatus.OK);
-        }
+        String path = this.fileRoot + category + "\\" + type + "\\";
+        new File(path + fileName.split(",")[1]).delete();
+        new File(path + fileName).delete();
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }
 }

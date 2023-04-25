@@ -75,12 +75,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderItemDto> findOrderItems(Integer orderNo) {
+    public List<OrderItemDto> findOrderItems(int orderNo) {
         return orderDao.selectOrderItemList(orderNo);
     }
 
     @Override
-    public OrderDto findOrder(Integer orderNo) {
+    public OrderDto findOrder(int orderNo) {
         OrderDto orderDto = orderDao.selectOrder(orderNo);
         List<OrderItemDto> orderItemDtoList = orderDao.selectOrderItemList(orderNo);
         DeliveryDto deliveryDto = orderDao.selectDelivery(orderNo);
@@ -94,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderItemDto findOrderItem(Integer orderNo, Integer goodsNo) {
+    public OrderItemDto findOrderItem(int orderNo, int goodsNo) {
         return orderDao.selectOrderItem(orderNo, goodsNo);
     }
 

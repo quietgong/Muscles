@@ -9,8 +9,7 @@
     </select>
 
     <select id="selectPostNo" resultType="int">
-        select max(postNo) + 1
-        from post;
+        select max(postNo) from post;
     </select>
 
     <select id="select" parameterType="int" resultType="PostDto">
@@ -67,13 +66,13 @@
 
     <insert id="insert" parameterType="map">
         insert into post
-        (postNo, type, title, content, userId, createdDate)
-        values (#{postNo}, #{type}, #{title}, #{content}, #{userId}, now())
+        (type, title, content, userId, createdDate)
+        values (#{type}, #{title}, #{content}, #{userId}, now())
     </insert>
 
     <insert id="insertPostImg" parameterType="PostImgDto">
-        insert into postimg (postNo, filePath, type)
-        values (#{postNo}, #{uploadPath},#{type});
+        insert into postimg (postNo, filePath)
+        values (#{postNo}, #{uploadPath});
     </insert>
 
     <update id="update" parameterType="PostDto">

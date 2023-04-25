@@ -64,7 +64,7 @@
                     </div>
                     <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
                         <div class="input-group mb-0">
-                            <input id="msgInput" type="text" class="form-control" placeholder="Type message"
+                            <input id="msgInput" type="text" class="form-control" placeholder="메세지를 입력하세요"
                                    aria-label="Recipient's username" aria-describedby="button-addon2"/>
                             <button class="btn btn-primary" type="button" id="button-addon2"
                                     style="padding-top: .55rem;">
@@ -173,6 +173,7 @@
                     tmp += '<p class="small mt-3 mb-3 text-muted text-center">--- 상담이 종료 되었습니다 ---</p>'
                     tmp += '<p class="small mt-3 mb-3 text-muted text-center">' + formattedDate + '</p>'
                     $("#chattingBox").children().last().after(tmp)
+                    location.href = "/muscles"
                 } else if (d.type === 'getId')
                     $("#sessionId").val(d.sessionId)
                 else
@@ -210,7 +211,7 @@
 
     function saveChat(data) {
         // 채팅 메세지 DB 저장
-        commonAjax("/muscles/chat/save", data, "POST", function (res) {
+        commonAjax("/muscles/chat/post", data, "POST", function (res) {
             if(res==="ADD_OK")
                 scrollTop()
         });
