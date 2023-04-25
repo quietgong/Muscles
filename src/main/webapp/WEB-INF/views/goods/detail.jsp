@@ -155,7 +155,7 @@
                 <h4 style="display: inline;">상품 문의</h4>
                 <c:if test="${userId ne null && userId != 'admin'}">
                     <button style="float: right;" class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal" onclick="registerQuestion()">문의하기
+                            data-bs-target="#faqModal" onclick="registerQuestion()">문의하기
                     </button>
                 </c:if>
             </div>
@@ -180,11 +180,11 @@
 </section>
 <!-- 상품 문의 끝 -->
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="faqModal" tabindex="-1" aria-labelledby="faqModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">상품문의 등록</h5>
+                <h5 class="modal-title" id="faqModalLabel">상품문의 등록</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
@@ -323,4 +323,5 @@
         })
     })
 </script>
+<script src="<c:url value='/js/custom/image.js'/>"></script>
 <%@ include file="../footer.jsp" %>

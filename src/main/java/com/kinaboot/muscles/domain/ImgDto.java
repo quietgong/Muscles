@@ -7,11 +7,11 @@ public class ImgDto {
     private Integer imgNo;
     private Integer no;
     private String uploadPath;
-    private String uploadName;
+    private String fileName;
 
-    public ImgDto(Integer no, String uploadPath, String uploadName) {
+    public ImgDto(Integer no, String uploadPath, String fileName) {
         this.no = no;
         this.uploadPath = uploadPath;
-        this.uploadName = uploadName;
+        this.fileName = fileName;
     }
 }

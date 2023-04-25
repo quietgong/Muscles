@@ -32,7 +32,7 @@ public interface GoodsDao {
 
     int deleteGoodsDetail(String imgPath);
 
-    int insertGoodsImg(int goodsNo, String uploadPath);
+    int insertGoodsImg(GoodsImgDto goodsImgDto);
 
     int selectGoodsNo();
 

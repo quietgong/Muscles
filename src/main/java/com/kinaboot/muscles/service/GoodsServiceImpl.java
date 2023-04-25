@@ -42,8 +42,10 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDto.setGoodsNo(goodsNo);
         goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
-        for (GoodsImgDto goodsImgDto : goodsImgDtoList)
-            goodsDao.insertGoodsImg(goodsImgDto.getGoodsNo(), goodsImgDto.getUploadPath());
+        for (GoodsImgDto goodsImgDto : goodsImgDtoList){
+            goodsImgDto.setGoodsNo(goodsNo);
+            goodsDao.insertGoodsImg(goodsImgDto);
+        }
         return goodsDao.insert(goodsDto);
     }
 
@@ -52,8 +54,10 @@ public class GoodsServiceImpl implements GoodsService {
     public int modifyGoods(GoodsDto goodsDto) {
         goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
-        for (GoodsImgDto goodsImgDto : goodsImgDtoList)
-            goodsDao.insertGoodsImg(goodsImgDto.getGoodsNo(), goodsImgDto.getUploadPath());
+        for (GoodsImgDto goodsImgDto : goodsImgDtoList){
+            goodsImgDto.setGoodsNo(goodsDto.getGoodsNo());
+            goodsDao.insertGoodsImg(goodsImgDto);
+        }
         return goodsDao.updateGoods(goodsDto);
     }
 
@@ -96,7 +100,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDto.setGoodsImgDtoList(goodsDao.selectGoodsDetailImg(goodsNo));
 
         List<ReviewDto> reviewDtoList = reviewDao.selectGoodsReview(goodsNo);
-        for (ReviewDto reviewDto : reviewDao.selectGoodsReview(goodsNo))
+        for (ReviewDto reviewDto : reviewDtoList)
             reviewDto.setReviewImgDtoList(reviewService.findReviewImg(reviewDto.getReviewNo(), goodsNo));
         goodsDto.setReviewDtoList(reviewDtoList);
         return goodsDto;

@@ -39,7 +39,7 @@
                     <div class="row">
                         <ul class="list-unstyled d-flex justify-content-center mb-1">
                             <div class="star-score" style="width: auto">
-                                <input class="starRange" type="range" value="0" step="10" min="0" max="100"/>
+                                <input id="starRange" class="starRange" type="range" value="0" step="10" min="0" max="100"/>
                                 <div class="fill-ratings">
                                     <span style="font-size: 1.8rem;">★★★★★</span>
                                 </div>
@@ -51,9 +51,9 @@
                     </div>
                     <div class="row mt-5">
                         <div class="col-md-12">
-                            <label onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this, "review","detail")'
-                                   for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
-                            <input type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
+                            <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
+                            <input onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this, "review","detail")'
+                                   type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
                             <div id="detailPreview"><!-- 미리보기 이미지 출력 영역--></div>
                         </div>
                     </div>
@@ -83,6 +83,7 @@
     function loadReviewData() {
         commonAjax("/muscles/mypage/review/" + '${userId}', null, "GET", function (res) {
             $("#reviewList").after(toHtml(res))
+            console.log(res)
         })
     }
 
@@ -111,6 +112,11 @@
             tmp += '<div class="col-md-12 mt-4">'
             tmp += '<span>' + item.content + '</span>'
             tmp += '</div>'
+            item.reviewImgDtoList.forEach(function (img){
+                tmp += '<div class="col-md-2 mt-3">'
+                tmp += "<img class=\"img-fluid\" src=" + img.uploadPath + ">"
+                tmp += '</div>'
+            })
             tmp += '<hr class="mb-4 mt-5">'
             tmp += '</div>'
         })
@@ -125,16 +131,9 @@
         $(".fill-ratings").css("width", item.score + '%') // 상품점수에 따른 별점 입력
         $("#reviewNo").val(item.reviewNo)
         $("#modal-footer").attr("data-goodsNo", item.goodsNo)
-
-        if (item.reviewImgDtoList.length !== 0) {
-            let items = []
-            item.reviewImgDtoList.forEach(function (r) {
-                let tmp = {}
-                tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
-                items.push(tmp)
-            })
-            showPreview(items, 'detail')
-        }
+        console.log(item.reviewImgDtoList)
+        showPreview(item.reviewImgDtoList, "detail", "review")
+        showUpDownBtn()
     }
 
     function modReview(e) { // 리뷰 수정
@@ -154,6 +153,7 @@
             tmp.reviewNo = reviewNo
             tmp.goodsNo = $("#modal-footer").attr("data-goodsNo")
             tmp.uploadPath = $(this).attr("src")
+            tmp.fileName = $(this).parent().attr("data-filename")
             reviewImgDtoList.push(tmp)
         });
 
@@ -168,7 +168,7 @@
         if (!confirm("정말로 삭제하시겠습니까?")) return;
         let reviewNo = $(e).parent().attr("data-reviewNo")
         commonAjax("/muscles/review/" + reviewNo, null, "DELETE", function () {
-                location.reload()
+            location.reload()
         })
     }
 </script>

@@ -168,15 +168,15 @@
         where faqNo = #{faqNo};
     </insert>
     <select id="selectGoodsImg" parameterType="int" resultType="goodsImgDto">
-        select filePath as uploadPath
+        select uploadPath, fileName
         FROM goodsImg
         where goodsNo = '${goodsNo}'
         order by goodsImgNo
     </select>
     <!-- 상품상세 이미지 경로 입력 -->
-    <insert id="insertGoodsImg" parameterType="map">
-        insert into goodsImg (goodsNo, filePath)
-        values (#{goodsNo}, #{filePath});
+    <insert id="insertGoodsImg" parameterType="goodsImgDto">
+        insert into goodsImg (goodsNo, uploadPath, fileName)
+        values (#{goodsNo}, #{uploadPath}, #{fileName});
     </insert>
 
     <update id="updateGoods" parameterType="goodsDto">
@@ -218,7 +218,7 @@
     <delete id="deleteGoodsDetail" parameterType="String">
         DELETE
         FROM goodsImg
-        where filePath = '${imgPath}'
+        where uploadPath = '${imgPath}'
     </delete>
     <delete id="deleteAllGoodsDetail" parameterType="int">
         DELETE

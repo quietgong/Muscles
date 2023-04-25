@@ -25,7 +25,7 @@
             </div>
             <div id="detailPreview" class="row flex-nowrap" style="overflow-x: auto">
                 <c:forEach var="postImgDto" items="${postDto.postImgDtoList}">
-                    <div class="detail col-md-4" data-category="post" data-type="detail" data-url="${postImgDto.uploadPath}">
+                    <div class="detail col-md-4" data-category="post" data-type="detail" data-fileName="${postImgDto.fileName}">
                         <button style="display:none;" class="delPreview modPosition btn btn-danger mb-3 mt-3" type="button">X</button>
                         <button style="display:none; float: right" class="modPosition down btn btn-warning mb-3 mt-3" type="button">→</button>
                         <button style="display:none; float: right; margin-right: 10px" class="modPosition up btn btn-warning mb-3 mt-3" type="button">←</button>
@@ -108,6 +108,7 @@
             $('.newDetail').each(function () {
                 let tmp = {}
                 tmp.postNo = postNo
+                tmp.fileName = $(this).parent().attr("data-filename")
                 tmp.uploadPath = $(this).attr("src")
                 postImgDtoList.push(tmp)
             });

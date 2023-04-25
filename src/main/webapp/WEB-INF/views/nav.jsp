@@ -24,6 +24,7 @@
     <script src="<c:url value='/js/slick.min.js'/>"></script>
     <script src="<c:url value='/js/templatemo.js'/>"></script>
     <script src="<c:url value='/js/custom/custom.js'/>"></script>
+    <script src="<c:url value='/js/custom/modal.js'/>"></script>
 </head>
 <body>
 <div class="p-3 container d-grid gap-2 d-md-flex justify-content-end">

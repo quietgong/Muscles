@@ -46,7 +46,7 @@
     </div>
 </div>
 <script>
-    loadUser('all')
+    loadUser('all', $("nav").children(":first-child"))
 
     function loadUser(status, e) {
         $(".nav-link").removeClass("fw-bold")

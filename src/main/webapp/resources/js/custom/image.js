@@ -3,9 +3,8 @@ function uploadImg(url, e, category, type) {
     let fileList = e.files;
     if (type === 'thumbnail' && fileList.length > 1) {
         let target = e.next().children()
-        let fileName = e.next().children().attr("data-url")
-        let url = "/muscles/img/delete/goods/thumbnail?fileName=" + fileName
-        delPreviewImg(url, target, "goods")
+        let fileName = e.next().children().attr("data-filename")
+        delPreviewImg("goods", fileName, "thumbnail", target)
     }
     let formData = new FormData();
     for (let i = 0; i < fileList.length; i++)
@@ -20,6 +19,7 @@ function uploadImg(url, e, category, type) {
         dataType: 'json',
         success: function (items) {
             showPreview(items, type, category)
+            category === 'review' || 'goods' ? showUpDownBtn() : showLeftRightBtn()
         }
     })
 }
@@ -27,47 +27,51 @@ function uploadImg(url, e, category, type) {
 // 이미지 미리보기 출력
 function showPreview(items, type, category) {
     let tmp = "";
-    items.forEach(function (item) {
-        let addr = "/muscles/img/display?category=" + category + "&type=" + type + "&fileName=" + item.uploadName
-        tmp += '<div class="detail col-md-4" data-category=' + category + ' data-type=' + type + ' data-url=' + item.uploadName + '>'
+    if (type === 'thumbnail') {
+        tmp += '<div class="detail col-md-4" data-category=' + category + ' data-type=' + type + '>'
         tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-        if (type === 'thumbnail')
-            tmp += '<img style="height: 250px" class="img-fluid" id="newThumbnail" src="' + addr + '">'
-        else {
-            tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">→</button>'
-            tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">←</button>'
+        tmp += '<img style="height: 250px" class="img-fluid" id="newThumbnail" src="' + items + '">'
+    }else {
+        items.forEach(function (item) {
+            let addr = "/muscles/img/display?category=" + category + "&type=" + type + "&fileName=" + item.fileName
+            tmp += '<div class="detail col-md-4" data-category=' + category + ' data-type=' + type + ' data-fileName=' + item.fileName + '>'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+            if (category === 'review' || 'goods') {
+                tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↑</button>'
+                tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↓</button>'
+            } else {
+                tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">→</button>'
+                tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">←</button>'
+            }
             tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
-        }
-        tmp += '</div>'
-    });
+            tmp += '</div>'
+        });
+    }
     type === 'thumbnail' ? $("#thumbnailPreview").append(tmp) : $("#detailPreview").append(tmp)
-    category === 'review' ? showLeftRightBtn() : showUpDownBtn()
 }
 
 // 미리보기 이미지 삭제
-function delPreviewImg(url, target, category) {
+function delPreviewImg(category, fileName, type, target) {
     $.ajax({
         type: "DELETE",
         enctype: 'multipart/form-data',
-        url: url,
+        url: "/muscles/img/delete/" + category + "/" + type + "?fileName=" + fileName,
         success: function (res) {
             // 파일 삭제 성공 -> 해당 이미지 영역을 삭제
             if (res === "DEL_OK") {
-                target.empty();
+                target.remove();
             }
         }
     })
-    category === 'review' ? showLeftRightBtn() : showUpDownBtn()
 }
 
 // X 버튼 클릭시 (미리보기 이미지 삭제 함수 호출)
 $(document).on("click", ".delPreview", function () {
     let category = $(this).parent().attr("data-category")
-    let fileName = $(this).parent().attr("data-url")
+    let fileName = $(this).parent().attr("data-filename")
     let type = $(this).parent().attr("data-type")
     let target = $(this).parent()
-    let url = "/muscles/img/delete/" + category + "/" + type + "?fileName=" + fileName
-    delPreviewImg(url, target, category)
+    delPreviewImg(category, fileName, type, target)
 });
 
 

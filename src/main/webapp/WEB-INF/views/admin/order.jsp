@@ -142,7 +142,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="orderCancelModalLabel">주문 취소 사유</h5>
-                <button type="button" onclick="initOrderCancelModal()" class="btn-close" data-bs-dismiss="modal"
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -186,7 +186,7 @@
             </div>
             <!-- 모달 구성 요소 -->
             <div class="modal-footer">
-                <button type="button" onclick="initOrderCancelModal()" class="btn btn-secondary"
+                <button type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">Close
                 </button>
                 <button onclick="orderCancel(this)" type="button" class="btn btn-primary">완료</button>

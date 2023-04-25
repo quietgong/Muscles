@@ -19,7 +19,7 @@
     </select>
 
     <select id="selectPostImg" parameterType="int" resultType="PostImgDto">
-        select filePath as uploadPath
+        select uploadPath, fileName
         from postImg
         where postNo = '${postNo}';
     </select>
@@ -71,8 +71,8 @@
     </insert>
 
     <insert id="insertPostImg" parameterType="PostImgDto">
-        insert into postimg (postNo, filePath)
-        values (#{postNo}, #{uploadPath});
+        insert into postimg (postNo, uploadPath, fileName)
+        values (#{postNo}, #{uploadPath}, #{fileName});
     </insert>
 
     <update id="update" parameterType="PostDto">
@@ -105,6 +105,6 @@
     </delete>
 
     <delete id="deletePostImg" parameterType="String">
-        DELETE FROM reviewImg where filePath = '${imgPath}'
+        DELETE FROM reviewImg where uploadPath = '${imgPath}'
     </delete>
 </mapper>

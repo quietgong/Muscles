@@ -14,8 +14,8 @@
             </div>
             <div class="row mt-5">
                 <div class="col-md-12">
-                    <button style="float: right" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                            name="modBtn" onclick="$('#staticBackdropLabel').html('상품정보 등록');$('#goodsNo').val(0);"
+                    <button style="float: right" type="button" data-bs-toggle="modal" data-bs-target="#goodsModal"
+                            name="modBtn" onclick="$('#goodsModalLabel').html('상품정보 등록');$('#goodsNo').val(0);"
                             class="btn btn-outline-primary btn-lg">상품 등록
                     </button>
                     <table class="table table-hover">
@@ -40,12 +40,12 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="goodsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="goodsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">상품정보 변경</h5>
+                <h5 class="modal-title" id="goodsModalLabel">상품정보 변경</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -70,7 +70,8 @@
                             <select id="categoryDetailSelect" class="form-select" aria-label="Default select example">
                                 <option value="">소분류를 선택하세요</option><!-- 대분류에 대한 소분류 셀렉트 리스트 출력-->
                             </select>
-                            <input style="display: none" id="newCategory" type="text" class="form-control mt-2" placeholder="카테고리 입력">
+                            <input style="display: none" id="newCategory" type="text" class="form-control mt-2"
+                                   placeholder="카테고리 입력">
                         </div>
                         <div class="col-md-12 mt-3">
                             <label class="form-label">가격(₩)</label>
@@ -120,8 +121,9 @@
 <script>
     // 수정 버튼 클릭 시 해당 상품 정보 모달창에 입력
     function insertModal(goodsNo) {
-        $('#staticBackdropLabel').html('상품정보 변경');
+        $('#goodsModalLabel').html('상품정보 변경');
         commonAjax("/muscles/admin/goods/" + goodsNo, null, "GET", function (res) {
+            console.log(res)
             $("#goodsNo").val(res.goodsNo)
             $("#goodsName").val(res.goodsName)
             categoryDetailDisplay(res.goodsCategory)
@@ -130,17 +132,9 @@
             $("#goodsPrice").val(res.goodsPrice)
             $("#goodsStock").val(res.goodsStock)
             $("#goodsDescription").val(res.goodsDescription)
-            if (res.goodsImgPath != null)
-                showGoodsImgPreview([{uploadName: res.goodsImgPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]}], 'thumbnail')
-            if (res.goodsImgDtoList.length !== 0) {
-                let items = []
-                res.goodsImgDtoList.forEach(function (r) {
-                    let tmp = {}
-                    tmp.uploadName = r.uploadPath.split("&").filter(item => item.includes("fileName"))[0].split("=")[1]
-                    items.push(tmp)
-                })
-                showGoodsImgPreview(items, 'detail')
-            }
+            showPreview(res.goodsImgPath, 'thumbnail', "goods")
+            showPreview(res.goodsImgDtoList, 'detail', "goods")
+            showUpDownBtn()
         })
     }
 
@@ -167,6 +161,7 @@
             let tmp = {}
             tmp.goodsNo = $("#goodsNo").val()
             tmp.uploadPath = $(this).attr("src")
+            tmp.fileName = $(this).parent().attr("data-filename")
             goodsImgDtoList.push(tmp)
         });
         data.goodsNo = $("#goodsNo").val();
@@ -202,8 +197,8 @@
                 tmp += '<td>' + item.goodsStock + '</td>'
                 tmp += '<td>' + item.goodsReviewScore / 20 + '</td>'
                 tmp += '<td>' + item.goodsSales + '</td>'
-                tmp += '<td><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" name="modBtn" class="btn btn-primary" onclick="insertModal(' + item.goodsNo + ')">수정</button></td>'
-                tmp += '<td><button type="button" name="delBtn" class="btn btn-danger" onclick="removeProduct(' + item.goodsNo + ')">삭제</button></td>'
+                tmp += '<td><button type="button" data-bs-toggle="modal" data-bs-target="#goodsModal" name="modBtn" class="btn btn-primary" onclick="insertModal(' + item.goodsNo + ')">수정</button></td>'
+                tmp += '<td><button type="button" name="delBtn" class="btn btn-danger" onclick="removeGoods(' + item.goodsNo + ')">삭제</button></td>'
                 tmp += '</tr>'
             })
             return tmp;
@@ -211,7 +206,7 @@
     }
 
     // 상품 정보 삭제
-    function removeProduct(goodsNo) {
+    function removeGoods(goodsNo) {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
         commonAjax("/muscles/admin/goods/" + goodsNo, null, "DELETE", function () {
             alert("해당 상품 정보를 삭제하였습니다.")

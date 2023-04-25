@@ -36,6 +36,7 @@
         let postImgDtoList = []
         $('.newDetail').each(function () {
             let tmp = {}
+            tmp.fileName = $(this).parent().attr("data-fileName")
             tmp.uploadPath = $(this).attr("src")
             postImgDtoList.push(tmp)
         });

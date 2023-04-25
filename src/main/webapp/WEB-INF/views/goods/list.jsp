@@ -143,7 +143,7 @@
                             </c:if>
                             <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
                                 <li>
-                                    <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
+                                    <a id="${i}" class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
                                        href="<c:url value='/goods/list${ph.sc.getQueryString(i)}'/>">${i}</a>
                                 </li>
                             </c:forEach>
@@ -197,6 +197,7 @@
     }
 </script>
 <script>
+    $("#${param.page}").addClass("active")
     // 조건 검색
     let conditions = {
         page: '${ph.sc.page}',

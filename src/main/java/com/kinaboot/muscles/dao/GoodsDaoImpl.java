@@ -81,11 +81,8 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int insertGoodsImg(int goodsNo, String uploadPath) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("goodsNo", String.valueOf(goodsNo));
-        map.put("filePath", uploadPath);
-        return session.insert(namespace + "insertGoodsImg", map);
+    public int insertGoodsImg(GoodsImgDto goodsImgDto) {
+        return session.insert(namespace + "insertGoodsImg", goodsImgDto);
     }
 
     @Override

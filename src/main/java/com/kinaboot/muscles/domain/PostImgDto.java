@@ -11,6 +11,6 @@ public class PostImgDto {
     private Integer postImgNo;
     private Integer postNo;
     private String uploadPath;
-    private String uploadName;
+    private String fileName;
     private String type;
 }

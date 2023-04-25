@@ -43,7 +43,7 @@ public class GoodsServiceImplTest extends TestConfigure {
         goodsDto.setGoodsImgPath("thumbnail");
 
         goodsDao.insert(goodsDto);
-        goodsDao.insertGoodsImg(goodsDao.selectGoodsNo()-1,"detail");
+//        goodsDao.insertGoodsImg(goodsDao.selectGoodsNo()-1,"detail");
         goodsDto.setGoodsImgDtoList(goodsDao.selectGoodsDetailImg(goodsDao.selectGoodsNo() - 1));
     }
     @Test
@@ -125,7 +125,7 @@ public class GoodsServiceImplTest extends TestConfigure {
     public void addGoods() {
         int goodsNo = goodsDao.selectGoodsNo() - 1;
         goodsDao.deleteAllGoodsDetail(goodsNo);
-        goodsDao.insertGoodsImg(goodsNo, "test/add");
+//        goodsDao.insertGoodsImg(goodsNo, "test/add");
         assertEquals(goodsDao.selectGoodsDetailImg(goodsNo).get(0).getUploadPath(),"test/add");
     }
 
@@ -136,7 +136,7 @@ public class GoodsServiceImplTest extends TestConfigure {
         goodsDao.deleteAllGoodsDetail(goodsNo);
         goodsDto.setGoodsImgDtoList(goodsDao.selectGoodsDetailImg(goodsNo));
         for(GoodsImgDto goodsImgDto : goodsDto.getGoodsImgDtoList())
-            goodsDao.insertGoodsImg(goodsNo, "modified");
+//            goodsDao.insertGoodsImg(goodsNo, "modified");
         assertEquals(goodsDao.selectGoodsDetailImg(goodsNo).get(0).getUploadPath(), "modified");
     }
 

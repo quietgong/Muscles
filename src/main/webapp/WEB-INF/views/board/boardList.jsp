@@ -93,6 +93,5 @@
         </div>
     </div>
 </div>
-<script>$("#${param.page}").addClass("active")</script>
 <!-- footer -->
 <%@ include file="../footer.jsp" %>

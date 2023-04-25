@@ -42,14 +42,14 @@
     </select>
 
     <select id="selectReviewImg" parameterType="map" resultType="reviewImgDto">
-        select reviewNo, filePath as uploadPath
+        select reviewNo, uploadPath, fileName
         from reviewImg
         where goodsNo = #{goodsNo}
         and reviewNo = #{reviewNo};
     </select>
 
     <select id="selectReviewOneImg" parameterType="int" resultType="reviewImgDto">
-        select reviewNo, filePath as uploadPath
+        select reviewNo, uploadPath, fileName
         from reviewImg
         where reviewNo = '${reviewNo}';
     </select>
@@ -60,8 +60,8 @@
     </insert>
 
     <insert id="insertReviewImg" parameterType="reviewImgDto">
-        insert into reviewimg (reviewNo, filePath, goodsNo)
-        values (#{reviewNo}, #{uploadPath}, #{goodsNo});
+        insert into reviewimg (reviewNo, uploadPath, goodsNo, fileName)
+        values (#{reviewNo}, #{uploadPath}, #{goodsNo}, #{fileName});
     </insert>
 
     <update id="updateReview" parameterType="reviewDto">
@@ -84,7 +84,7 @@
     <delete id="deleteReviewImg" parameterType="String">
         DELETE
         FROM reviewImg
-        where filePath = '${imgPath}'
+        where uploadPath = '${imgPath}'
     </delete>
     <delete id="deleteReviewImgs" parameterType="int">
         DELETE
