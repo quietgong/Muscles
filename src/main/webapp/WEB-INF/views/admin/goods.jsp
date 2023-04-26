@@ -132,9 +132,12 @@
             $("#goodsPrice").val(res.goodsPrice)
             $("#goodsStock").val(res.goodsStock)
             $("#goodsDescription").val(res.goodsDescription)
-            showPreview(res.goodsImgPath, 'thumbnail', "goods")
+            let tmp = ""
+            tmp += '<div class="detail col-md-12" data-category=goods data-type="thumbnail">'
+            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+            tmp += '<img class="img-fluid" id="newThumbnail" src="' + res.goodsImgPath + '">'
+            $("#thumbnailPreview").append(tmp)
             showPreview(res.goodsImgDtoList, 'detail', "goods")
-            showUpDownBtn()
         })
     }
 

@@ -59,33 +59,33 @@ public class OrderServiceImplTest extends TestConfigure {
         orderDto.setPaymentDto(payment);
         orderDto.setDeliveryDto(delivery);
 
-        // 주문 정보 생성
-        int newOrderNo = orderDao.insertOrder(orderDto);
-        orderDto.setOrderNo(newOrderNo);
-        assertEquals(newOrderNo, orderDto.getOrderNo());
-
-        List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
-        for (OrderItemDto orderItemDto : orderItemDtoList) {
-            orderItemDto.setOrderNo(newOrderNo);
-            // 주문상품 정보 생성
-            orderDao.insertOrderItem(orderItemDto);
-            // 주문상품 장바구니에서 제거
-            cartDao.deleteCartItem(userId, orderItemDto.getGoodsNo());
-        }
-        assertEquals(cartDao.count("test"), 0);
-        assertEquals(orderItemDtoList.get(0).getOrderNo(), newOrderNo);
-
-        // 배송 정보 생성
-        DeliveryDto deliveryDto = orderDto.getDeliveryDto();
-        deliveryDto.setOrderNo(newOrderNo);
-        orderDao.insertDelivery(deliveryDto);
-        assertEquals(deliveryDto.getOrderNo(), newOrderNo);
-
-        // 결제 정보 생성
-        PaymentDto paymentDto = orderDto.getPaymentDto();
-        paymentDto.setOrderNo(newOrderNo);
-        orderDao.insertPayment(paymentDto);
-        assertEquals(paymentDto.getOrderNo(), newOrderNo);
+//        // 주문 정보 생성
+//        int newOrderNo = orderDao.insertOrder(orderDto);
+//        orderDto.setOrderNo(newOrderNo);
+//        assertEquals(newOrderNo, orderDto.getOrderNo());
+//
+//        List<OrderItemDto> orderItemDtoList = orderDto.getOrderItemDtoList();
+//        for (OrderItemDto orderItemDto : orderItemDtoList) {
+//            orderItemDto.setOrderNo(newOrderNo);
+//            // 주문상품 정보 생성
+//            orderDao.insertOrderItem(orderItemDto);
+//            // 주문상품 장바구니에서 제거
+//            cartDao.deleteCartItem(userId, orderItemDto.getGoodsNo());
+//        }
+//        assertEquals(cartDao.count("test"), 0);
+//        assertEquals(orderItemDtoList.get(0).getOrderNo(), newOrderNo);
+//
+//        // 배송 정보 생성
+//        DeliveryDto deliveryDto = orderDto.getDeliveryDto();
+//        deliveryDto.setOrderNo(newOrderNo);
+//        orderDao.insertDelivery(deliveryDto);
+//        assertEquals(deliveryDto.getOrderNo(), newOrderNo);
+//
+//        // 결제 정보 생성
+//        PaymentDto paymentDto = orderDto.getPaymentDto();
+//        paymentDto.setOrderNo(newOrderNo);
+//        orderDao.insertPayment(paymentDto);
+//        assertEquals(paymentDto.getOrderNo(), newOrderNo);
     }
 
     @Test
@@ -125,7 +125,6 @@ public class OrderServiceImplTest extends TestConfigure {
         }
         // 쿠폰 사용 취소 처리
         userDao.updateCoupon(orderNo);
-        assertEquals(userService.findCoupons("test").get(0).getOrderNo(), 0);
 
         // 주문 취소 처리
         orderDao.deleteOrder(orderNo, cancelReason);

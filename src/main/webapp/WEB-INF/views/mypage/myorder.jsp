@@ -201,15 +201,15 @@
                             </ul>
                         </div>
                         <div class="col-md-12">
-                                <textarea id="reviewContent" class="form-control" placeholder="상품 후기를 작성해주세요."
-                                          rows="5"
-                                          cols="50"></textarea>
-                        </div>
-                        <div class="col-md-12">
                             <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
                             <input onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this, "review","detail")'
                                    type="file" multiple class="form-control" id="reviewImg" name='uploadFile'>
                             <div id="detailPreview"><!-- 미리보기 이미지 출력 영역--></div>
+                        </div>
+                        <div class="col-md-12">
+                                <textarea id="reviewContent" class="form-control mt-1" placeholder="상품 후기를 작성해주세요."
+                                          rows="5"
+                                          cols="50"></textarea>
                         </div>
                     </div>
                 </div>
@@ -275,6 +275,7 @@
         $('.newDetail').each(function () {
             let tmp = {}
             tmp.goodsNo = data.goodsNo
+            tmp.fileName = $(this).parent().attr("data-filename")
             tmp.uploadPath = $(this).attr("src")
             reviewImgDtoList.push(tmp)
         });

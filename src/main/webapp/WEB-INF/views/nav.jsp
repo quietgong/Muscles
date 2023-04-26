@@ -28,7 +28,7 @@
 </head>
 <body>
 <div class="p-3 container d-grid gap-2 d-md-flex justify-content-end">
-    <button onclick="location.href='<c:url value='/admin/user'/>'" type="button" class="btn btn-outline-primary">관리자
+    <button onclick="location.href='<c:url value='/admin/user'/>'" type="button" class="btn btn-primary">관리자
         페이지
     </button>
     <button onclick="location.href='<c:url value='/login'/>'" type="button" class="logoff btn btn-outline-primary">로그인

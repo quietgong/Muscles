@@ -79,6 +79,7 @@
     }
 
     let toHtmlPoint = function (items) {
+        console.log(items)
         let totalPoint = 0;
         let tmp = "";
         items.forEach(function (item) {

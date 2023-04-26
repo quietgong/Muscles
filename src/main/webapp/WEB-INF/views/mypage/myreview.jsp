@@ -35,21 +35,25 @@
                         <div class="col-md-12">
                             <h3 id="goodsName" class="goodsName text-center">상품 이름</h3>
                         </div>
-                    </div>
-                    <div class="row">
-                        <ul class="list-unstyled d-flex justify-content-center mb-1">
-                            <div class="star-score" style="width: auto">
-                                <input id="starRange" class="starRange" type="range" value="0" step="10" min="0" max="100"/>
-                                <div class="fill-ratings">
-                                    <span style="font-size: 1.8rem;">★★★★★</span>
+                        <div class="col-md-12">
+                            <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                <div class="star-score" style="width: auto">
+                                    <input id="starRange" class="starRange" type="range" value="0" step="10" min="0"
+                                           max="100"/>
+                                    <div class="fill-ratings">
+                                        <span style="font-size: 1.8rem;">★★★★★</span>
+                                    </div>
+                                    <div class="empty-ratings">
+                                        <span style="font-size: 1.8rem;">★★★★★</span>
+                                    </div>
                                 </div>
-                                <div class="empty-ratings">
-                                    <span style="font-size: 1.8rem;">★★★★★</span>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
-                    <div class="row mt-5">
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                                <textarea id="reviewContent" class="form-control mt-1" placeholder="상품 후기를 작성해주세요."
+                                          rows="5"
+                                          cols="50"></textarea>
+                        </div>
                         <div class="col-md-12">
                             <label for="reviewImg" class="form-label text-center">리뷰 이미지를 업로드해주세요!</label>
                             <input onchange='uploadImg("/muscles/img/review/detail/"+$("#modal-footer").attr("data-goodsno"), this, "review","detail")'
@@ -57,23 +61,19 @@
                             <div id="detailPreview"><!-- 미리보기 이미지 출력 영역--></div>
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col-md-12">
-                                <textarea id="reviewContent" class="form-control mt-1" placeholder="상품 후기를 작성해주세요."
-                                          rows="5"
-                                          cols="50"></textarea>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <!-- 모달 구성 요소 -->
-            <div id="modal-footer" class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button onclick="reviewRegister(this)" type="button" class="btn btn-primary">등록</button>
-                <input id="reviewNo" value="" type="hidden">
             </div>
         </div>
     </div>
+</div>
+<!-- 모달 구성 요소 -->
+<div id="modal-footer" class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button onclick="reviewRegister(this)" type="button" class="btn btn-primary">등록</button>
+    <input id="reviewNo" value="" type="hidden">
+</div>
+</div>
+</div>
 </div>
 <!-- Modal -->
 <script>
@@ -112,8 +112,8 @@
             tmp += '<div class="col-md-12 mt-4">'
             tmp += '<span>' + item.content + '</span>'
             tmp += '</div>'
-            item.reviewImgDtoList.forEach(function (img){
-                tmp += '<div class="col-md-2 mt-3">'
+            item.reviewImgDtoList.forEach(function (img) {
+                tmp += '<div class="col-md-4 mt-3">'
                 tmp += "<img class=\"img-fluid\" src=" + img.uploadPath + ">"
                 tmp += '</div>'
             })

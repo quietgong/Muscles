@@ -101,6 +101,7 @@
                                         <li><a class="btn btn-success text-white mt-2"
                                                href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"><i
                                                 class="far fa-eye"></i></a></li>
+
                                         <li><a class="btn btn-success text-white mt-2"
                                                onclick="addCart(${goodsDto.goodsNo},'${goodsDto.goodsName}','${goodsDto.goodsCategory}',${goodsDto.goodsPrice})"><i
                                                 class="fas fa-cart-plus"></i></a></li>
@@ -114,7 +115,8 @@
                                         <span class="text-muted">${goodsDto.goodsCategory} > ${goodsDto.goodsCategoryDetail}</span>
                                     </div>
                                     <div class="col-md-12 text-center mt-2">
-                                        <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>" class="h3 fw-bold text-decoration-none">
+                                        <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"
+                                           class="h3 fw-bold text-decoration-none">
                                             <h3 style="font-family: 'Franklin Gothic Medium';">${goodsDto.goodsName}</h3>
                                         </a>
                                     </div>
@@ -130,7 +132,8 @@
                                         ₩ <fmt:formatNumber value="${goodsDto.goodsPrice}" pattern="#,###"/>
                                     </p>
                                     <p class="text-center text-secondary mb-0">
-                                    (Review : <fmt:formatNumber value="${goodsDto.reviewDtoList.size()}" pattern="#,###"/>)
+                                        (Review : <fmt:formatNumber value="${goodsDto.reviewDtoList.size()}"
+                                                                    pattern="#,###"/>)
                                     </p>
                                 </div>
                             </div>
@@ -172,6 +175,8 @@
 <script>
     // 장바구니 추가
     function addCart(goodsNo, goodsName, goodsCategory, goodsPrice) {
+        if(userId === '')
+            location.href = "/muscles/login";
         let data = {}
         data.userId = '${userId}'
         data.goodsNo = goodsNo

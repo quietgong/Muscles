@@ -29,3 +29,8 @@ $("#reviewModal").on('hidden.bs.modal', function () {
     document.getSelection().empty()
     $("#detailPreview").empty()
 });
+
+// FAQ 등록 모달 초기화
+$("#faqModal").on('hidden.bs.modal', function () {
+    $("#content").val("")
+});

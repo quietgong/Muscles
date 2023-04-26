@@ -1,9 +1,11 @@
 // 이미지 업로드
 function uploadImg(url, e, category, type) {
     let fileList = e.files;
-    if (type === 'thumbnail' && fileList.length > 1) {
-        let target = e.next().children()
-        let fileName = e.next().children().attr("data-filename")
+
+    if (type === 'thumbnail' && fileList.length > 0) {
+        alert("나와")
+        let target = $(e).next().children()
+        let fileName = $(e).next().children().attr("data-filename")
         delPreviewImg("goods", fileName, "thumbnail", target)
     }
     let formData = new FormData();
@@ -19,35 +21,43 @@ function uploadImg(url, e, category, type) {
         dataType: 'json',
         success: function (items) {
             showPreview(items, type, category)
-            category === 'review' || 'goods' ? showUpDownBtn() : showLeftRightBtn()
         }
     })
 }
 
 // 이미지 미리보기 출력
 function showPreview(items, type, category) {
+    console.log(items)
     let tmp = "";
     if (type === 'thumbnail') {
-        tmp += '<div class="detail col-md-4" data-category=' + category + ' data-type=' + type + '>'
+        tmp += '<div class="detail col-md-12" data-category=' + category + ' data-type=' + type + '>'
         tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-        tmp += '<img style="height: 250px" class="img-fluid" id="newThumbnail" src="' + items + '">'
-    }else {
+        let url = "/muscles/img/display?category=" + category + "&type=" + type + "&fileName=" + items[0].fileName
+        tmp += '<img class="img-fluid" id="newThumbnail" src="' + url + '">'
+    } else {
         items.forEach(function (item) {
             let addr = "/muscles/img/display?category=" + category + "&type=" + type + "&fileName=" + item.fileName
-            tmp += '<div class="detail col-md-4" data-category=' + category + ' data-type=' + type + ' data-fileName=' + item.fileName + '>'
+            if (category === 'post')
+                tmp += '<div class="detail col-md-4" data-category=' + category + ' data-type=' + type + ' data-fileName=' + item.fileName + '>'
+            else
+                tmp += '<div class="detail col-md-12" data-category=' + category + ' data-type=' + type + ' data-fileName=' + item.fileName + '>'
+
             tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            if (category === 'review' || 'goods') {
-                tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↑</button>'
-                tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↓</button>'
-            } else {
+
+            if (category === 'post') {
                 tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">→</button>'
                 tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">←</button>'
+            } else {
+                tmp += '<button style="float: right" class="down btn btn-warning mb-3 mt-3" type="button">↑</button>'
+                tmp += '<button style="float: right; margin-right: 10px" class="up btn btn-warning mb-3 mt-3" type="button">↓</button>'
             }
             tmp += '<img class="img-fluid newDetail" src="' + addr + '">'
             tmp += '</div>'
         });
     }
     type === 'thumbnail' ? $("#thumbnailPreview").append(tmp) : $("#detailPreview").append(tmp)
+    showUpDownBtn()
+    showLeftRightBtn()
 }
 
 // 미리보기 이미지 삭제

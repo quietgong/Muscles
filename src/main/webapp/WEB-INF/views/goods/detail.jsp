@@ -25,10 +25,9 @@
             <div class="col-lg-7 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        <h1 class="h2">[${goodsDto.goodsCategory}
-                            > ${goodsDto.goodsCategoryDetail}] <strong>${goodsDto.goodsName}</strong></h1>
-                        <p id="price" class="h3 py-2"><fmt:formatNumber value="${goodsDto.goodsPrice}"
-                                                                        pattern="#,###"/></p>
+                        <h5 class="h2">[${goodsDto.goodsCategory} > ${goodsDto.goodsCategoryDetail}]</h5>
+                        <h3><strong>${goodsDto.goodsName}</strong></h3>
+                        <p id="price" class="h3 py-2">₩ <fmt:formatNumber value="${goodsDto.goodsPrice}" pattern="#,###"/></p>
                         <ul class="list-inline pb-3">
                             <li class="list-inline-item text-right">
                                 <div class="star-ratings">
@@ -247,6 +246,8 @@
     })
 
     function addCart() {
+        if(userId === '')
+            location.href = "/muscles/login";
         let data = {}
         data.userId = '${userId}'
         data.goodsNo = goodsNo
@@ -278,7 +279,7 @@
                 tmp += '<span class="px-3" style="float:right;font-style: italic; text-align: right;">' + item.createdDate + '</span>'
                 // 관리자만 답변 작성 가능
                 if ('${userId}' === 'admin' && item.answer == null)
-                    tmp += '<button onclick="registerAnswer(' + item.faqNo + ')" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="float: right">답변 등록</button>'
+                    tmp += '<button onclick="registerAnswer(' + item.faqNo + ')" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#faqModal" style="float: right">답변 등록</button>'
                 tmp += '</div>'
 
                 /* 답변 */

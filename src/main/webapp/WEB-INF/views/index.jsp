@@ -9,15 +9,13 @@
             <div class="container">
                 <div class="row p-5">
                     <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                        <img class="img-fluid" src="<c:url value='/img/slide1.jpg'/>" alt="">
+                        <img class="img-fluid" src="img/slide1.jpg" alt="">
                     </div>
                     <div class="col-lg-6 mb-0 d-flex align-items-center">
                         <div class="text-align-left align-self-center">
-                            <h1 class="h1 text-success"><b>Muscles</b> Shopping mall</h1>
-                            <h3 class="h2">운동기구 판매</h3>
-                            <p>
-                                "사이트 설명"
-                            </p>
+                            <h1 class="h1 text-success"><b>안녕하세요,</b> 머슬스입니다.</h1>
+                            <h3 class="h2 mt-3">"저희 운동 기구 매장에서</h3>
+                            <h3 class="h2">최고의 운동 기구를 쇼핑하세요"</h3>
                         </div>
                     </div>
                 </div>
@@ -27,15 +25,13 @@
             <div class="container">
                 <div class="row p-5">
                     <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                        <img class="img-fluid" src="<c:url value='/img/slide2.jpg'/>" alt="">
+                        <img class="img-fluid" src="img/slide2.jpg" alt="">
                     </div>
                     <div class="col-lg-6 mb-0 d-flex align-items-center">
                         <div class="text-align-left">
-                            <h1 class="h1">2번 슬라이드 제목</h1>
-                            <h3 class="h2">2번 슬라이드 요약</h3>
-                            <p>
-                                2번 슬라이드 내용
-                            </p>
+                            <h1 class="h1">AIM</h1>
+                            <h3 class="h2">"다양한 운동 기구와 액세서리로</h3>
+                            <h3 class="h2">피트니스 목표를 달성하세요."</h3>
                         </div>
                     </div>
                 </div>
@@ -45,15 +41,13 @@
             <div class="container">
                 <div class="row p-5">
                     <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                        <img class="img-fluid" src="<c:url value='/img/slide3.jpg'/>" alt="">
+                        <img class="img-fluid" src="img/slide3.jpg" alt="">
                     </div>
                     <div class="col-lg-6 mb-0 d-flex align-items-center">
                         <div class="text-align-left">
-                            <h1 class="h1">3번 슬라이드 제목</h1>
-                            <h3 class="h2">3번 슬라이드 요약</h3>
-                            <p>
-                                3번 슬라이드 내용
-                            </p>
+                            <h1 class="h1">LEVEL UP</h1>
+                            <h3 class="h2">"고품격 운동기구로 운동을</h3>
+                            <h3 class="h2">한 차원 높여보세요."</h3>
                         </div>
                     </div>
                 </div>
@@ -173,7 +167,7 @@
             tmp += "<a href=\"<c:url value='/goods/detail?goodsNo='/>" + item.goodsNo + "\">";
             tmp += '<div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">'
             tmp += '</div>'
-            tmp+='</a>'
+            tmp += '</a>'
             tmp += '</div>'
             tmp += '<div class="card-body">'
             tmp += '<div class="row justify-content-center">'

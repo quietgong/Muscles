@@ -156,7 +156,7 @@
     // 댓글 삭제
     $(document).on("click", ".delBtn", function () {
         if (!confirm("정말로 삭제하시겠습니까?")) return;
-        let commentNo = $(this).parent().parent().attr('data-commentno')
+        let commentNo = $(this).parent().attr('data-commentno')
         commonAjax("/muscles/comments/" + commentNo, null, "DELETE", function () {
             loadComments()
         })
@@ -168,7 +168,7 @@
         $("#modifyComment").show()
         $("#modifyCancel").show()
         document.body.scrollTop = document.body.scrollHeight;
-        let commentNo = $(this).parent().parent().attr('data-commentNo')
+        let commentNo = $(this).parent().attr('data-commentNo')
         let content = $(this).parent().children('.comment').text()
         $("#inputComment").val(content)
 
