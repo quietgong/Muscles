@@ -61,5 +61,4 @@ public class MailController {
         }
         return mailSend(String.valueOf(verifyCode), setFrom, toMail, title, content, mailSender);
     }
-
 }

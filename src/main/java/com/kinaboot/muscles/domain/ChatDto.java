@@ -16,7 +16,7 @@ public class ChatDto {
     String chatName;
     String talker;
     String msg;
-    int newMsgCnt;
+    Integer newMsgCnt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

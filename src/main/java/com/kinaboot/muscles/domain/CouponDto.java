@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties
 public class CouponDto {
-    int couponNo;
-    int discount;
-    int orderNo;
+    Integer couponNo;
+    Integer discount;
+    Integer orderNo;
     String couponName;
     String couponCode;
     String userId;

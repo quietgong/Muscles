@@ -32,7 +32,7 @@ public class ReviewDaoImpl implements ReviewDao {
         return session.selectList(namespace + "selectGoodsReview", goodsNo);
     }
     @Override
-    public ReviewDto selectReview(int orderNo, int goodsNo) {
+    public ReviewDto selectReview(Integer orderNo, Integer goodsNo) {
         Map<String, Integer> map = new HashMap<>();
         map.put("orderNo", orderNo);
         map.put("goodsNo", goodsNo);
@@ -44,7 +44,7 @@ public class ReviewDaoImpl implements ReviewDao {
         return session.selectOne(namespace + "selectReviewOne", reviewNo);
     }
     @Override
-    public List<ReviewImgDto> selectReviewImg(int reviewNo, Integer goodsNo) {
+    public List<ReviewImgDto> selectReviewImg(Integer reviewNo, Integer goodsNo) {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("reviewNo", reviewNo);
         map.put("goodsNo", goodsNo);
@@ -52,7 +52,7 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public List<ReviewImgDto> selectReviewImg(int reviewNo) {
+    public List<ReviewImgDto> selectReviewImg(Integer reviewNo) {
         return session.selectList(namespace + "selectReviewOneImg", reviewNo);
     }
     @Override
@@ -87,7 +87,7 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int deleteReviewImg(int reviewNo) {
+    public int deleteReviewImg(Integer reviewNo) {
         return session.delete(namespace + "deleteReviewImgs", reviewNo);
     }
 

@@ -63,7 +63,7 @@ public class OrderController {
     }
 
     @PostMapping("/pay")
-    public String orderAdd(String orderData, int couponNo, int point, RedirectAttributes rttr) {
+    public String orderAdd(String orderData, Integer couponNo, Integer point, RedirectAttributes rttr) {
         log.info("결제 후 주문 처리");
         OrderDto newOrder = orderService.addOrder(orderData, couponNo, point);
         rttr.addFlashAttribute("orderDto", newOrder);

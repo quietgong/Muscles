@@ -14,17 +14,17 @@ public interface OrderService {
     List<OrderDto> findOrders(SearchCondition sc);
 
     // 단건 주문 생성
-    OrderDto addOrder(String orderData, int couponNo, int point);
+    OrderDto addOrder(String orderData, Integer couponNo, Integer point);
 
     // 단건 주문 승인
-    int acceptOrder(int orderNo);
+    int acceptOrder(Integer orderNo);
 
     // 특정 주문 상품 단건 조회
-    OrderItemDto findOrderItem(int orderNo, int goodsNo);
+    OrderItemDto findOrderItem(Integer orderNo, Integer goodsNo);
 
     // 특정 주문 단건 조회
-    OrderDto findOrder(int orderNo);
+    OrderDto findOrder(Integer orderNo);
 
     // 특정 주문 삭제
-    int removeOrder(int orderNo, String cancelReason);
+    int removeOrder(Integer orderNo, String cancelReason);
 }

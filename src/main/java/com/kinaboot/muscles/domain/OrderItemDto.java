@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties
 public class OrderItemDto {
-    private int orderNo;
-    private int goodsNo;
-    private int goodsQty;
-    private int goodsPrice;
+    private Integer orderNo;
+    private Integer goodsNo;
+    private Integer goodsQty;
+    private Integer goodsPrice;
     private String goodsName;
     private String goodsCategory;
     private String goodsCategoryDetail;

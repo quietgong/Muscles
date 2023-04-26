@@ -26,13 +26,13 @@ public interface UserService {
 
     List<PointDto> findPoints(String userId);
 
-    PointDto findPoint(int orderNo);
+    PointDto findPoint(Integer orderNo);
 
-    int modifyPoint(String userId, int point, int orderNo);
+    int modifyPoint(String userId, Integer point, Integer orderNo);
 
     int countUser(String userId);
 
-    int removeCoupon(int couponNo, int orderNo);
+    int removeCoupon(Integer couponNo, Integer orderNo);
 
     int resetPassword(String userId, String resetPassword);
 

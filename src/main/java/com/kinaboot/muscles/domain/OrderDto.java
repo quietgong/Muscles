@@ -14,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties
 public class OrderDto {
-    private int orderNo;
-    private int discount;
+    private Integer orderNo;
+    private Integer discount;
     private String userId;
     private String cancelReason;
     private String status;

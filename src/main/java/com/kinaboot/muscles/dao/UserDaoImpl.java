@@ -61,7 +61,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public PointDto selectUserOrderPoint(int orderNo) {
+    public PointDto selectUserOrderPoint(Integer orderNo) {
         return session.selectOne(namespace + "selectUserOrderPoint", orderNo);
     }
 
@@ -98,12 +98,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int updateCoupon(int orderNo) {
+    public int updateCoupon(Integer orderNo) {
         return session.update(namespace + "updateCoupon", orderNo);
     }
 
     @Override
-    public int updateUserPoint(String userId, int point, int orderNo) {
+    public int updateUserPoint(String userId, Integer point, Integer orderNo) {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("orderNo", String.valueOf(orderNo));
@@ -129,7 +129,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int deleteCoupon(int couponNo, int orderNo) {
+    public int deleteCoupon(Integer couponNo, Integer orderNo) {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("couponNo", couponNo);
         map.put("orderNo", orderNo);
@@ -137,7 +137,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int deleteUserPointHistory(int orderNo) {
+    public int deleteUserPointHistory(Integer orderNo) {
         return session.delete(namespace + "deleteUserPointHistory", orderNo);
     }
 }

@@ -41,6 +41,7 @@ public class LoginController {
 
     @PostMapping("/login/")
     public String login(String toURL, UserDto userDto, HttpServletResponse response, HttpServletRequest request, boolean rememberId) throws Exception {
+        log.info("로그인 진입");
         String msg = URLEncoder.encode("id 또는 pwd가 일치하지 않습니다.", "utf-8");
         if (!loginCheck(userDto.getUserId(), userDto.getPassword())) {
             // 로그인에 실패 : 가고자 했던 경로를 URL에 저장한다.
@@ -71,6 +72,7 @@ public class LoginController {
     @GetMapping("/emailExistCheck")
     @ResponseBody
     public ResponseEntity<String> emailExistCheck(String email) {
+        log.info("[email : " + email + "] 중복 검사 ");
         try {
             return new ResponseEntity<>(userService.findUserEmail(email).getUserId(), HttpStatus.OK);
         } catch (Exception e) {
@@ -109,6 +111,7 @@ public class LoginController {
     }
     @GetMapping("/pwfind")
     public String resetPassword(){
+        log.info("비밀번호 초기화");
         return "resetpwd";
     }
 

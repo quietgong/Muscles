@@ -12,7 +12,7 @@ public interface ReviewDao {
 
     List<ReviewDto> selectReviewListByProductId(Integer goodsNo);
 
-    ReviewDto selectReview(int orderNo, int goodsNo);
+    ReviewDto selectReview(Integer orderNo, Integer goodsNo);
 
     ReviewDto selectReview(Integer reviewNo);
 
@@ -28,11 +28,11 @@ public interface ReviewDao {
 
     int insertReviewImg(ReviewImgDto reviewImgDto);
 
-    int deleteReviewImg(int reviewNo);
+    int deleteReviewImg(Integer reviewNo);
 
-    List<ReviewImgDto> selectReviewImg(int reviewNo, Integer goodsNo);
+    List<ReviewImgDto> selectReviewImg(Integer reviewNo, Integer goodsNo);
 
-    List<ReviewImgDto> selectReviewImg(int reviewNo);
+    List<ReviewImgDto> selectReviewImg(Integer reviewNo);
 
     int deleteAll();
 }

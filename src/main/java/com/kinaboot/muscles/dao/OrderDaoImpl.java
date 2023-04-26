@@ -26,27 +26,27 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<OrderItemDto> selectOrderItemList(int orderNo) {
+    public List<OrderItemDto> selectOrderItemList(Integer orderNo) {
         return session.selectList(namespace + "selectOrderItemList", orderNo);
     }
 
     @Override
-    public DeliveryDto selectDelivery(int orderNo) {
+    public DeliveryDto selectDelivery(Integer orderNo) {
         return session.selectOne(namespace + "selectDelivery", orderNo);
     }
 
     @Override
-    public PaymentDto selectPayment(int orderNo) {
+    public PaymentDto selectPayment(Integer orderNo) {
         return session.selectOne(namespace + "selectPayment", orderNo);
     }
 
     @Override
-    public OrderDto selectOrder(int orderNo) {
+    public OrderDto selectOrder(Integer orderNo) {
         return session.selectOne(namespace + "selectOrder", orderNo);
     }
 
     @Override
-    public OrderItemDto selectOrderItem(int orderNo, int goodsNo) {
+    public OrderItemDto selectOrderItem(Integer orderNo, Integer goodsNo) {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("orderNo", orderNo);
         map.put("goodsNo", goodsNo);
@@ -83,12 +83,12 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int updateOrderStatus(int orderNo) {
+    public int updateOrderStatus(Integer orderNo) {
         return session.update(namespace + "updateOrderStatus", orderNo);
     }
 
     @Override
-    public int deleteOrder(int orderNo, String cancelReason) {
+    public int deleteOrder(Integer orderNo, String cancelReason) {
         HashMap<String, String> map = new HashMap<>();
         map.put("orderNo", String.valueOf(orderNo));
         map.put("cancelReason", cancelReason);

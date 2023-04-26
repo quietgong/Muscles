@@ -31,7 +31,7 @@ public interface UserDao {
 
     int insertExit(ExitDto exitDto);
 
-    int updateUserPoint(String userId, int point, int orderNo);
+    int updateUserPoint(String userId, Integer point, Integer orderNo);
 
     int updateUser(UserDto userDto);
 
@@ -45,13 +45,13 @@ public interface UserDao {
 
     int countUser(String userId);
 
-    int deleteCoupon(int couponNo, int orderNo);
+    int deleteCoupon(Integer couponNo, Integer orderNo);
 
-    PointDto selectUserOrderPoint(int orderNo);
+    PointDto selectUserOrderPoint(Integer orderNo);
 
-    int updateCoupon(int orderNo);
+    int updateCoupon(Integer orderNo);
 
-    int deleteUserPointHistory(int orderNo);
+    int deleteUserPointHistory(Integer orderNo);
 
     int selectAllUserCnt(SearchCondition sc);
 }

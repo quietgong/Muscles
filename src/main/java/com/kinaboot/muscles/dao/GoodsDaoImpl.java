@@ -99,7 +99,7 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public int deleteAllGoodsDetail(int goodsNo) {
+    public int deleteAllGoodsDetail(Integer goodsNo) {
         return session.delete(namespace + "deleteAllGoodsDetail", goodsNo);
     }
 

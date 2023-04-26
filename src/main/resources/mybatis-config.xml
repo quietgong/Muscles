@@ -5,24 +5,43 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="UserDto" type="com.kinaboot.muscles.domain.UserDto"/>
+
         <typeAlias alias="PostDto" type="com.kinaboot.muscles.domain.PostDto"/>
+
         <typeAlias alias="PostImgDto" type="com.kinaboot.muscles.domain.PostImgDto"/>
+
         <typeAlias alias="CommentDto" type="com.kinaboot.muscles.domain.CommentDto"/>
+
         <typeAlias alias="SearchCondition" type="com.kinaboot.muscles.handler.SearchCondition"/>
+
         <typeAlias alias="GoodsDto" type="com.kinaboot.muscles.domain.GoodsDto"/>
+
         <typeAlias alias="CartDto" type="com.kinaboot.muscles.domain.CartDto"/>
+
         <typeAlias alias="DeliveryDto" type="com.kinaboot.muscles.domain.DeliveryDto"/>
+
         <typeAlias alias="PaymentDto" type="com.kinaboot.muscles.domain.PaymentDto"/>
+
         <typeAlias alias="OrderDto" type="com.kinaboot.muscles.domain.OrderDto"/>
+
         <typeAlias alias="OrderItemDto" type="com.kinaboot.muscles.domain.OrderItemDto"/>
+
         <typeAlias alias="ReviewDto" type="com.kinaboot.muscles.domain.ReviewDto"/>
+
         <typeAlias alias="ReviewImgDto" type="com.kinaboot.muscles.domain.ReviewImgDto"/>
+
         <typeAlias alias="FaqDto" type="com.kinaboot.muscles.domain.FaqDto"/>
+
         <typeAlias alias="GoodsImgDto" type="com.kinaboot.muscles.domain.GoodsImgDto"/>
+
         <typeAlias alias="ChatDto" type="com.kinaboot.muscles.domain.ChatDto"/>
+
         <typeAlias alias="CouponDto" type="com.kinaboot.muscles.domain.CouponDto"/>
+
         <typeAlias alias="PointDto" type="com.kinaboot.muscles.domain.PointDto"/>
+
         <typeAlias alias="ExitDto" type="com.kinaboot.muscles.domain.ExitDto"/>
+
         <typeAlias alias="goodsCategoryDto" type="com.kinaboot.muscles.domain.GoodsCategoryDto"/>
     </typeAliases>
 </configuration>

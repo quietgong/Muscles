@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PointDto findPoint(int orderNo) {
+    public PointDto findPoint(Integer orderNo) {
         return userDao.selectUserOrderPoint(orderNo);
     }
 
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int removeCoupon(int couponNo, int orderNo) {
+    public int removeCoupon(Integer couponNo, Integer orderNo) {
         return userDao.deleteCoupon(couponNo, orderNo);
     }
 
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int modifyPoint(String userId, int point, int orderNo) {
+    public int modifyPoint(String userId, Integer point, Integer orderNo) {
         return userDao.updateUserPoint(userId, point, orderNo);
     }
 

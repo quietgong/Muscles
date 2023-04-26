@@ -16,7 +16,7 @@ public class UserDto {
     private String phone;
     private String address1;
     private String address2;
-    private int point;
+    private Integer point;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

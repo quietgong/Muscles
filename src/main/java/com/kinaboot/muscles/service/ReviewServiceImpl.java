@@ -15,7 +15,7 @@ public class ReviewServiceImpl implements ReviewService{
     ReviewDao reviewDao;
 
     @Override
-    public ReviewDto findReview(int orderNo, int goodsNo) {
+    public ReviewDto findReview(Integer orderNo, Integer goodsNo) {
         return reviewDao.selectReview(orderNo, goodsNo);
     }
 
@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<ReviewImgDto> findReviewImg(int reviewNo, Integer goodsNo) {
+    public List<ReviewImgDto> findReviewImg(Integer reviewNo, Integer goodsNo) {
         return reviewDao.selectReviewImg(reviewNo, goodsNo);
     }
 

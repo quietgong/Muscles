@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeOrder(int orderNo, String cancelReason) {
+    public int removeOrder(Integer orderNo, String cancelReason) {
         String userId = orderDao.selectOrder(orderNo).getUserId();
 
         // 포인트 사용 취소 처리
@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int acceptOrder(int orderNo) {
+    public int acceptOrder(Integer orderNo) {
         // 구매 제품 재고 수량 변경
         List<OrderItemDto> orderItemDtoList = orderDao.selectOrderItemList(orderNo);
         for (OrderItemDto orderItemDto : orderItemDtoList) {
@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto findOrder(int orderNo) {
+    public OrderDto findOrder(Integer orderNo) {
         OrderDto orderDto = orderDao.selectOrder(orderNo);
         List<OrderItemDto> orderItemDtoList = orderDao.selectOrderItemList(orderNo);
         DeliveryDto deliveryDto = orderDao.selectDelivery(orderNo);
@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderItemDto findOrderItem(int orderNo, int goodsNo) {
+    public OrderItemDto findOrderItem(Integer orderNo, Integer goodsNo) {
         return orderDao.selectOrderItem(orderNo, goodsNo);
     }
 
@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public OrderDto addOrder(String orderData, int couponNo, int point) {
+    public OrderDto addOrder(String orderData, Integer couponNo, Integer point) {
         OrderDto orderDto = null;
         try {
             orderDto = JsonToJava(orderData);

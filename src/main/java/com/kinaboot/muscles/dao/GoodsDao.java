@@ -39,7 +39,7 @@ public interface GoodsDao {
 
     int selectGoodsNo();
 
-    int deleteAllGoodsDetail(int goodsNo);
+    int deleteAllGoodsDetail(Integer goodsNo);
 
     int deleteGoodsFaq(Integer goodsNo);
 }

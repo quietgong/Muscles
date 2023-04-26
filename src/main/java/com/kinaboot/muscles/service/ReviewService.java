@@ -12,7 +12,7 @@ public interface ReviewService {
 
     ReviewDto findReview(Integer reviewNo);
 
-    ReviewDto findReview(int orderNo, int goodsNo);
+    ReviewDto findReview(Integer orderNo, Integer goodsNo);
 
     int addReview(ReviewDto reviewDto);
 
@@ -20,5 +20,5 @@ public interface ReviewService {
 
     int modifyReview(ReviewDto reviewDto);
 
-    List<ReviewImgDto> findReviewImg(int reviewNo, Integer goodsNo);
+    List<ReviewImgDto> findReviewImg(Integer reviewNo, Integer goodsNo);
 }

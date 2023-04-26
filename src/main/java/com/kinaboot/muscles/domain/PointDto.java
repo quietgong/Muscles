@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties
 public class PointDto {
     String userId;
-    int pointNo;
-    int orderNo;
-    int point;
+    Integer pointNo;
+    Integer orderNo;
+    Integer point;
 }

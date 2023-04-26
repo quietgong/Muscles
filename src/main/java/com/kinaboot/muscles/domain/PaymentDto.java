@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties
 public class PaymentDto {
-    private int paymentNo;
-    private int orderNo;
-    private int price;
+    private Integer paymentNo;
+    private Integer orderNo;
+    private Integer price;
     private String type;
 }
