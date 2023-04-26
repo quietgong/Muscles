@@ -84,8 +84,4 @@ public class PostServiceImpl implements PostSerivce{
         return postDao.delete(userId);
     }
 
-    @Override
-    public int removePostImg(String imgPath) {
-        return postDao.deletePostImg(imgPath);
-    }
 }

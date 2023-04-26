@@ -21,42 +21,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int updateStock(OrderItemDto orderItemDto) {
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("goodsNo", orderItemDto.getGoodsNo());
-        map.put("goodsQty", orderItemDto.getGoodsQty());
-        return session.update(namespace + "updateStock", map);
-    }
-
-    @Override
-    public int deleteOrder(int orderNo, String cancelReason) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("orderNo", String.valueOf(orderNo));
-        map.put("cancelReason", cancelReason);
-        return session.delete(namespace + "deleteOrder", map);
-    }
-
-    @Override
-    public int insertOrderItem(OrderItemDto orderItemDto) {
-        return session.insert(namespace + "insertOrderItem", orderItemDto);
-    }
-
-    @Override
-    public int insertDelivery(DeliveryDto deliveryDto) {
-        return session.insert(namespace + "insertDelivery", deliveryDto);
-    }
-
-    @Override
-    public int insertPayment(PaymentDto paymentDto) {
-        return session.insert(namespace + "insertPayment", paymentDto);
-    }
-
-    @Override
-    public int updateOrderStatus(int orderNo) {
-        return session.update(namespace + "updateOrderStatus", orderNo);
-    }
-
-    @Override
     public List<OrderDto> selectOrderAll(SearchCondition sc) {
         return session.selectList(namespace + "selectOrderAllList", sc);
     }
@@ -90,9 +54,45 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public int insertOrderItem(OrderItemDto orderItemDto) {
+        return session.insert(namespace + "insertOrderItem", orderItemDto);
+    }
+
+    @Override
+    public int insertDelivery(DeliveryDto deliveryDto) {
+        return session.insert(namespace + "insertDelivery", deliveryDto);
+    }
+
+    @Override
+    public int insertPayment(PaymentDto paymentDto) {
+        return session.insert(namespace + "insertPayment", paymentDto);
+    }
+
+    @Override
     public int insertOrder(OrderDto orderDto) {
         session.insert(namespace + "insertOrder", orderDto);
         return session.selectOne(namespace + "newOrderNo");
+    }
+
+    @Override
+    public int updateStock(OrderItemDto orderItemDto) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("goodsNo", orderItemDto.getGoodsNo());
+        map.put("goodsQty", orderItemDto.getGoodsQty());
+        return session.update(namespace + "updateStock", map);
+    }
+
+    @Override
+    public int updateOrderStatus(int orderNo) {
+        return session.update(namespace + "updateOrderStatus", orderNo);
+    }
+
+    @Override
+    public int deleteOrder(int orderNo, String cancelReason) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("orderNo", String.valueOf(orderNo));
+        map.put("cancelReason", cancelReason);
+        return session.delete(namespace + "deleteOrder", map);
     }
 
     @Override

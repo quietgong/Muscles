@@ -42,14 +42,14 @@ public class GoodsController {
     @GetMapping("/{goodsNo}")
     @ResponseBody
     public ResponseEntity<GoodsDto> goodsDetails(@PathVariable Integer goodsNo) {
-        log.info("[상품번호 " + goodsNo + " ] 상세 정보 진입");
+        log.info("[상품번호 " + goodsNo + " ] 상세 정보 조회");
         return new ResponseEntity<>(goodsService.findGoods(goodsNo), HttpStatus.OK);
     }
 
     @GetMapping("/faq/{goodsNo}")
     @ResponseBody
     public ResponseEntity<List<FaqDto>> faqList(@PathVariable Integer goodsNo) {
-        log.info("[goodsNo] : " + goodsNo + " 문의 리스트 출력");
+        log.info("[goodsNo] : " + goodsNo + " 문의 리스트 조회");
         List<FaqDto> faqDtoList = goodsService.findFaqs(goodsNo);
         return new ResponseEntity<>(faqDtoList, HttpStatus.OK);
     }
@@ -57,6 +57,7 @@ public class GoodsController {
     @PostMapping("/faq/")
     @ResponseBody
     public ResponseEntity<String> faqAdd(@RequestBody FaqDto faqDto) {
+        log.info("[goodsNo] : " + faqDto.getGoodsNo() + " 문의 등록");
         goodsService.addFaq(faqDto);
         return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
     }
@@ -64,12 +65,13 @@ public class GoodsController {
     @GetMapping("/category")
     @ResponseBody
     public ResponseEntity<List<GoodsCategoryDto>> categoriesList() {
+        log.info("카테고리 목록 조회");
         return new ResponseEntity<>(goodsService.findAllCategories(), HttpStatus.OK);
     }
 
     @GetMapping("/list")
     public String goodsList(SearchCondition sc, Model m) {
-        log.info("상품 목록 진입");
+        log.info("상품 목록 조회");
         int totalCnt = goodsService.getTotalCntByCategory(sc);
         PageHandler ph = new PageHandler(totalCnt, sc);
         m.addAttribute("list", goodsService.findGoods(sc));
@@ -79,6 +81,7 @@ public class GoodsController {
 
     @GetMapping("/detail")
     public String goodsDetails(Integer goodsNo, Model m) {
+        log.info("상품 상세 조회");
         m.addAttribute("goodsDto", goodsService.findGoods(goodsNo));
         return "goods/detail";
     }

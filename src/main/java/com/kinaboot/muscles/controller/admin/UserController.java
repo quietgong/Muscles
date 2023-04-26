@@ -13,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/admin/user/")
@@ -22,22 +25,22 @@ public class UserController {
     UserService userService;
 
     @GetMapping("find")
-    public ResponseEntity<List<UserDto>> userList(SearchCondition sc) {
-        System.out.println("sc = " + sc);
+    public ResponseEntity<Map<String,Object>> userList(SearchCondition sc) {
         log.info("유저 전체 목록 조회");
-        return new ResponseEntity<>(userService.findAllUser(sc), HttpStatus.OK);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", userService.findAllUser(sc));
+        map.put("totalCnt", sc.getTotalCnt());
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
-    @DeleteMapping("{userId}")
-    public ResponseEntity<String> userRemove(@PathVariable String userId) {
+    @DeleteMapping("")
+    public ResponseEntity<String> userRemove(@RequestBody ExitDto exitDto) {
         log.info("유저 탈퇴 처리");
         try {
-            ExitDto exitDto = new ExitDto();
-            exitDto.setUserId(userId);
             userService.removeUser(exitDto, "admin");
-            log.info("[id] : " + userId + " 탈퇴 처리 성공");
+            log.info("[id] : " + exitDto.getUserId() + " 탈퇴 처리 성공");
             return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
         } catch (Exception e) {
-            log.info("[id] : " + userId + " 탈퇴 처리 실패");
+            log.info("[id] : " + exitDto.getUserId() + " 탈퇴 처리 실패");
             return new ResponseEntity<>("DEL_FAIL", HttpStatus.BAD_REQUEST);
         }
     }

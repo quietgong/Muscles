@@ -19,9 +19,6 @@ public interface OrderService {
     // 단건 주문 승인
     int acceptOrder(int orderNo);
 
-    // 특정 주문 상품 전체 조회
-    List<OrderItemDto> findOrderItems(int orderNo);
-
     // 특정 주문 상품 단건 조회
     OrderItemDto findOrderItem(int orderNo, int goodsNo);
 

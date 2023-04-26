@@ -12,16 +12,7 @@
         select max(goodsNo) + 1
         from goods
     </select>
-    <sql id="goodsBasicColumns">
-        select g.goodsNo             as goodsNo
-             , g.goodsCategory       as goodsCategory
-             , g.goodsCategoryDetail as goodsCategoryDetail
-             , g.goodsDescription    as goodsDescription
-             , g.goodsName           as goodsName
-             , g.goodsPrice          as goodsPrice
-             , g.goodsStock          as goodsStock
-             , g.goodsImgPath        as goodsImgPath
-    </sql>
+
     <select id="selectBestGoods" resultType="goodsDto">
         <include refid="goodsBasicColumns"/>
         , c.goodsReviewScore as goodsReviewScore
@@ -45,6 +36,7 @@
         where g.goodsNo = C.goodsNo
         order by C.score limit 3;
     </select>
+
     <select id="selectAll" resultType="goodsDto">
         <include refid="goodsBasicColumns"/>
         , IFNULL(a.score, 0) as goodsReviewScore
@@ -60,6 +52,7 @@
         where r.goodsNo = o.goodsNo) a
         on g.goodsNo = a.goodsNo
     </select>
+
     <select id="select" parameterType="int" resultType="goodsDto">
         <include refid="goodsBasicColumns"/>
         , IFNULL(r.score, 0) as goodsReviewScore
@@ -71,6 +64,7 @@
         group by goodsNo) r
         on g.goodsNo = r.goodsNo;
     </select>
+
     <select id="selectByCategoryCnt" parameterType="SearchCondition" resultType="int">
         select count(*)
         FROM GOODS
@@ -95,6 +89,104 @@
         <include refid="optionCondition"/>
         LIMIT #{offset}, 9;
     </select>
+
+    <select id="selectFaqList" parameterType="int" resultType="faqDto">
+        SELECT *
+        FROM faq
+        where goodsNo = ${goodsNo}
+        order by createdDate
+    </select>
+
+    <select id="selectAllCategories" resultType="goodsCategoryDto">
+        select goodsCategory       as category
+             , goodsCategoryDetail as subCategory
+        from goods
+        group by goodsCategory, goodsCategoryDetail;
+    </select>
+
+    <select id="selectGoodsImg" parameterType="int" resultType="goodsImgDto">
+        select uploadPath, fileName
+        FROM goodsImg
+        where goodsNo = '${goodsNo}'
+        order by goodsImgNo
+    </select>
+
+    <insert id="insert" parameterType="goodsDto">
+        insert into goods
+        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath)
+        values (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice},
+                #{goodsStock},
+                #{goodsImgPath})
+    </insert>
+
+    <insert id="insertFaqQuestion" parameterType="faqDto">
+        insert into faq (userId, goodsNo, question, createdDate)
+        values (#{userId}, #{goodsNo}, #{question}, now());
+    </insert>
+
+    <insert id="insertFaqAnswer" parameterType="faqDto">
+        update faq
+        set answer    = #{answer},
+            replyDate = now()
+        where faqNo = #{faqNo};
+    </insert>
+
+    <insert id="insertGoodsImg" parameterType="goodsImgDto">
+        insert into goodsImg (goodsNo, uploadPath, fileName)
+        values (#{goodsNo}, #{uploadPath}, #{fileName});
+    </insert>
+
+    <update id="updateGoods" parameterType="goodsDto">
+        update goods
+        set goodsName           = #{goodsName},
+            goodsDescription    = #{goodsDescription},
+            goodsPrice          = #{goodsPrice},
+            goodsCategory       = #{goodsCategory},
+            goodsCategoryDetail = #{goodsCategoryDetail},
+            goodsStock          = #{goodsStock},
+            goodsImgPath        = #{goodsImgPath}
+        where goodsNo = #{goodsNo};
+    </update>
+
+    <delete id="deleteGoods" parameterType="int">
+        DELETE
+        FROM GOODS
+        where goodsNo = '${goodsNo}'
+    </delete>
+
+    <delete id="deleteGoodsFaq" parameterType="int">
+        delete
+        from faq
+        where goodsNo = ${goodsNo}
+    </delete>
+
+    <delete id="deleteGoodsDetail" parameterType="String">
+        DELETE
+        FROM goodsImg
+        where uploadPath = '${imgPath}'
+    </delete>
+
+    <delete id="deleteAllGoodsDetail" parameterType="int">
+        DELETE
+        FROM goodsImg
+        where goodsNo = '${goodsNo}'
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE
+        FROM GOODS
+    </delete>
+
+    <sql id="goodsBasicColumns">
+        select g.goodsNo             as goodsNo
+             , g.goodsCategory       as goodsCategory
+             , g.goodsCategoryDetail as goodsCategoryDetail
+             , g.goodsDescription    as goodsDescription
+             , g.goodsName           as goodsName
+             , g.goodsPrice          as goodsPrice
+             , g.goodsStock          as goodsStock
+             , g.goodsImgPath        as goodsImgPath
+    </sql>
     <sql id="priceCondition">
         <choose>
             <when test='minPrice == "" and maxPrice == ""'>
@@ -136,93 +228,4 @@
             </when>
         </choose>
     </sql>
-
-    <select id="selectFaqList" parameterType="int" resultType="faqDto">
-        SELECT *
-        FROM faq
-        where goodsNo = ${goodsNo}
-        order by createdDate
-    </select>
-
-    <select id="selectAllCategories" resultType="goodsCategoryDto">
-        select goodsCategory       as category
-             , goodsCategoryDetail as subCategory
-        from goods
-        group by goodsCategory, goodsCategoryDetail;
-    </select>
-    <insert id="insert" parameterType="goodsDto">
-        insert into goods
-        (goodsDescription, goodsCategory, goodsCategoryDetail, goodsName, goodsPrice, goodsStock, goodsImgPath)
-        values (#{goodsDescription}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsName}, #{goodsPrice},
-                #{goodsStock},
-                #{goodsImgPath})
-    </insert>
-    <insert id="insertFaqQuestion" parameterType="faqDto">
-        insert into faq (userId, goodsNo, question, createdDate)
-        values (#{userId}, #{goodsNo}, #{question}, now());
-    </insert>
-    <insert id="insertFaqAnswer" parameterType="faqDto">
-        update faq
-        set answer    = #{answer},
-            replyDate = now()
-        where faqNo = #{faqNo};
-    </insert>
-    <select id="selectGoodsImg" parameterType="int" resultType="goodsImgDto">
-        select uploadPath, fileName
-        FROM goodsImg
-        where goodsNo = '${goodsNo}'
-        order by goodsImgNo
-    </select>
-    <!-- 상품상세 이미지 경로 입력 -->
-    <insert id="insertGoodsImg" parameterType="goodsImgDto">
-        insert into goodsImg (goodsNo, uploadPath, fileName)
-        values (#{goodsNo}, #{uploadPath}, #{fileName});
-    </insert>
-
-    <update id="updateGoods" parameterType="goodsDto">
-        update goods
-        set goodsName           = #{goodsName},
-            goodsDescription    = #{goodsDescription},
-            goodsPrice          = #{goodsPrice},
-            goodsCategory       = #{goodsCategory},
-            goodsCategoryDetail = #{goodsCategoryDetail},
-            goodsStock          = #{goodsStock},
-            goodsImgPath        = #{goodsImgPath}
-        where goodsNo = #{goodsNo};
-    </update>
-
-    <delete id="deleteAll">
-        DELETE
-        FROM GOODS
-    </delete>
-    <delete id="delete" parameterType="map">
-        DELETE
-        FROM GOODS
-        where goodsNo = #{goodsNo}
-    </delete>
-    <delete id="deleteGoods" parameterType="int">
-        DELETE
-        FROM GOODS
-        where goodsNo = '${goodsNo}'
-    </delete>
-    <delete id="deleteGoodsFaq" parameterType="int">
-        delete
-        from faq
-        where goodsNo = ${goodsNo}
-    </delete>
-    <delete id="deleteGoodsThumbnail" parameterType="String">
-        UPDATE GOODS
-        SET goodsImgPath = null
-        where goodsImgPath = '${imgPath}'
-    </delete>
-    <delete id="deleteGoodsDetail" parameterType="String">
-        DELETE
-        FROM goodsImg
-        where uploadPath = '${imgPath}'
-    </delete>
-    <delete id="deleteAllGoodsDetail" parameterType="int">
-        DELETE
-        FROM goodsImg
-        where goodsNo = '${goodsNo}'
-    </delete>
 </mapper>

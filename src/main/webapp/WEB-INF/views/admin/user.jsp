@@ -16,9 +16,12 @@
             <div class="row mt-5">
                 <div class="col-md-12">
                     <nav class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-                        <a style="cursor: pointer" class="flex-sm-fill text-center nav-link" onclick="loadUser('all', this)">전체</a>
-                        <a style="cursor: pointer" class="flex-sm-fill text-center nav-link" onclick="loadUser('active', this)">일반 회원</a>
-                        <a style="cursor: pointer" class="flex-sm-fill text-center nav-link" onclick="loadUser('inactive', this)">탈퇴 회원</a>
+                        <a id="all" style="cursor: pointer" class="flex-sm-fill text-center nav-link"
+                           onclick="loadUser('all', 1)">전체</a>
+                        <a id="active" style="cursor: pointer" class="flex-sm-fill text-center nav-link"
+                           onclick="loadUser('active', 1)">일반 회원</a>
+                        <a id="inactive" style="cursor: pointer" class="flex-sm-fill text-center nav-link"
+                           onclick="loadUser('inactive', 1)">탈퇴 회원</a>
                     </nav>
                 </div>
                 <div class="col-md-12">
@@ -42,16 +45,24 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- pagination -->
+                    <ul class="pagination pagination-lg justify-content-center" id="paging">
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <script>
-    loadUser('all', $("nav").children(":first-child"))
+    loadUser('all', 1)
 
-    function loadUser(status, e) {
+    function loadUser(status, page) {
         $(".nav-link").removeClass("fw-bold")
-        $(e).addClass("fw-bold")
-        commonAjax("/muscles/admin/user/find?status=" + status, null, "GET", function (res) {
+        $("#" + status).addClass("fw-bold")
+        commonAjax("/muscles/admin/user/find?status=" + status + "&page=" + page, null, "GET", function (datas) {
+            let res = datas.user
             $("#loadData").empty()
             let tmp = "";
             res.forEach(function (item) {
@@ -72,12 +83,41 @@
                 tmp += '</tr>'
             })
             $("#loadData").append(tmp)
+
+            $("#paging").empty()
+            let pageSize = 10
+            let navSize = 10
+            let totalCnt = datas.totalCnt
+            let totalPage = Math.ceil(totalCnt / 10);
+            let beginPage = Math.floor(page / (navSize + 1)) * navSize + 1
+            let endPage = Math.min(beginPage + pageSize - 1, totalPage)
+            let showPrev = beginPage !== 1
+            let showNext = endPage !== totalPage
+            let cond = "'" + status + "'"
+            let prevPage = beginPage - 1
+            let nextPage = endPage + 1
+            tmp = "";
+            if (showPrev)
+                tmp += '<li class="page-item"><a style="cursor: pointer" class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" onclick="loadUser(' + cond + '\,' + prevPage + ')"><<</a></li>'
+            for (let i = beginPage; i <= endPage; i++) {
+                tmp += '<li class="page-item">'
+                if(i===page)
+                    tmp += '<a style="cursor: pointer" class="active page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" onclick="loadUser(' + cond + '\,' + i + ')">' + i
+                else
+                    tmp += '<a style="cursor: pointer" class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" onclick="loadUser(' + cond + '\,' + i + ')">' + i
+                tmp += '</a></li>'
+            }
+            if (showNext)
+                tmp += '<li class="page-item"><a style="cursor: pointer" class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" onclick="loadUser(' + cond + '\,' + nextPage + ')">>></a></li>'
+            $("#paging").append(tmp)
         })
     }
 
-    // 탈퇴 처리
     function expireUser(userId) {
-        commonAjax("/muscles/admin/user/" + userId, null, "DELETE", function (msg) {
+        let exitDto = {};
+        exitDto.userId = userId
+        exitDto.removeType = "admin"
+        commonAjax("/muscles/admin/user/", exitDto, "DELETE", function (msg) {
             msg === "DEL_OK" ? alert("탈퇴 처리 완료") : alert("탈퇴 처리 실패");
             location.reload()
         })

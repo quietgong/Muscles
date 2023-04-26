@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<UserDto> userDetails(@PathVariable String userId) throws Exception {
-        log.info("회원정보 수정");
+        log.info("회원정보 조회");
         return new ResponseEntity<>(userService.findUser(userId), HttpStatus.OK);
     }
 
@@ -55,8 +55,8 @@ public class UserController {
         return new ResponseEntity<>(reviewService.findReviews(userId), HttpStatus.OK);
     }
 
-    @PostMapping("/modify/")
-    public ResponseEntity<String> userModify(UserDto newUserDto, HttpSession session) {
+    @PatchMapping("/user")
+    public ResponseEntity<String> userModify(@RequestBody UserDto newUserDto, HttpSession session) {
         log.info("[id] : " + newUserDto.getUserId() + " 회원 정보 변경");
         try {
             userService.modifyUser(newUserDto);

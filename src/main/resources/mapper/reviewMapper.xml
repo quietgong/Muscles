@@ -20,12 +20,14 @@
         from review
         where reviewNo = ${reviewNo}
     </select>
+
     <select id="selectGoodsReview" parameterType="int" resultType="reviewDto">
         select *
         from review
         where goodsNo = '${goodsNo}'
         and expiredDate is null;
     </select>
+
     <select id="selectReviewById" parameterType="String" resultType="reviewDto">
         select *
         from review
@@ -71,31 +73,25 @@
         content = #{content}
         where reviewNo = #{reviewNo}
     </update>
+
     <delete id="deleteReview" parameterType="int">
         UPDATE review
         SET expiredDate = now()
         where reviewNo = ${reviewNo}
     </delete>
+
     <delete id="deleteGoodsReview" parameterType="int">
         delete
         from review
         where goodsNo = '${goodsNo}'
     </delete>
-    <delete id="deleteReviewImg" parameterType="String">
-        DELETE
-        FROM reviewImg
-        where uploadPath = '${imgPath}'
-    </delete>
+
     <delete id="deleteReviewImgs" parameterType="int">
         DELETE
         FROM reviewImg
         where reviewNo = '${reviewNo}'
     </delete>
-    <delete id="deleteAllReviewImg" parameterType="int">
-        DELETE
-        FROM reviewImg
-        where reviewNo = '${reviewNo}'
-    </delete>
+
     <delete id="deleteAll">
         DELETE
         FROM REVIEW

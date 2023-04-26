@@ -21,23 +21,50 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 public class ChattingController {
-
     @Autowired
     ChatService chatService;
 
     List<ChatDto> chatDtoList = new ArrayList<>();
 
-    @PostMapping("/chat/post")
-    @ResponseBody
-    public ResponseEntity<String> chatAdd(@RequestBody ChatDto chatDto) {
-        System.out.println("chatDto = " + chatDto);
-        if (chatService.saveChat(chatDto) != 0)
-            return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("ADD_FAIL", HttpStatus.OK);
+    @GetMapping("/admin/chatList")
+    public String chatList(String chatName, Model m) {
+        log.info("관리자 채팅 조회");
+        List<ChatDto> new_list = chatDtoList.stream().
+                filter(o -> Objects.equals(o.getChatName(), chatName))
+                .collect(Collectors.toList());
+        if (new_list.size() > 0) {
+            m.addAttribute("chatName", chatName);
+            m.addAttribute("chatDtoList", chatService.findChat(chatName));
+            return "chatting/chatting";
+        } else
+            return "chatting/chatRoom";
     }
 
-    @GetMapping("/chatting")
+    @DeleteMapping("/admin/chat/{chatName}")
+    @ResponseBody
+    public ResponseEntity<String> roomRemove(@PathVariable String chatName) {
+        log.info("채팅방 이름, 채팅 유저 : " + chatName + " 삭제");
+        for (int i = 0; i < chatDtoList.size(); i++) {
+            if (chatDtoList.get(i).getChatName().equals(chatName)) {
+                chatDtoList.remove(i);
+                return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("DEL_FAIL", HttpStatus.OK);
+    }
+
+    @GetMapping("/chat/roomList")
+    @ResponseBody
+    public List<ChatDto> roomList() {
+        log.info("채팅 목록 조회 API");
+        for (ChatDto chatDto : chatDtoList) {
+            chatDto.setLastMsgDate(chatService.findChatLastMsgDate(chatDto.getChatName()));
+            chatDto.setNewMsgCnt(chatService.findChatNewMsgDate(chatDto.getChatName()));
+        }
+        return chatDtoList;
+    }
+    
+    @GetMapping("/chat")
     public String chatList(HttpSession session, Model m) {
         String chatName = (String) session.getAttribute("id");
         log.info("[id] : " + chatName + " 채팅상담 접속");
@@ -56,42 +83,13 @@ public class ChattingController {
         return "chatting/chatting";
     }
 
-    @GetMapping("/chatRoom")
-    public String chatList(String chatName, Model m) {
-        log.info("관리자 채팅문의 진입");
-        List<ChatDto> new_list = chatDtoList.stream().
-                filter(o -> Objects.equals(o.getChatName(), chatName))
-                .collect(Collectors.toList());
-
-        if (new_list != null && new_list.size() > 0) {
-            m.addAttribute("chatName", chatName);
-            m.addAttribute("chatDtoList", chatService.findChat(chatName));
-            return "chatting/chatting";
-        } else
-            return "chatting/chatRoom";
-    }
-
-    @GetMapping("/getRoom")
+    @PostMapping("/chat/save")
     @ResponseBody
-    public List<ChatDto> roomList() {
-        log.info("채팅방 리스트");
-        for (ChatDto chatDto : chatDtoList) {
-            chatDto.setLastMsgDate(chatService.findChatLastMsgDate(chatDto.getChatName()));
-            chatDto.setNewMsgCnt(chatService.findChatNewMsgDate(chatDto.getChatName()));
-        }
-        return chatDtoList;
-    }
-
-    @DeleteMapping("/removeRoom/{chatName}")
-    @ResponseBody
-    public ResponseEntity<String> roomRemove(@PathVariable String chatName) {
-        log.info("채팅방 이름, 채팅 유저 : " + chatName + " 삭제");
-        for (int i = 0; i < chatDtoList.size(); i++) {
-            if (chatDtoList.get(i).getChatName().equals(chatName)) {
-                chatDtoList.remove(i);
-                return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>("DEL_FAIL", HttpStatus.OK);
+    public ResponseEntity<String> chatAdd(@RequestBody ChatDto chatDto) {
+        System.out.println("chatDto = " + chatDto);
+        if (chatService.saveChat(chatDto) != 0)
+            return new ResponseEntity<>("ADD_OK", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("ADD_FAIL", HttpStatus.OK);
     }
 }

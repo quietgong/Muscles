@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -30,36 +29,6 @@ public class PostDaoImpl implements PostDao {
     @Override
     public List<PostImgDto> selectPostImg(Integer postNo) {
         return session.selectList(namespace + "selectPostImg", postNo);
-    }
-
-    @Override
-    public int deleteAll() {
-        return session.delete(namespace + "deleteAll");
-    }
-
-    @Override
-    public int delete(Integer postNo) throws Exception {
-        return session.delete(namespace + "delete", postNo);
-    }
-
-    @Override
-    public int delete(String userId) throws Exception {
-        return session.delete(namespace + "deletePost", userId);
-    }
-
-    @Override
-    public int deletePostImgs(Integer postNo) {
-        return session.delete(namespace + "deletePostImgs", postNo);
-    }
-
-    @Override
-    public int insert(PostDto postDto) throws Exception {
-        return session.insert(namespace + "insert", postDto);
-    }
-
-    @Override
-    public int insertPostImg(PostImgDto postImgDto) {
-        return session.insert(namespace + "insertPostImg", postImgDto);
     }
 
     @Override
@@ -87,6 +56,17 @@ public class PostDaoImpl implements PostDao {
         return session.selectOne(namespace + "select", postNo);
     }
 
+
+    @Override
+    public int insert(PostDto postDto) throws Exception {
+        return session.insert(namespace + "insert", postDto);
+    }
+
+    @Override
+    public int insertPostImg(PostImgDto postImgDto) {
+        return session.insert(namespace + "insertPostImg", postImgDto);
+    }
+
     @Override
     public int update(PostDto postDto) throws Exception {
         return session.update(namespace + "update", postDto);
@@ -98,8 +78,24 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public int deletePostImg(String imgPath) {
-        return session.delete(namespace + "deletePostImg", imgPath);
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
     }
+
+    @Override
+    public int delete(Integer postNo) throws Exception {
+        return session.delete(namespace + "delete", postNo);
+    }
+
+    @Override
+    public int delete(String userId) throws Exception {
+        return session.delete(namespace + "deletePost", userId);
+    }
+
+    @Override
+    public int deletePostImgs(Integer postNo) {
+        return session.delete(namespace + "deletePostImgs", postNo);
+    }
+
 
 }

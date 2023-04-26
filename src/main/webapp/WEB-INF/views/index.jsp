@@ -163,22 +163,29 @@
     let toHtml = function (items) {
         let tmp = "";
         items.forEach(function (item) {
-            tmp += '<div class="col-12 col-md-4 mb-4">'
-            tmp += '<div class="card h-100">'
-            tmp += "<a href=\"<c:url value='/goods/detail?goodsNo='/>" + item.goodsNo + "\">";
+            tmp += '<div class="col-md-4">'
+            tmp += '<div class="card mb-4 product-wap rounded-0">'
+            tmp += '<div class="card rounded-0" style="height: 250px">'
             if (item.goodsImgPath == null)
-                tmp += "<img src=\"<c:url value='/img/cardio.jpg'/>\" class=\"card-img-top\""
+                tmp += '<img style="height: 250px;" class="card-img rounded-0 img-fluid" src="/muscles/img/logo.jpg">'
             else
-                tmp += '<img src="' + item.goodsImgPath + '" class="card-img-top">';
-            tmp += '</a>'
+                tmp += '<img style="height: 250px;" class="card-img rounded-0 img-fluid" src="' + item.goodsImgPath + '">'
+            tmp += "<a href=\"<c:url value='/goods/detail?goodsNo='/>" + item.goodsNo + "\">";
+            tmp += '<div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">'
+            tmp += '</div>'
+            tmp+='</a>'
+            tmp += '</div>'
             tmp += '<div class="card-body">'
-            tmp += '<span>' + item.goodsCategory + ' > ' + item.goodsCategoryDetail + '</span>';
-            tmp += '<ul class="w-100 list-unstyled d-flex justify-content-between mb-0">'
-            tmp += '<li>상품이름</li>'
-            tmp += '<li>리뷰개수 : ' + item.reviewDtoList.length.toLocaleString() + '</li>'
-            tmp += '</ul>'
-            tmp += '<ul class="list-unstyled d-flex justify-content-center mb-1">'
-            tmp += '<div class="star-ratings">'
+            tmp += '<div class="row justify-content-center">'
+            tmp += '<div class="col-md-12">'
+            tmp += '<span class="text-muted">' + item.goodsCategory + ' > ' + item.goodsCategoryDetail + '</span>'
+            tmp += '</div>'
+            tmp += '<div class="col-md-12 text-center mt-2">'
+            tmp += "<a class=\"h3 fw-bold text-decoration-none\" href=\"<c:url value='/goods/detail?goodsNo='/>" + item.goodsNo + "\">";
+            tmp += '<h3>' + item.goodsName + '</h3>'
+            tmp += '</a>'
+            tmp += '</div>'
+            tmp += '<div class="star-ratings" style="width:144px;">'
             tmp += '<div class="fill-ratings" style="width: ' + item.goodsReviewScore + '%;">'
             tmp += '<span style="font-size: 1.8rem;">★★★★★</span>'
             tmp += '</div>'
@@ -186,8 +193,9 @@
             tmp += '<span style="font-size: 1.8rem;">★★★★★</span>'
             tmp += '</div>'
             tmp += '</div>'
-            tmp += '</ul>'
-            tmp += '<p class="text-center mb-0">' + item.goodsPrice.toLocaleString() + '</p>'
+            tmp += '<p class="text-center mb-0"> ₩ ' + item.goodsPrice.toLocaleString() + ' </p>'
+            tmp += '<p class="text-center text-secondary mb-0">(Review : ' + item.reviewDtoList.length.toLocaleString() + ')</p>'
+            tmp += '</div>'
             tmp += '</div>'
             tmp += '</div>'
             tmp += '</div>'

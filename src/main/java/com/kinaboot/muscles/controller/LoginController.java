@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import static com.kinaboot.muscles.controller.common.MailController.mailSend;
 
@@ -107,36 +107,20 @@ public class LoginController {
         rttr.addFlashAttribute("email", email);
         return "redirect:/pwfind";
     }
-
     @GetMapping("/pwfind")
     public String resetPassword(){
-        return "pwdfindcomplete";
+        return "resetpwd";
     }
 
     private String generateRandomString() {
-        Random random = new Random();
-        int letterLen = 4;
-        int numLen = 2;
+        // 알파벳과 숫자를 조합한 임의의 6자리 문자열 생성
+        int length = 6;
+        String ALPHANUMERIC_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
 
-        StringBuilder sb = new StringBuilder(letterLen + numLen);
-
-        int letterMin = 65; // ASCII code : 'A'
-        int letterMax = 90; // ASCII code : 'Z'
-
-        for (int i = 0; i < letterLen; i++) {
-            int asciiValue = random.nextInt((letterMax - letterMin) + 1) + letterMin;
-            char ch = (char) asciiValue;
-            sb.append(ch);
-        }
-
-        int numberMin = 48; // ASCII code : '0'
-        int numberMax = 57; // ASCII code : '9'
-
-        for (int i = 0; i < numLen; i++) {
-            int asciiValue = random.nextInt((numberMax - numberMin) + 1) + numberMin;
-            char ch = (char) asciiValue;
-            sb.append(ch);
-        }
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++)
+            sb.append(ALPHANUMERIC_CHARS.charAt(random.nextInt(ALPHANUMERIC_CHARS.length())));
         return sb.toString();
     }
 }

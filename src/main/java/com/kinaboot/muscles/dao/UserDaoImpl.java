@@ -21,44 +21,6 @@ public class UserDaoImpl implements UserDao {
     private static String namespace = "com.kinaboot.muscles.dao.userMapper.";
 
     @Override
-    public List<UserDto> selectAllUser(SearchCondition sc) {
-        return session.selectList(namespace + "selectAllUser", sc);
-    }
-
-    @Override
-    public int updateUserPassword(String userId, String newPassword) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("newPassword", newPassword);
-        return session.update(namespace + "updateUserPassword", map);
-    }
-
-    @Override
-    public int insertExit(ExitDto exitDto) {
-        return session.insert(namespace + "insertExit", exitDto);
-    }
-
-    @Override
-    public int updateUser(UserDto userDto) {
-        return session.update(namespace + "updateUser", userDto);
-    }
-
-    @Override
-    public UserDto selectUserEmail(String email) {
-        return session.selectOne(namespace + "selectUserEmail", email);
-    }
-
-    @Override
-    public int deleteUser(Integer userNo) {
-        return session.delete(namespace + "deleteUser", userNo);
-    }
-
-    @Override
-    public int deleteAll() {
-        return session.delete(namespace + "deleteAll");
-    }
-
-    @Override
     public int count() {
         return session.selectOne(namespace + "count");
     }
@@ -66,6 +28,21 @@ public class UserDaoImpl implements UserDao {
     @Override
     public UserDto selectUser(String userId) {
         return session.selectOne(namespace + "selectUser", userId);
+    }
+
+    @Override
+    public int selectAllUserCnt(SearchCondition sc) {
+        return session.selectOne(namespace + "selectAllUserCnt", sc);
+    }
+
+    @Override
+    public List<UserDto> selectAllUser(SearchCondition sc) {
+        return session.selectList(namespace + "selectAllUser", sc);
+    }
+
+    @Override
+    public UserDto selectUserEmail(String email) {
+        return session.selectOne(namespace + "selectUserEmail", email);
     }
 
     @Override
@@ -89,6 +66,38 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public int insertUser(UserDto userDto) {
+        return session.insert(namespace + "insertUser", userDto);
+    }
+
+    @Override
+    public int insertRecommendEventCoupon(String userId, String recommendId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("recommendId", recommendId);
+        map.put("discount", String.valueOf(10000));
+        return session.insert(namespace + "insertRecommendEventCoupon", map);
+    }
+
+    @Override
+    public int insertExit(ExitDto exitDto) {
+        return session.insert(namespace + "insertExit", exitDto);
+    }
+
+    @Override
+    public int updateUser(UserDto userDto) {
+        return session.update(namespace + "updateUser", userDto);
+    }
+
+    @Override
+    public int updateUserPassword(String userId, String newPassword) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("newPassword", newPassword);
+        return session.update(namespace + "updateUserPassword", map);
+    }
+
+    @Override
     public int updateCoupon(int orderNo) {
         return session.update(namespace + "updateCoupon", orderNo);
     }
@@ -99,9 +108,19 @@ public class UserDaoImpl implements UserDao {
         map.put("userId", userId);
         map.put("orderNo", String.valueOf(orderNo));
         map.put("point", String.valueOf(point));
-        
+
         session.update(namespace + "updateUserPoint", map);
         return session.insert(namespace + "insertPoint", map);
+    }
+
+    @Override
+    public int deleteUser(Integer userNo) {
+        return session.delete(namespace + "deleteUser", userNo);
+    }
+
+    @Override
+    public int deleteAll() {
+        return session.delete(namespace + "deleteAll");
     }
 
     @Override
@@ -115,20 +134,6 @@ public class UserDaoImpl implements UserDao {
         map.put("couponNo", couponNo);
         map.put("orderNo", orderNo);
         return session.delete(namespace + "deleteCoupon", map);
-    }
-
-    @Override
-    public int insertRecommendEventCoupon(String userId, String recommendId) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("recommendId", recommendId);
-        map.put("discount", String.valueOf(10000));
-        return session.insert(namespace + "insertRecommendEventCoupon", map);
-    }
-
-    @Override
-    public int insertUser(UserDto userDto) {
-        return session.insert(namespace + "insertUser", userDto);
     }
 
     @Override

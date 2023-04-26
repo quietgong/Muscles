@@ -10,20 +10,24 @@ import java.util.List;
 
 public interface GoodsService {
     List<GoodsDto> findAllGoods();
+
     List<GoodsDto> findGoods(SearchCondition sc);
+
     GoodsDto findGoods(Integer GoodsNo);
+
     int removeGoods(Integer GoodsNo);
+
     int modifyGoods(GoodsDto goodsDto);
+
     List<FaqDto> findFaqs(Integer GoodsNo);
+
     int addFaq(FaqDto faqDto);
+
     int getTotalCntByCategory(SearchCondition sc);
-    List<GoodsImgDto> getGoodsDetailImgList(Integer GoodsNo);
 
     List<GoodsCategoryDto> findAllCategories();
 
     List<GoodsDto> findBestGoods();
-
-    int removeGoodsImg(String type, String imgPath);
 
     int addGoods(GoodsDto goodsDto);
 }

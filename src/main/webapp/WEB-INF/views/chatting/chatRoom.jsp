@@ -20,13 +20,12 @@
     getRoom();
 
     function getRoom() {
-        commonAjax('/muscles/getRoom', "", 'get', function (result) {
-            console.log(result)
+        commonAjax('/muscles/chat/roomList', null, 'get', function (result) {
             createChatRoom(result);
         });
     }
     function goRoom(name) {
-        location.href = "/muscles/chatRoom?chatName=" + name;
+        location.href = "/muscles/admin/chatList?chatName=" + name;
     }
 
     function createChatRoom(res) {

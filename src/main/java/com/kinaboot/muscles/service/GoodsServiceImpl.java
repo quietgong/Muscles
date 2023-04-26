@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -59,16 +56,6 @@ public class GoodsServiceImpl implements GoodsService {
             goodsDao.insertGoodsImg(goodsImgDto);
         }
         return goodsDao.updateGoods(goodsDto);
-    }
-
-    @Override
-    public int removeGoodsImg(String type, String imgPath) {
-        return type.equals("thumbnail") ? goodsDao.deleteGoodsThumbnail(imgPath) : goodsDao.deleteGoodsDetail(imgPath);
-    }
-
-    @Override
-    public List<GoodsImgDto> getGoodsDetailImgList(Integer goodsNo) {
-        return goodsDao.selectGoodsDetailImg(goodsNo);
     }
 
     @Override

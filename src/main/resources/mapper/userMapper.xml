@@ -7,49 +7,50 @@
         SELECT count(*)
         FROM user
     </select>
+
     <select id="countUser" resultType="int" parameterType="String">
         SELECT count(*)
         FROM user
         where userId = '${userId}'
     </select>
+
+    <select id="selectAllUserCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*)
+        FROM user
+        <include refid="statusCondition"/>
+    </select>
+
     <select id="selectAllUser" parameterType="SearchCondition" resultType="UserDto">
         SELECT *
         FROM user
         <include refid="statusCondition"/>
+        LIMIT #{offset}, 10;
     </select>
-    <sql id="statusCondition">
-        <choose>
-            <when test='status == "active"'>
-                where expiredDate is null
-            </when>
-            <when test='status == "inactive"'>
-                where expiredDate is not null
-            </when>
-            <otherwise>
-                where 1=1
-            </otherwise>
-        </choose>
-    </sql>
+
     <select id="selectUser" parameterType="String" resultType="UserDto">
         SELECT *
         FROM user
         where userId = '${userId}'
     </select>
+
     <select id="selectUserEmail" parameterType="String" resultType="UserDto">
         SELECT *
         FROM user
         where email = '${email}'
     </select>
+
     <select id="selectUserCoupon" resultType="CouponDto" parameterType="String">
         select *
         from coupon
         where userId = '${userId}';
     </select>
+
     <select id="selectUserPoint" resultType="PointDto" parameterType="String">
         select *
         from point
         where userId = '${userId}';
     </select>
+
     <select id="selectUserOrderPoint" resultType="PointDto" parameterType="int">
         select *
         from point
@@ -88,11 +89,6 @@
         WHERE userId = #{userId}
     </update>
 
-    <delete id="deleteCoupon" parameterType="map">
-        UPDATE coupon
-        set orderNo = #{orderNo}
-        where couponNo = #{couponNo};
-    </delete>
     <update id="updateUserPassword" parameterType="map">
         UPDATE USER
         SET PASSWORD = #{newPassword}
@@ -104,11 +100,18 @@
         set point = point + #{point}
         where userId = #{userId};
     </update>
+
     <update id="updateCoupon" parameterType="int">
         update coupon
         set orderNo = 0
         where orderNo = ${orderNo}
     </update>
+
+    <delete id="deleteCoupon" parameterType="map">
+        UPDATE coupon
+        set orderNo = #{orderNo}
+        where couponNo = #{couponNo};
+    </delete>
 
     <delete id="deleteAll">
         DELETE
@@ -127,9 +130,24 @@
         from coupon
         where userId = '${userId}';
     </delete>
+
     <delete id="deleteUserPointHistory" parameterType="int">
         delete
         from point
         where orderNo = ${orderNo};
     </delete>
+
+    <sql id="statusCondition">
+        <choose>
+            <when test='status == "active"'>
+                where expiredDate is null
+            </when>
+            <when test='status == "inactive"'>
+                where expiredDate is not null
+            </when>
+            <otherwise>
+                where 1=1
+            </otherwise>
+        </choose>
+    </sql>
 </mapper>

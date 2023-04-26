@@ -88,10 +88,12 @@
                             <div class="card rounded-0" style="height: 250px">
                                 <c:choose>
                                     <c:when test="${goodsDto.goodsImgPath eq null}">
-                                        <img style="height: 250px;" class="card-img rounded-0 img-fluid" src="<c:url value='/img/cardio.jpg'/>">
+                                        <img style="height: 250px;" class="card-img rounded-0 img-fluid"
+                                             src="<c:url value='/img/cardio.jpg'/>">
                                     </c:when>
                                     <c:otherwise>
-                                        <img style="height: 250px;" class="card-img rounded-0 img-fluid" src="${goodsDto.goodsImgPath}">
+                                        <img style="height: 250px;" class="card-img rounded-0 img-fluid"
+                                             src="${goodsDto.goodsImgPath}">
                                     </c:otherwise>
                                 </c:choose>
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
@@ -105,16 +107,17 @@
                                     </ul>
                                 </div>
                             </div>
+
                             <div class="card-body">
-                                <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"
-                                   class="h3 text-decoration-none">${goodsDto.goodsCategory}
-                                    > ${goodsDto.goodsCategoryDetail}</a>
-                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                    <li>${goodsDto.goodsName}</li>
-                                    <li>리뷰개수 : <fmt:formatNumber value="${goodsDto.reviewDtoList.size()}"
-                                                                 pattern="#,###"/></li>
-                                </ul>
-                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12">
+                                        <span class="text-muted">${goodsDto.goodsCategory} > ${goodsDto.goodsCategoryDetail}</span>
+                                    </div>
+                                    <div class="col-md-12 text-center mt-2">
+                                        <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>" class="h3 fw-bold text-decoration-none">
+                                            <h3 style="font-family: 'Franklin Gothic Medium';">${goodsDto.goodsName}</h3>
+                                        </a>
+                                    </div>
                                     <div class="star-ratings">
                                         <div class="fill-ratings" style="width: ${goodsDto.goodsReviewScore}%;">
                                             <span style="font-size: 1.8rem;">★★★★★</span>
@@ -123,10 +126,15 @@
                                             <span style="font-size: 1.8rem;">★★★★★</span>
                                         </div>
                                     </div>
-                                </ul>
-                                <p class="text-center mb-0"><fmt:formatNumber value="${goodsDto.goodsPrice}"
-                                                                              pattern="#,###"/></p>
+                                    <p class="text-center mb-0">
+                                        ₩ <fmt:formatNumber value="${goodsDto.goodsPrice}" pattern="#,###"/>
+                                    </p>
+                                    <p class="text-center text-secondary mb-0">
+                                    (Review : <fmt:formatNumber value="${goodsDto.reviewDtoList.size()}" pattern="#,###"/>)
+                                    </p>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                     <!-- 상품 카드 -->
@@ -143,7 +151,8 @@
                             </c:if>
                             <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
                                 <li>
-                                    <a id="${i}" class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
+                                    <a id="${i}"
+                                       class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
                                        href="<c:url value='/goods/list${ph.sc.getQueryString(i)}'/>">${i}</a>
                                 </li>
                             </c:forEach>
@@ -181,9 +190,10 @@
 
     function loadGoodsCategories() {
         commonAjax("/muscles/goods/category", null, "GET", function (res) {
-                addCategoryList(res)
+            addCategoryList(res)
         })
     }
+
     function addCategoryList(items) {
         items.forEach(function (item) {
             let link = "<li><a style='cursor: pointer' class=\"text-decoration-none\" onclick=\"subCategorySearch(this)\">" + item.subCategory + "</a></li>";

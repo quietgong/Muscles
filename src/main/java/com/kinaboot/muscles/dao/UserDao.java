@@ -52,4 +52,6 @@ public interface UserDao {
     int updateCoupon(int orderNo);
 
     int deleteUserPointHistory(int orderNo);
+
+    int selectAllUserCnt(SearchCondition sc);
 }

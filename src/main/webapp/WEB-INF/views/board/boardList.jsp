@@ -94,4 +94,5 @@
     </div>
 </div>
 <!-- footer -->
+<script>$("#${param.page}").addClass("active")</script>
 <%@ include file="../footer.jsp" %>

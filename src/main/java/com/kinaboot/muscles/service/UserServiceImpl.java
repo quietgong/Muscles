@@ -6,16 +6,12 @@ import com.kinaboot.muscles.domain.ExitDto;
 import com.kinaboot.muscles.domain.PointDto;
 import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.handler.SearchCondition;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findAllUser(SearchCondition sc) {
+        sc.setTotalCnt(userDao.selectAllUserCnt(sc));
         return userDao.selectAllUser(sc);
     }
 
@@ -64,14 +61,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int modifyUser(UserDto userDto) {
-        if(!userDto.getPassword().equals("")){
-            String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
-            userDto.setPassword(encryptedPassword);
+    public int modifyUser(UserDto newUserDto) {
+        UserDto oldUserDto = userDao.selectUser(newUserDto.getUserId());
+        if(newUserDto.getPassword()==null)
+            newUserDto.setPassword(oldUserDto.getPassword());
+        else{
+            String encryptedPassword = passwordEncoder.encode(newUserDto.getPassword());
+            newUserDto.setPassword(encryptedPassword);
         }
-        else
-            userDto.setPassword(userDao.selectUser(userDto.getUserId()).getPassword());
-        return userDao.updateUser(userDto);
+        newUserDto.setPhone(newUserDto.getPhone() != null ? newUserDto.getPhone() : oldUserDto.getPhone());
+        newUserDto.setEmail(newUserDto.getEmail() != null ? newUserDto.getEmail() : oldUserDto.getEmail());
+        newUserDto.setAddress1(newUserDto.getAddress1() != null ? newUserDto.getAddress1() : oldUserDto.getAddress1());
+        newUserDto.setAddress2(newUserDto.getAddress2() != null ? newUserDto.getAddress2() : oldUserDto.getAddress2());
+        return userDao.updateUser(newUserDto);
     }
 
     @Override
@@ -96,11 +98,6 @@ public class UserServiceImpl implements UserService {
 
         // user ExpiredDate 변경, 포인트 초기화
         return userDao.deleteUser(userDao.selectUser(userId).getUserNo());
-    }
-
-    @Override
-    public int removeCoupon(String userId) {
-        return userDao.deleteUserCoupon(userId);
     }
 
     @Override

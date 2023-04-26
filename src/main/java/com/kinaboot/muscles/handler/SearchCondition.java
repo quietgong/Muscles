@@ -15,6 +15,7 @@ public class SearchCondition {
     private Integer page = 1;
     private String option = "";
     private Integer offset = 0;
+    private Integer totalCnt = 0;
     private String keyword = "";
     private String type = "";
     private String category = "";

@@ -83,7 +83,7 @@
 <script>
     function removeRoom() {
         if (!confirm("상담을 종료합니까?")) return;
-        commonAjax("/muscles/removeRoom/" + $("#chatName").val(), null, "DELETE", function (res) {
+        commonAjax("/muscles/admin/chat/" + $("#chatName").val(), null, "DELETE", function (res) {
             if (res === 'DEL_OK') {
                 let option = {
                     type: "notify", chatName: userName, sessionId: $("#sessionId").val(), userName: 'admin',
@@ -100,7 +100,7 @@
                 }
                 saveChat(data)
                 alert("상담이 종료되었습니다.")
-                location.href = "/muscles/chatRoom";
+                location.href = "/muscles";
             }
         })
     }
@@ -211,7 +211,7 @@
 
     function saveChat(data) {
         // 채팅 메세지 DB 저장
-        commonAjax("/muscles/chat/post", data, "POST", function (res) {
+        commonAjax("/muscles/chat/save", data, "POST", function (res) {
             if(res==="ADD_OK")
                 scrollTop()
         });

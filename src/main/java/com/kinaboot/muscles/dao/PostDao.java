@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PostDao {
     int count(String type) throws Exception;
+
     int delete(Integer postNo) throws Exception;
 
     int delete(String userId) throws Exception;
@@ -37,6 +38,5 @@ public interface PostDao {
 
     int deletePostImgs(Integer postNo);
 
-    int deletePostImg(String imgPath);
     int deleteAll();
 }

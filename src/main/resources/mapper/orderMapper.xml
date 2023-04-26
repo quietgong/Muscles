@@ -3,15 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kinaboot.muscles.dao.orderMapper">
-    <select id="count" resultType="int">
-        SELECT count(*)
-        FROM orders
-    </select>
     <select id="newOrderNo" resultType="int">
         SELECT max(orderNo) as orderNo
         FROM ORDERS
     </select>
-    <!-- 전체 주문목록 반환 -->
+
     <select id="selectOrderAllList" parameterType="SearchCondition" resultType="orderDto">
         select orderNo, userId, status, cancelReason, createdDate
         from orders
@@ -20,6 +16,104 @@
         <include refid="dateCondition"/>
         order by createdDate desc
     </select>
+
+    <select id="selectOrderList" parameterType="SearchCondition" resultType="orderDto">
+        select orderNo, userId, status, cancelReason, createdDate
+        from orders
+        WHERE userId=#{userId}
+        <include refid="dateCondition"/>
+    </select>
+
+    <select id="selectOrder" parameterType="int" resultType="OrderDto">
+        select orderNo, userId, status, cancelReason, discount, createdDate
+        FROM orders
+        WHERE orderNo = '${orderNo}'
+    </select>
+
+    <select id="selectOrderItem" resultType="orderItemDto" parameterType="map">
+        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice
+        from orderitem
+        WHERE orderNo = #{orderNo}
+          AND goodsNo = #{goodsNo}
+    </select>
+
+    <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
+        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice, goodsImgPath
+        from orderitem
+        WHERE orderNo = '${orderNo}'
+    </select>
+
+    <select id="selectDelivery" resultType="deliveryDto" parameterType="int">
+        select *
+        from delivery
+        WHERE orderNo = '${orderNo}'
+    </select>
+
+    <select id="selectPayment" resultType="paymentDto" parameterType="int">
+        select *
+        from payment
+        WHERE orderNo = '${orderNo}'
+    </select>
+
+    <insert id="insertOrder" parameterType="orderDto">
+        insert into orders (orderNo, userId, status, discount, createdDate)
+        values (#{orderNo},#{userId}, '주문대기', #{discount}, now());
+    </insert>
+
+    <insert id="insertOrderItem" parameterType="orderItemDto">
+        insert into orderitem (orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice, goodsImgPath)
+        values (#{orderNo}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsQty}, #{goodsPrice}, #{goodsImgPath});
+    </insert>
+
+    <insert id="insertDelivery" parameterType="deliveryDto">
+        insert into delivery (orderNo, receiver, PHONE, ADDRESS1, ADDRESS2, MESSAGE)
+        values (#{orderNo}, #{receiver}, #{phone}, #{address1}, #{address2}, #{message});
+    </insert>
+
+    <insert id="insertPayment" parameterType="paymentDto">
+        insert into payment (orderNo, PRICE, TYPE)
+        values (#{orderNo}, #{price}, #{type});
+    </insert>
+
+    <update id="updateStock" parameterType="map">
+        update goods
+        set goodsStock = goodsStock - #{goodsQty}
+        where goodsNo = #{goodsNo};
+    </update>
+
+    <update id="updateOrderStatus" parameterType="int">
+        update orders
+        set status = '주문완료'
+        where orderNo = '${orderNo}'
+    </update>
+
+    <delete id="deleteOrder" parameterType="map">
+        update orders
+        set status = '주문취소'
+        , cancelReason = #{cancelReason}
+        where orderNo = #{orderNo}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE
+        FROM ORDERS
+    </delete>
+
+    <delete id="deleteAllOrderItem">
+        DELETE
+        FROM orderitem
+    </delete>
+
+    <delete id="deleteAllPayment">
+        DELETE
+        FROM payment
+    </delete>
+
+    <delete id="deleteAllDelivery">
+        DELETE
+        FROM delivery
+    </delete>
+
     <sql id="statusCondition">
         <choose>
             <when test='status == "all" || status == ""'>
@@ -52,98 +146,4 @@
             </otherwise>
         </choose>
     </sql>
-
-    <!-- userId로 주문정보 목록 반환 -->
-    <select id="selectOrderList" parameterType="SearchCondition" resultType="orderDto">
-        select orderNo, userId, status, cancelReason, createdDate
-        from orders
-        WHERE userId=#{userId}
-        <include refid="dateCondition"/>
-    </select>
-    <!-- orderNo로 주문정보 반환 -->
-    <select id="selectOrder" parameterType="int" resultType="OrderDto">
-        select orderNo, userId, status, cancelReason, discount, createdDate
-        FROM orders
-        WHERE orderNo = '${orderNo}'
-    </select>
-    <!-- orderNo, goodsNo 로 주문상품 반환 -->
-    <select id="selectOrderItem" resultType="orderItemDto" parameterType="map">
-        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice
-        from orderitem
-        WHERE orderNo = #{orderNo}
-          AND goodsNo = #{goodsNo}
-    </select>
-    <!-- orderNo로 주문상품 목록 반환 -->
-    <select id="selectOrderItemList" resultType="orderItemDto" parameterType="int">
-        select orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice, goodsImgPath
-        from orderitem
-        WHERE orderNo = '${orderNo}'
-    </select>
-    <!-- orderNo로 배송정보 반환 -->
-    <select id="selectDelivery" resultType="deliveryDto" parameterType="int">
-        select *
-        from delivery
-        WHERE orderNo = '${orderNo}'
-    </select>
-    <!-- orderNo로 결제정보 반환 -->
-    <select id="selectPayment" resultType="paymentDto" parameterType="int">
-        select *
-        from payment
-        WHERE orderNo = '${orderNo}'
-    </select>
-
-    <insert id="insertOrder" parameterType="orderDto">
-        insert into orders (orderNo, userId, status, discount, createdDate)
-        values (#{orderNo},#{userId}, '주문대기', #{discount}, now());
-    </insert>
-
-    <insert id="insertOrderItem" parameterType="orderItemDto">
-        insert into orderitem (orderNo, goodsNo, goodsName, goodsCategory, goodsCategoryDetail, goodsQty, goodsPrice, goodsImgPath)
-        values (#{orderNo}, #{goodsNo}, #{goodsName}, #{goodsCategory}, #{goodsCategoryDetail}, #{goodsQty}, #{goodsPrice}, #{goodsImgPath});
-    </insert>
-
-    <insert id="insertDelivery" parameterType="deliveryDto">
-        insert into delivery (orderNo, receiver, PHONE, ADDRESS1, ADDRESS2, MESSAGE)
-        values (#{orderNo}, #{receiver}, #{phone}, #{address1}, #{address2}, #{message});
-    </insert>
-
-    <insert id="insertPayment" parameterType="paymentDto">
-        insert into payment (orderNo, PRICE, TYPE)
-        values (#{orderNo}, #{price}, #{type});
-    </insert>
-
-    <update id="updateStock" parameterType="map">
-        update goods
-        set goodsStock = goodsStock - #{goodsQty}
-        where goodsNo = #{goodsNo};
-    </update>
-    <update id="updateOrderStatus" parameterType="int">
-        update orders
-        set status = '주문완료'
-        where orderNo = '${orderNo}'
-    </update>
-
-    <delete id="deleteOrder" parameterType="map">
-        update orders
-        set status = '주문취소'
-        , cancelReason = #{cancelReason}
-        where orderNo = #{orderNo}
-    </delete>
-    <delete id="deleteAll">
-        DELETE
-        FROM ORDERS
-    </delete>
-
-    <delete id="deleteAllOrderItem">
-        DELETE
-        FROM orderitem
-    </delete>
-    <delete id="deleteAllPayment">
-        DELETE
-        FROM payment
-    </delete>
-    <delete id="deleteAllDelivery">
-        DELETE
-        FROM delivery
-    </delete>
 </mapper>

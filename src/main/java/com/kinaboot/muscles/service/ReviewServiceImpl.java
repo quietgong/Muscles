@@ -74,8 +74,4 @@ public class ReviewServiceImpl implements ReviewService{
         return reviewDao.insertReview(reviewDto);
     }
 
-    @Override
-    public int removeReviewImg(String imgPath) {
-        return reviewDao.deleteReviewImg(imgPath);
-    }
 }

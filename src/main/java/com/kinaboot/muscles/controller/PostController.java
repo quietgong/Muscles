@@ -32,9 +32,7 @@ public class PostController {
     @GetMapping("")
     public String postList(SearchCondition sc, HttpServletRequest request, Model m) throws Exception {
         log.info("글 목록 조회");
-        String postCategory = parsingURL(request);
-        sc.setType(postCategory);
-
+        sc.setType(parsingURL(request));
         Integer totalCnt = postSerivce.countPost(sc);
         m.addAttribute("ph", new PageHandler(totalCnt, sc));
         m.addAttribute("list", postSerivce.findPosts(sc));

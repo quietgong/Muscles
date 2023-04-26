@@ -25,5 +25,4 @@ public interface PostSerivce {
 
     int removePost(String userId) throws Exception;
 
-    int removePostImg(String imgPath);
 }

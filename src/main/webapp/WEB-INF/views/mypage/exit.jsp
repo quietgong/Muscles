@@ -53,6 +53,7 @@
 
         let exitDto = {}
         exitDto.userId = '${userId}'
+        exitDto.removeType = 'user'
         exitDto.opinion = $("#message").val()
         exitDto.type1 = type[0]
         exitDto.type2 = type[1]

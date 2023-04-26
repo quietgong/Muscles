@@ -28,25 +28,9 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
     @Override
-    public int deleteReview(Integer reviewNo) {
-        return session.delete(namespace + "deleteReview", reviewNo);
-    }
-
-    @Override
-    public int updateReview(ReviewDto reviewDto) {
-        return session.update(namespace+"updateReview",reviewDto);
-    }
-
-    @Override
     public List<ReviewDto> selectGoodsReview(Integer goodsNo) {
         return session.selectList(namespace + "selectGoodsReview", goodsNo);
     }
-
-    @Override
-    public int deleteGoodsReview(Integer goodsNo) {
-        return session.delete(namespace + "deleteGoodsReview", goodsNo);
-    }
-
     @Override
     public ReviewDto selectReview(int orderNo, int goodsNo) {
         Map<String, Integer> map = new HashMap<>();
@@ -59,33 +43,6 @@ public class ReviewDaoImpl implements ReviewDao {
     public ReviewDto selectReview(Integer reviewNo) {
         return session.selectOne(namespace + "selectReviewOne", reviewNo);
     }
-
-    @Override
-    public int insertReview(ReviewDto reviewDto) {
-        return session.insert(namespace + "insertReview", reviewDto);
-    }
-
-
-    @Override
-    public List<ReviewDto> selectReviewListById(String userId) {
-        return session.selectList(namespace + "selectReviewById", userId);
-    }
-
-    @Override
-    public int insertReviewImg(ReviewImgDto reviewImgDto) {
-        return session.insert(namespace + "insertReviewImg", reviewImgDto);
-    }
-
-    @Override
-    public int deleteReviewImg(String imgPath) {
-        return session.delete(namespace+"deleteReviewImg", imgPath);
-    }
-
-    @Override
-    public int deleteReviewImg(int reviewNo) {
-        return session.delete(namespace + "deleteReviewImgs", reviewNo);
-    }
-
     @Override
     public List<ReviewImgDto> selectReviewImg(int reviewNo, Integer goodsNo) {
         HashMap<String, Integer> map = new HashMap<>();
@@ -97,6 +54,41 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public List<ReviewImgDto> selectReviewImg(int reviewNo) {
         return session.selectList(namespace + "selectReviewOneImg", reviewNo);
+    }
+    @Override
+    public List<ReviewDto> selectReviewListById(String userId) {
+        return session.selectList(namespace + "selectReviewById", userId);
+    }
+    @Override
+    public int insertReview(ReviewDto reviewDto) {
+        return session.insert(namespace + "insertReview", reviewDto);
+    }
+
+    @Override
+    public int insertReviewImg(ReviewImgDto reviewImgDto) {
+        return session.insert(namespace + "insertReviewImg", reviewImgDto);
+    }
+
+    @Override
+    public int updateReview(ReviewDto reviewDto) {
+        return session.update(namespace+"updateReview",reviewDto);
+    }
+
+
+
+    @Override
+    public int deleteReview(Integer reviewNo) {
+        return session.delete(namespace + "deleteReview", reviewNo);
+    }
+
+    @Override
+    public int deleteGoodsReview(Integer goodsNo) {
+        return session.delete(namespace + "deleteGoodsReview", goodsNo);
+    }
+
+    @Override
+    public int deleteReviewImg(int reviewNo) {
+        return session.delete(namespace + "deleteReviewImgs", reviewNo);
     }
 
     @Override
