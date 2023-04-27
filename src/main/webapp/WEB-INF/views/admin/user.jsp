@@ -48,7 +48,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- pagination -->
-                    <ul class="pagination pagination-lg justify-content-center" id="paging">
+                    <ul class="pagination pagination-md justify-content-center" id="paging">
                     </ul>
                 </div>
             </div>

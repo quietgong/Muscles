@@ -66,7 +66,7 @@
                         <div class="input-group mb-0">
                             <input id="msgInput" type="text" class="form-control" placeholder="메세지를 입력하세요"
                                    aria-label="Recipient's username" aria-describedby="button-addon2"/>
-                            <button class="btn btn-primary" type="button" id="button-addon2"
+                            <button onclick="send()" class="btn btn-primary" type="button" id="button-addon2"
                                     style="padding-top: .55rem;">
                                 전송
                             </button>
@@ -108,7 +108,8 @@
 <script>
     let ws;
     let userName = $("#chatName").val() == "" ? '${userId}' : $("#chatName").val();
-    let url = "ws://localhost:80/muscles/chatserver/" + userName;
+    // let local_url = "ws://local:80/muscles/chatserver/" + userName;
+    let url = "ws://43.200.176.214:8080/muscles/chatserver/" + userName;
 
     scrollTop()
     wsOpen();

@@ -3,7 +3,6 @@ function uploadImg(url, e, category, type) {
     let fileList = e.files;
 
     if (type === 'thumbnail' && fileList.length > 0) {
-        alert("나와")
         let target = $(e).next().children()
         let fileName = $(e).next().children().attr("data-filename")
         delPreviewImg("goods", fileName, "thumbnail", target)
@@ -13,7 +12,7 @@ function uploadImg(url, e, category, type) {
         formData.append("uploadFile", fileList[i]);
     $.ajax({
         type: "POST",
-        enctype: 'multipart/form-data',
+        // enctype: 'multipart/form-data',
         url: url,
         processData: false,
         contentType: false,
