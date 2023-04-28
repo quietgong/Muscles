@@ -29,5 +29,5 @@ public interface GoodsService {
 
     List<GoodsDto> findBestGoods();
 
-    int addGoods(GoodsDto goodsDto);
+    void addGoods(GoodsDto goodsDto);
 }

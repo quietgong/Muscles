@@ -9,7 +9,7 @@
     </select>
 
     <select id="selectGoodsNo" resultType="int">
-        select max(goodsNo) + 1
+        select max(goodsNo)
         from goods
     </select>
 

@@ -6,6 +6,7 @@
         <div class="row">
             <div class="col-md-4 pt-5">
                 <h2 class="h2 text-success border-bottom pb-3 border-light logo">Muscles</h2>
+                <i class="fa fa-github"></i>
             </div>
         </div>
 </footer>

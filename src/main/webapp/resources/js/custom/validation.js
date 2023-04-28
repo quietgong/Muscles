@@ -211,6 +211,7 @@ $("#email").on("keyup", function () {
 let verifyCode;
 $("#sendVerifyNumber").on("click", function () {
     let email = $("#email").val()
+    $("#sendVerifyNumber").hide()
     if (emailCheck && emailFormCheck && emailExistCheck) {
         commonAjax("/muscles/mailCheck?email=" + email + "&type=register", null, "GET", function (verifyNumber) {
             verifyCode = verifyNumber

@@ -20,8 +20,7 @@
                         </div>
                         <div class="form-outline mb-4">
                             <label class="form-label" for="password">패스워드</label>
-                            <input type="password" id="password" name="password" class="form-control" value="1234"
-                                   placeholder="비밀번호를 입력해주세요"/>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요"/>
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6">

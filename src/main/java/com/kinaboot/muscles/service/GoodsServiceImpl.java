@@ -34,16 +34,16 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int addGoods(GoodsDto goodsDto) {
+    public void addGoods(GoodsDto goodsDto) {
+        goodsDao.insert(goodsDto);
         int goodsNo = goodsDao.selectGoodsNo();
         goodsDto.setGoodsNo(goodsNo);
-        goodsDao.deleteAllGoodsDetail(goodsDto.getGoodsNo());
+        goodsDao.deleteAllGoodsDetail(goodsNo);
         List<GoodsImgDto> goodsImgDtoList = goodsDto.getGoodsImgDtoList();
         for (GoodsImgDto goodsImgDto : goodsImgDtoList){
             goodsImgDto.setGoodsNo(goodsNo);
             goodsDao.insertGoodsImg(goodsImgDto);
         }
-        return goodsDao.insert(goodsDto);
     }
 
     @Override

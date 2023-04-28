@@ -201,7 +201,7 @@
 
     function addCategoryList(items) {
         items.forEach(function (item) {
-            let link = "<li><a style='cursor: pointer' class=\"text-decoration-none\" onclick=\"subCategorySearch(this)\">" + item.subCategory + "</a></li>";
+            let link = "<li><a style='cursor: pointer' class=\"text-decoration-none\" href=\"<c:url value='/goods/list?category=" + item.category + "&subCategory=" + item.subCategory + "'/>\">" + item.subCategory + "</a></li>";
             if (item.category === '유산소')
                 $("#cardioList").append(link)
             else if (item.category === '근력')
@@ -237,11 +237,6 @@
 
     function optionSearch(e) {
         conditions.option = $(e).val()
-        appendForm(conditions)
-    }
-
-    function subCategorySearch(e) {
-        conditions.subCategory = $(e).html()
         appendForm(conditions)
     }
 

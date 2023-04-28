@@ -50,6 +50,9 @@ span {
 
 /* 테이블 속성 */
 
+.table{
+    white-space: nowrap;
+}
 tr {
     vertical-align: middle;
 }
