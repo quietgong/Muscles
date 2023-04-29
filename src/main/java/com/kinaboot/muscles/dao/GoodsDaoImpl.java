@@ -10,13 +10,14 @@ import java.util.List;
 
 @Repository
 public class GoodsDaoImpl implements GoodsDao {
-    @Autowired
-    GoodsDao goodsDao;
 
-    @Autowired
-    private SqlSession session;
+    public GoodsDaoImpl(SqlSession session) {
+        this.session = session;
+    }
 
-    private static String namespace = "com.kinaboot.muscles.dao.goodsMapper.";
+    private final SqlSession session;
+
+    private static final String namespace = "com.kinaboot.muscles.dao.goodsMapper.";
 
     @Override
     public int count() {

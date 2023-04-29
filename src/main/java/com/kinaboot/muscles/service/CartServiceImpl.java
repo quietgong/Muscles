@@ -2,15 +2,16 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.CartDao;
 import com.kinaboot.muscles.domain.CartDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CartServiceImpl implements CartService{
-    @Autowired
-    CartDao cartDao;
+    private final CartDao cartDao;
+    public CartServiceImpl(CartDao cartDao) {
+        this.cartDao = cartDao;
+    }
 
     @Override
     public List<CartDto> findCartItems(String userId) {

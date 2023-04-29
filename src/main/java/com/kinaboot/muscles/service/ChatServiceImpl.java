@@ -2,7 +2,6 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.ChatDao;
 import com.kinaboot.muscles.domain.ChatDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -10,8 +9,11 @@ import java.util.List;
 
 @Service
 public class ChatServiceImpl implements ChatService{
-    @Autowired
-    ChatDao chatDao;
+    private final ChatDao chatDao;
+    public ChatServiceImpl(ChatDao chatDao) {
+        this.chatDao = chatDao;
+    }
+
     @Override
     public int saveChat(ChatDto chatDto) {
         return chatDao.insertChat(chatDto);

@@ -2,14 +2,16 @@ package com.kinaboot.muscles.service;
 
 import com.kinaboot.muscles.dao.CommentDao;
 import com.kinaboot.muscles.domain.CommentDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService{
-    @Autowired
-    CommentDao commentDao;
+    private final CommentDao commentDao;
+    public CommentServiceImpl(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
+
     @Override
     public List<CommentDto> findComments(Integer postNo) throws Exception {
         return commentDao.selectAll(postNo);

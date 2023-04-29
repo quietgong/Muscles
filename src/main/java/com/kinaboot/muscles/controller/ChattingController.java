@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 public class ChattingController {
-    @Autowired
-    ChatService chatService;
+    private final ChatService chatService;
+    public ChattingController(ChatService chatService) {
+        this.chatService = chatService;
+    }
 
     List<ChatDto> chatDtoList = new ArrayList<>();
 

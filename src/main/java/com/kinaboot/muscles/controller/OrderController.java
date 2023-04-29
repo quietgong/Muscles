@@ -25,16 +25,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/order")
 public class OrderController {
+    private final OrderService orderService;
+    private final UserService userService;
+
     @Autowired
-    OrderService orderService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    ReviewService reviewService;
+    public OrderController(OrderService orderService, UserService userService) {
+        this.orderService = orderService;
+        this.userService = userService;
+    }
+
 
     @GetMapping("/{orderNo}")
     public String orderDetails(@PathVariable Integer orderNo, Model m) {
@@ -71,13 +75,13 @@ public class OrderController {
     }
 
     @GetMapping("/complete")
-    public String complete(){
+    public String complete() {
         return "order/complete";
     }
 
     @DeleteMapping("/{orderNo}")
     public ResponseEntity<String> removeOrder(@PathVariable Integer orderNo, @RequestBody String cancelReason) {
-        log.info("[주문번호] : " + orderNo + " 주문취소, [취소사유] : " + cancelReason );
+        log.info("[주문번호] : " + orderNo + " 주문취소, [취소사유] : " + cancelReason);
         orderService.removeOrder(orderNo, cancelReason);
         return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
     }

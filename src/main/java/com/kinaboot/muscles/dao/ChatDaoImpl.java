@@ -10,11 +10,13 @@ import java.util.List;
 
 @Repository
 public class ChatDaoImpl implements ChatDao{
+    public ChatDaoImpl(SqlSession session) {
+        this.session = session;
+    }
 
-    @Autowired
-    private SqlSession session;
+    private final SqlSession session;
 
-    private static String namespace = "com.kinaboot.muscles.dao.chatMapper.";
+    private static final String namespace = "com.kinaboot.muscles.dao.chatMapper.";
 
     @Override
     public int insertChat(ChatDto chatDto) {

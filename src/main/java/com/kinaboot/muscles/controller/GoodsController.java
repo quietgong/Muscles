@@ -26,11 +26,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
-    @Autowired
-    GoodsService goodsService;
+
+    private final GoodsService goodsService;
 
     @Autowired
-    ReviewService reviewService;
+    public GoodsController(GoodsService goodsService) {
+        this.goodsService = goodsService;
+    }
 
     @GetMapping("/best")
     @ResponseBody

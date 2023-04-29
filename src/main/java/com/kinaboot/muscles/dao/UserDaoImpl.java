@@ -15,10 +15,13 @@ import java.util.Map;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-    @Autowired
-    private SqlSession session;
+    public UserDaoImpl(SqlSession session) {
+        this.session = session;
+    }
 
-    private static String namespace = "com.kinaboot.muscles.dao.userMapper.";
+    private final SqlSession session;
+
+    private static final String namespace = "com.kinaboot.muscles.dao.userMapper.";
 
     @Override
     public int count() {

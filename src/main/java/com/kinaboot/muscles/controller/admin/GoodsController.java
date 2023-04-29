@@ -24,8 +24,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/admin/goods/")
 public class GoodsController {
-    @Autowired
-    GoodsService goodsService;
+    private final GoodsService goodsService;
+    public GoodsController(GoodsService goodsService) {
+        this.goodsService = goodsService;
+    }
 
     @GetMapping("")
     public ResponseEntity<List<GoodsDto>> goodsList() {

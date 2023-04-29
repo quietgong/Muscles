@@ -27,17 +27,17 @@ import static com.kinaboot.muscles.controller.common.MailController.mailSend;
 @Slf4j
 @Controller
 public class LoginController {
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final CartService cartService;
+    private final JavaMailSender mailSender;
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    CartService cartService;
-
-    @Autowired
-    private JavaMailSender mailSender;
+    public LoginController(BCryptPasswordEncoder passwordEncoder, UserService userService, CartService cartService, JavaMailSender mailSender) {
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+        this.cartService = cartService;
+        this.mailSender = mailSender;
+    }
 
     @PostMapping("/login/")
     public String login(String toURL, UserDto userDto, HttpServletResponse response, HttpServletRequest request, boolean rememberId) throws Exception {

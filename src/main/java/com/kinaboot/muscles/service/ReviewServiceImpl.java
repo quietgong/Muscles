@@ -11,8 +11,10 @@ import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements ReviewService{
-    @Autowired
-    ReviewDao reviewDao;
+    private final ReviewDao reviewDao;
+    public ReviewServiceImpl(ReviewDao reviewDao) {
+        this.reviewDao = reviewDao;
+    }
 
     @Override
     public ReviewDto findReview(Integer orderNo, Integer goodsNo) {

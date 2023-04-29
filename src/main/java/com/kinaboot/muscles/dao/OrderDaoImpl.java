@@ -11,9 +11,12 @@ import java.util.List;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
-    @Autowired
-    private SqlSession session;
-    private static String namespace = "com.kinaboot.muscles.dao.orderMapper.";
+    public OrderDaoImpl(SqlSession session) {
+        this.session = session;
+    }
+
+    private final SqlSession session;
+    private static final String namespace = "com.kinaboot.muscles.dao.orderMapper.";
 
     @Override
     public List<OrderDto> selectAll(SearchCondition sc) {

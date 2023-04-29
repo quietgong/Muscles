@@ -18,16 +18,19 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+    private final OrderDao orderDao;
+    private final UserDao userDao;
+    private final CartDao cartDao;
+    private final UserService userService;
+    private final ReviewService reviewService;
     @Autowired
-    OrderDao orderDao;
-    @Autowired
-    UserDao userDao;
-    @Autowired
-    CartDao cartDao;
-    @Autowired
-    UserService userService;
-    @Autowired
-    ReviewService reviewService;
+    public OrderServiceImpl(OrderDao orderDao, UserDao userDao, CartDao cartDao, UserService userService, ReviewService reviewService) {
+        this.orderDao = orderDao;
+        this.userDao = userDao;
+        this.cartDao = cartDao;
+        this.userService = userService;
+        this.reviewService = reviewService;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

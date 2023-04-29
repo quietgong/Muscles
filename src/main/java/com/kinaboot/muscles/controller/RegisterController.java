@@ -3,27 +3,24 @@ package com.kinaboot.muscles.controller;
 import com.kinaboot.muscles.domain.UserDto;
 import com.kinaboot.muscles.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
-import java.util.Random;
-
-import static com.kinaboot.muscles.controller.common.MailController.mailSend;
 
 @Slf4j
 @Controller
 @RequestMapping("/register/")
 public class RegisterController {
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserService userService;
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    UserService userService;
+    public RegisterController(BCryptPasswordEncoder passwordEncoder, UserService userService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+    }
 
     @PostMapping("")
     public String registerDetails(UserDto userDto) throws Exception {

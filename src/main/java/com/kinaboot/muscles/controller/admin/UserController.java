@@ -21,8 +21,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/user/")
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("find")
     public ResponseEntity<Map<String,Object>> userList(SearchCondition sc) {

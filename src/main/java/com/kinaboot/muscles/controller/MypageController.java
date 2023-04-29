@@ -21,14 +21,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/mypage")
 public class MypageController {
-    @Autowired
-    UserService userService;
-    @Autowired
-    OrderService orderService;
+    private final UserService userService;
+    private final OrderService orderService;
 
-    @Autowired
-    ReviewService reviewService;
-
+    public MypageController(UserService userService, OrderService orderService) {
+        this.userService = userService;
+        this.orderService = orderService;
+    }
+    
     @GetMapping("/coupon/{userId}")
     public ResponseEntity<List<CouponDto>> findCoupon(@PathVariable String userId) {
         log.info("쿠폰 목록 조회");
@@ -41,9 +41,10 @@ public class MypageController {
         String msg = userService.addCoupon(userId, recommendId) != 0 ? "ADD_OK" : "ADD_FAIL";
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
+
     @GetMapping("/point/{userId}")
     @ResponseBody
-    public ResponseEntity<List<PointDto>> pointList(@PathVariable String userId){
+    public ResponseEntity<List<PointDto>> pointList(@PathVariable String userId) {
         log.info("포인트 내역 조회");
         return new ResponseEntity<>(userService.findPoints(userId), HttpStatus.OK);
     }

@@ -12,12 +12,15 @@ import java.util.List;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
+    private final GoodsDao goodsDao;
+    private final ReviewDao reviewDao;
+    private final ReviewService reviewService;
     @Autowired
-    GoodsDao goodsDao;
-    @Autowired
-    ReviewDao reviewDao;
-    @Autowired
-    ReviewService reviewService;
+    public GoodsServiceImpl(GoodsDao goodsDao, ReviewDao reviewDao, ReviewService reviewService) {
+        this.goodsDao = goodsDao;
+        this.reviewDao = reviewDao;
+        this.reviewService = reviewService;
+    }
 
     @Override
     public List<GoodsDto> findBestGoods() {

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/admin/order")
 public class OrderController {
-    @Autowired
-    OrderService orderService;
+    private final OrderService orderService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @GetMapping("")
     public String orderList(SearchCondition sc, Model m) {

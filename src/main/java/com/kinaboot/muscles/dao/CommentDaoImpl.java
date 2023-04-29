@@ -11,10 +11,13 @@ import java.util.Map;
 
 @Repository
 public class CommentDaoImpl implements CommentDao {
-    @Autowired
-    private SqlSession session;
+    public CommentDaoImpl(SqlSession session) {
+        this.session = session;
+    }
 
-    private static String namespace = "com.kinaboot.muscles.dao.commentMapper.";
+    private final SqlSession session;
+
+    private static final String namespace = "com.kinaboot.muscles.dao.commentMapper.";
 
     @Override
     public int count() throws Exception {

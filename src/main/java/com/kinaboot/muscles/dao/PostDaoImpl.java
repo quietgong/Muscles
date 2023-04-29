@@ -11,10 +11,13 @@ import java.util.List;
 
 @Repository
 public class PostDaoImpl implements PostDao {
-    @Autowired
-    private SqlSession session;
+    public PostDaoImpl(SqlSession session) {
+        this.session = session;
+    }
 
-    private static String namespace = "com.kinaboot.muscles.dao.postMapper.";
+    private final SqlSession session;
+
+    private static final String namespace = "com.kinaboot.muscles.dao.postMapper.";
 
     @Override
     public int count(String type) throws Exception {

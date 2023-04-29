@@ -1,7 +1,6 @@
 package com.kinaboot.muscles.controller.common;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -16,8 +15,10 @@ import java.util.Random;
 @Controller
 @RequestMapping("/")
 public class MailController {
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
+    public MailController(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public static String mailSend(String verifyCode, String setFrom, String toMail, String title, String content, JavaMailSender mailSender) {
         log.info("Mail 발송 컨트롤러");

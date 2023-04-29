@@ -24,15 +24,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/img")
 public class ImgController {
-    @Autowired
-    GoodsService goodsService;
-
-    @Autowired
-    ReviewService reviewService;
-
-    @Autowired
-    PostSerivce postSerivce;
-
     String fileRoot = "C:\\Muscles\\src\\main\\webapp\\resources\\img\\";
 
     @PostMapping(value = "/{category}/{type}/{no}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -13,11 +13,12 @@ import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostSerivce{
-    @Autowired
-    PostDao postDao;
-
-    @Autowired
-    CommentDao commentDao;
+    private final PostDao postDao;
+    private final CommentDao commentDao;
+    public PostServiceImpl(PostDao postDao, CommentDao commentDao) {
+        this.postDao = postDao;
+        this.commentDao = commentDao;
+    }
 
     @Override
     public PostDto findPost(Integer postNo) throws Exception {

@@ -11,10 +11,12 @@ import java.util.Map;
 
 @Repository
 public class CartDaoImpl implements CartDao {
-    @Autowired
-    private SqlSession session;
+    private final SqlSession session;
+    public CartDaoImpl(SqlSession session) {
+        this.session = session;
+    }
 
-    private static String namespace = "com.kinaboot.muscles.dao.cartMapper.";
+    private static final String namespace = "com.kinaboot.muscles.dao.cartMapper.";
 
     @Override
     public int count(String userId) {

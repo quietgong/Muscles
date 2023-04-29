@@ -12,10 +12,13 @@ import java.util.Map;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
-    @Autowired
-    private SqlSession session;
+    public ReviewDaoImpl(SqlSession session) {
+        this.session = session;
+    }
 
-    private static String namespace = "com.kinaboot.muscles.dao.reviewMapper.";
+    private final SqlSession session;
+
+    private static final String namespace = "com.kinaboot.muscles.dao.reviewMapper.";
 
     @Override
     public int selectNewReviewNo() {

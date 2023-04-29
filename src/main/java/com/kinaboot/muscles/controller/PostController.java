@@ -21,9 +21,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping({"/community", "/notice"})
 public class PostController {
-
-    @Autowired
-    PostSerivce postSerivce;
+    private final PostSerivce postSerivce;
+    public PostController(PostSerivce postSerivce) {
+        this.postSerivce = postSerivce;
+    }
 
     private String parsingURL(HttpServletRequest request) {
         return request.getRequestURI().split("/")[2];

@@ -15,14 +15,17 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private final UserDao userDao;
+    private final PostSerivce postSerivce;
+    private final CommentService commentService;
+    private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    UserDao userDao;
-    @Autowired
-    PostSerivce postSerivce;
-    @Autowired
-    CommentService commentService;
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserDao userDao, PostSerivce postSerivce, CommentService commentService, BCryptPasswordEncoder passwordEncoder) {
+        this.userDao = userDao;
+        this.postSerivce = postSerivce;
+        this.commentService = commentService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public int countUser(String userId) {
