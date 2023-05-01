@@ -58,9 +58,16 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-10" style="text-align: right">
-            <button type="submit" onclick='location.href="<c:url value='/${ph.sc.type}/'/>"'
-                    class="btn btn-lg btn-primary">글쓰기
-            </button>
+            <c:if test="${postCategory eq 'notice' && userId eq 'admin'}">
+                <button type="submit" onclick='location.href="<c:url value='/${ph.sc.type}/'/>"'
+                        class="btn btn-lg btn-primary">공지사항 등록
+                </button>
+            </c:if>
+            <c:if test="${postCategory eq 'community'}">
+                <button type="submit" onclick='location.href="<c:url value='/${ph.sc.type}/'/>"'
+                        class="btn btn-lg btn-primary">글쓰기
+                </button>
+            </c:if>
         </div>
     </div>
     <div class="row mt-5 justify-content-center">

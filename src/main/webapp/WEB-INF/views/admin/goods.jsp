@@ -127,17 +127,20 @@
             $("#goodsNo").val(res.goodsNo)
             $("#goodsName").val(res.goodsName)
             categoryDetailDisplay(res.goodsCategory)
-            $('#categorySelect option[value=' + res.goodsCategory + ']').prop('selected', true);
-            $('#categoryDetailSelect option[value=' + res.goodsCategoryDetail + ']').prop('selected', true);
+            $('#categorySelect option[value="' + res.goodsCategory + '"]').prop('selected', true);
+            $('#categoryDetailSelect option[value="' + res.goodsCategoryDetail + '"]').prop('selected', true);
             $("#goodsPrice").val(res.goodsPrice)
             $("#goodsStock").val(res.goodsStock)
             $("#goodsDescription").val(res.goodsDescription)
-            let tmp = ""
-            tmp += '<div class="detail col-md-12" data-category=goods data-type="thumbnail">'
-            tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
-            tmp += '<img class="img-fluid" id="newThumbnail" src="' + res.goodsImgPath + '">'
-            $("#thumbnailPreview").append(tmp)
-            showPreview(res.goodsImgDtoList, 'detail', "goods")
+            if(res.goodsImgPath !== null){
+                let tmp = ""
+                tmp += '<div class="detail col-md-12" data-category=goods data-type="thumbnail">'
+                tmp += '<button class="delPreview btn btn-danger mb-3 mt-3" type="button">X</button>'
+                tmp += '<img class="img-fluid" id="newThumbnail" src="' + res.goodsImgPath + '">'
+                $("#thumbnailPreview").append(tmp)
+            }
+            if(res.goodsImgDtoList.length !== 0)
+                showPreview(res.goodsImgDtoList, 'detail', "goods")
         })
     }
 

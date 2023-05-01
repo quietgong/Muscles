@@ -146,7 +146,6 @@
 
     function loadItemList() {
         let items = JSON.parse('${orderList}');
-        ;
         $("#orderList").prepend(appendItemList(items))
 
         function appendItemList(items) {
@@ -248,9 +247,6 @@
             name: 'point',
             value: point
         }))
-        console.log(orderData)
-        console.log(couponNo)
-        console.log(point)
         form.submit();
     });
 </script>

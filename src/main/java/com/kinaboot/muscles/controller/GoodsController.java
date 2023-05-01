@@ -75,7 +75,9 @@ public class GoodsController {
     public String goodsList(SearchCondition sc, Model m) {
         log.info("상품 목록 조회");
         int totalCnt = goodsService.getTotalCntByCategory(sc);
-        PageHandler ph = new PageHandler(totalCnt, sc);
+        sc.setDEFAULT_PAGE_SIZE(9);
+        PageHandler ph = new PageHandler(totalCnt, sc, sc.getDEFAULT_PAGE_SIZE());
+        System.out.println("sc = " + sc);
         m.addAttribute("list", goodsService.findGoods(sc));
         m.addAttribute("ph", ph);
         return "goods/list";

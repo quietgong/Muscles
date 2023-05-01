@@ -117,7 +117,7 @@
                                     <div class="col-md-12 text-center mt-2">
                                         <a href="<c:url value='/goods/detail?goodsNo=${goodsDto.goodsNo}'/>"
                                            class="h3 fw-bold text-decoration-none">
-                                            <h3 style="font-family: 'Franklin Gothic Medium';">${goodsDto.goodsName}</h3>
+                                            <h4 style="font-family: 'Franklin Gothic Medium';">${goodsDto.goodsName}</h4>
                                         </a>
                                     </div>
                                     <div class="star-ratings">

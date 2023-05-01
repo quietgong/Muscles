@@ -50,7 +50,16 @@
                             <!-- 상품 목록 -->
                             <c:forEach var="orderItemDto" items="${orderDto.orderItemDtoList}">
                                 <tr>
-                                    <td width="30%"><img class="img-fluid" src="${orderItemDto.goodsImgPath}"></td>
+                                    <td width="30%">
+                                        <c:choose>
+                                            <c:when test="${orderItemDto.goodsImgPath eq ''}">
+                                                <img class="img-fluid" src="<c:url value='/img/logo.jpg'/>">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img class="img-fluid" src="${orderItemDto.goodsImgPath}">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                     <td width="40%">
                                         <span class="font-weight-bold">
                                                 ${orderItemDto.goodsName} (수량 : ${orderItemDto.goodsQty})
@@ -80,7 +89,9 @@
                                     <td>
                                         <div class="text-right">
                                             <span>
-                                                ₩<fmt:formatNumber value="${orderDto.paymentDto.price + orderDto.discount}" pattern="#,###"/>
+                                                ₩<fmt:formatNumber
+                                                    value="${orderDto.paymentDto.price + orderDto.discount}"
+                                                    pattern="#,###"/>
                                             </span>
                                         </div>
                                     </td>
@@ -105,7 +116,8 @@
                                     <td>
                                         <div class="text-right">
                                             <span class="font-weight-bold">
-                                                ₩<fmt:formatNumber value="${orderDto.paymentDto.price}" pattern="#,###"/>
+                                                ₩<fmt:formatNumber value="${orderDto.paymentDto.price}"
+                                                                   pattern="#,###"/>
                                             </span>
                                         </div>
                                     </td>

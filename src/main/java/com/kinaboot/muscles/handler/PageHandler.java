@@ -22,6 +22,12 @@ public class PageHandler {
         this.sc = sc;
         doPaging(totalCnt, sc);
     }
+    public PageHandler(int totalCnt, SearchCondition sc, int pageSize) {
+        this.totalCnt = totalCnt;
+        this.sc = sc;
+        this.pageSize = pageSize;
+        doPaging(totalCnt, sc);
+    }
 
     void doPaging(int totalCnt, SearchCondition sc) {
         this.totalCnt = totalCnt;

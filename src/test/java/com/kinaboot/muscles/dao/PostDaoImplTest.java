@@ -14,7 +14,7 @@ public class PostDaoImplTest extends TestConfigure {
     PostDao postDao;
     @Test
     public void insertPost() throws Exception {
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 100; i++) {
             String userId = "admin";
             PostDto postDto = new PostDto();
             postDto.setUserId(userId);

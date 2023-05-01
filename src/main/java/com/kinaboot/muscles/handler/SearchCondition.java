@@ -11,10 +11,10 @@ import java.util.Date;
 public class SearchCondition {
     private static final int MIN_PAGE = 1;
     private static final int MAX_PAGE = 50;
-    private static final int DEFAULT_PAGE_SIZE = 10;
+    private Integer DEFAULT_PAGE_SIZE = 10;
     private Integer page = 1;
     private String option = "";
-    private Integer offset = 0;
+    private Integer offset = (page-1)*DEFAULT_PAGE_SIZE;
     private Integer totalCnt = 0;
     private String keyword = "";
     private String type = "";
@@ -62,6 +62,6 @@ public class SearchCondition {
     }
 
     public Integer getOffset() {
-        return (page-1)*10;
+        return (page-1)*DEFAULT_PAGE_SIZE;
     }
 }

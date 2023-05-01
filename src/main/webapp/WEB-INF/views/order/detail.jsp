@@ -22,7 +22,14 @@
                                 <div class="row mt-2 gx-4">
                                     <div class="col-md-2">
                                         <!-- 상품 이미지 -->
-                                        <img class="card-img rounded-0 img-fluid" src="${orderItemDto.goodsImgPath}">
+                                        <c:choose>
+                                            <c:when test="${orderItemDto.goodsImgPath eq ''}">
+                                                <img class="card-img rounded-0 img-fluid" src="<c:url value='/img/logo.jpg'/>" id="goods-detail">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img class="card-img rounded-0 img-fluid" src="${orderItemDto.goodsImgPath}" id="goods-detail">
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                     <div class="col-md-8">
                                         <!-- 상품 이름 -->
@@ -79,9 +86,9 @@
                         </table>
                     </div>
                     <div class="col-md-12 mt-5" style="text-align: center;">
-                        <button class="btn btn-outline-primary" onclick="location.history()"
+                        <button class="btn btn-outline-primary" onclick="window.history.back();"
                                 type="button">뒤로가기</button>
-                        <button class="btn btn-outline-primary" onclick="<c:url value='/'/>" type="button">홈으로
+                        <button class="btn btn-outline-primary" onclick="location.href = '<c:url value='/'/>'" type="button">홈으로
                             이동</button>
                     </div>
                 </div>
